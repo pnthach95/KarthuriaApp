@@ -1,0 +1,55 @@
+{
+  "editor.tabSize": 2,
+  "editor.detectIndentation": false,
+  "editor.rulers": [
+    80
+  ],
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "files.eol": "\n",
+  "files.insertFinalNewline": true,
+  "todo-tree.general.tags": [
+    "BUG",
+    "HACK",
+    "FIXME",
+    "TODO",
+    "XXX",
+    "START:",
+    "END:"
+  ],
+  "todo-tree.general.tagGroups": {
+    "PROJECT": [
+      "START:",
+      "END:"
+    ]
+  },
+  "todo-tree.highlights.customHighlight": {
+    "PROJECT": {
+      "background": "cyan",
+      "type": "text-and-comment",
+      "hideFromTree": true
+    },
+    "TODO": {
+      "icon": "check",
+      "type": "line",
+      "background": "green"
+    },
+    "FIXME": {
+      "icon": "tools",
+      "background": "yellow",
+      "iconColour": "yellow"
+    }
+  },
+  "todo-tree.highlights.defaultHighlight": {
+    "icon": "dash",
+    "type": "text",
+    "opacity": 50,
+    "foreground": "white",
+    "background": "blue",
+    "iconColour": "green"
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "god.tsconfig": "./tsconfig.json"
+}

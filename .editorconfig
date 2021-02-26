@@ -1,0 +1,25 @@
+root = true
+
+[*]
+indent_style = space
+indent_size = 2
+charset = utf-8
+trim_trailing_whitespace = true
+end_of_line = lf
+insert_final_newline = true
+
+[*.gradle]
+indent_size = 4
+
+[BUCK]
+indent_size = 4
+
+[Makefile]
+indent_style = tab
+
+[*.java]
+indent_style = space
+indent_size = 4
+
+[*.js]
+quote_type = single

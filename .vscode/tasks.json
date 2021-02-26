@@ -1,0 +1,105 @@
+{
+  "version": "2.0.0",
+  "presentation": {
+    "reveal": "always",
+    "panel": "new"
+  },
+  "tasks": [
+    {
+      "label": "Start",
+      "type": "shell",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "command": "npx react-native start"
+    },
+    {
+      "label": "Reconnect",
+      "type": "shell",
+      "command": "adb reverse tcp:8081 tcp:8081",
+      "problemMatcher": []
+    },
+    {
+      "label": "Run Android",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "type": "shell",
+      "command": "npx react-native run-android",
+      "problemMatcher": []
+    },
+    {
+      "label": "Run Android release",
+      "type": "shell",
+      "command": "npx react-native run-android --variant=release",
+      "problemMatcher": []
+    },
+    {
+      "label": "Clean Android",
+      "group": "none",
+      "type": "shell",
+      "windows": {
+        "command": "cd android && gradlew clean"
+      },
+      "linux": {
+        "command": "cd android && ./gradlew clean"
+      }
+    },
+    {
+      "label": "Clean and Run Android",
+      "group": "none",
+      "type": "shell",
+      "windows": {
+        "command": "cd android && gradlew clean && cd .. && npx react-native run-android"
+      },
+      "linux": {
+        "command": "cd android && ./gradlew clean && cd .. && npx react-native run-android"
+      }
+    },
+    {
+      "label": "Build APK Release",
+      "group": "build",
+      "type": "shell",
+      "windows": {
+        "command": "cd android && gradlew assembleRelease"
+      },
+      "linux": {
+        "command": "cd android && ./gradlew assembleRelease"
+      }
+    },
+    {
+      "label": "Build AAB Release",
+      "group": "build",
+      "type": "shell",
+      "windows": {
+        "command": "npx jetify && cd android && gradlew bundleRelease"
+      },
+      "linux": {
+        "command": "npx jetify && cd android && ./gradlew bundleRelease"
+      }
+    },
+    {
+      "label": "Run iPhone 5s (10.3.1)",
+      "type": "shell",
+      "osx": {
+        "command": "npx react-native run-ios --simulator='iPhone 5s (10.3.1)'"
+      }
+    },
+    {
+      "label": "Run iPhone 8",
+      "type": "shell",
+      "osx": {
+        "command": "npx react-native run-ios --simulator='iPhone 8'"
+      }
+    },
+    {
+      "label": "Run iPhone 11",
+      "type": "shell",
+      "osx": {
+        "command": "npx react-native run-ios --simulator='iPhone 11'"
+      }
+    }
+  ]
+}
