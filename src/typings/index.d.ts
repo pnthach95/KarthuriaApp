@@ -72,6 +72,114 @@ type RootStackParamList = {
 
 //#endregion
 
+//#region API: Karhuria
+
+type TLanguage = 'ja' | 'en' | 'ko' | 'zh_hant';
+
+type TCharaList = Record<string, TCharaBasicInfo>;
+
+type TCharaBasicInfo = {
+  basicInfo: {
+    charaID: number;
+    birth_day: number;
+    birth_month: number;
+    school_id: number;
+    name_ruby: {
+      [L in TLanguage]: string;
+    };
+  };
+};
+
+type TDressList = Record<string, TDressBasicInfo>;
+
+type TDressBasicInfo = {
+  basicInfo: {
+    cardID: string;
+    rarity: number;
+    character: number;
+    name: {
+      [L in TLanguage]: string;
+    };
+    released: {
+      ww: number;
+      ja: number;
+    };
+  };
+  base: {
+    attribute: number;
+    attackType: number;
+    roleIndex: {
+      role: string;
+      index: number;
+    };
+    skills: number[];
+  };
+  stat: {
+    total: number;
+    agi: number;
+    atk: number;
+    hp: number;
+    mdef: number;
+    pdef: number;
+  };
+};
+
+type TEquipList = Record<string, TEquipBasicInfo>;
+
+type TEquipBasicInfo = {
+  basicInfo: {
+    cardID: string;
+    rarity: number;
+    charas: string;
+    name: {
+      [L in TLanguage]: string;
+    };
+    profile: {
+      [L in TLanguage]: string;
+    };
+    published: {
+      ww: number;
+      ja: number;
+    };
+  };
+  skill: {
+    iconID: number;
+    info: {
+      [L in TLanguage]: string;
+    };
+    type: string;
+  };
+};
+
+type TAccessoryList = Record<string, TAccessoryBasicInfo>;
+
+type TAccessoryBasicInfo = {
+  basicInfo: {
+    accID: number;
+    iconID: number;
+    cardID: number;
+    name: string;
+  };
+  skillSlot: number;
+};
+
+type TEnemyList = Record<string, TEnemyBasicInfo>;
+
+type TEnemyBasicInfo = {
+  basicInfo: {
+    enemyID: string;
+    icon: number;
+    rarity: number;
+    name: {
+      [L in TLanguage]: string;
+    };
+    attribute: number;
+    isDress: number;
+  };
+};
+
+//#endregion
+
 //#region API: Github
 
 type GithubRepoType = {
