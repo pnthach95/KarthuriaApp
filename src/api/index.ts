@@ -1,17 +1,31 @@
-import apisauce from 'apisauce';
+import { create } from 'apisauce';
+
+const api = create({
+  baseURL: 'https://karen.makoo.eu/api',
+});
 
 export const links = {
-  DATETIME_FORMAT_INPUT: 'YYYY-MM-DDTHH:mm:ssZ',
-  API_URL: 'https://schoolido.lu/api/',
-  SCHOOLIDO: 'https://schoolido.lu',
-  LLSIFNET: 'https://llsif.net',
-  CACHED_DATA: 'cacheddata/',
-  CARDS: 'cards/',
-  IDOLS: 'idols/',
-  SONGS: 'songs/',
-  EVENTS: 'events/',
-  CARDIDS: 'cardids/',
-  GITHUB_API: 'https://api.github.com/repos/',
-  REPO: 'pnthach95/LLSIFTomodachiApp/releases',
-  GITHUB_PROJECT: 'https://github.com/pnthach95/LLSIFTomodachiApp',
+  CHARA: 'chara',
+  DRESS: 'dress',
+  EQUIP: 'equip',
+  ACCESSORY: 'accessory',
+  ENEMY: 'enemy',
+  EVENT: {
+    WW: 'event/ww/current.json',
+    JP: 'event/jp/current.json',
+  },
+  GACHA: {
+    WW: 'gacha/ww/current.json',
+    JP: 'gacha/jp/current.json',
+  },
+  LOGINBONUS: {
+    WW: 'loginbonus/ww/current.json',
+    JP: 'loginbonus/jp/current.json',
+  },
+  RANKING: {
+    WW: 'ranking/ww/current.json',
+    JP: 'ranking/jp/current.json',
+  },
 };
+
+export default api;

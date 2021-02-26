@@ -4,8 +4,8 @@ import type { GithubRepoType } from '~/typings';
 
 const Config = {
   GITHUB_API: 'https://api.github.com/repos/',
-  REPO: 'pnthach95/LLSIFTomodachiApp/releases',
-  GITHUB_PROJECT: 'https://github.com/pnthach95/LLSIFTomodachiApp',
+  REPO: 'pnthach95/KarthuriaApp/releases',
+  GITHUB_PROJECT: 'https://github.com/pnthach95/KarthuriaApp',
 };
 
 const GithubApiClient = create({ baseURL: Config.GITHUB_API, timeout: 10000 });
