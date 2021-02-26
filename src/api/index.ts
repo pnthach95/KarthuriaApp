@@ -5,11 +5,18 @@ const api = create({
 });
 
 export const links = {
-  CHARA: 'chara',
-  DRESS: 'dress',
-  EQUIP: 'equip',
-  ACCESSORY: 'accessory',
-  ENEMY: 'enemy',
+  LIST: {
+    CHARA: 'chara.json',
+    DRESS: 'dress.json',
+    EQUIP: 'equip.json',
+    ACCESSORY: 'accessory.json',
+    ENEMY: 'enemy.json',
+  },
+  CHARA: 'chara/',
+  DRESS: 'dress/',
+  EQUIP: 'equip/',
+  ACCESSORY: 'accessory/',
+  ENEMY: 'enemy/',
   EVENT: {
     WW: 'event/ww/current.json',
     JP: 'event/jp/current.json',
