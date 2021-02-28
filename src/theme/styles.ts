@@ -12,6 +12,9 @@ export default StyleSheet.create({
   centerText: {
     textAlign: 'center',
   },
+  columnWrapper: {
+    justifyContent: 'center',
+  },
   flex1: {
     flex: 1,
   },

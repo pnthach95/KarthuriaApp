@@ -92,7 +92,7 @@ const Charaters = ({ navigation }: CharactersScreenProps): JSX.Element => {
       numColumns={2}
       keyExtractor={keyExtractor}
       renderItem={renderItem}
-      columnWrapperStyle={AppStyles.center}
+      columnWrapperStyle={AppStyles.columnWrapper}
       showsVerticalScrollIndicator={false}
     />
   );
