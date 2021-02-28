@@ -6,6 +6,7 @@ import Animated from 'react-native-reanimated';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import MainScreen from '~/screens/main';
+import CharatersScreen from '~/screens/characters';
 import MoreScreen from '~/screens/more';
 
 import type {
@@ -26,6 +27,9 @@ const Icon = Animated.createAnimatedComponent(Ionicons);
 const homeIcon = ({ size, color }: IconProps) => (
   <Icon name='home' size={size} color={color} />
 );
+const charatersIcon = ({ size, color }: IconProps) => (
+  <Icon name='person-sharp' size={size} color={color} />
+);
 const moreIcon = ({ size, color }: IconProps) => (
   <Icon name='ellipsis-horizontal' size={size} color={color} />
 );
@@ -42,6 +46,20 @@ const tabs: TabsConfig<BubbleTabBarItemConfig, BottomTabList> = {
     },
     background: {
       activeColor: Colors.red100,
+      inactiveColor: 'transparent',
+    },
+  },
+  CharactersScreen: {
+    labelStyle: {
+      color: Colors.blue400,
+    },
+    icon: {
+      component: charatersIcon,
+      activeColor: Colors.blue400,
+      inactiveColor: Colors.grey600,
+    },
+    background: {
+      activeColor: Colors.blue100,
       inactiveColor: 'transparent',
     },
   },
@@ -76,6 +94,11 @@ const LLSIFTab = (): JSX.Element => {
         name='MainScreen'
         component={MainScreen}
         options={{ tabBarLabel: 'Home' }}
+      />
+      <Tab.Screen
+        name='CharactersScreen'
+        component={CharatersScreen}
+        options={{ tabBarLabel: 'Charaters' }}
       />
       <Tab.Screen
         name='MoreScreen'

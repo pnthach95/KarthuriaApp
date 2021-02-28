@@ -34,10 +34,6 @@ type AppState = {
   options: AppOptions;
 };
 
-//#endregion
-
-//#region Reducer
-
 type ActionType =
   | { type: 'SWITCH_MAIN_ROUTE'; route: AppState['mainRoute'] }
   | { type: 'SAVE_CACHED_DATA'; data: CachedDataObject }
@@ -49,12 +45,19 @@ type ActionType =
 
 type BottomTabList = {
   MainScreen: undefined;
+  CharactersScreen: undefined;
   MoreScreen: undefined;
 };
 
 type MainScreenProps = {
   navigation: CompositeNavigationProp<
     BottomTabNavigationProp<BottomTabList, 'MainScreen'>,
+    StackNavigationProp<RootStackParamList>
+  >;
+};
+type CharactersScreenProps = {
+  navigation: CompositeNavigationProp<
+    BottomTabNavigationProp<BottomTabList, 'CharactersScreen'>,
     StackNavigationProp<RootStackParamList>
   >;
 };

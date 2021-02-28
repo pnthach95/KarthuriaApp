@@ -9,6 +9,9 @@ export default StyleSheet.create({
   flex1: {
     flex: 1,
   },
+  row: {
+    flexDirection: 'row',
+  },
   whiteText: {
     color: Colors.white,
   },
