@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
 });
 
 const Charaters = ({ navigation }: CharactersScreenProps): JSX.Element => {
-  const [charaters, setCharaters] = useState<TCharaBasicInfo[]>([]);
+  const [charaList, setCharaList] = useState<TCharaBasicInfo[]>([]);
 
   useEffect(() => {
     const loadData = async () => {
@@ -41,7 +41,7 @@ const Charaters = ({ navigation }: CharactersScreenProps): JSX.Element => {
             tmp.push(data.data[key]);
           }
         });
-        setCharaters(tmp);
+        setCharaList(tmp);
       }
     };
     void loadData();
@@ -81,7 +81,7 @@ const Charaters = ({ navigation }: CharactersScreenProps): JSX.Element => {
 
   return (
     <FlatList
-      data={charaters}
+      data={charaList}
       numColumns={2}
       keyExtractor={keyExtractor}
       renderItem={renderItem}
