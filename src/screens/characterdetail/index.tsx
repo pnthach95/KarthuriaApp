@@ -91,6 +91,7 @@ const CharacterDetail = ({ route }: CharacterDetailProps): JSX.Element => {
                 style={styles.schoolIcon}
               />
             </View>
+            <View style={styles.separator} />
             <Caption>Department</Caption>
             <Text>{character.info.department_2.en}</Text>
             <View style={styles.separator} />
