@@ -30,7 +30,7 @@ type AppOptions = {
 };
 
 type AppState = {
-  loading: boolean;
+  mainRoute: 'SPLASH' | 'MAIN';
   options: AppOptions;
 };
 
@@ -39,7 +39,7 @@ type AppState = {
 //#region Reducer
 
 type ActionType =
-  | { type: 'LOADING'; loading: boolean }
+  | { type: 'SWITCH_MAIN_ROUTE'; route: AppState['mainRoute'] }
   | { type: 'SAVE_CACHED_DATA'; data: CachedDataObject }
   | { type: 'SAVE_OPTIONS'; data: AppOptions };
 

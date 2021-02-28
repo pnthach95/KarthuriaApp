@@ -18,7 +18,6 @@ const MoreScreen: React.FC<MoreScreenProps> = () => {
       isDark: !state.options.isDark,
     };
     dispatch({ type: 'SAVE_OPTIONS', data });
-    // saveSettings(data);
   };
 
   return (

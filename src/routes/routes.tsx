@@ -6,9 +6,9 @@ import { setRootViewBackgroundColor } from '@pnthach95/react-native-root-view-ba
 import NavigationBarColor from 'react-native-navigation-bar-color';
 import { Provider as PaperProvider } from 'react-native-paper';
 import tinycolor from 'tinycolor2';
-
+import { setObject } from '~/mmkv';
 import { Dark, Light } from '~/theme';
-import UserContext from '~/context';
+import AppContext from '~/context';
 
 import Tabs from './tabs';
 import SplashScreen from '~/screens/splash';
@@ -20,7 +20,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 const noHeader = { headerShown: false };
 
 const Routes = (): JSX.Element => {
-  const { state } = useContext(UserContext);
+  const { state } = useContext(AppContext);
   const switchTheme = state.options.isDark ? Dark : Light;
   const statusBarColor = state.options.isDark
     ? Dark.colors.card
@@ -37,12 +37,16 @@ const Routes = (): JSX.Element => {
     void NavigationBarColor(c.toHexString(), !state.options.isDark, true);
   }, [state.options.isDark]);
 
+  useEffect(() => {
+    void setObject('options', state.options);
+  }, [state.options]);
+
   return (
     <PaperProvider theme={switchTheme}>
       <StatusBar backgroundColor={statusBarColor} barStyle={statusBarStyle} />
       <NavigationContainer theme={switchTheme}>
         <Stack.Navigator screenOptions={{ headerBackTitle: 'Back' }}>
-          {state.loading ? (
+          {state.mainRoute === 'SPLASH' ? (
             <Stack.Screen
               name='Splash'
               component={SplashScreen}

@@ -4,10 +4,10 @@ import type { ActionType, AppState, AppOptions } from '~/typings';
 
 const reducer: React.Reducer<AppState, ActionType> = (prevState, action) => {
   switch (action.type) {
-    case 'LOADING':
+    case 'SWITCH_MAIN_ROUTE':
       return {
         ...prevState,
-        loading: action.loading,
+        mainRoute: action.route,
       };
     case 'SAVE_OPTIONS':
       return {
@@ -25,8 +25,7 @@ export const initAppOptions: AppOptions = {
 
 /** Initial state */
 export const initState: AppState = {
-  /** Loading cached data */
-  loading: true,
+  mainRoute: 'SPLASH',
   /** App options */
   options: initAppOptions,
 };

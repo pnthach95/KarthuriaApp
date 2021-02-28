@@ -41,8 +41,8 @@ const tabs: TabsConfig<BubbleTabBarItemConfig, BottomTabList> = {
       inactiveColor: Colors.grey600,
     },
     background: {
-      activeColor: Colors.white,
-      inactiveColor: Colors.white,
+      activeColor: Colors.red100,
+      inactiveColor: 'transparent',
     },
   },
   MoreScreen: {
@@ -55,8 +55,8 @@ const tabs: TabsConfig<BubbleTabBarItemConfig, BottomTabList> = {
       inactiveColor: Colors.grey600,
     },
     background: {
-      activeColor: Colors.white,
-      inactiveColor: Colors.white,
+      activeColor: Colors.yellow100,
+      inactiveColor: 'transparent',
     },
   },
 };
