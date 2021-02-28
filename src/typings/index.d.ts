@@ -46,6 +46,7 @@ type ActionType =
 type BottomTabList = {
   MainScreen: undefined;
   CharactersScreen: undefined;
+  StageGirlsScreen: undefined;
   MoreScreen: undefined;
 };
 
@@ -82,6 +83,8 @@ type CharacterDetailProps = StackScreenProps<
 //#endregion
 
 //#region API: Karhuria
+
+type TRole = 'front' | 'middle' | 'back';
 
 type TLanguage = 'ja' | 'en' | 'ko' | 'zh_hant';
 
@@ -171,7 +174,7 @@ type TDressBasicInfo = {
     attribute: number;
     attackType: number;
     roleIndex: {
-      role: string;
+      role: TRole;
       index: number;
     };
     skills: number[];

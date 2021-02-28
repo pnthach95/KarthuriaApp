@@ -7,6 +7,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 // import MainScreen from '~/screens/main';
 import CharatersScreen from '~/screens/characters';
+import StageGirlsScreen from '~/screens/stagegirls';
 import MoreScreen from '~/screens/more';
 
 import type {
@@ -29,6 +30,9 @@ const homeIcon = ({ size, color }: IconProps) => (
 );
 const charatersIcon = ({ size, color }: IconProps) => (
   <Icon name='person-sharp' size={size} color={color} />
+);
+const stageGirlsIcon = ({ size, color }: IconProps) => (
+  <Icon name='tablet-portrait' size={size} color={color} />
 );
 const moreIcon = ({ size, color }: IconProps) => (
   <Icon name='ellipsis-horizontal' size={size} color={color} />
@@ -60,6 +64,20 @@ const tabs: TabsConfig<BubbleTabBarItemConfig, BottomTabList> = {
     },
     background: {
       activeColor: Colors.blue100,
+      inactiveColor: 'transparent',
+    },
+  },
+  StageGirlsScreen: {
+    labelStyle: {
+      color: Colors.purpleA200,
+    },
+    icon: {
+      component: stageGirlsIcon,
+      activeColor: Colors.purpleA200,
+      inactiveColor: Colors.grey600,
+    },
+    background: {
+      activeColor: Colors.purple50,
       inactiveColor: 'transparent',
     },
   },
@@ -99,6 +117,11 @@ const LLSIFTab = (): JSX.Element => {
         name='CharactersScreen'
         component={CharatersScreen}
         options={{ tabBarLabel: 'Charaters' }}
+      />
+      <Tab.Screen
+        name='StageGirlsScreen'
+        component={StageGirlsScreen}
+        options={{ tabBarLabel: 'Stage Girls' }}
       />
       <Tab.Screen
         name='MoreScreen'

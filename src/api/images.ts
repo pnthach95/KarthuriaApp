@@ -11,3 +11,6 @@ export const charaPortrait = (id: number): string =>
 
 export const charaBase = (id: number): string =>
   assets + `ui/images/archive/archive_chara/select/base_${id}.png`;
+
+export const stageGirlImg = (id: string): string =>
+  assets + `item_root/large/1_${id}.png`;
