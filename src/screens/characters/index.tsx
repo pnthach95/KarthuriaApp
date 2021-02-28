@@ -5,6 +5,7 @@ import FastImage from 'react-native-fast-image';
 import { responsiveScreenWidth } from 'react-native-responsive-dimensions';
 import API, { links } from '~/api';
 import { charaterImg, schoolIcon } from '~/api/images';
+import Kirin from '~/components/kirin';
 import AppStyles from '~/theme/styles';
 
 import type {
@@ -29,6 +30,7 @@ const styles = StyleSheet.create({
 });
 
 const Charaters = ({ navigation }: CharactersScreenProps): JSX.Element => {
+  const [loading, setLoading] = useState(true);
   const [charaList, setCharaList] = useState<TCharaBasicInfo[]>([]);
 
   useEffect(() => {
@@ -42,6 +44,7 @@ const Charaters = ({ navigation }: CharactersScreenProps): JSX.Element => {
           }
         });
         setCharaList(tmp);
+        setLoading(false);
       }
     };
     void loadData();
@@ -78,6 +81,10 @@ const Charaters = ({ navigation }: CharactersScreenProps): JSX.Element => {
     }
     return null;
   };
+
+  if (loading) {
+    return <Kirin />;
+  }
 
   return (
     <FlatList
