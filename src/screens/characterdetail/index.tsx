@@ -28,6 +28,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
+  separator: {
+    height: 10,
+  },
 });
 
 const CharacterDetail = ({ route }: CharacterDetailProps): JSX.Element => {
@@ -74,8 +77,10 @@ const CharacterDetail = ({ route }: CharacterDetailProps): JSX.Element => {
           <View style={styles.padding}>
             <Caption>Birthday (month/day)</Caption>
             <Text>{birthday}</Text>
+            <View style={styles.separator} />
             <Caption>Voice Actor</Caption>
             <Text>{character.info.cv.en}</Text>
+            <View style={styles.separator} />
             <View style={styles.schoolRow}>
               <View>
                 <Caption>School</Caption>
@@ -88,14 +93,19 @@ const CharacterDetail = ({ route }: CharacterDetailProps): JSX.Element => {
             </View>
             <Caption>Department</Caption>
             <Text>{character.info.department_2.en}</Text>
+            <View style={styles.separator} />
             <Caption>Liked Food</Caption>
             <Text>{character.info.like_foods.en}</Text>
+            <View style={styles.separator} />
             <Caption>Disliked Food</Caption>
             <Text>{character.info.dislike_foods.en}</Text>
+            <View style={styles.separator} />
             <Caption>Likes</Caption>
             <Text>{character.info.likes.en}</Text>
+            <View style={styles.separator} />
             <Caption>Dislikes</Caption>
             <Text>{character.info.dislikes.en}</Text>
+            <View style={styles.separator} />
             <Caption>Introduction</Caption>
             <Text>{character.info.introduction.en}</Text>
           </View>
