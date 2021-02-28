@@ -12,6 +12,7 @@ import AppContext from '~/context';
 
 import Tabs from './tabs';
 import SplashScreen from '~/screens/splash';
+import CharacterDetail from '~/screens/characterdetail';
 
 import type { RootStackParamList } from '~/typings';
 
@@ -55,6 +56,11 @@ const Routes = (): JSX.Element => {
           ) : (
             <>
               <Stack.Screen name='Main' component={Tabs} options={noHeader} />
+              <Stack.Screen
+                name='CharacterDetail'
+                component={CharacterDetail}
+                options={noHeader}
+              />
             </>
           )}
         </Stack.Navigator>

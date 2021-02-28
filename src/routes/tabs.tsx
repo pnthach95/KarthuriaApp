@@ -5,7 +5,7 @@ import { useTheme, Colors } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import MainScreen from '~/screens/main';
+// import MainScreen from '~/screens/main';
 import CharatersScreen from '~/screens/characters';
 import MoreScreen from '~/screens/more';
 
@@ -90,11 +90,11 @@ const LLSIFTab = (): JSX.Element => {
         //@ts-ignore
         <AnimatedTabBar tabs={tabs} style={tabStyle} {...props} />
       )}>
-      <Tab.Screen
+      {/* <Tab.Screen
         name='MainScreen'
         component={MainScreen}
         options={{ tabBarLabel: 'Home' }}
-      />
+      /> */}
       <Tab.Screen
         name='CharactersScreen'
         component={CharatersScreen}

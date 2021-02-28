@@ -70,8 +70,14 @@ type MoreScreenProps = {
 
 type RootStackParamList = {
   Main: undefined;
+  CharacterDetail: { id: number };
   Splash: undefined;
 };
+
+type CharacterDetailProps = StackScreenProps<
+  RootStackParamList,
+  'CharacterDetail'
+>;
 
 //#endregion
 
@@ -87,6 +93,59 @@ type TCharaBasicInfo = {
     birth_day: number;
     birth_month: number;
     school_id: number;
+    name_ruby: {
+      [L in TLanguage]: string;
+    };
+  };
+};
+
+type TChara = {
+  basicInfo: {
+    charaID: number;
+    birth_day: number;
+    birth_month: number;
+    school_id: number;
+  };
+  info: {
+    cv: {
+      [L in TLanguage]: string;
+    };
+    cv_first: {
+      [L in TLanguage]: string;
+    };
+    cv_last: {
+      [L in TLanguage]: string;
+    };
+    department_1: {
+      [L in TLanguage]: string;
+    };
+    department_2: {
+      [L in TLanguage]: string;
+    };
+    dislike_foods: {
+      [L in TLanguage]: string;
+    };
+    dislikes: {
+      [L in TLanguage]: string;
+    };
+    first_name: {
+      [L in TLanguage]: string;
+    };
+    introduction: {
+      [L in TLanguage]: string;
+    };
+    last_name: {
+      [L in TLanguage]: string;
+    };
+    like_foods: {
+      [L in TLanguage]: string;
+    };
+    likes: {
+      [L in TLanguage]: string;
+    };
+    name: {
+      [L in TLanguage]: string;
+    };
     name_ruby: {
       [L in TLanguage]: string;
     };

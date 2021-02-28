@@ -7,12 +7,19 @@ import API, { links } from '~/api';
 import { charaterImg, schoolIcon } from '~/api/images';
 import AppStyles from '~/theme/styles';
 
-import type { TCharaBasicInfo, TCharaList } from '~/typings';
+import type {
+  TCharaBasicInfo,
+  TCharaList,
+  CharactersScreenProps,
+} from '~/typings';
 
 const styles = StyleSheet.create({
   img: {
     height: 100,
     width: responsiveScreenWidth(50),
+  },
+  item: {
+    paddingBottom: 10,
   },
   schoolIcon: {
     height: 20,
@@ -21,7 +28,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Charaters = (): JSX.Element => {
+const Charaters = ({ navigation }: CharactersScreenProps): JSX.Element => {
   const [charaters, setCharaters] = useState<TCharaBasicInfo[]>([]);
 
   useEffect(() => {
@@ -44,20 +51,26 @@ const Charaters = (): JSX.Element => {
     `chID_${charaID}`;
 
   const renderItem = ({ item }: { item: TCharaBasicInfo }) => {
-    if (item.basicInfo.name_ruby.ja) {
+    const { charaID, name_ruby, school_id } = item.basicInfo;
+    if (name_ruby.ja) {
+      const goToDetail = () =>
+        navigation.navigate('CharacterDetail', {
+          id: charaID,
+        });
+
       return (
-        <TouchableRipple>
-          <View style={AppStyles.center}>
+        <TouchableRipple onPress={goToDetail}>
+          <View style={[AppStyles.center, styles.item]}>
             <FastImage
-              source={{ uri: charaterImg(item.basicInfo.charaID) }}
+              source={{ uri: charaterImg(charaID) }}
               style={styles.img}
             />
             <View style={AppStyles.row}>
               <FastImage
-                source={{ uri: schoolIcon(item.basicInfo.school_id) }}
+                source={{ uri: schoolIcon(school_id) }}
                 style={styles.schoolIcon}
               />
-              <Text>{item.basicInfo.name_ruby.ja}</Text>
+              <Text>{name_ruby.ja}</Text>
             </View>
           </View>
         </TouchableRipple>
@@ -73,6 +86,7 @@ const Charaters = (): JSX.Element => {
       keyExtractor={keyExtractor}
       renderItem={renderItem}
       columnWrapperStyle={AppStyles.center}
+      showsVerticalScrollIndicator={false}
     />
   );
 };
