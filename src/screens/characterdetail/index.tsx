@@ -7,6 +7,7 @@ import API, { links } from '~/api';
 import { schoolIcon } from '~/api/images';
 import { charaBase, charaPortrait } from '~/api/images';
 import BaseScreen from '~/components/basescreen';
+import Separator from '~/components/separator';
 import AppStyles from '~/theme/styles';
 
 import type { CharacterDetailProps, TChara } from '~/typings';
@@ -27,9 +28,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
-  },
-  separator: {
-    height: 10,
   },
 });
 
@@ -77,10 +75,10 @@ const CharacterDetail = ({ route }: CharacterDetailProps): JSX.Element => {
           <View style={styles.padding}>
             <Caption>Birthday (month/day)</Caption>
             <Text>{birthday}</Text>
-            <View style={styles.separator} />
+            <Separator height={10} />
             <Caption>Voice Actor</Caption>
             <Text>{character.info.cv.en}</Text>
-            <View style={styles.separator} />
+            <Separator height={10} />
             <View style={styles.schoolRow}>
               <View>
                 <Caption>School</Caption>
@@ -91,22 +89,22 @@ const CharacterDetail = ({ route }: CharacterDetailProps): JSX.Element => {
                 style={styles.schoolIcon}
               />
             </View>
-            <View style={styles.separator} />
+            <Separator height={10} />
             <Caption>Department</Caption>
             <Text>{character.info.department_2.en}</Text>
-            <View style={styles.separator} />
+            <Separator height={10} />
             <Caption>Liked Food</Caption>
             <Text>{character.info.like_foods.en}</Text>
-            <View style={styles.separator} />
+            <Separator height={10} />
             <Caption>Disliked Food</Caption>
             <Text>{character.info.dislike_foods.en}</Text>
-            <View style={styles.separator} />
+            <Separator height={10} />
             <Caption>Likes</Caption>
             <Text>{character.info.likes.en}</Text>
-            <View style={styles.separator} />
+            <Separator height={10} />
             <Caption>Dislikes</Caption>
             <Text>{character.info.dislikes.en}</Text>
-            <View style={styles.separator} />
+            <Separator height={10} />
             <Caption>Introduction</Caption>
             <Text>{character.info.introduction.en}</Text>
           </View>
