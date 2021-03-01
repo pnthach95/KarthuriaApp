@@ -87,6 +87,11 @@ type CharacterDetailProps = StackScreenProps<
   'CharacterDetail'
 >;
 
+type StageGirlDetailProps = StackScreenProps<
+  RootStackParamList,
+  'StageGirlDetail'
+>;
+
 //#endregion
 
 //#region API: Karhuria
@@ -215,7 +220,7 @@ type TDress = {
   };
   base: TDressBaseCommon & {
     cost: number;
-    accessories: null;
+    accessories?: string[];
   };
   other: {
     storyID: number[];
@@ -285,7 +290,7 @@ type TAutoSkill = {
   info: {
     [L in TLanguage]: string;
   };
-  type: 'passive';
+  type: 'passive' | 'start';
 };
 
 type TEquipList = Record<string, TEquipBasicInfo>;
@@ -340,6 +345,29 @@ type TEnemyBasicInfo = {
     attribute: number;
     isDress: number;
   };
+};
+
+type TCurrentEvent = {
+  titan: {
+    id: number;
+    endAt: number;
+    enemy: Record<string, TTitanEnemy>;
+    reward: number[];
+  };
+  event: Record<string, TEvent & { referenceIndex: 'Beat' | 'Shop' }>;
+  rogue: Record<string, TEvent>;
+};
+
+type TEvent = {
+  id: number;
+  beginAt: number;
+  endAt: number;
+};
+
+type TTitanEnemy = {
+  id: number;
+  hpLeft: number;
+  hpLeftPercent: string;
 };
 
 //#endregion
