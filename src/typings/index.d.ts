@@ -62,6 +62,12 @@ type CharactersScreenProps = {
     StackNavigationProp<RootStackParamList>
   >;
 };
+type StageGirlsScreenProps = {
+  navigation: CompositeNavigationProp<
+    BottomTabNavigationProp<BottomTabList, 'StageGirlsScreen'>,
+    StackNavigationProp<RootStackParamList>
+  >;
+};
 type MoreScreenProps = {
   navigation: CompositeNavigationProp<
     BottomTabNavigationProp<BottomTabList, 'MoreScreen'>,
@@ -70,9 +76,10 @@ type MoreScreenProps = {
 };
 
 type RootStackParamList = {
+  Splash: undefined;
   Main: undefined;
   CharacterDetail: { id: number };
-  Splash: undefined;
+  StageGirlDetail: { id: string };
 };
 
 type CharacterDetailProps = StackScreenProps<
@@ -90,12 +97,15 @@ type TLanguage = 'ja' | 'en' | 'ko' | 'zh_hant';
 
 type TCharaList = Record<string, TCharaBasicInfo>;
 
+type TCharaBasicInfoCommon = {
+  charaID: number;
+  birth_day: number;
+  birth_month: number;
+  school_id: number;
+};
+
 type TCharaBasicInfo = {
-  basicInfo: {
-    charaID: number;
-    birth_day: number;
-    birth_month: number;
-    school_id: number;
+  basicInfo: TCharaBasicInfoCommon & {
     name_ruby: {
       [L in TLanguage]: string;
     };
@@ -103,12 +113,7 @@ type TCharaBasicInfo = {
 };
 
 type TChara = {
-  basicInfo: {
-    charaID: number;
-    birth_day: number;
-    birth_month: number;
-    school_id: number;
-  };
+  basicInfo: TCharaBasicInfoCommon;
   info: {
     cv: {
       [L in TLanguage]: string;
@@ -157,36 +162,130 @@ type TChara = {
 
 type TDressList = Record<string, TDressBasicInfo>;
 
+type TDressBasicInfoCommon = {
+  cardID: string;
+  rarity: number;
+  character: number;
+  name: {
+    [L in TLanguage]: string;
+  };
+  released: {
+    ww: number;
+    ja: number;
+  };
+};
+
 type TDressBasicInfo = {
-  basicInfo: {
-    cardID: string;
-    rarity: number;
-    character: number;
+  basicInfo: TDressBasicInfoCommon;
+  base: TDressBaseCommon & {
+    skills: number[];
+  };
+  stat: TDressStat;
+};
+
+type TDressBaseCommon = {
+  attribute: number;
+  attackType: number;
+  roleIndex: {
+    role: TRole;
+    index: number;
+  };
+};
+
+type TDressStat = {
+  total: number;
+  agi: number;
+  atk: number;
+  hp: number;
+  mdef: number;
+  pdef: number;
+};
+
+type TDress = {
+  basicInfo: TDressBasicInfoCommon & {
+    profile: {
+      [L in TLanguage]: string;
+    };
+    message: {
+      [L in TLanguage]: string;
+    };
+    description: {
+      [L in TLanguage]: string;
+    };
+  };
+  base: TDressBaseCommon & {
+    cost: number;
+    accessories: null;
+  };
+  other: {
+    storyID: number[];
+    dex: number;
+    cri: number;
+    eva: number;
+  };
+  stat: TDressStat;
+  act: {
+    act1: TAct;
+    act2: TAct;
+    act3: TAct;
+  };
+  skills: {
+    autoSkill1: TAutoSkill;
+    autoSkill2: TAutoSkill;
+    autoSkill3: TAutoSkill;
+  };
+  groupSkills: {
+    unitSkill: {
+      info: string;
+    };
+    climaxACT: {
+      iconID: number;
+      cost: number;
+      name: {
+        [L in TLanguage]: string;
+      };
+      description: {
+        [L in TLanguage]: string;
+      };
+      attribute: number;
+      skillInfo: string;
+      skillCycle: string;
+    };
+    finishACT: {
+      iconID: number;
+      name: {
+        [L in TLanguage]: string;
+      };
+      info: {
+        [L in TLanguage]: string;
+      };
+    };
+  };
+};
+
+type TAct = {
+  normalSkill: {
+    iconID: number;
+    cost: number;
     name: {
       [L in TLanguage]: string;
     };
-    released: {
-      ww: number;
-      ja: number;
+    description: {
+      [L in TLanguage]: string;
     };
-  };
-  base: {
     attribute: number;
-    attackType: number;
-    roleIndex: {
-      role: TRole;
-      index: number;
-    };
-    skills: number[];
+    skillInfo: string;
+    skillCycle: string;
   };
-  stat: {
-    total: number;
-    agi: number;
-    atk: number;
-    hp: number;
-    mdef: number;
-    pdef: number;
+  changeSkill: number;
+};
+
+type TAutoSkill = {
+  iconID: number;
+  info: {
+    [L in TLanguage]: string;
   };
+  type: 'passive';
 };
 
 type TEquipList = Record<string, TEquipBasicInfo>;
