@@ -2,10 +2,10 @@ import React from 'react';
 import { View } from 'react-native';
 
 type Props = {
-  height: number;
+  height?: number;
 };
 
-const Separator = ({ height }: Props): JSX.Element => {
+const Separator = ({ height = 10 }: Props): JSX.Element => {
   return <View style={{ height }} />;
 };
 
