@@ -1,10 +1,9 @@
 import React from 'react';
-import { View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Text, Colors, IconButton, useTheme } from 'react-native-paper';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import Kirin from '~/components/kirin';
-import ScrollViewWithBackButton from '~/components/scrollviewwithbackbutton';
+import { IconButton, useTheme } from 'react-native-paper';
+import Kirin from '../kirin';
+import ScrollViewWithBackButton from '../scrollviewwithbackbutton';
+import ErrorView from '../errorview';
 import AppStyles from '~/theme/styles';
 
 type Props = {
@@ -29,14 +28,7 @@ const BaseScreen = ({ children, loading, hasData }: Props): JSX.Element => {
         onPress={goBack}
         style={[AppStyles.absolute, { backgroundColor: colors.background }]}
       />
-      {loading ? (
-        <Kirin />
-      ) : (
-        <View style={[AppStyles.flex1, AppStyles.center]}>
-          <Icon name='alert-circle-outline' size={70} color={Colors.red600} />
-          <Text>{`Can't load data`}</Text>
-        </View>
-      )}
+      {loading ? <Kirin /> : <ErrorView />}
     </>
   );
 };
