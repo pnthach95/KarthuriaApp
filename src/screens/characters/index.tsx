@@ -37,13 +37,7 @@ const Charaters = ({ navigation }: CharactersScreenProps): JSX.Element => {
     const loadData = async () => {
       const data = await API.get<TCharaList>(links.LIST.CHARA);
       if (data.data) {
-        const tmp: TCharaBasicInfo[] = [];
-        Object.keys(data.data).forEach((key) => {
-          if (data.data) {
-            tmp.push(data.data[key]);
-          }
-        });
-        setCharaList(tmp);
+        setCharaList(Object.values(data.data));
         setLoading(false);
       }
     };
