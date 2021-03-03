@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, ScrollView, Platform, StyleSheet } from 'react-native';
 import {
   Text,
+  Title,
+  Divider,
   Colors,
   TouchableRipple,
   Caption,
@@ -19,9 +21,10 @@ import Countdown from '~/components/countdown';
 import ErrorView from '~/components/errorview';
 import Kirin from '~/components/kirin';
 import API, { links } from '~/api';
-import { defaultEventImg, eventImg } from '~/api/images';
+import { defaultEventImg, enemyImg, eventImg, rogueImg } from '~/api/images';
 import GithubService from '~/api/github';
 import AppStyles from '~/theme/styles';
+import icon from '~/assets/common/icon.png';
 
 import type {
   MainScreenProps,
@@ -121,6 +124,10 @@ const MainScreen: React.FC<MainScreenProps> = () => {
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.content}>
+          <View style={[AppStyles.row, AppStyles.center]}>
+            <FastImage source={icon} style={styles.icon} />
+            <Title>Project Karthuria</Title>
+          </View>
           <Subheading style={AppStyles.centerText}>Events</Subheading>
           {section.event.data.map((item) => {
             const begin = dayjs(item.beginAt * 1000);
@@ -144,36 +151,52 @@ const MainScreen: React.FC<MainScreenProps> = () => {
               </View>
             );
           })}
+          <Divider />
           <Subheading style={AppStyles.centerText}>Challenge Revue</Subheading>
-          {section.rogue.data.map((item) => {
-            const begin = dayjs(item.beginAt * 1000);
-            const end = dayjs(item.endAt * 1000);
-            return (
-              <View key={item.id}>
-                <Caption>Begin</Caption>
-                <Text>{begin.format('llll')}</Text>
-                <Caption>End</Caption>
-                <Text>{end.format('llll')}</Text>
-              </View>
-            );
-          })}
+          <View style={AppStyles.row}>
+            {section.rogue.data.map((item) => {
+              const begin = dayjs(item.beginAt * 1000);
+              const end = dayjs(item.endAt * 1000);
+              return (
+                <View key={item.id} style={[styles.rowItem, AppStyles.flex1]}>
+                  <FastImage
+                    source={{ uri: rogueImg(item.id) }}
+                    style={styles.rogueImg}
+                  />
+                  <Caption>Begin</Caption>
+                  <Text>{begin.format('llll')}</Text>
+                  <Caption>End</Caption>
+                  <Text>{end.format('llll')}</Text>
+                </View>
+              );
+            })}
+          </View>
+          <Divider />
           <Subheading style={AppStyles.centerText}>
             Score Attack Revue
           </Subheading>
+          <View style={AppStyles.row}>
+            {Object.values(section.titan.enemy).map((item) => {
+              return (
+                <View key={item.id} style={[styles.item, AppStyles.flex1]}>
+                  <FastImage
+                    source={{ uri: enemyImg(item.id) }}
+                    style={styles.enemyImg}
+                  />
+                  <Caption>HP Left</Caption>
+                  <Text style={AppStyles.centerText}>
+                    {item.hpLeft} ({item.hpLeftPercent}%)
+                  </Text>
+                  <ProgressBar
+                    progress={parseInt(item.hpLeftPercent) / 100}
+                    style={styles.hpBar}
+                  />
+                </View>
+              );
+            })}
+          </View>
           <Caption>End</Caption>
           <Text>{dayjs(section.titan.endAt * 1000).format('llll')}</Text>
-          {Object.values(section.titan.enemy).map((item) => {
-            return (
-              <View key={item.id}>
-                <Caption>HP Left</Caption>
-                <Text>{item.hpLeft}</Text>
-                <ProgressBar
-                  progress={parseInt(item.hpLeftPercent) / 100}
-                  style={styles.hpBar}
-                />
-              </View>
-            );
-          })}
           {section.titan.reward.map((item) => {
             return (
               <View key={item}>
@@ -193,16 +216,35 @@ const styles = StyleSheet.create({
   content: {
     padding: 10,
   },
+  enemyImg: {
+    alignSelf: 'center',
+    height: 100,
+    width: 100,
+  },
   eventImg: {
     alignSelf: 'center',
     height: 114 * 0.7,
     width: 448 * 0.7,
   },
   hpBar: {
+    height: 15,
     marginHorizontal: 30,
+  },
+  icon: {
+    height: 40,
+    marginRight: 10,
+    width: 40,
   },
   item: {
     paddingBottom: 10,
+  },
+  rogueImg: {
+    alignSelf: 'center',
+    height: 160 * 0.6,
+    width: 144 * 0.6,
+  },
+  rowItem: {
+    padding: 10,
   },
   update: {
     alignItems: 'center',

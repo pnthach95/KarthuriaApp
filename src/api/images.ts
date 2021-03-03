@@ -22,3 +22,12 @@ export const eventImg = (id: number): string =>
 
 export const defaultEventImg =
   assetsEN + 'res/ui/images/common/base_heading_medium.png';
+
+export const enemyImg = (id: number): string =>
+  assets + `icon/enemy/${id / 100}.png`;
+
+export const itemImg = (id: string): string =>
+  assets + `item_root/medium/38_${id}.png`;
+
+export const rogueImg = (id: number): string =>
+  assets + `item_root/large/1_${id}.png`;
