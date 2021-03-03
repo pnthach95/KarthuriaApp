@@ -1,6 +1,6 @@
 const assets = 'https://api.karen.makoo.eu/api/assets/jp/res/';
 
-const assetsEN = 'https://api.karen.makoo.eu/api/assets/ww/res_en/res/';
+const assetsEN = 'https://api.karen.makoo.eu/api/assets/ww/';
 
 export const charaterImg = (id: number): string =>
   assets + `gaf/quest/skip_effect_character/character_${id}.png`;
@@ -18,4 +18,7 @@ export const stageGirlImg = (id: string): string =>
   assets + `item_root/large/1_${id}.png`;
 
 export const eventImg = (id: number): string =>
-  assetsEN + `event_permanent/banner/event_banner_${id}.png`;
+  assetsEN + `res_en/res/event_permanent/banner/event_banner_${id}.png`;
+
+export const defaultEventImg =
+  assetsEN + 'res/ui/images/common/base_heading_medium.png';

@@ -18,7 +18,7 @@ import ConnectStatus from '~/components/connectstatus';
 import ErrorView from '~/components/errorview';
 import Kirin from '~/components/kirin';
 import API, { links } from '~/api';
-import { eventImg } from '~/api/images';
+import { defaultEventImg, eventImg } from '~/api/images';
 import GithubService from '~/api/github';
 import AppStyles from '~/theme/styles';
 
@@ -38,16 +38,14 @@ type GithubVersion = {
 
 const EventImage = ({ img }: { img: string }): JSX.Element => {
   const [uri, setURI] = useState(img);
+  const onError = () => setURI(defaultEventImg);
+
   return (
     <FastImage
       source={{ uri }}
       style={styles.eventImg}
       resizeMode='contain'
-      onError={() =>
-        setURI(
-          'https://api.karen.makoo.eu/api/assets/ww/res/ui/images/common/base_heading_medium.png',
-        )
-      }
+      onError={onError}
     />
   );
 };
