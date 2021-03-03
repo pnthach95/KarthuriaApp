@@ -138,9 +138,9 @@ const MainScreen: React.FC<MainScreenProps> = () => {
                   style={AppStyles.centerText}
                 />
                 <Caption>Begin</Caption>
-                <Text>{begin.format('LLLL')}</Text>
+                <Text>{begin.format('llll')}</Text>
                 <Caption>End</Caption>
-                <Text>{end.format('LLLL')}</Text>
+                <Text>{end.format('llll')}</Text>
                 <Caption>Type</Caption>
                 <Text>{item.referenceIndex}</Text>
               </View>
@@ -153,9 +153,9 @@ const MainScreen: React.FC<MainScreenProps> = () => {
             return (
               <View key={item.id}>
                 <Caption>Begin</Caption>
-                <Text>{begin.format('LLLL')}</Text>
+                <Text>{begin.format('llll')}</Text>
                 <Caption>End</Caption>
-                <Text>{end.format('LLLL')}</Text>
+                <Text>{end.format('llll')}</Text>
               </View>
             );
           })}
@@ -163,7 +163,7 @@ const MainScreen: React.FC<MainScreenProps> = () => {
             Score Attack Revue
           </Subheading>
           <Caption>End</Caption>
-          <Text>{dayjs(section.titan.endAt * 1000).format('LLLL')}</Text>
+          <Text>{dayjs(section.titan.endAt * 1000).format('llll')}</Text>
           {Object.values(section.titan.enemy).map((item) => {
             return (
               <View key={item.id}>
