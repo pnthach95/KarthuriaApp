@@ -9,11 +9,7 @@ type Props = {
   style?: TextStyle;
 };
 
-const TimerCountdown: React.FC<Props> = ({
-  seconds,
-  interval = 1000,
-  style,
-}) => {
+const Countdown: React.FC<Props> = ({ seconds, interval = 1000, style }) => {
   const [remaining, setRemaining] = useState(seconds);
 
   const getFormattedTime = (t: number) => {
@@ -28,6 +24,9 @@ const TimerCountdown: React.FC<Props> = ({
     const d = days == 0 ? '' : String(days) + (days == 1 ? ' day ' : ' days ');
     h = h === '00' ? '' : String(h) + (h == 1 ? ' hour ' : ' hours ');
     m = m === '00' ? '' : String(m) + (m == 1 ? ' minute ' : ' minutes ');
+    if (seconds < 0) {
+      return 'Time up';
+    }
     return `${d}${h}${m}${s} seconds`;
   };
 
@@ -43,10 +42,10 @@ const TimerCountdown: React.FC<Props> = ({
   return <Text style={style}>{getFormattedTime(remaining)}</Text>;
 };
 
-TimerCountdown.propTypes = {
+Countdown.propTypes = {
   interval: PropTypes.any,
   seconds: PropTypes.any,
   style: PropTypes.any,
 };
 
-export default TimerCountdown;
+export default Countdown;
