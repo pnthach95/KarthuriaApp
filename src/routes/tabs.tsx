@@ -5,7 +5,7 @@ import { useTheme, Colors } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-// import MainScreen from '~/screens/main';
+import HomeScreen from '~/screens/home';
 import CharatersScreen from '~/screens/characters';
 import StageGirlsScreen from '~/screens/stagegirls';
 import MoreScreen from '~/screens/more';
@@ -97,7 +97,7 @@ const tabs: TabsConfig<BubbleTabBarItemConfig, BottomTabList> = {
   },
 };
 
-const LLSIFTab = (): JSX.Element => {
+const Tabs = (): JSX.Element => {
   const { colors } = useTheme();
   const tabStyle = { backgroundColor: colors.card };
 
@@ -108,11 +108,11 @@ const LLSIFTab = (): JSX.Element => {
         //@ts-ignore
         <AnimatedTabBar tabs={tabs} style={tabStyle} {...props} />
       )}>
-      {/* <Tab.Screen
+      <Tab.Screen
         name='MainScreen'
-        component={MainScreen}
+        component={HomeScreen}
         options={{ tabBarLabel: 'Home' }}
-      /> */}
+      />
       <Tab.Screen
         name='CharactersScreen'
         component={CharatersScreen}
@@ -132,4 +132,4 @@ const LLSIFTab = (): JSX.Element => {
   );
 };
 
-export default LLSIFTab;
+export default Tabs;
