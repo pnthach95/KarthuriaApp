@@ -15,6 +15,7 @@ import FastImage from 'react-native-fast-image';
 import compareVersions from 'compare-versions';
 import dayjs from 'dayjs';
 import ConnectStatus from '~/components/connectstatus';
+import Countdown from '~/components/countdown';
 import ErrorView from '~/components/errorview';
 import Kirin from '~/components/kirin';
 import API, { links } from '~/api';
@@ -28,7 +29,6 @@ import type {
   TEvent,
   TExtendedEvent,
 } from '~/typings';
-import Countdown from '~/components/countdown';
 
 type GithubVersion = {
   tag: string;
