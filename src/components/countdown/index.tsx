@@ -4,13 +4,17 @@ import { TextStyle } from 'react-native';
 import { Text } from 'react-native-paper';
 
 type Props = {
-  seconds: number;
+  miliseconds: number;
   interval?: number;
   style?: TextStyle;
 };
 
-const Countdown: React.FC<Props> = ({ seconds, interval = 1000, style }) => {
-  const [remaining, setRemaining] = useState(seconds);
+const Countdown: React.FC<Props> = ({
+  miliseconds,
+  interval = 1000,
+  style,
+}) => {
+  const [remaining, setRemaining] = useState(miliseconds);
 
   const getFormattedTime = (t: number) => {
     const remainingSec = Math.round(t / 1000);
@@ -44,7 +48,7 @@ const Countdown: React.FC<Props> = ({ seconds, interval = 1000, style }) => {
 
 Countdown.propTypes = {
   interval: PropTypes.any,
-  seconds: PropTypes.any,
+  miliseconds: PropTypes.any,
   style: PropTypes.any,
 };
 
