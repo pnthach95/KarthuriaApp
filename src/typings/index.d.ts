@@ -82,6 +82,7 @@ type RootStackParamList = {
   CharacterDetail: { id: number };
   StageGirlDetail: { id: string | number };
   MemoirDetail: { id: string };
+  Accessories: undefined;
 };
 type CharactersScreenProps = StackScreenProps<RootStackParamList, 'Characters'>;
 type CharacterDetailProps = StackScreenProps<
@@ -93,6 +94,7 @@ type StageGirlDetailProps = StackScreenProps<
   'StageGirlDetail'
 >;
 type MemoirDetailProps = StackScreenProps<RootStackParamList, 'MemoirDetail'>;
+type AccessoriesProps = StackScreenProps<RootStackParamList, 'Accessories'>;
 
 //#endregion
 
@@ -329,7 +331,7 @@ type TEquip = {
   basicInfo: {
     cardID: string;
     rarity: number;
-    charas: number[];
+    charas: number[] | string;
     name: {
       [L in TLanguage]: string;
     };
