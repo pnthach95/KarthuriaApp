@@ -39,3 +39,6 @@ export const skillIcon = (id: number): string =>
 
 export const memoirImg = (id: string): string =>
   assets + `jp/res/item_root/large/2_${id}.png`;
+
+export const memoirBigImg = (id: string): string =>
+  assets + `dlc/res/equip/cg/${id}/image.png`;
