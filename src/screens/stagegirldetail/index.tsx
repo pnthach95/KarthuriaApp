@@ -97,10 +97,15 @@ const StageGirlDetail = ({ route }: StageGirlDetailProps): JSX.Element => {
 
   useEffect(() => {
     const loadData = async () => {
-      const { id } = route.params;
-      const data = await API.get<TDress>(links.DRESS + `${id}.json`);
-      if (data.data) {
-        setDress(data.data);
+      try {
+        const { id } = route.params;
+        const data = await API.get<TDress>(links.DRESS + `${id}.json`);
+        if (data.ok && data.data) {
+          setDress(data.data);
+        }
+      } catch (error) {
+        //
+      } finally {
         setLoading(false);
       }
     };
