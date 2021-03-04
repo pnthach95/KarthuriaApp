@@ -63,7 +63,7 @@ const EventImage = ({ img }: { img: string }): JSX.Element => {
 };
 
 /** Main Screen */
-const MainScreen: React.FC<MainScreenProps> = () => {
+const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
   const insets = useSafeAreaInsets();
   const [version, setVersion] = useState<GithubVersion | null>(null);
   const [loading, setLoading] = useState(true);
@@ -190,10 +190,15 @@ const MainScreen: React.FC<MainScreenProps> = () => {
                 const end = dayjs(item.endAt * 1000);
                 return (
                   <View key={item.id} style={styles.rogueItem}>
-                    <FastImage
-                      source={{ uri: rogueImg(item.id) }}
-                      style={styles.rogueImg}
-                    />
+                    <TouchableRipple
+                      onPress={() =>
+                        navigation.navigate('StageGirlDetail', { id: item.id })
+                      }>
+                      <FastImage
+                        source={{ uri: rogueImg(item.id) }}
+                        style={styles.rogueImg}
+                      />
+                    </TouchableRipple>
                     <Caption>Begin</Caption>
                     <Text>{begin.format('llll')}</Text>
                     <Caption>End</Caption>

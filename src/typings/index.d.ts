@@ -79,7 +79,7 @@ type RootStackParamList = {
   Splash: undefined;
   Main: undefined;
   CharacterDetail: { id: number };
-  StageGirlDetail: { id: string };
+  StageGirlDetail: { id: string | number };
 };
 
 type CharacterDetailProps = StackScreenProps<
