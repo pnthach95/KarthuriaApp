@@ -129,7 +129,6 @@ const StageGirls = ({ navigation }: StageGirlsScreenProps): JSX.Element => {
       renderItem={renderItem}
       numColumns={2}
       initialNumToRender={12}
-      columnWrapperStyle={AppStyles.columnWrapper}
       ItemSeparatorComponent={itemSeparator}
     />
   );
