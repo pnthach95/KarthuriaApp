@@ -234,7 +234,9 @@ const StageGirlDetail = ({ route }: StageGirlDetailProps): JSX.Element => {
                     <View style={AppStyles.flex1}>
                       <View style={AppStyles.row}>
                         <View style={AppStyles.flex1}>
-                          <Text>{act.normalSkill.name.en}</Text>
+                          <Text>
+                            {act.normalSkill.name.en || act.normalSkill.name.ja}
+                          </Text>
                         </View>
                         <Text>AP: {act.normalSkill.cost}</Text>
                       </View>
@@ -257,7 +259,7 @@ const StageGirlDetail = ({ route }: StageGirlDetailProps): JSX.Element => {
                   <View style={AppStyles.row}>
                     <FastImage source={icon} style={styles.skillIcon} />
                     <View style={AppStyles.flex1}>
-                      <Text>{autoSkill.info.en}</Text>
+                      <Text>{autoSkill.info.en || autoSkill.info.ja}</Text>
                     </View>
                   </View>
                 </Surface>
@@ -277,12 +279,16 @@ const StageGirlDetail = ({ route }: StageGirlDetailProps): JSX.Element => {
                 <View style={AppStyles.flex1}>
                   <View style={AppStyles.row}>
                     <View style={AppStyles.flex1}>
-                      <Text>{dress.groupSkills.climaxACT.name.en}</Text>
+                      <Text>
+                        {dress.groupSkills.climaxACT.name.en ||
+                          dress.groupSkills.climaxACT.name.ja}
+                      </Text>
                     </View>
                     <Text>AP: {dress.groupSkills.climaxACT.cost}</Text>
                   </View>
                   <Caption>
-                    {dress.groupSkills.climaxACT.description.en}
+                    {dress.groupSkills.climaxACT.description.en ||
+                      dress.groupSkills.climaxACT.description.ja}
                   </Caption>
                   <TiVa info={dress.groupSkills.climaxACT.skillInfo} />
                   <Animation info={dress.groupSkills.climaxACT.skillCycle} />
@@ -301,7 +307,10 @@ const StageGirlDetail = ({ route }: StageGirlDetailProps): JSX.Element => {
                   style={styles.skillIcon}
                 />
                 <View style={AppStyles.flex1}>
-                  <Text>{dress.groupSkills.unitSkill.info.en}</Text>
+                  <Text>
+                    {dress.groupSkills.unitSkill.info.en ||
+                      dress.groupSkills.unitSkill.info.ja}
+                  </Text>
                 </View>
               </View>
             </Surface>
@@ -317,8 +326,14 @@ const StageGirlDetail = ({ route }: StageGirlDetailProps): JSX.Element => {
                   style={styles.skillIcon}
                 />
                 <View style={AppStyles.flex1}>
-                  <Text>{dress.groupSkills.finishACT.name.en}</Text>
-                  <Caption>{dress.groupSkills.finishACT.info.en}</Caption>
+                  <Text>
+                    {dress.groupSkills.finishACT.name.en ||
+                      dress.groupSkills.finishACT.name.ja}
+                  </Text>
+                  <Caption>
+                    {dress.groupSkills.finishACT.info.en ||
+                      dress.groupSkills.finishACT.info.ja}
+                  </Caption>
                 </View>
               </View>
             </Surface>
