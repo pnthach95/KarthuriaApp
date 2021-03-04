@@ -7,14 +7,17 @@ import {
   TouchableRipple,
   Colors,
   useTheme,
+  Caption,
 } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FastImage from 'react-native-fast-image';
+import { getVersion } from 'react-native-device-info';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AppContext from '~/context';
 import { website } from '~/api';
 import { links } from '~/api/github';
-import icon from '~/assets/common/icon.png';
+import AppStyles from '~/theme/styles';
+import webicon from '~/assets/common/icon.png';
 
 import type { AppOptions, MoreScreenProps } from '~/typings';
 
@@ -76,7 +79,7 @@ const MoreScreen = ({ navigation }: MoreScreenProps): JSX.Element => {
       </View>
       <TouchableRipple onPress={openWebsite}>
         <View style={styles.normalRow}>
-          <FastImage source={icon} style={styles.icon} />
+          <FastImage source={webicon} style={styles.icon} />
           <View style={styles.space} />
           <Text>Karthuria website</Text>
         </View>
@@ -98,6 +101,7 @@ const MoreScreen = ({ navigation }: MoreScreenProps): JSX.Element => {
           All assets files are property of their original owners.
         </Paragraph>
       </View>
+      <Caption style={AppStyles.centerText}>Version {getVersion()}</Caption>
     </ScrollView>
   );
 };
