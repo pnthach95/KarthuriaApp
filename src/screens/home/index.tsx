@@ -3,7 +3,6 @@ import { View, ScrollView, Platform, StyleSheet } from 'react-native';
 import {
   Text,
   Title,
-  Divider,
   Colors,
   TouchableRipple,
   Caption,
@@ -231,8 +230,6 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
               })}
             </View>
           </View>
-          <Divider />
-
           <View style={styles.block}>
             <Subheading style={AppStyles.centerText}>
               Score Attack Revue
