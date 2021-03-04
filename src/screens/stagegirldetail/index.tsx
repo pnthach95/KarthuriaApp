@@ -18,7 +18,7 @@ import BaseScreen from '~/components/basescreen';
 import Separator from '~/components/separator';
 import AppStyles from '~/theme/styles';
 import { attackTypeText, attribute, position, rarity } from '~/assets';
-import frame from '~/assets/common/frame_thumbnail_dress_rainbow.png';
+import frame from '~/assets/common/frame_thumbnail_dress.png';
 
 import type { OnLoadEvent } from 'react-native-fast-image';
 import type { TDress, StageGirlDetailProps } from '~/typings';
