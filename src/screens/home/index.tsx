@@ -21,13 +21,22 @@ import Countdown from '~/components/countdown';
 import ErrorView from '~/components/errorview';
 import Kirin from '~/components/kirin';
 import API, { links } from '~/api';
-import { defaultEventImg, enemyImg, eventImg, rogueImg } from '~/api/images';
+import {
+  defaultEventImg,
+  enemyImg,
+  eventImg,
+  itemImg,
+  rogueImg,
+} from '~/api/images';
 import GithubService from '~/api/github';
 import AppStyles from '~/theme/styles';
 import icon from '~/assets/common/icon.png';
+import frame from '~/assets/common/frame_accessory.png';
 
 import type {
   MainScreenProps,
+  TAccessoryBasicInfo,
+  TAccessoryList,
   TCurrentEvent,
   TEvent,
   TExtendedEvent,
@@ -67,6 +76,9 @@ const MainScreen: React.FC<MainScreenProps> = () => {
       data: TEvent[];
     };
   } | null>(null);
+  const [accessories, setAccessories] = useState<TAccessoryBasicInfo[] | null>(
+    null,
+  );
   const top = {
     paddingTop: insets.top,
   };
@@ -97,6 +109,13 @@ const MainScreen: React.FC<MainScreenProps> = () => {
             titan: data.titan,
           });
         }
+        const accessoryData = await API.get<TAccessoryList>(
+          links.LIST.ACCESSORY,
+        );
+        if (accessoryData.data) {
+          const data = accessoryData.data;
+          setAccessories(Object.values(data));
+        }
       } catch (error) {
         //
       } finally {
@@ -109,6 +128,8 @@ const MainScreen: React.FC<MainScreenProps> = () => {
     void loadData();
   }, []);
 
+  const titanEnd = section && dayjs(section.titan.endAt * 1000);
+
   return (
     <View style={[AppStyles.flex1, top]}>
       {version !== null && (
@@ -117,7 +138,6 @@ const MainScreen: React.FC<MainScreenProps> = () => {
         </TouchableRipple>
       )}
       <ConnectStatus />
-      {/* BODY */}
       {loading ? (
         <Kirin />
       ) : section ? (
@@ -128,82 +148,135 @@ const MainScreen: React.FC<MainScreenProps> = () => {
             <FastImage source={icon} style={styles.icon} />
             <Title>Project Karthuria</Title>
           </View>
-          <Subheading style={AppStyles.centerText}>Events</Subheading>
-          {section.event.data.map((item) => {
-            const begin = dayjs(item.beginAt * 1000);
-            const end = dayjs(item.endAt * 1000);
-            if (end.diff(dayjs(), 'y') > 1) {
-              return null;
-            }
-            return (
-              <View key={JSON.stringify(item)} style={styles.item}>
-                <EventImage img={eventImg(item.id)} />
-                <Countdown
-                  miliseconds={end.diff(dayjs())}
-                  style={AppStyles.centerText}
-                />
-                <Caption>Begin</Caption>
-                <Text>{begin.format('llll')}</Text>
-                <Caption>End</Caption>
-                <Text>{end.format('llll')}</Text>
-                <Caption>Type</Caption>
-                <Text>{item.referenceIndex}</Text>
-              </View>
-            );
-          })}
-          <Divider />
-          <Subheading style={AppStyles.centerText}>Challenge Revue</Subheading>
-          <View style={AppStyles.row}>
-            {section.rogue.data.map((item) => {
+          <View style={styles.block}>
+            <Subheading style={AppStyles.centerText}>Events</Subheading>
+            {section.event.data.map((item) => {
               const begin = dayjs(item.beginAt * 1000);
               const end = dayjs(item.endAt * 1000);
+              if (end.diff(dayjs(), 'y') > 1) {
+                return null;
+              }
               return (
-                <View key={item.id} style={[styles.rowItem, AppStyles.flex1]}>
-                  <FastImage
-                    source={{ uri: rogueImg(item.id) }}
-                    style={styles.rogueImg}
+                <View key={JSON.stringify(item)} style={styles.item}>
+                  <EventImage img={eventImg(item.id)} />
+                  <Countdown
+                    miliseconds={end.diff(dayjs())}
+                    style={AppStyles.centerText}
                   />
-                  <Caption>Begin</Caption>
-                  <Text>{begin.format('llll')}</Text>
-                  <Caption>End</Caption>
-                  <Text>{end.format('llll')}</Text>
+                  <View style={[AppStyles.row, AppStyles.spaceBetween]}>
+                    <Caption>Begin</Caption>
+                    <Text>{begin.format('llll')}</Text>
+                  </View>
+                  <View style={[AppStyles.row, AppStyles.spaceBetween]}>
+                    <Caption>End</Caption>
+                    <Text>{end.format('llll')}</Text>
+                  </View>
+                  <View style={[AppStyles.row, AppStyles.spaceBetween]}>
+                    <Caption>Type</Caption>
+                    <Text>{item.referenceIndex}</Text>
+                  </View>
                 </View>
               );
             })}
           </View>
           <Divider />
-          <Subheading style={AppStyles.centerText}>
-            Score Attack Revue
-          </Subheading>
-          <View style={AppStyles.row}>
-            {Object.values(section.titan.enemy).map((item) => {
-              return (
-                <View key={item.id} style={[styles.item, AppStyles.flex1]}>
-                  <FastImage
-                    source={{ uri: enemyImg(item.id) }}
-                    style={styles.enemyImg}
-                  />
-                  <Caption>HP Left</Caption>
-                  <Text style={AppStyles.centerText}>
-                    {item.hpLeft} ({item.hpLeftPercent}%)
-                  </Text>
-                  <ProgressBar
-                    progress={parseInt(item.hpLeftPercent) / 100}
-                    style={styles.hpBar}
-                  />
-                </View>
-              );
-            })}
+          <View style={styles.block}>
+            <Subheading style={AppStyles.centerText}>
+              Challenge Revue
+            </Subheading>
+            <View style={[AppStyles.row, AppStyles.spaceBetween, styles.item]}>
+              {section.rogue.data.map((item) => {
+                const begin = dayjs(item.beginAt * 1000);
+                const end = dayjs(item.endAt * 1000);
+                return (
+                  <View key={item.id} style={styles.rogueItem}>
+                    <FastImage
+                      source={{ uri: rogueImg(item.id) }}
+                      style={styles.rogueImg}
+                    />
+                    <Caption>Begin</Caption>
+                    <Text>{begin.format('llll')}</Text>
+                    <Caption>End</Caption>
+                    <Text>{end.format('llll')}</Text>
+                    {begin.diff(dayjs()) > 0 && (
+                      <>
+                        <Caption>Start in</Caption>
+                        <Countdown miliseconds={begin.diff(dayjs())} />
+                      </>
+                    )}
+                    {begin.diff(dayjs()) < 0 && end.diff(dayjs()) > 0 && (
+                      <>
+                        <Caption>End in</Caption>
+                        <Countdown miliseconds={end.diff(dayjs())} />
+                      </>
+                    )}
+                  </View>
+                );
+              })}
+            </View>
           </View>
-          <Caption>End</Caption>
-          <Text>{dayjs(section.titan.endAt * 1000).format('llll')}</Text>
-          {section.titan.reward.map((item) => {
-            return (
-              <View key={item}>
-                <Text>{item}</Text>
-              </View>
-            );
-          })}
+          <Divider />
+
+          <View style={styles.block}>
+            <Subheading style={AppStyles.centerText}>
+              Score Attack Revue
+            </Subheading>
+            <View style={AppStyles.row}>
+              {Object.values(section.titan.enemy).map((item) => {
+                const source = { uri: enemyImg(item.id) };
+                return (
+                  <View key={item.id} style={[styles.item, AppStyles.flex1]}>
+                    <FastImage source={source} style={styles.enemyImg} />
+                    <ProgressBar
+                      progress={parseInt(item.hpLeftPercent) / 100}
+                      style={styles.hpBar}
+                    />
+                    <Text style={AppStyles.centerText}>
+                      {item.hpLeft} ({item.hpLeftPercent}%)
+                    </Text>
+                  </View>
+                );
+              })}
+            </View>
+            {titanEnd && (
+              <>
+                <View style={[AppStyles.row, AppStyles.spaceBetween]}>
+                  <Caption>End</Caption>
+                  <Text>{titanEnd.format('llll')}</Text>
+                </View>
+                <Countdown
+                  miliseconds={titanEnd.diff(dayjs())}
+                  style={AppStyles.centerText}
+                />
+              </>
+            )}
+            <View style={AppStyles.row}>
+              {accessories &&
+                section.titan.reward.map((item) => {
+                  const findA = accessories.find(
+                    (a) => a.basicInfo.accID === item,
+                  );
+                  if (findA) {
+                    const source = { uri: itemImg(findA.basicInfo.iconID) };
+                    return (
+                      <View
+                        key={item}
+                        style={[AppStyles.flex1, AppStyles.center]}>
+                        <FastImage
+                          source={source}
+                          style={styles.accessoryImg}
+                        />
+                        <FastImage
+                          source={frame}
+                          style={[styles.accessoryImg, AppStyles.absolute]}
+                        />
+                      </View>
+                    );
+                  }
+                  return null;
+                })}
+            </View>
+          </View>
         </ScrollView>
       ) : (
         <ErrorView />
@@ -213,6 +286,13 @@ const MainScreen: React.FC<MainScreenProps> = () => {
 };
 
 const styles = StyleSheet.create({
+  accessoryImg: {
+    height: 112 * 0.7,
+    width: 112 * 0.7,
+  },
+  block: {
+    paddingVertical: 20,
+  },
   content: {
     padding: 10,
   },
@@ -227,6 +307,7 @@ const styles = StyleSheet.create({
     width: 448 * 0.7,
   },
   hpBar: {
+    borderRadius: 10,
     height: 15,
     marginHorizontal: 30,
   },
@@ -236,15 +317,15 @@ const styles = StyleSheet.create({
     width: 40,
   },
   item: {
-    paddingBottom: 10,
+    paddingVertical: 10,
   },
   rogueImg: {
     alignSelf: 'center',
     height: 160 * 0.6,
     width: 144 * 0.6,
   },
-  rowItem: {
-    padding: 10,
+  rogueItem: {
+    width: responsiveWidth(50) - 20,
   },
   update: {
     alignItems: 'center',

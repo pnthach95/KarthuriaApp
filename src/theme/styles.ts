@@ -21,6 +21,9 @@ export default StyleSheet.create({
   row: {
     flexDirection: 'row',
   },
+  spaceBetween: {
+    justifyContent: 'space-between',
+  },
   whiteText: {
     color: Colors.white,
   },
