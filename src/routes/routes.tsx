@@ -12,6 +12,7 @@ import AppContext from '~/context';
 
 import Tabs from './tabs';
 import SplashScreen from '~/screens/splash';
+import Characters from '~/screens/characters';
 import CharacterDetail from '~/screens/characterdetail';
 import StageGirlDetail from '~/screens/stagegirldetail';
 import MemoirDetail from '~/screens/memoirdetail';
@@ -58,6 +59,7 @@ const Routes = (): JSX.Element => {
           ) : (
             <>
               <Stack.Screen name='Main' component={Tabs} options={noHeader} />
+              <Stack.Screen name='Characters' component={Characters} />
               <Stack.Screen
                 name='CharacterDetail'
                 component={CharacterDetail}

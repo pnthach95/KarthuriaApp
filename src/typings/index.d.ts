@@ -45,7 +45,6 @@ type ActionType =
 
 type BottomTabList = {
   MainScreen: undefined;
-  CharactersScreen: undefined;
   StageGirlsScreen: undefined;
   MemoirsScreen: undefined;
   MoreScreen: undefined;
@@ -54,12 +53,6 @@ type BottomTabList = {
 type MainScreenProps = {
   navigation: CompositeNavigationProp<
     BottomTabNavigationProp<BottomTabList, 'MainScreen'>,
-    StackNavigationProp<RootStackParamList>
-  >;
-};
-type CharactersScreenProps = {
-  navigation: CompositeNavigationProp<
-    BottomTabNavigationProp<BottomTabList, 'CharactersScreen'>,
     StackNavigationProp<RootStackParamList>
   >;
 };
@@ -85,10 +78,12 @@ type MoreScreenProps = {
 type RootStackParamList = {
   Splash: undefined;
   Main: undefined;
+  Characters: undefined;
   CharacterDetail: { id: number };
   StageGirlDetail: { id: string | number };
   MemoirDetail: { id: string };
 };
+type CharactersScreenProps = StackScreenProps<RootStackParamList, 'Characters'>;
 type CharacterDetailProps = StackScreenProps<
   RootStackParamList,
   'CharacterDetail'

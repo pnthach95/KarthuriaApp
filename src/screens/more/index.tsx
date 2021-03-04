@@ -2,11 +2,12 @@ import React, { useContext } from 'react';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { Text, Switch, TouchableRipple, Colors } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AppContext from '~/context';
 
 import type { AppOptions, MoreScreenProps } from '~/typings';
 
-const MoreScreen: React.FC<MoreScreenProps> = () => {
+const MoreScreen = ({ navigation }: MoreScreenProps): JSX.Element => {
   const insets = useSafeAreaInsets();
   const { state, dispatch } = useContext(AppContext);
   const top = { paddingTop: insets.top };
@@ -20,6 +21,8 @@ const MoreScreen: React.FC<MoreScreenProps> = () => {
     dispatch({ type: 'SAVE_OPTIONS', data });
   };
 
+  const goToCharacters = () => navigation.navigate('Characters');
+
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
@@ -31,6 +34,14 @@ const MoreScreen: React.FC<MoreScreenProps> = () => {
         <View style={styles.settingRow}>
           <Text>Dark theme</Text>
           <Switch value={state.options.isDark} onValueChange={themeToggle} />
+        </View>
+      </TouchableRipple>
+      <View style={styles.group} />
+      <TouchableRipple onPress={goToCharacters}>
+        <View style={styles.normalRow}>
+          <Icon name='account-box' color={Colors.blue400} size={32} />
+          <View style={styles.space} />
+          <Text>Characters</Text>
         </View>
       </TouchableRipple>
     </ScrollView>
@@ -50,11 +61,19 @@ const styles = StyleSheet.create({
     color: Colors.blue600,
     fontWeight: 'bold',
   },
+  normalRow: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    padding: 10,
+  },
   settingRow: {
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: 10,
+  },
+  space: {
+    width: 10,
   },
 });
 
