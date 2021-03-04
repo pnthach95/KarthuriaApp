@@ -28,7 +28,6 @@ const styles = StyleSheet.create({
   },
   rarity: {
     alignSelf: 'center',
-    bottom: 0,
     height: 14,
     width: 70,
   },
@@ -48,7 +47,11 @@ const Memoirs = ({ navigation }: MemoirsScreenProps): JSX.Element => {
       try {
         const gotData = await API.get<TEquipList>(links.LIST.EQUIP);
         if (gotData.data) {
-          setMList(Object.values(gotData.data));
+          setMList(
+            Object.values(gotData.data).sort((a, b) =>
+              a.basicInfo.published.ja < b.basicInfo.published.ja ? 1 : -1,
+            ),
+          );
         }
       } catch (error) {
         //
@@ -78,14 +81,16 @@ const Memoirs = ({ navigation }: MemoirsScreenProps): JSX.Element => {
               source={frame}
               style={[styles.frame, AppStyles.absolute]}
             />
+          </View>
+          <View style={[AppStyles.center, AppStyles.row]}>
             <FastImage
               source={rarity(item.basicInfo.rarity)}
               resizeMode='contain'
-              style={[styles.rarity, AppStyles.absolute]}
+              style={styles.rarity}
             />
             <FastImage
               source={{ uri: skillIcon(item.skill.iconID) }}
-              style={[styles.skillIcon, AppStyles.absolute]}
+              style={styles.skillIcon}
             />
           </View>
           <Text style={AppStyles.centerText}>
