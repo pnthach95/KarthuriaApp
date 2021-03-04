@@ -14,6 +14,7 @@ import Tabs from './tabs';
 import SplashScreen from '~/screens/splash';
 import CharacterDetail from '~/screens/characterdetail';
 import StageGirlDetail from '~/screens/stagegirldetail';
+import MemoirDetail from '~/screens/memoirdetail';
 
 import type { RootStackParamList } from '~/typings';
 
@@ -65,6 +66,11 @@ const Routes = (): JSX.Element => {
               <Stack.Screen
                 name='StageGirlDetail'
                 component={StageGirlDetail}
+                options={noHeader}
+              />
+              <Stack.Screen
+                name='MemoirDetail'
+                component={MemoirDetail}
                 options={noHeader}
               />
             </>

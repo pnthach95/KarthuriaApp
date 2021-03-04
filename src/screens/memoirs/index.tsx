@@ -10,7 +10,11 @@ import Separator from '~/components/separator';
 import AppStyles from '~/theme/styles';
 import frame from '~/assets/common/frame_equip.png';
 
-import type { TEquipBasicInfo, TEquipList } from '~/typings';
+import type {
+  TEquipBasicInfo,
+  TEquipList,
+  MemoirsScreenProps,
+} from '~/typings';
 
 const styles = StyleSheet.create({
   frame: {
@@ -29,7 +33,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Memoirs = (): JSX.Element => {
+const Memoirs = ({ navigation }: MemoirsScreenProps): JSX.Element => {
   const [loading, setLoading] = useState(true);
   const [mList, setMList] = useState<TEquipBasicInfo[] | null>(null);
 
@@ -53,8 +57,11 @@ const Memoirs = (): JSX.Element => {
     'memoir_' + item.basicInfo.cardID;
 
   const renderItem = ({ item }: { item: TEquipBasicInfo }) => {
+    const onPress = () =>
+      navigation.navigate('MemoirDetail', { id: item.basicInfo.cardID });
+
     return (
-      <TouchableRipple style={AppStyles.flex1}>
+      <TouchableRipple onPress={onPress} style={AppStyles.flex1}>
         <View style={AppStyles.center}>
           <View>
             <FastImage

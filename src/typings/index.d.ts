@@ -69,6 +69,12 @@ type StageGirlsScreenProps = {
     StackNavigationProp<RootStackParamList>
   >;
 };
+type MemoirsScreenProps = {
+  navigation: CompositeNavigationProp<
+    BottomTabNavigationProp<BottomTabList, 'MemoirsScreen'>,
+    StackNavigationProp<RootStackParamList>
+  >;
+};
 type MoreScreenProps = {
   navigation: CompositeNavigationProp<
     BottomTabNavigationProp<BottomTabList, 'MoreScreen'>,
@@ -81,17 +87,17 @@ type RootStackParamList = {
   Main: undefined;
   CharacterDetail: { id: number };
   StageGirlDetail: { id: string | number };
+  MemoirDetail: { id: string };
 };
-
 type CharacterDetailProps = StackScreenProps<
   RootStackParamList,
   'CharacterDetail'
 >;
-
 type StageGirlDetailProps = StackScreenProps<
   RootStackParamList,
   'StageGirlDetail'
 >;
+type MemoirDetailProps = StackScreenProps<RootStackParamList, 'MemoirDetail'>;
 
 //#endregion
 
@@ -321,6 +327,38 @@ type TEquipBasicInfo = {
       [L in TLanguage]: string;
     };
     type: string;
+  };
+};
+
+type TEquip = {
+  basicInfo: {
+    cardID: string;
+    rarity: number;
+    charas: number[];
+    name: {
+      [L in TLanguage]: string;
+    };
+    profile: {
+      [L in TLanguage]: string;
+    };
+    published: {
+      ww: number;
+      ja: number;
+    };
+  };
+  stat: {
+    total: number;
+    atk: number;
+    hp: number;
+    pdef: number;
+    mdef: number;
+  };
+  skill: {
+    iconID: number;
+    info: {
+      [L in TLanguage]: string;
+    };
+    type: 'start';
   };
 };
 
