@@ -27,6 +27,7 @@ import {
   eventImg,
   itemImg,
   rogueImg,
+  stageGirlImg,
 } from '~/api/images';
 import GithubService from '~/api/github';
 import AppStyles from '~/theme/styles';
@@ -234,7 +235,8 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
             <Subheading style={AppStyles.centerText}>
               Score Attack Revue
             </Subheading>
-            <Surface style={[AppStyles.shadow, styles.item]}>
+            <Surface
+              style={[AppStyles.shadow, styles.item, styles.titanContainer]}>
               <View style={AppStyles.row}>
                 {Object.values(section.titan.enemy).map((item) => {
                   const source = { uri: enemyImg(item.id) };
@@ -266,7 +268,7 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
                   </View>
                 </>
               )}
-              <View style={AppStyles.row}>
+              <View style={[AppStyles.row, styles.accessoriesRow]}>
                 {accessories &&
                   section.titan.reward.map((item) => {
                     const findA = accessories.find(
@@ -274,10 +276,11 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
                     );
                     if (findA) {
                       const source = { uri: itemImg(findA.basicInfo.iconID) };
+                      const stageGirl = {
+                        uri: stageGirlImg(findA.basicInfo.cardID),
+                      };
                       return (
-                        <View
-                          key={item}
-                          style={[AppStyles.flex1, AppStyles.center]}>
+                        <View key={item} style={styles.accessoryImg}>
                           <FastImage
                             source={source}
                             style={styles.accessoryImg}
@@ -285,6 +288,10 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
                           <FastImage
                             source={frame}
                             style={[styles.accessoryImg, AppStyles.absolute]}
+                          />
+                          <FastImage
+                            source={stageGirl}
+                            style={[styles.stageGirl, AppStyles.absolute]}
                           />
                         </View>
                       );
@@ -303,6 +310,9 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
 };
 
 const styles = StyleSheet.create({
+  accessoriesRow: {
+    justifyContent: 'space-evenly',
+  },
   accessoryImg: {
     height: 112 * 0.7,
     width: 112 * 0.7,
@@ -347,6 +357,16 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 10,
     width: responsiveWidth(50) - 20,
+  },
+  stageGirl: {
+    borderRadius: 5,
+    bottom: -5,
+    height: 30,
+    left: -5,
+    width: 30,
+  },
+  titanContainer: {
+    paddingBottom: 20,
   },
   update: {
     alignItems: 'center',
