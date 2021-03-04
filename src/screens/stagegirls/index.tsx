@@ -4,6 +4,7 @@ import { Text, TouchableRipple, useTheme } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
 import API, { links } from '~/api';
 import { stageGirlImg } from '~/api/images';
+import ErrorView from '~/components/errorview';
 import Kirin from '~/components/kirin';
 import AppStyles from '~/theme/styles';
 import { attackType, attribute, position, rarity } from '~/assets';
@@ -122,15 +123,19 @@ const StageGirls = ({ navigation }: StageGirlsScreenProps): JSX.Element => {
     return <Kirin />;
   }
 
-  return (
-    <FlatList
-      data={sgList}
-      keyExtractor={keyExtractor}
-      renderItem={renderItem}
-      numColumns={2}
-      initialNumToRender={12}
-    />
-  );
+  if (sgList.length > 0) {
+    return (
+      <FlatList
+        data={sgList}
+        keyExtractor={keyExtractor}
+        renderItem={renderItem}
+        numColumns={2}
+        initialNumToRender={12}
+      />
+    );
+  }
+
+  return <ErrorView />;
 };
 
 export default StageGirls;

@@ -5,6 +5,7 @@ import FastImage from 'react-native-fast-image';
 import API, { links } from '~/api';
 import { memoirImg, skillIcon } from '~/api/images';
 import { rarity } from '~/assets';
+import ErrorView from '~/components/errorview';
 import Kirin from '~/components/kirin';
 import AppStyles from '~/theme/styles';
 import frame from '~/assets/common/frame_equip.png';
@@ -40,7 +41,7 @@ const styles = StyleSheet.create({
 const Memoirs = ({ navigation }: MemoirsScreenProps): JSX.Element => {
   const { colors } = useTheme();
   const [loading, setLoading] = useState(true);
-  const [mList, setMList] = useState<TEquipBasicInfo[] | null>(null);
+  const [mList, setMList] = useState<TEquipBasicInfo[]>([]);
 
   useEffect(() => {
     const loadData = async () => {
@@ -105,15 +106,19 @@ const Memoirs = ({ navigation }: MemoirsScreenProps): JSX.Element => {
     return <Kirin />;
   }
 
-  return (
-    <FlatList
-      data={mList}
-      numColumns={2}
-      keyExtractor={keyExtractor}
-      renderItem={renderItem}
-      initialNumToRender={12}
-    />
-  );
+  if (mList.length > 0) {
+    return (
+      <FlatList
+        data={mList}
+        numColumns={2}
+        keyExtractor={keyExtractor}
+        renderItem={renderItem}
+        initialNumToRender={12}
+      />
+    );
+  }
+
+  return <ErrorView />;
 };
 
 export default Memoirs;

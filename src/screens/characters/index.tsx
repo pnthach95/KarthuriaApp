@@ -6,6 +6,7 @@ import { responsiveScreenWidth } from 'react-native-responsive-dimensions';
 import API, { links } from '~/api';
 import { charaterImg, schoolIcon } from '~/api/images';
 import Kirin from '~/components/kirin';
+import ErrorView from '~/components/errorview';
 import AppStyles from '~/theme/styles';
 
 import type {
@@ -80,16 +81,20 @@ const Charaters = ({ navigation }: CharactersScreenProps): JSX.Element => {
     return <Kirin />;
   }
 
-  return (
-    <FlatList
-      data={charaList}
-      numColumns={2}
-      keyExtractor={keyExtractor}
-      renderItem={renderItem}
-      columnWrapperStyle={AppStyles.columnWrapper}
-      showsVerticalScrollIndicator={false}
-    />
-  );
+  if (charaList.length > 0) {
+    return (
+      <FlatList
+        data={charaList}
+        numColumns={2}
+        keyExtractor={keyExtractor}
+        renderItem={renderItem}
+        columnWrapperStyle={AppStyles.columnWrapper}
+        showsVerticalScrollIndicator={false}
+      />
+    );
+  }
+
+  return <ErrorView />;
 };
 
 export default Charaters;
