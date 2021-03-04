@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     width: 40,
   },
   block: {
-    paddingVertical: 20,
+    paddingVertical: 10,
   },
   img: {
     alignSelf: 'center',
@@ -146,15 +146,29 @@ const StageGirlDetail = ({ route }: StageGirlDetailProps): JSX.Element => {
               style={[styles.rarity, raritySize, AppStyles.absolute]}
             />
           </View>
-          <Caption>Release date</Caption>
-          {releasedJA && <Text>Japanese: {releasedJA.format('LLLL')}</Text>}
-          {releasedWW && <Text>Worldwide: {releasedWW.format('LLLL')}</Text>}
-          <View style={[AppStyles.row, AppStyles.spaceBetween]}>
-            <Caption>Attack type</Caption>
-            <FastImage
-              source={attackTypeText(dress.base.attackType)}
-              style={styles.attackType}
-            />
+          <View style={styles.block}>
+            <Surface style={[AppStyles.shadow, styles.surfaceBlock]}>
+              <Caption>Release date</Caption>
+              {releasedJA && (
+                <View style={[AppStyles.row, AppStyles.spaceBetween]}>
+                  <Text>Japanese</Text>
+                  <Text>{releasedJA.format('LLLL')}</Text>
+                </View>
+              )}
+              {releasedWW && (
+                <View style={[AppStyles.row, AppStyles.spaceBetween]}>
+                  <Text>Worldwide</Text>
+                  <Text>{releasedWW.format('LLLL')}</Text>
+                </View>
+              )}
+              <View style={[AppStyles.row, AppStyles.spaceBetween]}>
+                <Caption>Attack type</Caption>
+                <FastImage
+                  source={attackTypeText(dress.base.attackType)}
+                  style={styles.attackType}
+                />
+              </View>
+            </Surface>
           </View>
           <View style={styles.block}>
             <Subheading style={AppStyles.centerText}>Stats</Subheading>
