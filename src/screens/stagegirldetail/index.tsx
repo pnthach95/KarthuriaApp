@@ -5,6 +5,7 @@ import {
   Headline,
   Text,
   Subheading,
+  Paragraph,
   DataTable,
   Surface,
   Colors,
@@ -205,20 +206,20 @@ const StageGirlDetail = ({ route }: StageGirlDetailProps): JSX.Element => {
             <Subheading style={AppStyles.centerText}>Info</Subheading>
             <Surface style={[AppStyles.shadow, styles.surfaceBlock]}>
               <Caption>Profile</Caption>
-              <Text>
+              <Paragraph>
                 {dress.basicInfo.profile.en || dress.basicInfo.profile.ja}
-              </Text>
+              </Paragraph>
               <Separator />
               <Caption>Message</Caption>
-              <Text>
+              <Paragraph>
                 {dress.basicInfo.message.en || dress.basicInfo.message.ja}
-              </Text>
+              </Paragraph>
               <Separator />
               <Caption>Description</Caption>
-              <Text>
+              <Paragraph>
                 {dress.basicInfo.description.en ||
                   dress.basicInfo.description.ja}
-              </Text>
+              </Paragraph>
             </Surface>
           </View>
           <View style={styles.block}>
@@ -259,7 +260,9 @@ const StageGirlDetail = ({ route }: StageGirlDetailProps): JSX.Element => {
                   <View style={AppStyles.row}>
                     <FastImage source={icon} style={styles.skillIcon} />
                     <View style={AppStyles.flex1}>
-                      <Text>{autoSkill.info.en || autoSkill.info.ja}</Text>
+                      <Paragraph>
+                        {autoSkill.info.en || autoSkill.info.ja}
+                      </Paragraph>
                     </View>
                   </View>
                 </Surface>
@@ -307,10 +310,10 @@ const StageGirlDetail = ({ route }: StageGirlDetailProps): JSX.Element => {
                   style={styles.skillIcon}
                 />
                 <View style={AppStyles.flex1}>
-                  <Text>
+                  <Paragraph>
                     {dress.groupSkills.unitSkill.info.en ||
                       dress.groupSkills.unitSkill.info.ja}
-                  </Text>
+                  </Paragraph>
                 </View>
               </View>
             </Surface>
