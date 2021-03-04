@@ -162,10 +162,12 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
                   key={JSON.stringify(item)}
                   style={[styles.item, AppStyles.shadow]}>
                   <EventImage img={eventImg(item.id)} />
-                  <Countdown
-                    miliseconds={end.diff(dayjs())}
-                    style={AppStyles.centerText}
-                  />
+                  <View style={styles.block}>
+                    <Countdown
+                      miliseconds={end.diff(dayjs())}
+                      style={AppStyles.centerText}
+                    />
+                  </View>
                   <View style={[AppStyles.row, AppStyles.spaceBetween]}>
                     <Caption>Begin</Caption>
                     <Text>{begin.format('llll')}</Text>
@@ -259,10 +261,12 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
                     <Caption>End</Caption>
                     <Text>{titanEnd.format('llll')}</Text>
                   </View>
-                  <Countdown
-                    miliseconds={titanEnd.diff(dayjs())}
-                    style={AppStyles.centerText}
-                  />
+                  <View style={styles.block}>
+                    <Countdown
+                      miliseconds={titanEnd.diff(dayjs())}
+                      style={AppStyles.centerText}
+                    />
+                  </View>
                 </>
               )}
               <View style={AppStyles.row}>
@@ -307,7 +311,7 @@ const styles = StyleSheet.create({
     width: 112 * 0.7,
   },
   block: {
-    paddingVertical: 20,
+    paddingVertical: 10,
   },
   content: {
     padding: 10,
