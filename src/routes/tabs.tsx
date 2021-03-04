@@ -8,6 +8,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import HomeScreen from '~/screens/home';
 import CharatersScreen from '~/screens/characters';
 import StageGirlsScreen from '~/screens/stagegirls';
+import MemoirsScreen from '~/screens/memoirs';
 import MoreScreen from '~/screens/more';
 
 import type {
@@ -33,6 +34,9 @@ const charatersIcon = ({ size, color }: IconProps) => (
 );
 const stageGirlsIcon = ({ size, color }: IconProps) => (
   <Icon name='tablet-portrait' size={size} color={color} />
+);
+const memoirsIcon = ({ size, color }: IconProps) => (
+  <Icon name='image' size={size} color={color} />
 );
 const moreIcon = ({ size, color }: IconProps) => (
   <Icon name='ellipsis-horizontal' size={size} color={color} />
@@ -81,6 +85,20 @@ const tabs: TabsConfig<BubbleTabBarItemConfig, BottomTabList> = {
       inactiveColor: 'transparent',
     },
   },
+  MemoirsScreen: {
+    labelStyle: {
+      color: Colors.lightGreen600,
+    },
+    icon: {
+      component: memoirsIcon,
+      activeColor: Colors.lightGreen600,
+      inactiveColor: Colors.grey600,
+    },
+    background: {
+      activeColor: Colors.lightGreen50,
+      inactiveColor: 'transparent',
+    },
+  },
   MoreScreen: {
     labelStyle: {
       color: Colors.yellow900,
@@ -122,6 +140,11 @@ const Tabs = (): JSX.Element => {
         name='StageGirlsScreen'
         component={StageGirlsScreen}
         options={{ tabBarLabel: 'Stage Girls' }}
+      />
+      <Tab.Screen
+        name='MemoirsScreen'
+        component={MemoirsScreen}
+        options={{ tabBarLabel: 'Memoirs' }}
       />
       <Tab.Screen
         name='MoreScreen'

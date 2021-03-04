@@ -47,6 +47,7 @@ type BottomTabList = {
   MainScreen: undefined;
   CharactersScreen: undefined;
   StageGirlsScreen: undefined;
+  MemoirsScreen: undefined;
   MoreScreen: undefined;
 };
 
