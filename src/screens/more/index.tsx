@@ -35,6 +35,8 @@ const MoreScreen = ({ navigation }: MoreScreenProps): JSX.Element => {
 
   const goToCharacters = () => navigation.navigate('Characters');
 
+  const goToAccessories = () => navigation.navigate('Accessories');
+
   const openWebsite = () => Linking.openURL(website);
 
   const openGithub = () => Linking.openURL(links.GITHUB_PROJECT);
@@ -60,6 +62,13 @@ const MoreScreen = ({ navigation }: MoreScreenProps): JSX.Element => {
           <Icon name='account' color={Colors.purpleA200} size={32} />
           <View style={styles.space} />
           <Text>Characters</Text>
+        </View>
+      </TouchableRipple>
+      <TouchableRipple onPress={goToAccessories}>
+        <View style={styles.normalRow}>
+          <Icon name='sword' color={Colors.orange500} size={32} />
+          <View style={styles.space} />
+          <Text>Accessories</Text>
         </View>
       </TouchableRipple>
       <View style={styles.group}>

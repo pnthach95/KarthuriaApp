@@ -83,6 +83,7 @@ type RootStackParamList = {
   StageGirlDetail: { id: string | number };
   MemoirDetail: { id: string };
   Accessories: undefined;
+  AccessoryDetail: { id: number };
 };
 type CharactersScreenProps = StackScreenProps<RootStackParamList, 'Characters'>;
 type CharacterDetailProps = StackScreenProps<
@@ -95,6 +96,10 @@ type StageGirlDetailProps = StackScreenProps<
 >;
 type MemoirDetailProps = StackScreenProps<RootStackParamList, 'MemoirDetail'>;
 type AccessoriesProps = StackScreenProps<RootStackParamList, 'Accessories'>;
+type AccessoryDetailProps = StackScreenProps<
+  RootStackParamList,
+  'AccessoryDetail'
+>;
 
 //#endregion
 

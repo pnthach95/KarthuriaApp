@@ -13,7 +13,7 @@ export const charaPortrait = (id: number): string =>
 export const charaBase = (id: number): string =>
   assets + `jp/res/ui/images/archive/archive_chara/select/base_${id}.png`;
 
-export const stageGirlImg = (id: string): string =>
+export const stageGirlImg = (id: string | number): string =>
   assets + `jp/res/item_root/large/1_${id}.png`;
 
 export const stageGirlBigImg = (id: string): string =>
