@@ -241,7 +241,10 @@ type TDress = {
   };
   groupSkills: {
     unitSkill: {
-      info: string;
+      iconID: number;
+      info: {
+        [L in TLanguage]: string;
+      };
     };
     climaxACT: {
       iconID: number;

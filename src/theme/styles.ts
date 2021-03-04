@@ -21,6 +21,9 @@ export default StyleSheet.create({
   row: {
     flexDirection: 'row',
   },
+  shadow: {
+    elevation: 5,
+  },
   spaceBetween: {
     justifyContent: 'space-between',
   },

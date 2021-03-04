@@ -14,6 +14,8 @@ import r3 from '~/assets/rarities/3_3.png';
 import r4 from '~/assets/rarities/4_4.png';
 import at1 from '~/assets/attacktype/1.png';
 import at2 from '~/assets/attacktype/2.png';
+import att1 from '~/assets/attacktype/text_1.png';
+import att2 from '~/assets/attacktype/text_2.png';
 
 import type { TRole } from '~/typings';
 
@@ -62,4 +64,8 @@ export const rarity = (id: number): number => {
 
 export const attackType = (id: number): number => {
   return id === 1 ? at1 : at2;
+};
+
+export const attackTypeText = (id: number): number => {
+  return id === 1 ? att1 : att2;
 };

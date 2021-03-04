@@ -33,3 +33,6 @@ export const itemImg = (id: number): string =>
 
 export const rogueImg = (id: number): string =>
   assets + `jp/res/item_root/large/1_${id}.png`;
+
+export const skillIcon = (id: number): string =>
+  assets + `jp/res/battle/skill_icon/skill_icon_${id}.png`;
