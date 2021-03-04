@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, View, StyleSheet } from 'react-native';
-import { Text } from 'react-native-paper';
+import { Text, TouchableRipple } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
 import API, { links } from '~/api';
 import { stageGirlImg } from '~/api/images';
 import Kirin from '~/components/kirin';
+import Separator from '~/components/separator';
 import AppStyles from '~/theme/styles';
 import { attackType, attribute, position, rarity } from '~/assets';
-import frame from '~/assets/common/frame.png';
+import frame from '~/assets/common/frame_stage_girl.png';
 
-import type { TDressBasicInfo, TDressList } from '~/typings';
+import type {
+  TDressBasicInfo,
+  TDressList,
+  StageGirlsScreenProps,
+} from '~/typings';
 
 const styles = StyleSheet.create({
   attackType: {
@@ -37,16 +42,13 @@ const styles = StyleSheet.create({
     width: 70,
   },
   role: {
-    height: (30 * 20) / 45,
+    height: 40 / 3,
     top: 20,
     width: 20,
   },
-  separator: {
-    height: 10,
-  },
 });
 
-const StageGirls = (): JSX.Element => {
+const StageGirls = ({ navigation }: StageGirlsScreenProps): JSX.Element => {
   const [loading, setLoading] = useState(true);
   const [sgList, setSGList] = useState<TDressBasicInfo[]>([]);
 
@@ -54,13 +56,7 @@ const StageGirls = (): JSX.Element => {
     const loadData = async () => {
       const data = await API.get<TDressList>(links.LIST.DRESS);
       if (data.data) {
-        const tmp: TDressBasicInfo[] = [];
-        Object.keys(data.data).forEach((key) => {
-          if (data.data) {
-            tmp.push(data.data[key]);
-          }
-        });
-        setSGList(tmp);
+        setSGList(Object.values(data.data));
         setLoading(false);
       }
     };
@@ -72,47 +68,55 @@ const StageGirls = (): JSX.Element => {
 
   const renderItem = ({ item }: { item: TDressBasicInfo }) => {
     const { basicInfo, base, stat } = item;
+    const onPress = () => {
+      navigation.navigate('StageGirlDetail', { id: basicInfo.cardID });
+    };
 
     return (
-      <View style={styles.item}>
-        <Text style={AppStyles.centerText}>
-          {basicInfo.name.en || basicInfo.name.ja}
-        </Text>
-        <View style={AppStyles.center}>
-          <View style={styles.frame}>
-            <FastImage
-              source={{ uri: stageGirlImg(basicInfo.cardID) }}
-              style={styles.frame}
-            />
-            <FastImage
-              source={frame}
-              style={[styles.frame, AppStyles.absolute]}
-            />
-            <FastImage
-              source={attribute(base.attribute)}
-              style={[styles.attribute, AppStyles.absolute]}
-            />
-            <FastImage
-              source={position(base.roleIndex.role)}
-              style={[styles.role, AppStyles.absolute]}
-            />
-            <FastImage
-              source={rarity(basicInfo.rarity)}
-              resizeMode='contain'
-              style={[styles.rarity, AppStyles.absolute]}
-            />
-            <FastImage
-              source={attackType(base.attackType)}
-              style={[styles.attackType, AppStyles.absolute]}
-            />
+      <TouchableRipple onPress={onPress} style={AppStyles.flex1}>
+        <View style={styles.item}>
+          <Text style={AppStyles.centerText}>
+            {basicInfo.name.en || basicInfo.name.ja}
+          </Text>
+          <View style={AppStyles.center}>
+            <View style={styles.frame}>
+              <FastImage
+                source={{
+                  uri: stageGirlImg(basicInfo.cardID),
+                  cache: 'cacheOnly',
+                }}
+                style={styles.frame}
+              />
+              <FastImage
+                source={frame}
+                style={[styles.frame, AppStyles.absolute]}
+              />
+              <FastImage
+                source={attribute(base.attribute)}
+                style={[styles.attribute, AppStyles.absolute]}
+              />
+              <FastImage
+                source={position(base.roleIndex.role)}
+                style={[styles.role, AppStyles.absolute]}
+              />
+              <FastImage
+                source={rarity(basicInfo.rarity)}
+                resizeMode='contain'
+                style={[styles.rarity, AppStyles.absolute]}
+              />
+              <FastImage
+                source={attackType(base.attackType)}
+                style={[styles.attackType, AppStyles.absolute]}
+              />
+            </View>
+            <Text style={AppStyles.centerText}>Total: {stat.total}</Text>
           </View>
-          <Text style={AppStyles.centerText}>Total: {stat.total}</Text>
         </View>
-      </View>
+      </TouchableRipple>
     );
   };
 
-  const itemSeparator = () => <View style={styles.separator} />;
+  const itemSeparator = () => <Separator />;
 
   if (loading) {
     return <Kirin />;

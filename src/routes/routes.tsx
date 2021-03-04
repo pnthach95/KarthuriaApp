@@ -13,6 +13,7 @@ import AppContext from '~/context';
 import Tabs from './tabs';
 import SplashScreen from '~/screens/splash';
 import CharacterDetail from '~/screens/characterdetail';
+import StageGirlDetail from '~/screens/stagegirldetail';
 
 import type { RootStackParamList } from '~/typings';
 
@@ -59,6 +60,11 @@ const Routes = (): JSX.Element => {
               <Stack.Screen
                 name='CharacterDetail'
                 component={CharacterDetail}
+                options={noHeader}
+              />
+              <Stack.Screen
+                name='StageGirlDetail'
+                component={StageGirlDetail}
                 options={noHeader}
               />
             </>
