@@ -1,7 +1,9 @@
 import { create } from 'apisauce';
 
+export const website = 'https://karen.makoo.eu';
+
 const api = create({
-  baseURL: 'https://karen.makoo.eu/api',
+  baseURL: website + '/api',
 });
 
 export const links = {
