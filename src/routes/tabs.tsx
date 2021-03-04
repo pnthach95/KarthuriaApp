@@ -55,15 +55,15 @@ const tabs: TabsConfig<BubbleTabBarItemConfig, BottomTabList> = {
   },
   StageGirlsScreen: {
     labelStyle: {
-      color: Colors.purpleA200,
+      color: Colors.blue400,
     },
     icon: {
       component: stageGirlsIcon,
-      activeColor: Colors.purpleA200,
+      activeColor: Colors.blue400,
       inactiveColor: Colors.grey600,
     },
     background: {
-      activeColor: Colors.purple50,
+      activeColor: Colors.blue50,
       inactiveColor: 'transparent',
     },
   },
