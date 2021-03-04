@@ -9,6 +9,7 @@ import {
   Caption,
   ProgressBar,
   Subheading,
+  Surface,
 } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
@@ -157,7 +158,9 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
                 return null;
               }
               return (
-                <View key={JSON.stringify(item)} style={styles.item}>
+                <Surface
+                  key={JSON.stringify(item)}
+                  style={[styles.item, AppStyles.shadow]}>
                   <EventImage img={eventImg(item.id)} />
                   <Countdown
                     miliseconds={end.diff(dayjs())}
@@ -175,25 +178,31 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
                     <Caption>Type</Caption>
                     <Text>{item.referenceIndex}</Text>
                   </View>
-                </View>
+                </Surface>
               );
             })}
           </View>
-          <Divider />
           <View style={styles.block}>
             <Subheading style={AppStyles.centerText}>
               Challenge Revue
             </Subheading>
-            <View style={[AppStyles.row, AppStyles.spaceBetween, styles.item]}>
+            <View
+              style={[
+                AppStyles.row,
+                AppStyles.spaceBetween,
+                AppStyles.center,
+                styles.item,
+              ]}>
               {section.rogue.data.map((item) => {
                 const begin = dayjs(item.beginAt * 1000);
                 const end = dayjs(item.endAt * 1000);
+                const goToDetail = () =>
+                  navigation.navigate('StageGirlDetail', { id: item.id });
                 return (
-                  <View key={item.id} style={styles.rogueItem}>
-                    <TouchableRipple
-                      onPress={() =>
-                        navigation.navigate('StageGirlDetail', { id: item.id })
-                      }>
+                  <Surface
+                    key={item.id}
+                    style={[styles.rogueItem, AppStyles.shadow]}>
+                    <TouchableRipple borderless onPress={goToDetail}>
                       <FastImage
                         source={{ uri: rogueImg(item.id) }}
                         style={styles.rogueImg}
@@ -215,7 +224,7 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
                         <Countdown miliseconds={end.diff(dayjs())} />
                       </>
                     )}
-                  </View>
+                  </Surface>
                 );
               })}
             </View>
@@ -226,61 +235,63 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
             <Subheading style={AppStyles.centerText}>
               Score Attack Revue
             </Subheading>
-            <View style={AppStyles.row}>
-              {Object.values(section.titan.enemy).map((item) => {
-                const source = { uri: enemyImg(item.id) };
-                return (
-                  <View key={item.id} style={[styles.item, AppStyles.flex1]}>
-                    <FastImage source={source} style={styles.enemyImg} />
-                    <ProgressBar
-                      progress={parseInt(item.hpLeftPercent) / 100}
-                      style={styles.hpBar}
-                    />
-                    <Text style={AppStyles.centerText}>
-                      {item.hpLeft} ({item.hpLeftPercent}%)
-                    </Text>
-                  </View>
-                );
-              })}
-            </View>
-            {titanEnd && (
-              <>
-                <View style={[AppStyles.row, AppStyles.spaceBetween]}>
-                  <Caption>End</Caption>
-                  <Text>{titanEnd.format('llll')}</Text>
-                </View>
-                <Countdown
-                  miliseconds={titanEnd.diff(dayjs())}
-                  style={AppStyles.centerText}
-                />
-              </>
-            )}
-            <View style={AppStyles.row}>
-              {accessories &&
-                section.titan.reward.map((item) => {
-                  const findA = accessories.find(
-                    (a) => a.basicInfo.accID === item,
+            <Surface style={[AppStyles.shadow, styles.item]}>
+              <View style={AppStyles.row}>
+                {Object.values(section.titan.enemy).map((item) => {
+                  const source = { uri: enemyImg(item.id) };
+                  return (
+                    <View key={item.id} style={[styles.item, AppStyles.flex1]}>
+                      <FastImage source={source} style={styles.enemyImg} />
+                      <ProgressBar
+                        progress={parseInt(item.hpLeftPercent) / 100}
+                        style={styles.hpBar}
+                      />
+                      <Text style={AppStyles.centerText}>
+                        {item.hpLeft} ({item.hpLeftPercent}%)
+                      </Text>
+                    </View>
                   );
-                  if (findA) {
-                    const source = { uri: itemImg(findA.basicInfo.iconID) };
-                    return (
-                      <View
-                        key={item}
-                        style={[AppStyles.flex1, AppStyles.center]}>
-                        <FastImage
-                          source={source}
-                          style={styles.accessoryImg}
-                        />
-                        <FastImage
-                          source={frame}
-                          style={[styles.accessoryImg, AppStyles.absolute]}
-                        />
-                      </View>
-                    );
-                  }
-                  return null;
                 })}
-            </View>
+              </View>
+              {titanEnd && (
+                <>
+                  <View style={[AppStyles.row, AppStyles.spaceBetween]}>
+                    <Caption>End</Caption>
+                    <Text>{titanEnd.format('llll')}</Text>
+                  </View>
+                  <Countdown
+                    miliseconds={titanEnd.diff(dayjs())}
+                    style={AppStyles.centerText}
+                  />
+                </>
+              )}
+              <View style={AppStyles.row}>
+                {accessories &&
+                  section.titan.reward.map((item) => {
+                    const findA = accessories.find(
+                      (a) => a.basicInfo.accID === item,
+                    );
+                    if (findA) {
+                      const source = { uri: itemImg(findA.basicInfo.iconID) };
+                      return (
+                        <View
+                          key={item}
+                          style={[AppStyles.flex1, AppStyles.center]}>
+                          <FastImage
+                            source={source}
+                            style={styles.accessoryImg}
+                          />
+                          <FastImage
+                            source={frame}
+                            style={[styles.accessoryImg, AppStyles.absolute]}
+                          />
+                        </View>
+                      );
+                    }
+                    return null;
+                  })}
+              </View>
+            </Surface>
           </View>
         </ScrollView>
       ) : (
@@ -322,7 +333,9 @@ const styles = StyleSheet.create({
     width: 40,
   },
   item: {
-    paddingVertical: 10,
+    borderRadius: 5,
+    marginVertical: 5,
+    padding: 10,
   },
   rogueImg: {
     alignSelf: 'center',
@@ -330,6 +343,8 @@ const styles = StyleSheet.create({
     width: 144 * 0.6,
   },
   rogueItem: {
+    borderRadius: 5,
+    padding: 10,
     width: responsiveWidth(50) - 20,
   },
   update: {
