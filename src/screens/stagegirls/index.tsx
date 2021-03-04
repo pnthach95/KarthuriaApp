@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, View, StyleSheet } from 'react-native';
-import { Text, TouchableRipple } from 'react-native-paper';
+import { Text, TouchableRipple, useTheme } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
 import API, { links } from '~/api';
 import { stageGirlImg } from '~/api/images';
 import Kirin from '~/components/kirin';
-import Separator from '~/components/separator';
 import AppStyles from '~/theme/styles';
 import { attackType, attribute, position, rarity } from '~/assets';
 import frame from '~/assets/common/frame_stage_girl.png';
@@ -32,8 +31,10 @@ const styles = StyleSheet.create({
   },
   item: {
     alignItems: 'center',
+    borderWidth: 1,
     flex: 1,
     justifyContent: 'space-between',
+    padding: 5,
   },
   rarity: {
     alignSelf: 'center',
@@ -49,6 +50,7 @@ const styles = StyleSheet.create({
 });
 
 const StageGirls = ({ navigation }: StageGirlsScreenProps): JSX.Element => {
+  const { colors } = useTheme();
   const [loading, setLoading] = useState(true);
   const [sgList, setSGList] = useState<TDressBasicInfo[]>([]);
 
@@ -74,7 +76,7 @@ const StageGirls = ({ navigation }: StageGirlsScreenProps): JSX.Element => {
 
     return (
       <TouchableRipple onPress={onPress} style={AppStyles.flex1}>
-        <View style={styles.item}>
+        <View style={[styles.item, { borderColor: colors.border }]}>
           <Text style={AppStyles.centerText}>
             {basicInfo.name.en || basicInfo.name.ja}
           </Text>
@@ -116,8 +118,6 @@ const StageGirls = ({ navigation }: StageGirlsScreenProps): JSX.Element => {
     );
   };
 
-  const itemSeparator = () => <Separator />;
-
   if (loading) {
     return <Kirin />;
   }
@@ -129,7 +129,6 @@ const StageGirls = ({ navigation }: StageGirlsScreenProps): JSX.Element => {
       renderItem={renderItem}
       numColumns={2}
       initialNumToRender={12}
-      ItemSeparatorComponent={itemSeparator}
     />
   );
 };

@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
-import { Text, TouchableRipple } from 'react-native-paper';
+import { Text, TouchableRipple, useTheme } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
 import API, { links } from '~/api';
 import { memoirImg, skillIcon } from '~/api/images';
 import { rarity } from '~/assets';
 import Kirin from '~/components/kirin';
-import Separator from '~/components/separator';
 import AppStyles from '~/theme/styles';
 import frame from '~/assets/common/frame_equip.png';
 
@@ -18,8 +17,14 @@ import type {
 
 const styles = StyleSheet.create({
   frame: {
+    alignSelf: 'center',
     height: 160 * 0.5,
     width: 144 * 0.5,
+  },
+  item: {
+    borderWidth: 1,
+    flex: 1,
+    padding: 5,
   },
   rarity: {
     alignSelf: 'center',
@@ -34,6 +39,7 @@ const styles = StyleSheet.create({
 });
 
 const Memoirs = ({ navigation }: MemoirsScreenProps): JSX.Element => {
+  const { colors } = useTheme();
   const [loading, setLoading] = useState(true);
   const [mList, setMList] = useState<TEquipBasicInfo[] | null>(null);
 
@@ -62,8 +68,8 @@ const Memoirs = ({ navigation }: MemoirsScreenProps): JSX.Element => {
 
     return (
       <TouchableRipple onPress={onPress} style={AppStyles.flex1}>
-        <View style={AppStyles.center}>
-          <View>
+        <View style={[styles.item, { borderColor: colors.border }]}>
+          <View style={styles.frame}>
             <FastImage
               source={{ uri: memoirImg(item.basicInfo.cardID) }}
               style={styles.frame}
@@ -90,8 +96,6 @@ const Memoirs = ({ navigation }: MemoirsScreenProps): JSX.Element => {
     );
   };
 
-  const itemSeparator = () => <Separator />;
-
   if (loading) {
     return <Kirin />;
   }
@@ -103,7 +107,6 @@ const Memoirs = ({ navigation }: MemoirsScreenProps): JSX.Element => {
       keyExtractor={keyExtractor}
       renderItem={renderItem}
       initialNumToRender={12}
-      ItemSeparatorComponent={itemSeparator}
     />
   );
 };
