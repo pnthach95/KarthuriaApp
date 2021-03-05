@@ -10,6 +10,8 @@ export const links = {
   LIST: {
     CHARA: 'chara.json',
     DRESS: 'dress.json',
+    DRESS_SKILLS: 'dressSkills.json',
+    SKILLS_FILTER: 'skillsFilter.json',
     EQUIP: 'equip.json',
     ACCESSORY: 'accessory.json',
     ENEMY: 'enemy.json',
