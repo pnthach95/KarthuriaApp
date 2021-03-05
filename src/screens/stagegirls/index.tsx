@@ -65,7 +65,11 @@ const StageGirls = ({ navigation }: StageGirlsScreenProps): JSX.Element => {
       try {
         const data = await API.get<TDressList>(links.LIST.DRESS);
         if (data.ok && data.data) {
-          setSGList(Object.values(data.data));
+          setSGList(
+            Object.values(data.data).sort((a, b) =>
+              a.basicInfo.released.ja < b.basicInfo.released.ja ? 1 : -1,
+            ),
+          );
         }
       } catch (error) {
         //
