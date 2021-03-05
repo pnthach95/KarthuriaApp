@@ -8,7 +8,6 @@ import {
   Paragraph,
   DataTable,
   Surface,
-  Colors,
 } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
 import dayjs from 'dayjs';
@@ -16,6 +15,8 @@ import API, { links } from '~/api';
 import { skillIcon, stageGirlBigImg } from '~/api/images';
 import BaseScreen from '~/components/basescreen';
 import Separator from '~/components/separator';
+import Animation from '~/components/animationtext';
+import TiVa from '~/components/tivatext';
 import AppStyles from '~/theme/styles';
 import { attackTypeText, attribute, position, rarity } from '~/assets';
 import frame from '~/assets/common/frame_thumbnail_dress.png';
@@ -24,9 +25,6 @@ import type { OnLoadEvent } from 'react-native-fast-image';
 import type { TDress, StageGirlDetailProps } from '~/typings';
 
 const styles = StyleSheet.create({
-  animation: {
-    color: Colors.red300,
-  },
   attackType: {
     height: 32 * 0.7,
     width: 90 * 0.7,
@@ -71,24 +69,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
     padding: 10,
   },
-  tiva: {
-    color: Colors.blue300,
-  },
 });
-
-type Info = { info: string };
-
-const TiVa = ({ info }: Info) => (
-  <Text>
-    Ti/Va: <Text style={styles.tiva}>{info}</Text>
-  </Text>
-);
-
-const Animation = ({ info }: Info) => (
-  <Text>
-    Animation: <Text style={styles.animation}>{info}</Text>
-  </Text>
-);
 
 const StageGirlDetail = ({ route }: StageGirlDetailProps): JSX.Element => {
   const [loading, setLoading] = useState(true);
