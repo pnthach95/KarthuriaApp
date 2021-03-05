@@ -8,7 +8,7 @@ const getString = async (key: TKey): Promise<string> => {
   try {
     const s = await MMKV.getStringAsync(key);
     // Debug(`mmkv getString ${key}`, s);
-    return s;
+    return s || '';
   } catch (error) {
     // console.log(`mmkv getString ${key} error`, error);
     return '';
