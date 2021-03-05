@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Platform, StyleSheet } from 'react-native';
+import {
+  View,
+  ScrollView,
+  Platform,
+  StyleSheet,
+  RefreshControl,
+} from 'react-native';
 import {
   Text,
   Title,
@@ -68,6 +74,7 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
   const insets = useSafeAreaInsets();
   const [version, setVersion] = useState<GithubVersion | null>(null);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [section, setSection] = useState<{
     titan: TCurrentEvent['titan'];
     event: {
@@ -99,37 +106,44 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
         //
       }
     };
-    const loadData = async () => {
-      try {
-        const gotData = await API.get<TCurrentEvent>(links.EVENT.WW);
-        if (gotData.ok && gotData.data) {
-          const data = gotData.data;
-          setSection({
-            event: { data: Object.values(data.event) },
-            rogue: { data: Object.values(data.rogue) },
-            titan: data.titan,
-          });
-        }
-        const accessoryData = await API.get<TAccessoryList>(
-          links.LIST.ACCESSORY,
-        );
-        if (accessoryData.data) {
-          const data = accessoryData.data;
-          setAccessories(Object.values(data));
-        }
-      } catch (error) {
-        //
-      } finally {
-        setLoading(false);
-      }
-    };
     if (Platform.OS === 'android') {
       void checkVersion();
     }
     void loadData();
   }, []);
 
+  const loadData = async () => {
+    try {
+      const gotData = await API.get<TCurrentEvent>(links.EVENT.WW);
+      if (gotData.ok && gotData.data) {
+        const data = gotData.data;
+        setSection({
+          event: { data: Object.values(data.event) },
+          rogue: { data: Object.values(data.rogue) },
+          titan: data.titan,
+        });
+      }
+      const accessoryData = await API.get<TAccessoryList>(links.LIST.ACCESSORY);
+      if (accessoryData.data) {
+        const data = accessoryData.data;
+        setAccessories(Object.values(data));
+      }
+    } catch (error) {
+      //
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  };
+
   const titanEnd = section && dayjs(section.titan.endAt * 1000);
+
+  const onRefresh = () => {
+    setRefreshing(true);
+    void loadData();
+  };
+
+  const rc = <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />;
 
   return (
     <View style={[AppStyles.flex1, top]}>
@@ -143,6 +157,7 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
         <Kirin />
       ) : section ? (
         <ScrollView
+          refreshControl={rc}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.content}>
           <View style={[AppStyles.row, AppStyles.center]}>
@@ -166,6 +181,7 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
                     <Countdown
                       miliseconds={end.diff(dayjs())}
                       style={AppStyles.centerText}
+                      timeUpCallback={onRefresh}
                     />
                   </View>
                   <View style={[AppStyles.row, AppStyles.spaceBetween]}>
@@ -217,13 +233,19 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
                     {begin.diff(dayjs()) > 0 && (
                       <>
                         <Caption>Start in</Caption>
-                        <Countdown miliseconds={begin.diff(dayjs())} />
+                        <Countdown
+                          miliseconds={begin.diff(dayjs())}
+                          timeUpCallback={onRefresh}
+                        />
                       </>
                     )}
                     {begin.diff(dayjs()) < 0 && end.diff(dayjs()) > 0 && (
                       <>
                         <Caption>End in</Caption>
-                        <Countdown miliseconds={end.diff(dayjs())} />
+                        <Countdown
+                          miliseconds={end.diff(dayjs())}
+                          timeUpCallback={onRefresh}
+                        />
                       </>
                     )}
                   </Surface>
@@ -264,6 +286,7 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
                     <Countdown
                       miliseconds={titanEnd.diff(dayjs())}
                       style={AppStyles.centerText}
+                      timeUpCallback={onRefresh}
                     />
                   </View>
                 </>
