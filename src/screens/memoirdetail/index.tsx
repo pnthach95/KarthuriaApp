@@ -161,23 +161,23 @@ const MemoirDetail = ({
             <DataTable>
               <DataTable.Row>
                 <DataTable.Cell>Power Score (Total)</DataTable.Cell>
-                <DataTable.Cell>{memoir.stat.total}</DataTable.Cell>
+                <DataTable.Cell numeric>{memoir.stat.total}</DataTable.Cell>
               </DataTable.Row>
               <DataTable.Row>
                 <DataTable.Cell>HP</DataTable.Cell>
-                <DataTable.Cell>{memoir.stat.hp}</DataTable.Cell>
+                <DataTable.Cell numeric>{memoir.stat.hp}</DataTable.Cell>
               </DataTable.Row>
               <DataTable.Row>
                 <DataTable.Cell>Act Power</DataTable.Cell>
-                <DataTable.Cell>{memoir.stat.atk}</DataTable.Cell>
+                <DataTable.Cell numeric>{memoir.stat.atk}</DataTable.Cell>
               </DataTable.Row>
               <DataTable.Row>
                 <DataTable.Cell>Normal Defense</DataTable.Cell>
-                <DataTable.Cell>{memoir.stat.pdef}</DataTable.Cell>
+                <DataTable.Cell numeric>{memoir.stat.pdef}</DataTable.Cell>
               </DataTable.Row>
               <DataTable.Row>
                 <DataTable.Cell>Special Defense</DataTable.Cell>
-                <DataTable.Cell>{memoir.stat.mdef}</DataTable.Cell>
+                <DataTable.Cell numeric>{memoir.stat.mdef}</DataTable.Cell>
               </DataTable.Row>
             </DataTable>
           </Surface>
