@@ -262,17 +262,25 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
               <View style={AppStyles.row}>
                 {Object.values(section.titan.enemy).map((item) => {
                   const source = { uri: enemyImg(item.id) };
+                  const onPress = () =>
+                    navigation.navigate('EnemyDetail', { id: `${item.id}_0` });
+
                   return (
-                    <View key={item.id} style={[styles.item, AppStyles.flex1]}>
-                      <FastImage source={source} style={styles.enemyImg} />
-                      <ProgressBar
-                        progress={parseInt(item.hpLeftPercent) / 100}
-                        style={styles.hpBar}
-                      />
-                      <Text style={AppStyles.centerText}>
-                        {item.hpLeft} ({item.hpLeftPercent}%)
-                      </Text>
-                    </View>
+                    <TouchableRipple
+                      key={item.id}
+                      style={[styles.item, AppStyles.flex1]}
+                      onPress={onPress}>
+                      <>
+                        <FastImage source={source} style={styles.enemyImg} />
+                        <ProgressBar
+                          progress={parseInt(item.hpLeftPercent) / 100}
+                          style={styles.hpBar}
+                        />
+                        <Text style={AppStyles.centerText}>
+                          {item.hpLeft} ({item.hpLeftPercent}%)
+                        </Text>
+                      </>
+                    </TouchableRipple>
                   );
                 })}
               </View>

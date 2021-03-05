@@ -103,10 +103,11 @@ type AccessoryDetailProps = StackScreenProps<
   'AccessoryDetail'
 >;
 type EnemiesProps = StackScreenProps<RootStackParamList, 'Enemies'>;
+type EnemyDetailProps = StackScreenProps<RootStackParamList, 'EnemyDetail'>;
 
 //#endregion
 
-//#region API: Karhuria
+//#region API: Karthuria
 
 type TRole = 'front' | 'middle' | 'back';
 
@@ -291,10 +292,7 @@ type TAccessory = {
     sellPrice: number;
   };
   skillInfo: {
-    skill: {
-      normalSkill: TNormalSkill;
-      changeSkill: number;
-    };
+    skill: TAct;
     skillSlot: number;
   };
   stat: TBasicStat & {
@@ -318,6 +316,13 @@ type TEnemyBasicInfo = {
     attribute: number;
     isDress: number;
   };
+};
+
+type TEnemy = {
+  basicInfo: TEnemyBasicInfo['basicInfo'] & {
+    personality: TLanguageObject;
+  };
+  skills: Record<string, TAct>;
 };
 
 type TCurrentEvent = {
