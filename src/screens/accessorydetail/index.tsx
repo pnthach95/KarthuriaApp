@@ -1,25 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import {
-  Text,
   Headline,
   Subheading,
   Surface,
-  Caption,
   DataTable,
   TouchableRipple,
 } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
 import API, { links } from '~/api';
-import { actIcon, itemImg, skillIcon, stageGirlImg } from '~/api/images';
+import { actIcon, itemImg, stageGirlImg } from '~/api/images';
 import BaseScreen from '~/components/basescreen';
-import Animation from '~/components/animationtext';
-import TiVa from '~/components/tivatext';
 import AppStyles from '~/theme/styles';
 import frame from '~/assets/common/frame_accessory.png';
 import sgFrame from '~/assets/common/frame_stage_girl.png';
 
 import type { AccessoryDetailProps, TAccessory } from '~/typings';
+import SkillDetail from '~/components/skilldetail';
 
 const styles = StyleSheet.create({
   accessoryImg: {
@@ -40,19 +37,9 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 10,
   },
-  skillIcon: {
-    height: 40,
-    marginRight: 10,
-    width: 40,
-  },
   stageGirl: {
     height: 112,
     width: (144 * 112) / 160,
-  },
-  surfaceBlock: {
-    borderRadius: 5,
-    marginVertical: 5,
-    padding: 10,
   },
 });
 
@@ -126,41 +113,7 @@ const AccessoryDetail = ({
           <View style={styles.container}>
             <View style={styles.block}>
               <Subheading style={AppStyles.centerText}>Skill</Subheading>
-              <Surface style={[AppStyles.shadow, styles.surfaceBlock]}>
-                <View style={AppStyles.row}>
-                  <FastImage
-                    source={{
-                      uri: skillIcon(
-                        accessory.skillInfo.skill.normalSkill.iconID,
-                      ),
-                    }}
-                    style={styles.skillIcon}
-                  />
-                  <View style={AppStyles.flex1}>
-                    <View style={AppStyles.row}>
-                      <View style={AppStyles.flex1}>
-                        <Text>
-                          {accessory.skillInfo.skill.normalSkill.name.en ||
-                            accessory.skillInfo.skill.normalSkill.name.ja}
-                        </Text>
-                      </View>
-                      <Text>
-                        AP: {accessory.skillInfo.skill.normalSkill.cost}
-                      </Text>
-                    </View>
-                    <Caption>
-                      {accessory.skillInfo.skill.normalSkill.description.en ||
-                        accessory.skillInfo.skill.normalSkill.description.ja}
-                    </Caption>
-                    <TiVa
-                      info={accessory.skillInfo.skill.normalSkill.skillInfo}
-                    />
-                    <Animation
-                      info={accessory.skillInfo.skill.normalSkill.skillCycle}
-                    />
-                  </View>
-                </View>
-              </Surface>
+              <SkillDetail skill={accessory.skillInfo.skill.normalSkill} />
             </View>
             <View style={styles.block}>
               <Subheading style={AppStyles.centerText}>Max Stats</Subheading>

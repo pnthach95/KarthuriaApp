@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import {
-  Text,
   Headline,
   Subheading,
   Surface,
@@ -10,14 +9,13 @@ import {
 } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
 import API, { links } from '~/api';
-import { enemyImg, skillIcon } from '~/api/images';
+import { enemyImg } from '~/api/images';
 import BaseScreen from '~/components/basescreen';
-import Animation from '~/components/animationtext';
-import TiVa from '~/components/tivatext';
+import SkillDetail from '~/components/skilldetail';
+import { attribute } from '~/assets';
 import AppStyles from '~/theme/styles';
 
 import type { EnemyDetailProps, TEnemy } from '~/typings';
-import { attribute } from '~/assets';
 
 const styles = StyleSheet.create({
   attribute: {
@@ -34,11 +32,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     height: 112,
     width: 112,
-  },
-  skillIcon: {
-    height: 40,
-    marginRight: 10,
-    width: 40,
   },
   surfaceBlock: {
     borderRadius: 5,
@@ -102,37 +95,7 @@ const EnemyDetail = ({ route }: EnemyDetailProps): JSX.Element => {
               <Subheading style={AppStyles.centerText}>Skill</Subheading>
               {Object.keys(enemy.skills).map((k) => {
                 const skill = enemy.skills[k];
-                return (
-                  <Surface
-                    key={k}
-                    style={[AppStyles.shadow, styles.surfaceBlock]}>
-                    <View style={AppStyles.row}>
-                      <FastImage
-                        source={{
-                          uri: skillIcon(skill.normalSkill.iconID),
-                        }}
-                        style={styles.skillIcon}
-                      />
-                      <View style={AppStyles.flex1}>
-                        <View style={AppStyles.row}>
-                          <View style={AppStyles.flex1}>
-                            <Text>
-                              {skill.normalSkill.name.en ||
-                                skill.normalSkill.name.ja}
-                            </Text>
-                          </View>
-                          <Text>AP: {skill.normalSkill.cost}</Text>
-                        </View>
-                        <Caption>
-                          {skill.normalSkill.description.en ||
-                            skill.normalSkill.description.ja}
-                        </Caption>
-                        <TiVa info={skill.normalSkill.skillInfo} />
-                        <Animation info={skill.normalSkill.skillCycle} />
-                      </View>
-                    </View>
-                  </Surface>
-                );
+                return <SkillDetail key={k} skill={skill.normalSkill} />;
               })}
             </View>
           </View>

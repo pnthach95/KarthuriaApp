@@ -15,8 +15,7 @@ import API, { links } from '~/api';
 import { skillIcon, stageGirlBigImg } from '~/api/images';
 import BaseScreen from '~/components/basescreen';
 import Separator from '~/components/separator';
-import Animation from '~/components/animationtext';
-import TiVa from '~/components/tivatext';
+import SkillDetail from '~/components/skilldetail';
 import AppStyles from '~/theme/styles';
 import { attackTypeText, attribute, position, rarity } from '~/assets';
 import frame from '~/assets/common/frame_thumbnail_dress.png';
@@ -211,27 +210,8 @@ const StageGirlDetail = ({ route }: StageGirlDetailProps): JSX.Element => {
           <View style={styles.block}>
             <Subheading style={AppStyles.centerText}>Basic ACT</Subheading>
             {Object.values(dress.act).map((act, index) => {
-              const icon = { uri: skillIcon(act.normalSkill.iconID) };
               return (
-                <Surface
-                  key={`act${index}`}
-                  style={[AppStyles.shadow, styles.surfaceBlock]}>
-                  <View style={AppStyles.row}>
-                    <FastImage source={icon} style={styles.skillIcon} />
-                    <View style={AppStyles.flex1}>
-                      <View style={AppStyles.row}>
-                        <View style={AppStyles.flex1}>
-                          <Text>
-                            {act.normalSkill.name.en || act.normalSkill.name.ja}
-                          </Text>
-                        </View>
-                        <Text>AP: {act.normalSkill.cost}</Text>
-                      </View>
-                      <TiVa info={act.normalSkill.skillInfo} />
-                      <Animation info={act.normalSkill.skillCycle} />
-                    </View>
-                  </View>
-                </Surface>
+                <SkillDetail key={`act${index}`} skill={act.normalSkill} />
               );
             })}
           </View>
@@ -257,33 +237,7 @@ const StageGirlDetail = ({ route }: StageGirlDetailProps): JSX.Element => {
           </View>
           <View style={styles.block}>
             <Subheading style={AppStyles.centerText}>Climax ACT</Subheading>
-            <Surface style={[AppStyles.shadow, styles.surfaceBlock]}>
-              <View style={AppStyles.row}>
-                <FastImage
-                  source={{
-                    uri: skillIcon(dress.groupSkills.climaxACT.iconID),
-                  }}
-                  style={styles.skillIcon}
-                />
-                <View style={AppStyles.flex1}>
-                  <View style={AppStyles.row}>
-                    <View style={AppStyles.flex1}>
-                      <Text>
-                        {dress.groupSkills.climaxACT.name.en ||
-                          dress.groupSkills.climaxACT.name.ja}
-                      </Text>
-                    </View>
-                    <Text>AP: {dress.groupSkills.climaxACT.cost}</Text>
-                  </View>
-                  <Caption>
-                    {dress.groupSkills.climaxACT.description.en ||
-                      dress.groupSkills.climaxACT.description.ja}
-                  </Caption>
-                  <TiVa info={dress.groupSkills.climaxACT.skillInfo} />
-                  <Animation info={dress.groupSkills.climaxACT.skillCycle} />
-                </View>
-              </View>
-            </Surface>
+            <SkillDetail skill={dress.groupSkills.climaxACT} />
           </View>
           <View style={styles.block}>
             <Subheading style={AppStyles.centerText}>Unit Skill</Subheading>
