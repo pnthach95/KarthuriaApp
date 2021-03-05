@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@gorhom/animated-tabbar": "^2.1.1",
+    "@gorhom/bottom-sheet": "2.2.3",
     "@pnthach95/react-native-root-view-background": "^1.0.3",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/netinfo": "^6.0.0",
