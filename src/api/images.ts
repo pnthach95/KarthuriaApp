@@ -45,3 +45,6 @@ export const memoirBigImg = (id: string): string =>
 
 export const charaIcon = (id: number): string =>
   assets + `jp/res/ui/images/filter_sort/icon_filter_character_${id}.png`;
+
+export const actIcon = (id: number): string =>
+  assets + `jp/res/ui/images/common/icon_act_${id}.png`;

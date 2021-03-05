@@ -376,6 +376,46 @@ type TAccessoryBasicInfo = {
   skillSlot: number;
 };
 
+type TAccessory = {
+  basicInfo: {
+    accID: number;
+    iconID: number;
+    cardID: number;
+    name: {
+      [L in TLanguage]: string;
+    };
+    sellPrice: number;
+  };
+  skillInfo: {
+    skill: {
+      normalSkill: {
+        iconID: number;
+        cost: number;
+        name: {
+          [L in TLanguage]: string;
+        };
+        description: {
+          [L in TLanguage]: string;
+        };
+        attribute: number;
+        skillInfo: string;
+        skillCycle: string;
+      };
+      changeSkill: number;
+    };
+    skillSlot: number;
+  };
+  stat: {
+    agi: number;
+    atk: number;
+    cri: number;
+    dex: number;
+    hp: number;
+    mdef: number;
+    pdef: number;
+  };
+};
+
 type TEnemyList = Record<string, TEnemyBasicInfo>;
 
 type TEnemyBasicInfo = {

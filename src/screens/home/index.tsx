@@ -102,7 +102,7 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
     const loadData = async () => {
       try {
         const gotData = await API.get<TCurrentEvent>(links.EVENT.WW);
-        if (gotData.data) {
+        if (gotData.ok && gotData.data) {
           const data = gotData.data;
           setSection({
             event: { data: Object.values(data.event) },
@@ -279,21 +279,30 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
                       const stageGirl = {
                         uri: stageGirlImg(findA.basicInfo.cardID),
                       };
+                      const onPress = () =>
+                        navigation.navigate('AccessoryDetail', { id: item });
+
                       return (
-                        <View key={item} style={styles.accessoryImg}>
-                          <FastImage
-                            source={source}
-                            style={styles.accessoryImg}
-                          />
-                          <FastImage
-                            source={frame}
-                            style={[styles.accessoryImg, AppStyles.absolute]}
-                          />
-                          <FastImage
-                            source={stageGirl}
-                            style={[styles.stageGirl, AppStyles.absolute]}
-                          />
-                        </View>
+                        <TouchableRipple
+                          key={item}
+                          borderless
+                          onPress={onPress}
+                          style={[styles.accessoryContainer, AppStyles.center]}>
+                          <View style={styles.accessoryImg}>
+                            <FastImage
+                              source={source}
+                              style={styles.accessoryImg}
+                            />
+                            <FastImage
+                              source={frame}
+                              style={[styles.accessoryImg, AppStyles.absolute]}
+                            />
+                            <FastImage
+                              source={stageGirl}
+                              style={[styles.stageGirl, AppStyles.absolute]}
+                            />
+                          </View>
+                        </TouchableRipple>
                       );
                     }
                     return null;
@@ -312,6 +321,10 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
 const styles = StyleSheet.create({
   accessoriesRow: {
     justifyContent: 'space-evenly',
+  },
+  accessoryContainer: {
+    height: 112 * 0.7 + 10,
+    width: 112 * 0.7 + 10,
   },
   accessoryImg: {
     height: 112 * 0.7,

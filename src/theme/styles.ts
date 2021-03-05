@@ -24,8 +24,14 @@ export default StyleSheet.create({
   shadow: {
     elevation: 5,
   },
+  spaceAround: {
+    justifyContent: 'space-around',
+  },
   spaceBetween: {
     justifyContent: 'space-between',
+  },
+  spaceEvenly: {
+    justifyContent: 'space-evenly',
   },
   whiteText: {
     color: Colors.white,
