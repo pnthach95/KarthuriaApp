@@ -18,6 +18,7 @@ import StageGirlDetail from '~/screens/stagegirldetail';
 import MemoirDetail from '~/screens/memoirdetail';
 import Accessories from '~/screens/accessories';
 import AccessoryDetail from '~/screens/accessorydetail';
+import EnemiesScreen from '~/screens/enemies';
 
 import type { RootStackParamList } from '~/typings';
 
@@ -83,6 +84,7 @@ const Routes = (): JSX.Element => {
                 component={AccessoryDetail}
                 options={noHeader}
               />
+              <Stack.Screen name='Enemies' component={EnemiesScreen} />
             </>
           )}
         </Stack.Navigator>

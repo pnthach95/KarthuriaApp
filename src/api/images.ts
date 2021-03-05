@@ -26,7 +26,7 @@ export const defaultEventImg =
   assets + 'ww/res/ui/images/common/base_heading_medium.png';
 
 export const enemyImg = (id: number): string =>
-  assets + `jp/res/icon/enemy/${(id / 100).toFixed(0)}.png`;
+  assets + `jp/res/icon/enemy/${id > 9999999 ? (id / 100).toFixed(0) : id}.png`;
 
 export const itemImg = (id: number): string =>
   assets + `jp/res/item_root/medium/38_${id}.png`;

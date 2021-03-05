@@ -40,6 +40,8 @@ const MoreScreen = ({ navigation }: MoreScreenProps): JSX.Element => {
 
   const goToAccessories = () => navigation.navigate('Accessories');
 
+  const goToEnemies = () => navigation.navigate('Enemies');
+
   const openWebsite = () => Linking.openURL(website);
 
   const openGithub = () => Linking.openURL(links.GITHUB_PROJECT);
@@ -62,7 +64,7 @@ const MoreScreen = ({ navigation }: MoreScreenProps): JSX.Element => {
       </View>
       <TouchableRipple onPress={goToCharacters}>
         <View style={styles.normalRow}>
-          <Icon name='account' color={Colors.purpleA200} size={32} />
+          <Icon name='account' color={Colors.deepOrange500} size={32} />
           <View style={styles.space} />
           <Text>Characters</Text>
         </View>
@@ -72,6 +74,13 @@ const MoreScreen = ({ navigation }: MoreScreenProps): JSX.Element => {
           <Icon name='sword' color={Colors.orange500} size={32} />
           <View style={styles.space} />
           <Text>Accessories</Text>
+        </View>
+      </TouchableRipple>
+      <TouchableRipple onPress={goToEnemies}>
+        <View style={styles.normalRow}>
+          <Icon name='account-alert' color={Colors.deepPurple400} size={32} />
+          <View style={styles.space} />
+          <Text>Enemies</Text>
         </View>
       </TouchableRipple>
       <View style={styles.group}>
