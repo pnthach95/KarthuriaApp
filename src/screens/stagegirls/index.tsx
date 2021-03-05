@@ -98,10 +98,7 @@ const StageGirls = ({ navigation }: StageGirlsScreenProps): JSX.Element => {
           <View style={AppStyles.center}>
             <View style={styles.frame}>
               <FastImage
-                source={{
-                  uri: stageGirlImg(basicInfo.cardID),
-                  cache: 'cacheOnly',
-                }}
+                source={{ uri: stageGirlImg(basicInfo.cardID) }}
                 style={styles.frame}
               />
               <FastImage
