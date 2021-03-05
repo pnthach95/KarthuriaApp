@@ -13,6 +13,7 @@ export const links = {
     DRESS_SKILLS: 'dressSkills.json',
     SKILLS_FILTER: 'skillsFilter.json',
     EQUIP: 'equip.json',
+    EQUIP_SKILLS: 'equipSkills.json',
     ACCESSORY: 'accessory.json',
     ENEMY: 'enemy.json',
   },

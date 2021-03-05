@@ -222,9 +222,10 @@ type TDress = {
   };
 };
 
-type TDressSkills = Record<string, boolean>;
+/** dressskills, equipskills */
+type TSkillsOnFilter = Record<string, boolean>;
 
-type TSkillsFilter = Record<string, { [L in TLanguage]: string[] }>;
+type TSkillNames = Record<string, { [L in TLanguage]: string[] }>;
 
 type TAct = {
   normalSkill: TNormalSkill;
