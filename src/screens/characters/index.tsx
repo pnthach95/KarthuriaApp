@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
 import { Text, TouchableRipple } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FastImage from 'react-native-fast-image';
 import { responsiveScreenWidth } from 'react-native-responsive-dimensions';
 import API, { links } from '~/api';
@@ -31,8 +32,12 @@ const styles = StyleSheet.create({
 });
 
 const Charaters = ({ navigation }: CharactersScreenProps): JSX.Element => {
+  const insets = useSafeAreaInsets();
   const [loading, setLoading] = useState(true);
   const [charaList, setCharaList] = useState<TCharaBasicInfo[]>([]);
+  const bottom = {
+    paddingBottom: insets.bottom,
+  };
 
   useEffect(() => {
     const loadData = async () => {
@@ -88,6 +93,7 @@ const Charaters = ({ navigation }: CharactersScreenProps): JSX.Element => {
         numColumns={2}
         keyExtractor={keyExtractor}
         renderItem={renderItem}
+        contentContainerStyle={bottom}
         columnWrapperStyle={AppStyles.columnWrapper}
         showsVerticalScrollIndicator={false}
       />

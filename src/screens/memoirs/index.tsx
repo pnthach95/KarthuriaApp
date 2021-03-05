@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
 import { Text, TouchableRipple, useTheme } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FastImage from 'react-native-fast-image';
 import API, { links } from '~/api';
 import { memoirImg, skillIcon } from '~/api/images';
@@ -39,9 +40,13 @@ const styles = StyleSheet.create({
 });
 
 const Memoirs = ({ navigation }: MemoirsScreenProps): JSX.Element => {
+  const insets = useSafeAreaInsets();
   const { colors } = useTheme();
   const [loading, setLoading] = useState(true);
   const [mList, setMList] = useState<TEquipBasicInfo[]>([]);
+  const top = {
+    paddingTop: insets.top,
+  };
 
   useEffect(() => {
     const loadData = async () => {
@@ -113,6 +118,7 @@ const Memoirs = ({ navigation }: MemoirsScreenProps): JSX.Element => {
         numColumns={2}
         keyExtractor={keyExtractor}
         renderItem={renderItem}
+        style={top}
         initialNumToRender={12}
       />
     );

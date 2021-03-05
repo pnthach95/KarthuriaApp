@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, View, StyleSheet } from 'react-native';
 import { Text, TouchableRipple, useTheme } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FastImage from 'react-native-fast-image';
 import API, { links } from '~/api';
 import { stageGirlImg } from '~/api/images';
@@ -51,9 +52,13 @@ const styles = StyleSheet.create({
 });
 
 const StageGirls = ({ navigation }: StageGirlsScreenProps): JSX.Element => {
+  const insets = useSafeAreaInsets();
   const { colors } = useTheme();
   const [loading, setLoading] = useState(true);
   const [sgList, setSGList] = useState<TDressBasicInfo[]>([]);
+  const top = {
+    paddingTop: insets.top,
+  };
 
   useEffect(() => {
     const loadData = async () => {
@@ -129,6 +134,7 @@ const StageGirls = ({ navigation }: StageGirlsScreenProps): JSX.Element => {
         data={sgList}
         keyExtractor={keyExtractor}
         renderItem={renderItem}
+        style={top}
         numColumns={2}
         initialNumToRender={12}
       />

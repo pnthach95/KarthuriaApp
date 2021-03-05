@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
 import { useTheme, TouchableRipple } from 'react-native-paper';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FastImage from 'react-native-fast-image';
 import API, { links } from '~/api';
 import { itemImg, stageGirlImg } from '~/api/images';
@@ -38,9 +39,13 @@ const styles = StyleSheet.create({
 });
 
 const Accessories = ({ navigation }: AccessoriesProps): JSX.Element => {
+  const insets = useSafeAreaInsets();
   const { colors } = useTheme();
   const [loading, setLoading] = useState(true);
   const [aList, setAList] = useState<TAccessoryBasicInfo[] | null>(null);
+  const bottom = {
+    paddingBottom: insets.bottom,
+  };
 
   useEffect(() => {
     const loadData = async () => {
@@ -98,6 +103,8 @@ const Accessories = ({ navigation }: AccessoriesProps): JSX.Element => {
         data={aList}
         numColumns={2}
         keyExtractor={keyExtractor}
+        contentContainerStyle={bottom}
+        initialNumToRender={12}
         renderItem={renderItem}
       />
     );
