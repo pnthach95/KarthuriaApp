@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { setRootViewBackgroundColor } from '@pnthach95/react-native-root-view-background';
 import NavigationBarColor from 'react-native-navigation-bar-color';
 import { Provider as PaperProvider } from 'react-native-paper';
@@ -51,50 +52,52 @@ const Routes = (): JSX.Element => {
 
   return (
     <PaperProvider theme={switchTheme}>
-      <StatusBar backgroundColor={statusBarColor} barStyle={statusBarStyle} />
-      <NavigationContainer theme={switchTheme}>
-        <Stack.Navigator screenOptions={{ headerBackTitle: 'Back' }}>
-          {state.mainRoute === 'SPLASH' ? (
-            <Stack.Screen
-              name='Splash'
-              component={SplashScreen}
-              options={noHeader}
-            />
-          ) : (
-            <>
-              <Stack.Screen name='Main' component={Tabs} options={noHeader} />
-              <Stack.Screen name='Characters' component={Characters} />
+      <BottomSheetModalProvider>
+        <StatusBar backgroundColor={statusBarColor} barStyle={statusBarStyle} />
+        <NavigationContainer theme={switchTheme}>
+          <Stack.Navigator screenOptions={{ headerBackTitle: 'Back' }}>
+            {state.mainRoute === 'SPLASH' ? (
               <Stack.Screen
-                name='CharacterDetail'
-                component={CharacterDetail}
+                name='Splash'
+                component={SplashScreen}
                 options={noHeader}
               />
-              <Stack.Screen
-                name='StageGirlDetail'
-                component={StageGirlDetail}
-                options={noHeader}
-              />
-              <Stack.Screen
-                name='MemoirDetail'
-                component={MemoirDetail}
-                options={noHeader}
-              />
-              <Stack.Screen name='Accessories' component={Accessories} />
-              <Stack.Screen
-                name='AccessoryDetail'
-                component={AccessoryDetail}
-                options={noHeader}
-              />
-              <Stack.Screen name='Enemies' component={EnemiesScreen} />
-              <Stack.Screen
-                name='EnemyDetail'
-                component={EnemyDetail}
-                options={noHeader}
-              />
-            </>
-          )}
-        </Stack.Navigator>
-      </NavigationContainer>
+            ) : (
+              <>
+                <Stack.Screen name='Main' component={Tabs} options={noHeader} />
+                <Stack.Screen name='Characters' component={Characters} />
+                <Stack.Screen
+                  name='CharacterDetail'
+                  component={CharacterDetail}
+                  options={noHeader}
+                />
+                <Stack.Screen
+                  name='StageGirlDetail'
+                  component={StageGirlDetail}
+                  options={noHeader}
+                />
+                <Stack.Screen
+                  name='MemoirDetail'
+                  component={MemoirDetail}
+                  options={noHeader}
+                />
+                <Stack.Screen name='Accessories' component={Accessories} />
+                <Stack.Screen
+                  name='AccessoryDetail'
+                  component={AccessoryDetail}
+                  options={noHeader}
+                />
+                <Stack.Screen name='Enemies' component={EnemiesScreen} />
+                <Stack.Screen
+                  name='EnemyDetail'
+                  component={EnemyDetail}
+                  options={noHeader}
+                />
+              </>
+            )}
+          </Stack.Navigator>
+        </NavigationContainer>
+      </BottomSheetModalProvider>
     </PaperProvider>
   );
 };

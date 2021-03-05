@@ -18,8 +18,15 @@ export default StyleSheet.create({
   flex1: {
     flex: 1,
   },
+  paddingHorizontal: {
+    paddingHorizontal: 10,
+  },
   row: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  selfEnd: {
+    alignSelf: 'flex-end',
   },
   shadow: {
     elevation: 5,
