@@ -52,7 +52,7 @@ const Memoirs = ({ navigation }: MemoirsScreenProps): JSX.Element => {
     const loadData = async () => {
       try {
         const gotData = await API.get<TEquipList>(links.LIST.EQUIP);
-        if (gotData.data) {
+        if (gotData.ok && gotData.data) {
           setMList(
             Object.values(gotData.data).sort((a, b) =>
               a.basicInfo.published.ja < b.basicInfo.published.ja ? 1 : -1,

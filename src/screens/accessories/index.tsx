@@ -51,7 +51,7 @@ const Accessories = ({ navigation }: AccessoriesProps): JSX.Element => {
     const loadData = async () => {
       try {
         const gotData = await API.get<TAccessoryList>(links.LIST.ACCESSORY);
-        if (gotData.data) {
+        if (gotData.ok && gotData.data) {
           setAList(Object.values(gotData.data));
         }
       } catch (error) {

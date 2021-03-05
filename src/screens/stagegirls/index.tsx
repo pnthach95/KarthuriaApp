@@ -62,9 +62,14 @@ const StageGirls = ({ navigation }: StageGirlsScreenProps): JSX.Element => {
 
   useEffect(() => {
     const loadData = async () => {
-      const data = await API.get<TDressList>(links.LIST.DRESS);
-      if (data.data) {
-        setSGList(Object.values(data.data));
+      try {
+        const data = await API.get<TDressList>(links.LIST.DRESS);
+        if (data.ok && data.data) {
+          setSGList(Object.values(data.data));
+        }
+      } catch (error) {
+        //
+      } finally {
         setLoading(false);
       }
     };

@@ -75,7 +75,7 @@ const MemoirDetail = ({
         const gotData = await API.get<TEquip>(
           links.EQUIP + route.params.id + '.json',
         );
-        if (gotData.data) {
+        if (gotData.ok && gotData.data) {
           setMemoir(gotData.data);
         }
       } catch (error) {

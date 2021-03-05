@@ -41,9 +41,14 @@ const Charaters = ({ navigation }: CharactersScreenProps): JSX.Element => {
 
   useEffect(() => {
     const loadData = async () => {
-      const data = await API.get<TCharaList>(links.LIST.CHARA);
-      if (data.data) {
-        setCharaList(Object.values(data.data));
+      try {
+        const data = await API.get<TCharaList>(links.LIST.CHARA);
+        if (data.ok && data.data) {
+          setCharaList(Object.values(data.data));
+        }
+      } catch (error) {
+        //
+      } finally {
         setLoading(false);
       }
     };
