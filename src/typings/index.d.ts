@@ -107,71 +107,51 @@ type AccessoryDetailProps = StackScreenProps<
 
 type TRole = 'front' | 'middle' | 'back';
 
+type TSkillType = 'passive' | 'start';
+
 type TLanguage = 'ja' | 'en' | 'ko' | 'zh_hant';
+
+type TLanguageObject = {
+  [L in TLanguage]: string;
+};
+
+type TReleased = {
+  ww: number;
+  ja: number;
+};
 
 type TCharaList = Record<string, TCharaBasicInfo>;
 
-type TCharaBasicInfoCommon = {
-  charaID: number;
-  birth_day: number;
-  birth_month: number;
-  school_id: number;
-};
+type TCharaBasicInfoCommon = Record<
+  'charaID' | 'birth_day' | 'birth_month' | 'school_id',
+  number
+>;
 
 type TCharaBasicInfo = {
   basicInfo: TCharaBasicInfoCommon & {
-    name_ruby: {
-      [L in TLanguage]: string;
-    };
+    name_ruby: TLanguageObject;
   };
 };
 
 type TChara = {
   basicInfo: TCharaBasicInfoCommon;
-  info: {
-    cv: {
-      [L in TLanguage]: string;
-    };
-    cv_first: {
-      [L in TLanguage]: string;
-    };
-    cv_last: {
-      [L in TLanguage]: string;
-    };
-    department_1: {
-      [L in TLanguage]: string;
-    };
-    department_2: {
-      [L in TLanguage]: string;
-    };
-    dislike_foods: {
-      [L in TLanguage]: string;
-    };
-    dislikes: {
-      [L in TLanguage]: string;
-    };
-    first_name: {
-      [L in TLanguage]: string;
-    };
-    introduction: {
-      [L in TLanguage]: string;
-    };
-    last_name: {
-      [L in TLanguage]: string;
-    };
-    like_foods: {
-      [L in TLanguage]: string;
-    };
-    likes: {
-      [L in TLanguage]: string;
-    };
-    name: {
-      [L in TLanguage]: string;
-    };
-    name_ruby: {
-      [L in TLanguage]: string;
-    };
-  };
+  info: Record<
+    | 'cv'
+    | 'cv_first'
+    | 'cv_last'
+    | 'department_1'
+    | 'department_2'
+    | 'dislike_foods'
+    | 'dislikes'
+    | 'first_name'
+    | 'introduction'
+    | 'last_name'
+    | 'like_foods'
+    | 'likes'
+    | 'name'
+    | 'name_ruby',
+    TLanguageObject
+  >;
 };
 
 type TDressList = Record<string, TDressBasicInfo>;
@@ -180,13 +160,8 @@ type TDressBasicInfoCommon = {
   cardID: string;
   rarity: number;
   character: number;
-  name: {
-    [L in TLanguage]: string;
-  };
-  released: {
-    ww: number;
-    ja: number;
-  };
+  name: TLanguageObject;
+  released: TReleased;
 };
 
 type TDressBasicInfo = {
@@ -206,30 +181,19 @@ type TDressBaseCommon = {
   };
 };
 
-type TDressStat = {
+type TDressStat = TBasicStat & {
+  /** Power Score (Total) */
   total: number;
+  /** Agility */
   agi: number;
-  atk: number;
-  hp: number;
-  mdef: number;
-  pdef: number;
 };
 
 type TDress = {
-  basicInfo: TDressBasicInfoCommon & {
-    profile: {
-      [L in TLanguage]: string;
-    };
-    message: {
-      [L in TLanguage]: string;
-    };
-    description: {
-      [L in TLanguage]: string;
-    };
-  };
+  basicInfo: TDressBasicInfoCommon &
+    Record<'profile' | 'message' | 'description', TLanguageObject>;
   base: TDressBaseCommon & {
     cost: number;
-    accessories?: string[];
+    accessories: string[] | null;
   };
   other: {
     storyID: number[];
@@ -238,71 +202,31 @@ type TDress = {
     eva: number;
   };
   stat: TDressStat;
-  act: {
-    act1: TAct;
-    act2: TAct;
-    act3: TAct;
-  };
-  skills: {
-    autoSkill1: TAutoSkill;
-    autoSkill2: TAutoSkill;
-    autoSkill3: TAutoSkill;
-  };
+  act: Record<string, TAct>;
+  skills: Record<string, TAutoSkill>;
   groupSkills: {
     unitSkill: {
       iconID: number;
-      info: {
-        [L in TLanguage]: string;
-      };
+      info: TLanguageObject;
     };
-    climaxACT: {
-      iconID: number;
-      cost: number;
-      name: {
-        [L in TLanguage]: string;
-      };
-      description: {
-        [L in TLanguage]: string;
-      };
-      attribute: number;
-      skillInfo: string;
-      skillCycle: string;
-    };
+    climaxACT: TNormalSkill;
     finishACT: {
       iconID: number;
-      name: {
-        [L in TLanguage]: string;
-      };
-      info: {
-        [L in TLanguage]: string;
-      };
+      name: TLanguageObject;
+      info: TLanguageObject;
     };
   };
 };
 
 type TAct = {
-  normalSkill: {
-    iconID: number;
-    cost: number;
-    name: {
-      [L in TLanguage]: string;
-    };
-    description: {
-      [L in TLanguage]: string;
-    };
-    attribute: number;
-    skillInfo: string;
-    skillCycle: string;
-  };
+  normalSkill: TNormalSkill;
   changeSkill: number;
 };
 
 type TAutoSkill = {
   iconID: number;
-  info: {
-    [L in TLanguage]: string;
-  };
-  type: 'passive' | 'start';
+  info: TLanguageObject;
+  type: TSkillType;
 };
 
 type TEquipList = Record<string, TEquipBasicInfo>;
@@ -312,22 +236,13 @@ type TEquipBasicInfo = {
     cardID: string;
     rarity: number;
     charas: string;
-    name: {
-      [L in TLanguage]: string;
-    };
-    profile: {
-      [L in TLanguage]: string;
-    };
-    published: {
-      ww: number;
-      ja: number;
-    };
+    name: TLanguageObject;
+    profile: TLanguageObject;
+    published: TReleased;
   };
   skill: {
     iconID: number;
-    info: {
-      [L in TLanguage]: string;
-    };
+    info: TLanguageObject;
     type: string;
   };
 };
@@ -337,30 +252,18 @@ type TEquip = {
     cardID: string;
     rarity: number;
     charas: number[] | string;
-    name: {
-      [L in TLanguage]: string;
-    };
-    profile: {
-      [L in TLanguage]: string;
-    };
-    published: {
-      ww: number;
-      ja: number;
-    };
+    name: TLanguageObject;
+    profile: TLanguageObject;
+    published: TReleased;
   };
-  stat: {
+  stat: TBasicStat & {
+    /** Power Score (Total) */
     total: number;
-    atk: number;
-    hp: number;
-    pdef: number;
-    mdef: number;
   };
   skill: {
     iconID: number;
-    info: {
-      [L in TLanguage]: string;
-    };
-    type: 'start';
+    info: TLanguageObject;
+    type: TSkillType;
   };
 };
 
@@ -381,38 +284,23 @@ type TAccessory = {
     accID: number;
     iconID: number;
     cardID: number;
-    name: {
-      [L in TLanguage]: string;
-    };
+    name: TLanguageObject;
     sellPrice: number;
   };
   skillInfo: {
     skill: {
-      normalSkill: {
-        iconID: number;
-        cost: number;
-        name: {
-          [L in TLanguage]: string;
-        };
-        description: {
-          [L in TLanguage]: string;
-        };
-        attribute: number;
-        skillInfo: string;
-        skillCycle: string;
-      };
+      normalSkill: TNormalSkill;
       changeSkill: number;
     };
     skillSlot: number;
   };
-  stat: {
+  stat: TBasicStat & {
+    /** Agility */
     agi: number;
-    atk: number;
+    /** Critical */
     cri: number;
+    /** Dexterity */
     dex: number;
-    hp: number;
-    mdef: number;
-    pdef: number;
   };
 };
 
@@ -423,9 +311,7 @@ type TEnemyBasicInfo = {
     enemyID: string;
     icon: number;
     rarity: number;
-    name: {
-      [L in TLanguage]: string;
-    };
+    name: TLanguageObject;
     attribute: number;
     isDress: number;
   };
@@ -454,6 +340,27 @@ type TTitanEnemy = {
   id: number;
   hpLeft: number;
   hpLeftPercent: string;
+};
+
+type TBasicStat = {
+  /** Act Power */
+  atk: number;
+  /** Special Defense */
+  mdef: number;
+  /** Normal Defense */
+  pdef: number;
+  /** HP */
+  hp: number;
+};
+
+type TNormalSkill = {
+  iconID: number;
+  cost: number;
+  name: TLanguageObject;
+  description: TLanguageObject;
+  attribute: number;
+  skillInfo: string;
+  skillCycle: string;
 };
 
 //#endregion
