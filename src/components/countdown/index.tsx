@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { TextStyle } from 'react-native';
 import { Text } from 'react-native-paper';
 
@@ -7,13 +6,15 @@ type Props = {
   miliseconds: number;
   interval?: number;
   style?: TextStyle;
+  timeUpCallback?: () => void;
 };
 
-const Countdown: React.FC<Props> = ({
+const Countdown = ({
   miliseconds,
   interval = 1000,
   style,
-}) => {
+  timeUpCallback,
+}: Props): JSX.Element => {
   const [remaining, setRemaining] = useState(miliseconds);
 
   const getFormattedTime = (t: number) => {
@@ -29,6 +30,7 @@ const Countdown: React.FC<Props> = ({
     h = h === '00' ? '' : String(h) + (h == 1 ? ' hour ' : ' hours ');
     m = m === '00' ? '' : String(m) + (m == 1 ? ' minute ' : ' minutes ');
     if (seconds < 0) {
+      timeUpCallback && timeUpCallback();
       return 'Time up';
     }
     return `${d}${h}${m}${s} seconds`;
@@ -44,12 +46,6 @@ const Countdown: React.FC<Props> = ({
   });
 
   return <Text style={style}>{getFormattedTime(remaining)}</Text>;
-};
-
-Countdown.propTypes = {
-  interval: PropTypes.any,
-  miliseconds: PropTypes.any,
-  style: PropTypes.any,
 };
 
 export default Countdown;
