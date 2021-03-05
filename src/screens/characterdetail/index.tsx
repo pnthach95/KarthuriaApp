@@ -37,11 +37,16 @@ const CharacterDetail = ({ route }: CharacterDetailProps): JSX.Element => {
 
   useEffect(() => {
     const loadData = async () => {
-      const data = await API.get<TChara>(
-        links.CHARA + `${route.params.id}.json`,
-      );
-      if (data.data) {
-        setCharater(data.data);
+      try {
+        const data = await API.get<TChara>(
+          links.CHARA + `${route.params.id}.json`,
+        );
+        if (data.ok && data.data) {
+          setCharater(data.data);
+        }
+      } catch (error) {
+        //
+      } finally {
         setLoading(false);
       }
     };
