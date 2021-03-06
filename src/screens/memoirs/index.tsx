@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, FlatList, StyleSheet } from 'react-native';
+import { View, FlatList, StyleSheet, Image } from 'react-native';
 import { Text, TouchableRipple, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FastImage from 'react-native-fast-image';
@@ -83,13 +83,10 @@ const Memoirs = ({ navigation }: MemoirsScreenProps): JSX.Element => {
               source={{ uri: memoirImg(item.basicInfo.cardID) }}
               style={styles.frame}
             />
-            <FastImage
-              source={frame}
-              style={[styles.frame, AppStyles.absolute]}
-            />
+            <Image source={frame} style={[styles.frame, AppStyles.absolute]} />
           </View>
           <View style={[AppStyles.center, AppStyles.row]}>
-            <FastImage
+            <Image
               source={rarity(item.basicInfo.rarity)}
               resizeMode='contain'
               style={styles.rarity}

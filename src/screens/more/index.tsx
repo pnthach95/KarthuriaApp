@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { View, ScrollView, StyleSheet, Linking } from 'react-native';
+import { View, ScrollView, StyleSheet, Linking, Image } from 'react-native';
 import {
   Text,
   Paragraph,
@@ -10,7 +10,6 @@ import {
   Caption,
 } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import FastImage from 'react-native-fast-image';
 import { getVersion } from 'react-native-device-info';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AppContext from '~/context';
@@ -88,7 +87,7 @@ const MoreScreen = ({ navigation }: MoreScreenProps): JSX.Element => {
       </View>
       <TouchableRipple onPress={openWebsite}>
         <View style={styles.normalRow}>
-          <FastImage source={webicon} style={styles.icon} />
+          <Image source={webicon} style={styles.icon} />
           <View style={styles.space} />
           <Text>Karthuria website</Text>
         </View>

@@ -185,24 +185,24 @@ const StageGirls = ({ navigation }: StageGirlsScreenProps): JSX.Element => {
                 source={{ uri: stageGirlImg(basicInfo.cardID) }}
                 style={styles.frame}
               />
-              <FastImage
+              <Image
                 source={frame}
                 style={[styles.frame, AppStyles.absolute]}
               />
-              <FastImage
+              <Image
                 source={attribute(base.attribute)}
                 style={[styles.attribute, AppStyles.absolute]}
               />
-              <FastImage
+              <Image
                 source={position(base.roleIndex.role)}
                 style={[styles.role, AppStyles.absolute]}
               />
-              <FastImage
+              <Image
                 source={rarity(basicInfo.rarity)}
                 resizeMode='contain'
                 style={[styles.rarity, AppStyles.absolute]}
               />
-              <FastImage
+              <Image
                 source={attackType(base.attackType)}
                 style={[styles.attackType, AppStyles.absolute]}
               />

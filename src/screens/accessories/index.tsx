@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, FlatList, StyleSheet } from 'react-native';
+import { View, FlatList, StyleSheet, Image } from 'react-native';
 import { useTheme, TouchableRipple } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FastImage from 'react-native-fast-image';
@@ -79,7 +79,7 @@ const Accessories = ({ navigation }: AccessoriesProps): JSX.Element => {
               source={{ uri: itemImg(item.basicInfo.iconID) }}
               style={styles.accessoryImg}
             />
-            <FastImage
+            <Image
               source={frame}
               style={[styles.accessoryImg, AppStyles.absolute]}
             />

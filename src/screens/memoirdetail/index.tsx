@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
 import {
   Caption,
   Headline,
@@ -108,10 +108,7 @@ const MemoirDetail = ({
               source={{ uri: memoirBigImg(memoir.basicInfo.cardID) }}
               style={[styles.frame, styles.frameBorderRadius]}
             />
-            <FastImage
-              source={frame}
-              style={[styles.frame, AppStyles.absolute]}
-            />
+            <Image source={frame} style={[styles.frame, AppStyles.absolute]} />
             <FastImage
               source={rarity(memoir.basicInfo.rarity)}
               resizeMode='contain'

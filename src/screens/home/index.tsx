@@ -5,6 +5,7 @@ import {
   Platform,
   StyleSheet,
   RefreshControl,
+  Image,
 } from 'react-native';
 import {
   Text,
@@ -324,7 +325,7 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
                               source={source}
                               style={styles.accessoryImg}
                             />
-                            <FastImage
+                            <Image
                               source={frame}
                               style={[styles.accessoryImg, AppStyles.absolute]}
                             />

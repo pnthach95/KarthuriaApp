@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
 import {
   Headline,
   Subheading,
@@ -88,7 +88,7 @@ const AccessoryDetail = ({
                 source={{ uri: itemImg(accessory.basicInfo.iconID) }}
                 style={styles.accessoryImg}
               />
-              <FastImage
+              <Image
                 source={frame}
                 style={[styles.accessoryImg, AppStyles.absolute]}
               />
@@ -103,7 +103,7 @@ const AccessoryDetail = ({
                   source={{ uri: stageGirlImg(accessory.basicInfo.cardID) }}
                   style={styles.stageGirl}
                 />
-                <FastImage
+                <Image
                   source={sgFrame}
                   style={[styles.stageGirl, AppStyles.absolute]}
                 />

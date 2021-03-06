@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
 import {
   Headline,
   Subheading,
@@ -74,7 +74,7 @@ const EnemyDetail = ({ route }: EnemyDetailProps): JSX.Element => {
                 source={{ uri: enemyImg(enemy.basicInfo.icon) }}
                 style={styles.enemyImg}
               />
-              <FastImage
+              <Image
                 source={attribute(enemy.basicInfo.attribute)}
                 style={[styles.attribute, AppStyles.absolute]}
               />

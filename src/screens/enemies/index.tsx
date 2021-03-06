@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, View, StyleSheet } from 'react-native';
+import { FlatList, View, StyleSheet, Image } from 'react-native';
 import { TouchableRipple, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FastImage from 'react-native-fast-image';
@@ -75,7 +75,7 @@ const Enemies = ({ navigation }: EnemiesProps): JSX.Element => {
                 }}
                 style={styles.frame}
               />
-              <FastImage
+              <Image
                 source={attribute(basicInfo.attribute)}
                 style={[styles.attribute, AppStyles.absolute]}
               />
