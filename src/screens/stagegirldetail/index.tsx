@@ -93,8 +93,14 @@ const StageGirlDetail = ({ route }: StageGirlDetailProps): JSX.Element => {
     void loadData();
   }, []);
 
-  const releasedJA = dress && dayjs(dress.basicInfo.released.ja * 1000);
-  const releasedWW = dress && dayjs(dress.basicInfo.released.ww * 1000);
+  const releasedJA =
+    dress &&
+    dress.basicInfo.released.ja &&
+    dayjs(dress.basicInfo.released.ja * 1000);
+  const releasedWW =
+    dress &&
+    dress.basicInfo.released.ww &&
+    dayjs(dress.basicInfo.released.ww * 1000);
 
   const onLoad = (e: OnLoadEvent) =>
     setRaritySize({
