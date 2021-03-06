@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import {
+  ActivityIndicator,
   Caption,
   Headline,
   Text,
@@ -109,6 +110,9 @@ const StageGirlDetail = ({ route }: StageGirlDetailProps): JSX.Element => {
             {dress.basicInfo.name.en || dress.basicInfo.name.ja}
           </Headline>
           <View style={styles.img}>
+            <View style={[AppStyles.absolute, AppStyles.center, styles.img]}>
+              <ActivityIndicator size='large' />
+            </View>
             <FastImage
               source={{ uri: stageGirlBigImg(dress.basicInfo.cardID || '0') }}
               style={styles.img}
