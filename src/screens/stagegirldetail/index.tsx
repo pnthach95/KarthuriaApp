@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, Image, StyleSheet } from 'react-native';
 import {
   ActivityIndicator,
   Caption,
@@ -21,7 +21,6 @@ import AppStyles from '~/theme/styles';
 import { attackTypeText, attribute, position, rarity } from '~/assets';
 import frame from '~/assets/common/frame_thumbnail_dress.png';
 
-import type { OnLoadEvent } from 'react-native-fast-image';
 import type { TDress, StageGirlDetailProps } from '~/typings';
 
 const styles = StyleSheet.create({
@@ -74,7 +73,6 @@ const styles = StyleSheet.create({
 const StageGirlDetail = ({ route }: StageGirlDetailProps): JSX.Element => {
   const [loading, setLoading] = useState(true);
   const [dress, setDress] = useState<TDress | null>(null);
-  const [raritySize, setRaritySize] = useState({ height: 28, width: 140 });
 
   useEffect(() => {
     const loadData = async () => {
@@ -102,12 +100,6 @@ const StageGirlDetail = ({ route }: StageGirlDetailProps): JSX.Element => {
     dress.basicInfo.released.ww &&
     dayjs(dress.basicInfo.released.ww * 1000);
 
-  const onLoad = (e: OnLoadEvent) =>
-    setRaritySize({
-      height: e.nativeEvent.height * 0.3,
-      width: e.nativeEvent.width * 0.3,
-    });
-
   return (
     <BaseScreen loading={loading} hasData={!!dress}>
       {dress && (
@@ -123,23 +115,18 @@ const StageGirlDetail = ({ route }: StageGirlDetailProps): JSX.Element => {
               source={{ uri: stageGirlBigImg(dress.basicInfo.cardID || '0') }}
               style={styles.img}
             />
-            <FastImage
-              source={frame}
-              style={[styles.img, AppStyles.absolute]}
-            />
-            <FastImage
+            <Image source={frame} style={[styles.img, AppStyles.absolute]} />
+            <Image
               source={attribute(dress.base.attribute)}
               style={[styles.attribute, AppStyles.absolute]}
             />
-            <FastImage
+            <Image
               source={position(dress.base.roleIndex.role)}
               style={[styles.role, AppStyles.absolute]}
             />
-            <FastImage
+            <Image
               source={rarity(dress.basicInfo.rarity)}
-              resizeMode='contain'
-              onLoad={onLoad}
-              style={[styles.rarity, raritySize, AppStyles.absolute]}
+              style={[styles.rarity, AppStyles.absolute]}
             />
           </View>
           <View style={styles.block}>
@@ -159,7 +146,7 @@ const StageGirlDetail = ({ route }: StageGirlDetailProps): JSX.Element => {
               )}
               <View style={[AppStyles.row, AppStyles.spaceBetween]}>
                 <Caption>Attack type</Caption>
-                <FastImage
+                <Image
                   source={attackTypeText(dress.base.attackType)}
                   style={styles.attackType}
                 />
