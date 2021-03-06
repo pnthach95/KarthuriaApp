@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useMemo } from 'react';
-import { FlatList, View, StyleSheet } from 'react-native';
+import { FlatList, View, StyleSheet, Image } from 'react-native';
 import {
   Caption,
   FAB,
@@ -9,6 +9,7 @@ import {
 } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import FastImage from 'react-native-fast-image';
+import { responsiveWidth } from 'react-native-responsive-dimensions';
 import { BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import API, { links } from '~/api';
 import { stageGirlImg } from '~/api/images';
@@ -18,22 +19,20 @@ import CustomBackdrop from '~/components/sheet/backdrop';
 import CustomBackground from '~/components/sheet/background';
 import CustomHandle from '~/components/sheet/handle';
 import AppStyles from '~/theme/styles';
-import {
-  attackType,
-  attribute,
-  charaImgs,
-  elementImgs,
-  position,
-  positionImgs,
-  rarity,
-} from '~/assets';
+import { attackType, attribute, charaImgs, position, rarity } from '~/assets';
 import frame from '~/assets/common/frame_stage_girl.png';
 
 import type {
   TDressBasicInfo,
   TDressList,
   StageGirlsScreenProps,
+  TRole,
 } from '~/typings';
+
+type TFilter = Record<
+  'characters' | 'elements' | 'position' | 'attackType' | 'rarity' | 'skills',
+  boolean[]
+>;
 
 const styles = StyleSheet.create({
   attackType: {
@@ -41,17 +40,35 @@ const styles = StyleSheet.create({
     right: 0,
     width: 20,
   },
+  attackTypeImg: {
+    height: responsiveWidth(10),
+    width: responsiveWidth(10),
+  },
+  attackTypeImgContainer: {
+    borderRadius: 5,
+    height: responsiveWidth(12),
+    width: responsiveWidth(12),
+  },
   attribute: {
     height: 20,
     width: 20,
   },
   charaImg: {
-    height: 52,
-    width: 52,
+    height: responsiveWidth(12),
+    width: responsiveWidth(12),
+  },
+  charaImgContainer: {
+    borderRadius: responsiveWidth(6),
+    marginBottom: 5,
   },
   elementImg: {
-    height: 48,
-    width: 48,
+    height: responsiveWidth(10),
+    width: responsiveWidth(10),
+  },
+  elementImgContainer: {
+    borderRadius: responsiveWidth(6),
+    height: responsiveWidth(12),
+    width: responsiveWidth(12),
   },
   fab: {
     bottom: 0,
@@ -71,14 +88,23 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   positionImg: {
-    height: 30,
-    width: 45,
+    height: (responsiveWidth(10) * 2) / 3,
+    width: responsiveWidth(10),
+  },
+  positionImgContainer: {
+    borderRadius: 5,
+    height: (responsiveWidth(12) * 2) / 3,
+    width: responsiveWidth(12),
   },
   rarity: {
     alignSelf: 'center',
     bottom: 0,
     height: 14,
     width: 70,
+  },
+  rarityImgContainer: {
+    borderRadius: 5,
+    padding: 2,
   },
   role: {
     height: 40 / 3,
@@ -97,6 +123,14 @@ const StageGirls = ({ navigation }: StageGirlsScreenProps): JSX.Element => {
   const snapPoints = useMemo(() => ['35%'], []);
   const [loading, setLoading] = useState(true);
   const [sgList, setSGList] = useState<TDressBasicInfo[]>([]);
+  const [filter, setFilter] = useState<TFilter>({
+    characters: charaImgs.map(() => true),
+    elements: [true, true, true, true, true, true, true],
+    position: [true, true, true],
+    attackType: [true, true],
+    rarity: [true, true, true],
+    skills: [],
+  });
   const top = {
     paddingTop: insets.top,
   };
@@ -114,6 +148,10 @@ const StageGirls = ({ navigation }: StageGirlsScreenProps): JSX.Element => {
               a.basicInfo.released.ja < b.basicInfo.released.ja ? 1 : -1,
             ),
           );
+          setFilter({
+            ...filter,
+            skills: [],
+          });
         }
       } catch (error) {
         //
@@ -202,39 +240,82 @@ const StageGirls = ({ navigation }: StageGirlsScreenProps): JSX.Element => {
             contentContainerStyle={[AppStyles.paddingHorizontal, bottom]}>
             <Caption>Characters</Caption>
             <View style={[AppStyles.row, AppStyles.spaceBetween]}>
-              {charaImgs.map((img, i) => {
+              {filter.characters.map((value, i) => {
+                const bgColor = {
+                  backgroundColor: value ? colors.primary : undefined,
+                };
+                const onPress = () =>
+                  setFilter({
+                    ...filter,
+                    characters: filter.characters.map((v, j) =>
+                      i === j ? !v : v,
+                    ),
+                  });
                 return (
                   <TouchableRipple
                     key={`charaImg_${i}`}
-                    onPress={() => console.log(i)}>
-                    <FastImage
-                      source={img}
-                      resizeMode='center'
-                      style={styles.charaImg}
-                    />
+                    borderless
+                    style={[styles.charaImgContainer, bgColor]}
+                    onPress={onPress}>
+                    <Image source={charaImgs[i]} style={styles.charaImg} />
                   </TouchableRipple>
                 );
               })}
             </View>
             <Caption>Elements</Caption>
             <View style={[AppStyles.row, AppStyles.spaceBetween]}>
-              {elementImgs.map((img, i) => {
+              {filter.elements.map((value, i) => {
+                const bgColor = {
+                  backgroundColor: value ? colors.primary : undefined,
+                };
+                const onPress = () =>
+                  setFilter({
+                    ...filter,
+                    elements: filter.elements.map((v, j) => (i === j ? !v : v)),
+                  });
                 return (
                   <TouchableRipple
                     key={`element_${i}`}
-                    onPress={() => console.log(i)}>
-                    <FastImage source={img} style={styles.elementImg} />
+                    borderless
+                    style={[
+                      AppStyles.center,
+                      styles.elementImgContainer,
+                      bgColor,
+                    ]}
+                    onPress={onPress}>
+                    <Image
+                      source={attribute(i + 1)}
+                      style={styles.elementImg}
+                    />
                   </TouchableRipple>
                 );
               })}
             </View>
             <Caption>Position</Caption>
             <View style={AppStyles.row}>
-              {positionImgs.map((img, i) => {
+              {filter.position.map((value, i) => {
+                const bgColor = {
+                  backgroundColor: value ? colors.primary : undefined,
+                };
+                const onPress = () =>
+                  setFilter({
+                    ...filter,
+                    position: filter.position.map((v, j) => (i === j ? !v : v)),
+                  });
                 return (
                   <View key={`p_${i}`} style={AppStyles.row}>
-                    <TouchableRipple borderless onPress={() => console.log(i)}>
-                      <FastImage source={img} style={styles.positionImg} />
+                    <TouchableRipple
+                      borderless
+                      style={[
+                        AppStyles.center,
+                        styles.positionImgContainer,
+                        bgColor,
+                      ]}
+                      onPress={onPress}>
+                      <Image
+                        source={position(i as TRole)}
+                        style={styles.positionImg}
+                      />
                     </TouchableRipple>
                     <View style={styles.space} />
                   </View>
@@ -242,9 +323,75 @@ const StageGirls = ({ navigation }: StageGirlsScreenProps): JSX.Element => {
               })}
             </View>
             <Caption>Attack Type</Caption>
-            <View style={AppStyles.row}></View>
+            <View style={AppStyles.row}>
+              <TouchableRipple
+                borderless
+                style={[
+                  AppStyles.center,
+                  styles.attackTypeImgContainer,
+                  {
+                    backgroundColor: filter.attackType[0]
+                      ? colors.primary
+                      : undefined,
+                  },
+                ]}
+                onPress={() =>
+                  setFilter({
+                    ...filter,
+                    attackType: [!filter.attackType[0], filter.attackType[1]],
+                  })
+                }>
+                <Image source={attackType(1)} style={styles.attackTypeImg} />
+              </TouchableRipple>
+              <View style={styles.space} />
+              <TouchableRipple
+                borderless
+                style={[
+                  AppStyles.center,
+                  styles.attackTypeImgContainer,
+                  {
+                    backgroundColor: filter.attackType[1]
+                      ? colors.primary
+                      : undefined,
+                  },
+                ]}
+                onPress={() =>
+                  setFilter({
+                    ...filter,
+                    attackType: [filter.attackType[0], !filter.attackType[1]],
+                  })
+                }>
+                <Image source={attackType(2)} style={styles.attackTypeImg} />
+              </TouchableRipple>
+            </View>
             <Caption>Rarity</Caption>
-            <View style={AppStyles.row}></View>
+            <View style={AppStyles.row}>
+              {filter.rarity.map((value, i) => {
+                const bgColor = {
+                  backgroundColor: value ? colors.primary : undefined,
+                };
+                const onPress = () =>
+                  setFilter({
+                    ...filter,
+                    rarity: filter.rarity.map((v, j) => (i === j ? !v : v)),
+                  });
+                return (
+                  <View key={`r_${i}`} style={AppStyles.row}>
+                    <TouchableRipple
+                      borderless
+                      style={[
+                        AppStyles.center,
+                        styles.rarityImgContainer,
+                        bgColor,
+                      ]}
+                      onPress={onPress}>
+                      <Image source={rarity(i + 2)} resizeMode='contain' />
+                    </TouchableRipple>
+                    <View style={styles.space} />
+                  </View>
+                );
+              })}
+            </View>
             <Caption>Skills</Caption>
             <View style={AppStyles.row}></View>
           </BottomSheetScrollView>

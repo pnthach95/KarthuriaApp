@@ -48,17 +48,20 @@ import type { TRole } from '~/typings';
 
 export const elementImgs = [a1, a2, a3, a4, a5, a6, a7];
 
-export const attribute = (id: number): number => elementImgs[id + 1];
+export const attribute = (id: number): number => elementImgs[id - 1];
 
 export const positionImgs = [pFront, pMid, pBack];
 
 export const position = (key: TRole): number => {
   switch (key) {
     case 'back':
+    case 2:
       return pBack;
     case 'middle':
+    case 1:
       return pMid;
     case 'front':
+    case 0:
       return pFront;
   }
 };

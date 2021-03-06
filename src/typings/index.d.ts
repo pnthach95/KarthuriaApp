@@ -109,7 +109,7 @@ type EnemyDetailProps = StackScreenProps<RootStackParamList, 'EnemyDetail'>;
 
 //#region API: Karthuria
 
-type TRole = 'front' | 'middle' | 'back';
+type TRole = 'front' | 'middle' | 'back' | 0 | 1 | 2;
 
 type TSkillType = 'passive' | 'start';
 
