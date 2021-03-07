@@ -1,14 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { View, FlatList, StyleSheet, Image } from 'react-native';
-import { Text, TouchableRipple, useTheme } from 'react-native-paper';
+import {
+  Caption,
+  FAB,
+  Text,
+  TouchableRipple,
+  useTheme,
+} from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet';
 import FastImage from 'react-native-fast-image';
 import API, { links } from '~/api';
 import { memoirImg, skillIcon } from '~/api/images';
-import { rarity } from '~/assets';
+import { charaImgs, rarity } from '~/assets';
 import ErrorView from '~/components/errorview';
 import Kirin from '~/components/kirin';
+import CustomBackdrop from '~/components/sheet/backdrop';
+import CustomBackground from '~/components/sheet/background';
+import CustomHandle from '~/components/sheet/handle';
 import AppStyles from '~/theme/styles';
+import { characterToIndex } from '~/util';
 import frame from '~/assets/common/frame_equip.png';
 
 import type {
@@ -16,6 +27,8 @@ import type {
   TEquipList,
   MemoirsScreenProps,
 } from '~/typings';
+
+type TFilter = Record<'characters' | 'rarity' | 'skills', boolean[]>;
 
 const styles = StyleSheet.create({
   frame: {
@@ -42,10 +55,22 @@ const styles = StyleSheet.create({
 const Memoirs = ({ navigation }: MemoirsScreenProps): JSX.Element => {
   const insets = useSafeAreaInsets();
   const { colors } = useTheme();
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const snapPoints = useMemo(() => ['40%'], []);
   const [loading, setLoading] = useState(true);
+  /** List to filter */
   const [mList, setMList] = useState<TEquipBasicInfo[]>([]);
+  const [rmList, setRMList] = useState<TEquipBasicInfo[]>([]);
+  const [filter, setFilter] = useState<TFilter>({
+    characters: charaImgs.map(() => true),
+    rarity: [true, true, true, true],
+    skills: [],
+  });
   const top = {
     paddingTop: insets.top,
+  };
+  const bottom = {
+    paddingBottom: insets.bottom,
   };
 
   useEffect(() => {
@@ -58,6 +83,10 @@ const Memoirs = ({ navigation }: MemoirsScreenProps): JSX.Element => {
               a.basicInfo.published.ja < b.basicInfo.published.ja ? 1 : -1,
             ),
           );
+          setFilter({
+            ...filter,
+            skills: [],
+          });
         }
       } catch (error) {
         //
@@ -67,6 +96,25 @@ const Memoirs = ({ navigation }: MemoirsScreenProps): JSX.Element => {
     };
     void loadData();
   }, []);
+
+  useEffect(() => {
+    if (mList.length > 0) {
+      const afterFilter = mList.filter((item) => {
+        const checkRarity = filter.rarity[item.basicInfo.rarity - 2];
+        const checkCharacter = Array.isArray(item.basicInfo.charas)
+          ? item.basicInfo.charas.reduce(
+              (prev, current) =>
+                prev && filter.characters[characterToIndex(current)],
+              true,
+            )
+          : true;
+        return checkRarity && checkCharacter;
+      });
+      setRMList(afterFilter);
+    }
+  }, [filter, mList]);
+
+  const openSheet = () => bottomSheetModalRef.current?.present();
 
   const keyExtractor = (item: TEquipBasicInfo) =>
     'memoir_' + item.basicInfo.cardID;
@@ -110,14 +158,81 @@ const Memoirs = ({ navigation }: MemoirsScreenProps): JSX.Element => {
 
   if (mList.length > 0) {
     return (
-      <FlatList
-        data={mList}
-        numColumns={2}
-        keyExtractor={keyExtractor}
-        renderItem={renderItem}
-        style={top}
-        initialNumToRender={12}
-      />
+      <>
+        <FlatList
+          data={rmList}
+          numColumns={2}
+          keyExtractor={keyExtractor}
+          renderItem={renderItem}
+          style={top}
+          initialNumToRender={12}
+        />
+        <FAB style={AppStyles.fab} icon='filter' onPress={openSheet} />
+        <BottomSheetModal
+          ref={bottomSheetModalRef}
+          snapPoints={snapPoints}
+          backdropComponent={CustomBackdrop}
+          backgroundComponent={CustomBackground}
+          handleComponent={CustomHandle}>
+          <BottomSheetScrollView
+            contentContainerStyle={[AppStyles.paddingHorizontal, bottom]}>
+            <Caption>Characters</Caption>
+            <View style={[AppStyles.row, AppStyles.spaceBetween]}>
+              {filter.characters.map((value, i) => {
+                const bgColor = {
+                  backgroundColor: value ? colors.primary : undefined,
+                };
+                const onPress = () =>
+                  setFilter({
+                    ...filter,
+                    characters: filter.characters.map((v, j) =>
+                      i === j ? !v : v,
+                    ),
+                  });
+                return (
+                  <TouchableRipple
+                    key={`charaImg_${i}`}
+                    borderless
+                    style={[AppStyles.charaImgContainer, bgColor]}
+                    onPress={onPress}>
+                    <Image source={charaImgs[i]} style={AppStyles.charaImg} />
+                  </TouchableRipple>
+                );
+              })}
+            </View>
+            <Caption>Skills</Caption>
+            <View style={AppStyles.row}></View>
+            <Caption>Rarity</Caption>
+            <View style={AppStyles.row}>
+              {filter.rarity.map((value, i) => {
+                const bgColor = {
+                  backgroundColor: value ? colors.primary : undefined,
+                };
+                const onPress = () =>
+                  setFilter({
+                    ...filter,
+                    rarity: filter.rarity.map((v, j) => (i === j ? !v : v)),
+                  });
+                return (
+                  <View key={`r_${i}`} style={AppStyles.row}>
+                    <TouchableRipple
+                      borderless
+                      style={[
+                        AppStyles.center,
+                        AppStyles.rarityImgContainer,
+                        bgColor,
+                      ]}
+                      onPress={onPress}>
+                      <Image source={rarity(i + 1)} resizeMode='contain' />
+                    </TouchableRipple>
+                    <View style={AppStyles.spaceHorizontal} />
+                  </View>
+                );
+              })}
+            </View>
+          </BottomSheetScrollView>
+        </BottomSheetModal>
+      </>
     );
   }
 

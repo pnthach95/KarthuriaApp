@@ -244,7 +244,7 @@ type TEquipBasicInfo = {
   basicInfo: {
     cardID: string;
     rarity: number;
-    charas: string;
+    charas: string | number[];
     name: TLanguageObject;
     profile: TLanguageObject;
     published: TReleased;
