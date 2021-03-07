@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { Colors } from 'react-native-paper';
+import { responsiveWidth } from 'react-native-responsive-dimensions';
 
 export default StyleSheet.create({
   absolute: {
@@ -11,6 +12,14 @@ export default StyleSheet.create({
   },
   centerText: {
     textAlign: 'center',
+  },
+  charaImg: {
+    height: responsiveWidth(12),
+    width: responsiveWidth(12),
+  },
+  charaImgContainer: {
+    borderRadius: responsiveWidth(6),
+    marginBottom: 5,
   },
   columnWrapper: {
     justifyContent: 'center',
@@ -26,6 +35,10 @@ export default StyleSheet.create({
   },
   paddingHorizontal: {
     paddingHorizontal: 10,
+  },
+  rarityImgContainer: {
+    borderRadius: 5,
+    padding: 2,
   },
   row: {
     flexDirection: 'row',
@@ -45,6 +58,9 @@ export default StyleSheet.create({
   },
   spaceEvenly: {
     justifyContent: 'space-evenly',
+  },
+  spaceHorizontal: {
+    width: 10,
   },
   whiteText: {
     color: Colors.white,

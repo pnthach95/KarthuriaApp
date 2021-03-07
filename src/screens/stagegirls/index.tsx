@@ -20,6 +20,7 @@ import CustomBackground from '~/components/sheet/background';
 import CustomHandle from '~/components/sheet/handle';
 import AppStyles from '~/theme/styles';
 import { attackType, attribute, charaImgs, position, rarity } from '~/assets';
+import { characterToIndex } from '~/util';
 import frame from '~/assets/common/frame_stage_girl.png';
 
 import type {
@@ -52,14 +53,6 @@ const styles = StyleSheet.create({
   attribute: {
     height: 20,
     width: 20,
-  },
-  charaImg: {
-    height: responsiveWidth(12),
-    width: responsiveWidth(12),
-  },
-  charaImgContainer: {
-    borderRadius: responsiveWidth(6),
-    marginBottom: 5,
   },
   elementImg: {
     height: responsiveWidth(10),
@@ -96,17 +89,10 @@ const styles = StyleSheet.create({
     height: 14,
     width: 70,
   },
-  rarityImgContainer: {
-    borderRadius: 5,
-    padding: 2,
-  },
   role: {
     height: 40 / 3,
     top: 20,
     width: 20,
-  },
-  space: {
-    width: 10,
   },
 });
 
@@ -172,71 +158,12 @@ const StageGirls = ({ navigation }: StageGirlsScreenProps): JSX.Element => {
               return 2;
           }
         };
-        const characterToIndex = () => {
-          switch (item.basicInfo.character) {
-            case 101:
-              return 0;
-            case 102:
-              return 1;
-            case 103:
-              return 2;
-            case 104:
-              return 3;
-            case 105:
-              return 4;
-            case 106:
-              return 5;
-            case 107:
-              return 6;
-            case 108:
-              return 7;
-            case 109:
-              return 8;
-            case 201:
-              return 9;
-            case 202:
-              return 10;
-            case 203:
-              return 11;
-            case 204:
-              return 12;
-            case 205:
-              return 13;
-            case 301:
-              return 14;
-            case 302:
-              return 15;
-            case 303:
-              return 16;
-            case 304:
-              return 17;
-            case 305:
-              return 18;
-            case 401:
-              return 19;
-            case 402:
-              return 20;
-            case 403:
-              return 21;
-            case 404:
-              return 22;
-            case 405:
-              return 23;
-            case 501:
-              return 24;
-            case 502:
-              return 25;
-            case 503:
-              return 26;
-            default:
-              return -1;
-          }
-        };
         const checkRarity = filter.rarity[item.basicInfo.rarity - 2];
         const checkAtkType = filter.attackType[item.base.attackType - 1];
         const checkPosition = filter.position[p()];
         const checkElement = filter.elements[item.base.attribute - 1];
-        const checkCharacter = filter.characters[characterToIndex()];
+        const checkCharacter =
+          filter.characters[characterToIndex(item.basicInfo.character)];
         return (
           checkRarity &&
           checkAtkType &&
@@ -351,9 +278,9 @@ const StageGirls = ({ navigation }: StageGirlsScreenProps): JSX.Element => {
                   <TouchableRipple
                     key={`charaImg_${i}`}
                     borderless
-                    style={[styles.charaImgContainer, bgColor]}
+                    style={[AppStyles.charaImgContainer, bgColor]}
                     onPress={onPress}>
-                    <Image source={charaImgs[i]} style={styles.charaImg} />
+                    <Image source={charaImgs[i]} style={AppStyles.charaImg} />
                   </TouchableRipple>
                 );
               })}
@@ -413,7 +340,7 @@ const StageGirls = ({ navigation }: StageGirlsScreenProps): JSX.Element => {
                         style={styles.positionImg}
                       />
                     </TouchableRipple>
-                    <View style={styles.space} />
+                    <View style={AppStyles.spaceHorizontal} />
                   </View>
                 );
               })}
@@ -439,7 +366,7 @@ const StageGirls = ({ navigation }: StageGirlsScreenProps): JSX.Element => {
                 }>
                 <Image source={attackType(1)} style={styles.attackTypeImg} />
               </TouchableRipple>
-              <View style={styles.space} />
+              <View style={AppStyles.spaceHorizontal} />
               <TouchableRipple
                 borderless
                 style={[
@@ -477,13 +404,13 @@ const StageGirls = ({ navigation }: StageGirlsScreenProps): JSX.Element => {
                       borderless
                       style={[
                         AppStyles.center,
-                        styles.rarityImgContainer,
+                        AppStyles.rarityImgContainer,
                         bgColor,
                       ]}
                       onPress={onPress}>
                       <Image source={rarity(i + 2)} resizeMode='contain' />
                     </TouchableRipple>
-                    <View style={styles.space} />
+                    <View style={AppStyles.spaceHorizontal} />
                   </View>
                 );
               })}
