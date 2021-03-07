@@ -100,7 +100,7 @@ const Memoirs = ({ navigation }: MemoirsScreenProps): JSX.Element => {
   useEffect(() => {
     if (mList.length > 0) {
       const afterFilter = mList.filter((item) => {
-        const checkRarity = filter.rarity[item.basicInfo.rarity - 2];
+        const checkRarity = filter.rarity[item.basicInfo.rarity - 1];
         const checkCharacter = Array.isArray(item.basicInfo.charas)
           ? item.basicInfo.charas.reduce(
               (prev, current) =>
