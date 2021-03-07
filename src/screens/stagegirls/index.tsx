@@ -70,12 +70,6 @@ const styles = StyleSheet.create({
     height: responsiveWidth(12),
     width: responsiveWidth(12),
   },
-  fab: {
-    bottom: 0,
-    margin: 16,
-    position: 'absolute',
-    right: 0,
-  },
   frame: {
     height: 160 * 0.5,
     width: 144 * 0.5,
@@ -331,7 +325,7 @@ const StageGirls = ({ navigation }: StageGirlsScreenProps): JSX.Element => {
           numColumns={2}
           initialNumToRender={12}
         />
-        <FAB style={styles.fab} icon='filter' onPress={openSheet} />
+        <FAB style={AppStyles.fab} icon='filter' onPress={openSheet} />
         <BottomSheetModal
           ref={bottomSheetModalRef}
           snapPoints={snapPoints}

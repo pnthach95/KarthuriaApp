@@ -15,6 +15,12 @@ export default StyleSheet.create({
   columnWrapper: {
     justifyContent: 'center',
   },
+  fab: {
+    bottom: 0,
+    margin: 16,
+    position: 'absolute',
+    right: 0,
+  },
   flex1: {
     flex: 1,
   },
