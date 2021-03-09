@@ -381,7 +381,6 @@ const styles = StyleSheet.create({
   hpBar: {
     borderRadius: 10,
     height: 15,
-    marginHorizontal: 30,
   },
   icon: {
     height: 40,
