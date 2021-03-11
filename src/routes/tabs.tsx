@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AnimatedTabBar from '@gorhom/animated-tabbar';
 import { useTheme, Colors } from 'react-native-paper';
 import Animated from 'react-native-reanimated';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import HomeScreen from '~/screens/home';
 import StageGirlsScreen from '~/screens/stagegirls';
@@ -29,13 +29,13 @@ const homeIcon = ({ size, color }: IconProps) => (
   <Icon name='home' size={size} color={color} />
 );
 const stageGirlsIcon = ({ size, color }: IconProps) => (
-  <Icon name='tablet-portrait' size={size} color={color} />
+  <Icon name='star-four-points' size={size} color={color} />
 );
 const memoirsIcon = ({ size, color }: IconProps) => (
-  <Icon name='image' size={size} color={color} />
+  <Icon name='image-area' size={size} color={color} />
 );
 const moreIcon = ({ size, color }: IconProps) => (
-  <Icon name='ellipsis-horizontal' size={size} color={color} />
+  <Icon name='dots-horizontal' size={size} color={color} />
 );
 
 const tabs: TabsConfig<BubbleTabBarItemConfig, BottomTabList> = {
