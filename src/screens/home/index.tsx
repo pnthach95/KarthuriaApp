@@ -209,19 +209,30 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
               style={[
                 AppStyles.row,
                 AppStyles.spaceBetween,
-                AppStyles.center,
-                styles.item,
+                styles.challengeRow,
               ]}>
               {section.rogue.data.map((item) => {
                 const begin = dayjs(item.beginAt * 1000);
                 const end = dayjs(item.endAt * 1000);
                 const goToDetail = () =>
                   navigation.navigate('StageGirlDetail', { id: item.id });
+                const { length } = section.rogue.data;
                 return (
                   <Surface
                     key={item.id}
-                    style={[styles.rogueItem, AppStyles.shadow]}>
-                    <TouchableRipple borderless onPress={goToDetail}>
+                    style={[
+                      styles.rogueItem,
+                      AppStyles.shadow,
+                      {
+                        width:
+                          styles.challengeRow.width / length -
+                          (length > 1 ? 5 : 0),
+                      },
+                    ]}>
+                    <TouchableRipple
+                      borderless
+                      style={styles.rogueImg}
+                      onPress={goToDetail}>
                       <FastImage
                         source={{ uri: rogueImg(item.id) }}
                         style={styles.rogueImg}
@@ -365,6 +376,10 @@ const styles = StyleSheet.create({
   block: {
     paddingVertical: 10,
   },
+  challengeRow: {
+    marginVertical: 5,
+    width: responsiveWidth(100) - 20,
+  },
   content: {
     padding: 10,
   },
@@ -400,7 +415,6 @@ const styles = StyleSheet.create({
   rogueItem: {
     borderRadius: 5,
     padding: 10,
-    width: responsiveWidth(50) - 20,
   },
   stageGirl: {
     borderRadius: 5,
