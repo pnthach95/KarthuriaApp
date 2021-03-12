@@ -58,14 +58,17 @@ const Memoirs = ({ navigation }: MemoirsScreenProps): JSX.Element => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['40%'], []);
   const [loading, setLoading] = useState(true);
-  /** List to filter */
+  /** List for filter */
   const [mList, setMList] = useState<TEquipBasicInfo[]>([]);
+  /** List for render */
   const [rmList, setRMList] = useState<TEquipBasicInfo[]>([]);
+  /** Filter */
   const [filter, setFilter] = useState<TFilter>({
     characters: charaImgs.map(() => true),
     rarity: [true, true, true, true],
     skills: [],
   });
+  /** Top inset for iOS */
   const top = {
     paddingTop: insets.top,
   };
@@ -73,6 +76,7 @@ const Memoirs = ({ navigation }: MemoirsScreenProps): JSX.Element => {
     paddingBottom: insets.bottom,
   };
 
+  /** Load data here */
   useEffect(() => {
     const loadData = async () => {
       try {
@@ -97,6 +101,7 @@ const Memoirs = ({ navigation }: MemoirsScreenProps): JSX.Element => {
     void loadData();
   }, []);
 
+  /** Handle filter */
   useEffect(() => {
     if (mList.length > 0) {
       const afterFilter = mList.filter((item) => {
