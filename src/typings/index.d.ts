@@ -207,7 +207,7 @@ type TDress = {
   };
   stat: TDressStat;
   act: Record<string, TAct>;
-  skills: Record<string, TAutoSkill>;
+  skills: Record<string, TSkillObject>;
   groupSkills: {
     unitSkill: {
       iconID: number;
@@ -232,7 +232,7 @@ type TAct = {
   changeSkill: number;
 };
 
-type TAutoSkill = {
+type TSkillObject = {
   iconID: number;
   info: TLanguageObject;
   type: TSkillType;
@@ -249,11 +249,7 @@ type TEquipBasicInfo = {
     profile: TLanguageObject;
     published: TReleased;
   };
-  skill: {
-    iconID: number;
-    info: TLanguageObject;
-    type: string;
-  };
+  skill: TSkillObject;
 };
 
 type TEquip = {
@@ -269,11 +265,7 @@ type TEquip = {
     /** Power Score (Total) */
     total: number;
   };
-  skill: {
-    iconID: number;
-    info: TLanguageObject;
-    type: TSkillType;
-  };
+  skill: TSkillObject;
 };
 
 type TAccessoryList = Record<string, TAccessoryBasicInfo>;
