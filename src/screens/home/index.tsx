@@ -41,6 +41,7 @@ import AppStyles from '~/theme/styles';
 import icon from '~/assets/common/icon.png';
 import frame from '~/assets/common/frame_accessory.png';
 
+import type { ViewStyle } from 'react-native';
 import type {
   MainScreenProps,
   TAccessoryBasicInfo,
@@ -217,18 +218,18 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
                 const goToDetail = () =>
                   navigation.navigate('StageGirlDetail', { id: item.id });
                 const { length } = section.rogue.data;
+                const textView: ViewStyle = {
+                  flexDirection: length === 1 ? 'row' : 'column',
+                  alignItems: length === 1 ? 'center' : 'flex-start',
+                };
+                const widthView: ViewStyle = {
+                  width:
+                    styles.challengeRow.width / length - (length > 1 ? 5 : 0),
+                };
                 return (
                   <Surface
                     key={item.id}
-                    style={[
-                      styles.rogueItem,
-                      AppStyles.shadow,
-                      {
-                        width:
-                          styles.challengeRow.width / length -
-                          (length > 1 ? 5 : 0),
-                      },
-                    ]}>
+                    style={[styles.rogueItem, AppStyles.shadow, widthView]}>
                     <TouchableRipple
                       borderless
                       style={styles.rogueImg}
@@ -238,27 +239,31 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
                         style={styles.rogueImg}
                       />
                     </TouchableRipple>
-                    <Caption>Begin</Caption>
-                    <Text>{begin.format('llll')}</Text>
-                    <Caption>End</Caption>
-                    <Text>{end.format('llll')}</Text>
+                    <View style={[AppStyles.spaceBetween, textView]}>
+                      <Caption>Begin</Caption>
+                      <Text>{begin.format('llll')}</Text>
+                    </View>
+                    <View style={[AppStyles.spaceBetween, textView]}>
+                      <Caption>End</Caption>
+                      <Text>{end.format('llll')}</Text>
+                    </View>
                     {begin.diff(dayjs()) > 0 && (
-                      <>
+                      <View style={[AppStyles.spaceBetween, textView]}>
                         <Caption>Start in</Caption>
                         <Countdown
                           miliseconds={begin.diff(dayjs())}
                           timeUpCallback={onRefresh}
                         />
-                      </>
+                      </View>
                     )}
                     {begin.diff(dayjs()) < 0 && end.diff(dayjs()) > 0 && (
-                      <>
+                      <View style={[AppStyles.spaceBetween, textView]}>
                         <Caption>End in</Caption>
                         <Countdown
                           miliseconds={end.diff(dayjs())}
                           timeUpCallback={onRefresh}
                         />
-                      </>
+                      </View>
                     )}
                   </Surface>
                 );
