@@ -26,12 +26,17 @@ export default StyleSheet.create({
   },
   fab: {
     bottom: 0,
-    margin: 16,
     position: 'absolute',
     right: 0,
   },
   flex1: {
     flex: 1,
+  },
+  marginBottom: {
+    marginBottom: 5,
+  },
+  marginTop: {
+    marginTop: 50,
   },
   paddingHorizontal: {
     paddingHorizontal: 10,
@@ -44,8 +49,16 @@ export default StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
+  rowSpaceBetween: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   selfEnd: {
     alignSelf: 'flex-end',
+  },
+  selfFlexStart: {
+    alignSelf: 'flex-start',
   },
   shadow: {
     elevation: 5,
