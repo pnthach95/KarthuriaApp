@@ -27,6 +27,7 @@ build/
 .idea
 .gradle
 local.properties
+android/app/keystore.properties
 *.iml
 
 # node.js
