@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Text, Headline, Caption } from 'react-native-paper';
+import { Headline, Caption, Paragraph } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
 import dayjs from 'dayjs';
 import API, { links } from '~/api';
@@ -65,7 +65,7 @@ const CharacterDetail = ({ route }: CharacterDetailProps): JSX.Element => {
       {character && (
         <>
           <Headline style={AppStyles.centerText}>
-            {character.info.name.en}
+            {character.info.name.en || character.info.name.ja}
           </Headline>
           <View style={AppStyles.center}>
             <FastImage
@@ -79,15 +79,20 @@ const CharacterDetail = ({ route }: CharacterDetailProps): JSX.Element => {
           </View>
           <View style={styles.padding}>
             <Caption>Birthday (month/day)</Caption>
-            <Text>{birthday}</Text>
+            <Paragraph>{birthday}</Paragraph>
             <Separator height={10} />
             <Caption>Voice Actor</Caption>
-            <Text>{character.info.cv.en}</Text>
+            <Paragraph>
+              {character.info.cv.en || character.info.cv.ja}
+            </Paragraph>
             <Separator height={10} />
             <View style={styles.schoolRow}>
               <View>
                 <Caption>School</Caption>
-                <Text>{character.info.department_1.en}</Text>
+                <Paragraph>
+                  {character.info.department_1.en ||
+                    character.info.department_1.ja}
+                </Paragraph>
               </View>
               <FastImage
                 source={{ uri: schoolIcon(character.basicInfo.school_id) }}
@@ -96,22 +101,35 @@ const CharacterDetail = ({ route }: CharacterDetailProps): JSX.Element => {
             </View>
             <Separator height={10} />
             <Caption>Department</Caption>
-            <Text>{character.info.department_2.en}</Text>
+            <Paragraph>
+              {character.info.department_2.en || character.info.department_2.ja}
+            </Paragraph>
             <Separator height={10} />
             <Caption>Liked Food</Caption>
-            <Text>{character.info.like_foods.en}</Text>
+            <Paragraph>
+              {character.info.like_foods.en || character.info.like_foods.ja}
+            </Paragraph>
             <Separator height={10} />
             <Caption>Disliked Food</Caption>
-            <Text>{character.info.dislike_foods.en}</Text>
+            <Paragraph>
+              {character.info.dislike_foods.en ||
+                character.info.dislike_foods.ja}
+            </Paragraph>
             <Separator height={10} />
             <Caption>Likes</Caption>
-            <Text>{character.info.likes.en}</Text>
+            <Paragraph>
+              {character.info.likes.en || character.info.likes.ja}
+            </Paragraph>
             <Separator height={10} />
             <Caption>Dislikes</Caption>
-            <Text>{character.info.dislikes.en}</Text>
+            <Paragraph>
+              {character.info.dislikes.en || character.info.dislikes.ja}
+            </Paragraph>
             <Separator height={10} />
             <Caption>Introduction</Caption>
-            <Text>{character.info.introduction.en}</Text>
+            <Paragraph>
+              {character.info.introduction.en || character.info.introduction.ja}
+            </Paragraph>
           </View>
         </>
       )}
