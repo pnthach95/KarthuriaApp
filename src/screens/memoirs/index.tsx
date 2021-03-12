@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef, useMemo } from 'react';
 import { View, FlatList, StyleSheet, Image } from 'react-native';
 import {
+  Button,
   Caption,
   FAB,
   Text,
@@ -8,7 +9,8 @@ import {
   useTheme,
 } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet';
+import { BottomSheetModal, BottomSheetFlatList } from '@gorhom/bottom-sheet';
+import { responsiveWidth } from 'react-native-responsive-dimensions';
 import FastImage from 'react-native-fast-image';
 import API, { links } from '~/api';
 import { memoirImg, skillIcon } from '~/api/images';
@@ -26,11 +28,26 @@ import type {
   TEquipBasicInfo,
   TEquipList,
   MemoirsScreenProps,
+  TSkillsOnFilter,
 } from '~/typings';
 
-type TFilter = Record<'characters' | 'rarity' | 'skills', boolean[]>;
+type TFilter = Record<'characters' | 'rarity', boolean[]> & {
+  skills: {
+    id: number;
+    checked: boolean;
+  }[];
+};
 
 const styles = StyleSheet.create({
+  elementImg: {
+    height: responsiveWidth(10),
+    width: responsiveWidth(10),
+  },
+  elementImgContainer: {
+    borderRadius: responsiveWidth(6),
+    height: responsiveWidth(12),
+    width: responsiveWidth(12),
+  },
   frame: {
     alignSelf: 'center',
     height: 160 * 0.5,
@@ -57,6 +74,8 @@ const Memoirs = ({ navigation }: MemoirsScreenProps): JSX.Element => {
   const { colors } = useTheme();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['40%'], []);
+  /** FAB state */
+  const [fabState, setFABState] = useState(false);
   const [loading, setLoading] = useState(true);
   /** List for filter */
   const [mList, setMList] = useState<TEquipBasicInfo[]>([]);
@@ -68,12 +87,16 @@ const Memoirs = ({ navigation }: MemoirsScreenProps): JSX.Element => {
     rarity: [true, true, true, true],
     skills: [],
   });
+  /** Filter key to render filter bottom sheet */
+  const [filterKey, setFilterKey] = useState<keyof typeof filter>('characters');
+  /** State for select/deselect all button */
+  const [filterAll, setFilterAll] = useState({
+    characters: true,
+    skills: true,
+  });
   /** Top inset for iOS */
   const top = {
     paddingTop: insets.top,
-  };
-  const bottom = {
-    paddingBottom: insets.bottom,
   };
 
   /** Load data here */
@@ -81,16 +104,20 @@ const Memoirs = ({ navigation }: MemoirsScreenProps): JSX.Element => {
     const loadData = async () => {
       try {
         const gotData = await API.get<TEquipList>(links.LIST.EQUIP);
+        const sData = await API.get<TSkillsOnFilter>(links.LIST.EQUIP_SKILLS);
         if (gotData.ok && gotData.data) {
           setMList(
             Object.values(gotData.data).sort((a, b) =>
               a.basicInfo.published.ja < b.basicInfo.published.ja ? 1 : -1,
             ),
           );
-          setFilter({
-            ...filter,
-            skills: [],
-          });
+        }
+        if (sData.ok && sData.data) {
+          const skills = Object.keys(sData.data).map((k) => ({
+            id: parseInt(k),
+            checked: true,
+          }));
+          setFilter({ ...filter, skills });
         }
       } catch (error) {
         //
@@ -113,18 +140,57 @@ const Memoirs = ({ navigation }: MemoirsScreenProps): JSX.Element => {
               true,
             )
           : true;
-        return checkRarity && checkCharacter;
+        const checkSkill = filter.skills.find((s) => s.id === item.skill.iconID)
+          ?.checked;
+        return checkRarity && checkCharacter && checkSkill;
       });
       setRMList(afterFilter);
     }
   }, [filter, mList]);
 
+  //#region Sheet
+
   const openSheet = () => bottomSheetModalRef.current?.present();
 
-  const keyExtractor = (item: TEquipBasicInfo) =>
+  /** On press FAB */
+  const openFABGroup = () => setFABState(!fabState);
+
+  /** FAB children */
+  const fabActions = [
+    {
+      icon: 'account',
+      label: 'Characters',
+      onPress: () => {
+        setFilterKey('characters');
+        openSheet();
+      },
+    },
+    {
+      icon: 'star',
+      label: 'Rarity',
+      onPress: () => {
+        setFilterKey('rarity');
+        openSheet();
+      },
+    },
+    {
+      icon: 'chemical-weapon',
+      label: 'Skills',
+      onPress: () => {
+        setFilterKey('skills');
+        openSheet();
+      },
+    },
+  ];
+
+  //#endregion
+
+  //#region Memoir list
+
+  const mKeyExtractor = (item: TEquipBasicInfo) =>
     'memoir_' + item.basicInfo.cardID;
 
-  const renderItem = ({ item }: { item: TEquipBasicInfo }) => {
+  const mRenderItem = ({ item }: { item: TEquipBasicInfo }) => {
     const onPress = () =>
       navigation.navigate('MemoirDetail', { id: item.basicInfo.cardID });
 
@@ -157,6 +223,145 @@ const Memoirs = ({ navigation }: MemoirsScreenProps): JSX.Element => {
     );
   };
 
+  const emptyList = () => {
+    return (
+      <View style={[AppStyles.flex1, AppStyles.center, AppStyles.marginTop]}>
+        <Text>No data. Please check filter.</Text>
+      </View>
+    );
+  };
+
+  //#endregion
+
+  //#region Render character filter
+
+  const toggleAllCharacters = () => {
+    setFilter({
+      ...filter,
+      characters: filter.characters.map(() => !filterAll.characters),
+    });
+    setFilterAll({
+      ...filterAll,
+      characters: !filterAll.characters,
+    });
+  };
+
+  const charaKeyExtractor = (item: boolean, i: number) => `charaImg_${i}`;
+
+  const charaRenderItem = ({
+    item,
+    index,
+  }: {
+    item: boolean;
+    index: number;
+  }) => {
+    const bgColor = {
+      backgroundColor: item ? colors.primary : undefined,
+    };
+    const onPress = () =>
+      setFilter({
+        ...filter,
+        characters: filter.characters.map((v, j) => (index === j ? !v : v)),
+      });
+    return (
+      <TouchableRipple
+        borderless
+        style={[AppStyles.charaImgContainer, bgColor]}
+        onPress={onPress}>
+        <Image source={charaImgs[index]} style={AppStyles.charaImg} />
+      </TouchableRipple>
+    );
+  };
+
+  //#endregion
+
+  //#region Render rarity filter
+
+  const rarityKeyExtractor = (item: boolean, i: number) => `rarity_${i}`;
+
+  const raritySeparator = () => <View style={AppStyles.spaceHorizontal} />;
+
+  const rarityRenderItem = ({
+    item,
+    index,
+  }: {
+    item: boolean;
+    index: number;
+  }) => {
+    const bgColor = {
+      backgroundColor: item ? colors.primary : undefined,
+    };
+    const onPress = () =>
+      setFilter({
+        ...filter,
+        rarity: filter.rarity.map((v, j) => (index === j ? !v : v)),
+      });
+    return (
+      <TouchableRipple
+        borderless
+        style={[AppStyles.rarityImgContainer, AppStyles.selfFlexStart, bgColor]}
+        onPress={onPress}>
+        <Image source={rarity(index + 1)} resizeMode='contain' />
+      </TouchableRipple>
+    );
+  };
+
+  //#endregion
+
+  //#region Render skill filter
+
+  const toggleAllSkills = () => {
+    setFilter({
+      ...filter,
+      skills: filter.skills.map((item) => ({
+        ...item,
+        checked: !filterAll.skills,
+      })),
+    });
+    setFilterAll({
+      ...filterAll,
+      skills: !filterAll.skills,
+    });
+  };
+
+  const skillKeyExtractor = (item: TFilter['skills'][0], i: number) =>
+    `skill_${i}`;
+
+  const skillRenderItem = ({
+    item,
+    index,
+  }: {
+    item: TFilter['skills'][0];
+    index: number;
+  }) => {
+    const bgColor = {
+      backgroundColor: item.checked ? colors.primary : undefined,
+    };
+    const onPress = () =>
+      setFilter({
+        ...filter,
+        skills: filter.skills.map((v, j) =>
+          index === j ? { ...v, checked: !v.checked } : v,
+        ),
+      });
+    const source = { uri: skillIcon(item.id) };
+    return (
+      <TouchableRipple
+        borderless
+        style={[
+          AppStyles.center,
+          AppStyles.marginBottom,
+          styles.elementImgContainer,
+          bgColor,
+        ]}
+        onPress={onPress}>
+        <Image source={source} style={styles.elementImg} />
+      </TouchableRipple>
+    );
+  };
+
+  //#endregion
+
   if (loading) {
     return <Kirin />;
   }
@@ -167,75 +372,83 @@ const Memoirs = ({ navigation }: MemoirsScreenProps): JSX.Element => {
         <FlatList
           data={rmList}
           numColumns={2}
-          keyExtractor={keyExtractor}
-          renderItem={renderItem}
+          keyExtractor={mKeyExtractor}
+          renderItem={mRenderItem}
           style={top}
           initialNumToRender={12}
+          ListEmptyComponent={emptyList}
         />
-        <FAB style={AppStyles.fab} icon='filter' onPress={openSheet} />
+        <FAB.Group
+          open={fabState}
+          visible={true}
+          icon={fabState ? 'filter-outline' : 'filter'}
+          onStateChange={openFABGroup}
+          actions={fabActions}
+          onPress={openFABGroup}
+        />
         <BottomSheetModal
           ref={bottomSheetModalRef}
           snapPoints={snapPoints}
           backdropComponent={CustomBackdrop}
           backgroundComponent={CustomBackground}
           handleComponent={CustomHandle}>
-          <BottomSheetScrollView
-            contentContainerStyle={[AppStyles.paddingHorizontal, bottom]}>
-            <Caption>Characters</Caption>
-            <View style={[AppStyles.row, AppStyles.spaceBetween]}>
-              {filter.characters.map((value, i) => {
-                const bgColor = {
-                  backgroundColor: value ? colors.primary : undefined,
-                };
-                const onPress = () =>
-                  setFilter({
-                    ...filter,
-                    characters: filter.characters.map((v, j) =>
-                      i === j ? !v : v,
-                    ),
-                  });
-                return (
-                  <TouchableRipple
-                    key={`charaImg_${i}`}
-                    borderless
-                    style={[AppStyles.charaImgContainer, bgColor]}
-                    onPress={onPress}>
-                    <Image source={charaImgs[i]} style={AppStyles.charaImg} />
-                  </TouchableRipple>
-                );
-              })}
-            </View>
-            <Caption>Skills</Caption>
-            <View style={AppStyles.row}></View>
-            <Caption>Rarity</Caption>
-            <View style={AppStyles.row}>
-              {filter.rarity.map((value, i) => {
-                const bgColor = {
-                  backgroundColor: value ? colors.primary : undefined,
-                };
-                const onPress = () =>
-                  setFilter({
-                    ...filter,
-                    rarity: filter.rarity.map((v, j) => (i === j ? !v : v)),
-                  });
-                return (
-                  <View key={`r_${i}`} style={AppStyles.row}>
-                    <TouchableRipple
-                      borderless
-                      style={[
-                        AppStyles.center,
-                        AppStyles.rarityImgContainer,
-                        bgColor,
-                      ]}
-                      onPress={onPress}>
-                      <Image source={rarity(i + 1)} resizeMode='contain' />
-                    </TouchableRipple>
-                    <View style={AppStyles.spaceHorizontal} />
-                  </View>
-                );
-              })}
-            </View>
-          </BottomSheetScrollView>
+          <View style={[AppStyles.paddingHorizontal, AppStyles.flex1]}>
+            {/* Character filter */}
+            {filterKey === 'characters' && (
+              <>
+                <View
+                  style={[AppStyles.rowSpaceBetween, AppStyles.marginBottom]}>
+                  <Caption>Characters</Caption>
+                  <Button
+                    mode={filterAll.characters ? 'contained' : 'outlined'}
+                    onPress={toggleAllCharacters}>
+                    All
+                  </Button>
+                </View>
+                <BottomSheetFlatList
+                  data={filter.characters}
+                  keyExtractor={charaKeyExtractor}
+                  numColumns={7}
+                  columnWrapperStyle={AppStyles.spaceBetween}
+                  renderItem={charaRenderItem}
+                />
+              </>
+            )}
+            {/* Rarity filter */}
+            {filterKey === 'rarity' && (
+              <>
+                <Caption>Rarity</Caption>
+                <BottomSheetFlatList
+                  data={filter.rarity}
+                  keyExtractor={rarityKeyExtractor}
+                  horizontal
+                  ItemSeparatorComponent={raritySeparator}
+                  renderItem={rarityRenderItem}
+                />
+              </>
+            )}
+            {/* Skill filter */}
+            {filterKey === 'skills' && (
+              <>
+                <View
+                  style={[AppStyles.rowSpaceBetween, AppStyles.marginBottom]}>
+                  <Caption>Skills</Caption>
+                  <Button
+                    mode={filterAll.skills ? 'contained' : 'outlined'}
+                    onPress={toggleAllSkills}>
+                    All
+                  </Button>
+                </View>
+                <BottomSheetFlatList
+                  data={filter.skills}
+                  numColumns={7}
+                  keyExtractor={skillKeyExtractor}
+                  columnWrapperStyle={AppStyles.spaceBetween}
+                  renderItem={skillRenderItem}
+                />
+              </>
+            )}
+          </View>
         </BottomSheetModal>
       </>
     );
