@@ -311,7 +311,10 @@ type TEnemyBasicInfo = {
     rarity: number;
     name: TLanguageObject;
     attribute: number;
-    isDress: number;
+    /** Enemy type:
+     * - 1: stage girl
+     * - 0: else */
+    isDress: 0 | 1;
   };
 };
 
