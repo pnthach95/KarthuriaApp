@@ -166,44 +166,44 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
             <FastImage source={icon} style={styles.icon} />
             <Title>Project Karthuria</Title>
           </View>
-          <View style={styles.block}>
-            {section.event.data.length > 0 && (
+          {section.event.data.length > 0 && (
+            <View style={styles.block}>
               <Subheading style={AppStyles.centerText}>Events</Subheading>
-            )}
-            {section.event.data.map((item) => {
-              const begin = dayjs(item.beginAt * 1000);
-              const end = dayjs(item.endAt * 1000);
-              if (end.diff(dayjs(), 'y') > 1) {
-                return null;
-              }
-              return (
-                <Surface
-                  key={JSON.stringify(item)}
-                  style={[styles.item, AppStyles.shadow]}>
-                  <EventImage img={eventImg(item.id)} />
-                  <View style={styles.block}>
-                    <Countdown
-                      miliseconds={end.diff(dayjs())}
-                      style={AppStyles.centerText}
-                      timeUpCallback={onRefresh}
-                    />
-                  </View>
-                  <View style={[AppStyles.row, AppStyles.spaceBetween]}>
-                    <Caption>Begin</Caption>
-                    <Text>{begin.format('llll')}</Text>
-                  </View>
-                  <View style={[AppStyles.row, AppStyles.spaceBetween]}>
-                    <Caption>End</Caption>
-                    <Text>{end.format('llll')}</Text>
-                  </View>
-                  <View style={[AppStyles.row, AppStyles.spaceBetween]}>
-                    <Caption>Type</Caption>
-                    <Text>{item.referenceIndex}</Text>
-                  </View>
-                </Surface>
-              );
-            })}
-          </View>
+              {section.event.data.map((item) => {
+                const begin = dayjs(item.beginAt * 1000);
+                const end = dayjs(item.endAt * 1000);
+                if (end.diff(dayjs(), 'y') > 1) {
+                  return null;
+                }
+                return (
+                  <Surface
+                    key={JSON.stringify(item)}
+                    style={[styles.item, AppStyles.shadow]}>
+                    <EventImage img={eventImg(item.id)} />
+                    <View style={styles.block}>
+                      <Countdown
+                        miliseconds={end.diff(dayjs())}
+                        style={AppStyles.centerText}
+                        timeUpCallback={onRefresh}
+                      />
+                    </View>
+                    <View style={[AppStyles.row, AppStyles.spaceBetween]}>
+                      <Caption>Begin</Caption>
+                      <Text>{begin.format('llll')}</Text>
+                    </View>
+                    <View style={[AppStyles.row, AppStyles.spaceBetween]}>
+                      <Caption>End</Caption>
+                      <Text>{end.format('llll')}</Text>
+                    </View>
+                    <View style={[AppStyles.row, AppStyles.spaceBetween]}>
+                      <Caption>Type</Caption>
+                      <Text>{item.referenceIndex}</Text>
+                    </View>
+                  </Surface>
+                );
+              })}
+            </View>
+          )}
           <View style={styles.block}>
             <Subheading style={AppStyles.centerText}>
               Challenge Revue
