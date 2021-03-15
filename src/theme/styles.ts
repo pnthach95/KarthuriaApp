@@ -24,8 +24,18 @@ export default StyleSheet.create({
   columnWrapper: {
     justifyContent: 'center',
   },
+  elementImg: {
+    height: responsiveWidth(10),
+    width: responsiveWidth(10),
+  },
+  elementImgContainer: {
+    borderRadius: responsiveWidth(6),
+    height: responsiveWidth(12),
+    width: responsiveWidth(12),
+  },
   fab: {
     bottom: 0,
+    margin: 16,
     position: 'absolute',
     right: 0,
   },

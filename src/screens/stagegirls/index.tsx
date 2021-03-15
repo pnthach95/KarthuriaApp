@@ -61,15 +61,6 @@ const styles = StyleSheet.create({
     height: 20,
     width: 20,
   },
-  elementImg: {
-    height: responsiveWidth(10),
-    width: responsiveWidth(10),
-  },
-  elementImgContainer: {
-    borderRadius: responsiveWidth(6),
-    height: responsiveWidth(12),
-    width: responsiveWidth(12),
-  },
   frame: {
     height: 160 * 0.5,
     width: 144 * 0.5,
@@ -393,9 +384,9 @@ const StageGirls = ({ navigation }: StageGirlsScreenProps): JSX.Element => {
     return (
       <TouchableRipple
         borderless
-        style={[AppStyles.center, styles.elementImgContainer, bgColor]}
+        style={[AppStyles.center, AppStyles.elementImgContainer, bgColor]}
         onPress={onPress}>
-        <Image source={attribute(index + 1)} style={styles.elementImg} />
+        <Image source={attribute(index + 1)} style={AppStyles.elementImg} />
       </TouchableRipple>
     );
   };
@@ -528,11 +519,11 @@ const StageGirls = ({ navigation }: StageGirlsScreenProps): JSX.Element => {
         style={[
           AppStyles.center,
           AppStyles.marginBottom,
-          styles.elementImgContainer,
+          AppStyles.elementImgContainer,
           bgColor,
         ]}
         onPress={onPress}>
-        <Image source={source} style={styles.elementImg} />
+        <Image source={source} style={AppStyles.elementImg} />
       </TouchableRipple>
     );
   };
