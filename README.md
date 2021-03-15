@@ -1,4 +1,4 @@
-# Project Karthuria (mobile app)
+# ⚛️ Project Karthuria (mobile app)
 
 This project is using API from [Project Karthuria](https://karen.makoo.eu/endpoints)
 
