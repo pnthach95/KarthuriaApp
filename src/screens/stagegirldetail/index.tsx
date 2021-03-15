@@ -9,6 +9,7 @@ import {
   Paragraph,
   DataTable,
   Surface,
+  TouchableRipple,
 } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
 import dayjs from 'dayjs';
@@ -21,7 +22,7 @@ import AppStyles from '~/theme/styles';
 import { attackTypeText, attribute, position, rarity } from '~/assets';
 import frame from '~/assets/common/frame_thumbnail_dress.png';
 
-import type { TDress, StageGirlDetailProps } from '~/typings';
+import type { TDress, StageGirlDetailProps, TChara } from '~/typings';
 
 const styles = StyleSheet.create({
   attackType: {
@@ -70,17 +71,27 @@ const styles = StyleSheet.create({
   },
 });
 
-const StageGirlDetail = ({ route }: StageGirlDetailProps): JSX.Element => {
+const StageGirlDetail = ({
+  navigation,
+  route,
+}: StageGirlDetailProps): JSX.Element => {
   const [loading, setLoading] = useState(true);
   const [dress, setDress] = useState<TDress | null>(null);
+  const [character, setCharater] = useState<TChara | null>(null);
 
   useEffect(() => {
     const loadData = async () => {
       try {
         const { id } = route.params;
-        const data = await API.get<TDress>(links.DRESS + `${id}.json`);
-        if (data.ok && data.data) {
-          setDress(data.data);
+        const dressData = await API.get<TDress>(links.DRESS + `${id}.json`);
+        if (dressData.ok && dressData.data) {
+          setDress(dressData.data);
+          const charaData = await API.get<TChara>(
+            links.CHARA + `${dressData.data.basicInfo.character}.json`,
+          );
+          if (charaData.ok && charaData.data) {
+            setCharater(charaData.data);
+          }
         }
       } catch (error) {
         //
@@ -100,6 +111,12 @@ const StageGirlDetail = ({ route }: StageGirlDetailProps): JSX.Element => {
     dress.basicInfo.released.ww &&
     dayjs(dress.basicInfo.released.ww * 1000);
 
+  const goToCharacterDetail = () =>
+    character &&
+    navigation.navigate('CharacterDetail', {
+      id: character.basicInfo.charaID,
+    });
+
   return (
     <BaseScreen loading={loading} hasData={!!dress}>
       {dress && (
@@ -107,6 +124,15 @@ const StageGirlDetail = ({ route }: StageGirlDetailProps): JSX.Element => {
           <Headline style={AppStyles.centerText}>
             {dress.basicInfo.name.en || dress.basicInfo.name.ja}
           </Headline>
+          {character && (
+            <TouchableRipple
+              onPress={goToCharacterDetail}
+              style={AppStyles.marginBottom}>
+              <Subheading style={AppStyles.centerText}>
+                {character.info.name.en || character.info.name.ja}
+              </Subheading>
+            </TouchableRipple>
+          )}
           <View style={styles.img}>
             <View style={[AppStyles.absolute, AppStyles.center, styles.img]}>
               <ActivityIndicator size='large' />
