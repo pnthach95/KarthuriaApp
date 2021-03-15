@@ -1,6 +1,6 @@
 # Project Karthuria (mobile app)
 
-This project is using API from [Project Karthuria](https://karen.makoo.eu/)
+This project is using API from [Project Karthuria](https://karen.makoo.eu/endpoints)
 
 [![Download APK file here](https://img.shields.io/github/downloads/pnthach95/KarthuriaApp/total.svg?style=flat-square)](https://github.com/pnthach95/KarthuriaApp/releases)
 [![GitHub issues](https://img.shields.io/github/issues/pnthach95/KarthuriaApp.svg?style=flat-square)](https://github.com/pnthach95/KarthuriaApp/issues)
