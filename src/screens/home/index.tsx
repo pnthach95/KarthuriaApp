@@ -167,7 +167,9 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
             <Title>Project Karthuria</Title>
           </View>
           <View style={styles.block}>
-            <Subheading style={AppStyles.centerText}>Events</Subheading>
+            {section.event.data.length > 0 && (
+              <Subheading style={AppStyles.centerText}>Events</Subheading>
+            )}
             {section.event.data.map((item) => {
               const begin = dayjs(item.beginAt * 1000);
               const end = dayjs(item.endAt * 1000);
