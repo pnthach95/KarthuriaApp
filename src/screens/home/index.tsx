@@ -6,6 +6,7 @@ import {
   StyleSheet,
   RefreshControl,
   Image,
+  Linking,
 } from 'react-native';
 import {
   Text,
@@ -147,10 +148,16 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
 
   const rc = <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />;
 
+  const onDownloadApp = () => {
+    if (version) {
+      void Linking.openURL(version.link);
+    }
+  };
+
   return (
     <View style={[AppStyles.flex1, top]}>
       {version !== null && (
-        <TouchableRipple style={styles.update}>
+        <TouchableRipple onPress={onDownloadApp} style={styles.update}>
           <Text>{`Download new version ${version.tag} on Github!`}</Text>
         </TouchableRipple>
       )}
@@ -435,10 +442,8 @@ const styles = StyleSheet.create({
   },
   update: {
     alignItems: 'center',
-    alignSelf: 'center',
     backgroundColor: Colors.green400,
     padding: 5,
-    width: responsiveWidth(90),
   },
 });
 
