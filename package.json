@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@gorhom/animated-tabbar": "^2.1.1",
-    "@gorhom/bottom-sheet": "2.2.4",
+    "@gorhom/bottom-sheet": "2.2.5",
     "@pnthach95/react-native-root-view-background": "^1.0.3",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/netinfo": "^6.0.0",
@@ -24,7 +24,7 @@
     "react": "17.0.1",
     "react-native": "0.64.0",
     "react-native-bootsplash": "^3.2.0",
-    "react-native-device-info": "^8.0.5",
+    "react-native-device-info": "^8.0.6",
     "react-native-fast-image": "^8.3.4",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-image-viewing": "^0.2.0",

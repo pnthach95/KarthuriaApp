@@ -823,10 +823,10 @@
     lodash.isequal "^4.5.0"
     react-native-redash "15.7.3"
 
-"@gorhom/bottom-sheet@2.2.4":
-  version "2.2.4"
-  resolved "https://registry.yarnpkg.com/@gorhom/bottom-sheet/-/bottom-sheet-2.2.4.tgz#0f97de34ade809b4af76b356ba2f625e163bf2ed"
-  integrity sha512-WreZNVPMFQLPBvP9gBHNHxOAJbQLPMVhAXNbZnoUJF4LrBosQebngNL1R1wN8lKWWdYFN8ylWWG+2RK4WGscOw==
+"@gorhom/bottom-sheet@2.2.5":
+  version "2.2.5"
+  resolved "https://registry.yarnpkg.com/@gorhom/bottom-sheet/-/bottom-sheet-2.2.5.tgz#eded70b336353b6897700ebe4992cddf8d6c3c79"
+  integrity sha512-gx0sIkfqYDHFl24ywiSLGEao/pxDlInMOAcBiETDs3E1IoxrqJtZf2f6O33f+tZLb5ofN4EDIXSahtAL6/Sm7A==
   dependencies:
     "@gorhom/portal" "^1.0.4"
     invariant "^2.2.4"
@@ -5462,10 +5462,10 @@ react-native-codegen@^0.0.6:
     jscodeshift "^0.11.0"
     nullthrows "^1.1.1"
 
-react-native-device-info@^8.0.5:
-  version "8.0.5"
-  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-8.0.5.tgz#9b7e576533c4117af39581bfe75c9d81aab274a9"
-  integrity sha512-yVQMu5xW9lmQGl7iyT/lrn6wddbDypQ/bjJHWClY4Ic/AS0CitQUV8RGUzJG+SG+5VGwf96Y50fUzYBALok2FQ==
+react-native-device-info@^8.0.6:
+  version "8.0.6"
+  resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-8.0.6.tgz#5c1229ec89a6dc7b026f82d38fd545a098063988"
+  integrity sha512-gPLl8CmVhLRGDgZKiz+rXJyMGYRH8DYMTBZrhl4kXXZr+LUBqz/6s5epcNZ17L0bKn9d/r5lh1sfbeiYGXgXmg==
 
 react-native-fast-image@^8.3.4:
   version "8.3.4"
