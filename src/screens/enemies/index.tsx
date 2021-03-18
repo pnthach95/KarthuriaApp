@@ -24,20 +24,13 @@ import { attribute } from '~/assets';
 import type { EnemiesProps, TEnemyBasicInfo, TEnemyList } from '~/typings';
 
 const styles = StyleSheet.create({
-  attribute: {
-    height: 20,
-    width: 20,
-  },
   frame: {
-    height: 112 * 0.8,
-    width: 112 * 0.8,
+    height: 89.6,
+    width: 89.6,
   },
   item: {
     alignItems: 'center',
-    borderWidth: 1,
-    flex: 1,
     justifyContent: 'space-between',
-    padding: 5,
   },
 });
 
@@ -140,13 +133,18 @@ const Enemies = ({ navigation }: EnemiesProps): JSX.Element => {
 
     return (
       <TouchableRipple onPress={onPress} style={AppStyles.flex1}>
-        <View style={[styles.item, { borderColor: colors.border }]}>
+        <View
+          style={[
+            AppStyles.listItem,
+            styles.item,
+            { borderColor: colors.border },
+          ]}>
           <View style={AppStyles.center}>
             <View style={styles.frame}>
               <FastImage source={source} style={styles.frame} />
               <Image
                 source={a}
-                style={[styles.attribute, AppStyles.absolute]}
+                style={[AppStyles.square20, AppStyles.absolute]}
               />
             </View>
           </View>
@@ -222,7 +220,7 @@ const Enemies = ({ navigation }: EnemiesProps): JSX.Element => {
                     onPress={onPress}>
                     <Image
                       source={attribute(index + 1)}
-                      style={AppStyles.elementImg}
+                      style={AppStyles.squareW10}
                     />
                   </TouchableRipple>
                 );

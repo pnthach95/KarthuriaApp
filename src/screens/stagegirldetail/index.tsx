@@ -18,7 +18,7 @@ import { skillIcon, stageGirlBigImg } from '~/api/images';
 import BaseScreen from '~/components/basescreen';
 import Separator from '~/components/separator';
 import SkillDetail from '~/components/skilldetail';
-import AppStyles from '~/theme/styles';
+import AppStyles, { borderRadius, padding } from '~/theme/styles';
 import { attackTypeText, attribute, position, rarity } from '~/assets';
 import frame from '~/assets/common/frame_thumbnail_dress.png';
 
@@ -26,48 +26,26 @@ import type { TDress, StageGirlDetailProps, TChara } from '~/typings';
 
 const styles = StyleSheet.create({
   attackType: {
-    height: 32 * 0.7,
-    width: 90 * 0.7,
-  },
-  attribute: {
-    height: 40,
-    right: 0,
-    width: 40,
-  },
-  block: {
-    paddingVertical: 10,
-  },
-  img: {
-    alignSelf: 'center',
-    height: 360 * 0.6,
-    width: 480 * 0.6,
+    height: 22.4,
+    width: 63,
   },
   infoBlock: {
-    borderRadius: 5,
+    borderRadius,
+    marginVertical: padding / 2,
   },
   padding: {
-    paddingBottom: 10,
-    paddingHorizontal: 10,
+    paddingBottom: padding,
+    paddingHorizontal: padding,
   },
   rarity: {
-    bottom: 5,
-    left: 5,
+    bottom: padding / 2,
+    left: padding / 2,
   },
   role: {
     height: 80 / 3,
     right: 0,
     top: 40,
     width: 40,
-  },
-  skillIcon: {
-    height: 40,
-    marginRight: 10,
-    width: 40,
-  },
-  surfaceBlock: {
-    borderRadius: 5,
-    marginVertical: 5,
-    padding: 10,
   },
 });
 
@@ -133,18 +111,22 @@ const StageGirlDetail = ({
               </Subheading>
             </TouchableRipple>
           )}
-          <View style={styles.img}>
-            <View style={[AppStyles.absolute, AppStyles.center, styles.img]}>
+          <View style={AppStyles.bigImg}>
+            <View
+              style={[AppStyles.absolute, AppStyles.center, AppStyles.bigImg]}>
               <ActivityIndicator size='large' />
             </View>
             <FastImage
               source={{ uri: stageGirlBigImg(dress.basicInfo.cardID || '0') }}
-              style={styles.img}
+              style={AppStyles.bigImg}
             />
-            <Image source={frame} style={[styles.img, AppStyles.absolute]} />
+            <Image
+              source={frame}
+              style={[AppStyles.bigImg, AppStyles.absolute]}
+            />
             <Image
               source={attribute(dress.base.attribute)}
-              style={[styles.attribute, AppStyles.absolute]}
+              style={[AppStyles.square40, AppStyles.right0, AppStyles.absolute]}
             />
             <Image
               source={position(dress.base.roleIndex.role)}
@@ -155,8 +137,8 @@ const StageGirlDetail = ({
               style={[styles.rarity, AppStyles.absolute]}
             />
           </View>
-          <View style={styles.block}>
-            <Surface style={[AppStyles.shadow, styles.surfaceBlock]}>
+          <View style={AppStyles.paddingVertical}>
+            <Surface style={[AppStyles.shadow, AppStyles.contentBlock]}>
               <Caption>Release date</Caption>
               {releasedJA && (
                 <View style={[AppStyles.row, AppStyles.spaceBetween]}>
@@ -179,7 +161,7 @@ const StageGirlDetail = ({
               </View>
             </Surface>
           </View>
-          <View style={styles.block}>
+          <View style={AppStyles.paddingVertical}>
             <Subheading style={AppStyles.centerText}>Stats</Subheading>
             <Surface style={[AppStyles.shadow, styles.infoBlock]}>
               <DataTable>
@@ -210,9 +192,9 @@ const StageGirlDetail = ({
               </DataTable>
             </Surface>
           </View>
-          <View style={styles.block}>
+          <View style={AppStyles.paddingVertical}>
             <Subheading style={AppStyles.centerText}>Info</Subheading>
-            <Surface style={[AppStyles.shadow, styles.surfaceBlock]}>
+            <Surface style={[AppStyles.shadow, AppStyles.contentBlock]}>
               <Caption>Profile</Caption>
               <Paragraph>
                 {dress.basicInfo.profile.en || dress.basicInfo.profile.ja}
@@ -230,7 +212,7 @@ const StageGirlDetail = ({
               </Paragraph>
             </Surface>
           </View>
-          <View style={styles.block}>
+          <View style={AppStyles.paddingVertical}>
             <Subheading style={AppStyles.centerText}>Basic ACT</Subheading>
             {Object.values(dress.act).map((act, index) => {
               return (
@@ -238,16 +220,19 @@ const StageGirlDetail = ({
               );
             })}
           </View>
-          <View style={styles.block}>
+          <View style={AppStyles.paddingVertical}>
             <Subheading style={AppStyles.centerText}>Auto Skills</Subheading>
             {Object.values(dress.skills).map((autoSkill, index) => {
               const icon = { uri: skillIcon(autoSkill.iconID) };
               return (
                 <Surface
                   key={`autoSkill${index}`}
-                  style={[AppStyles.shadow, styles.surfaceBlock]}>
+                  style={[AppStyles.shadow, AppStyles.contentBlock]}>
                   <View style={AppStyles.row}>
-                    <FastImage source={icon} style={styles.skillIcon} />
+                    <FastImage
+                      source={icon}
+                      style={[AppStyles.square40, AppStyles.marginRight]}
+                    />
                     <View style={AppStyles.flex1}>
                       <Paragraph>
                         {autoSkill.info.en || autoSkill.info.ja}
@@ -258,19 +243,19 @@ const StageGirlDetail = ({
               );
             })}
           </View>
-          <View style={styles.block}>
+          <View style={AppStyles.paddingVertical}>
             <Subheading style={AppStyles.centerText}>Climax ACT</Subheading>
             <SkillDetail skill={dress.groupSkills.climaxACT} />
           </View>
-          <View style={styles.block}>
+          <View style={AppStyles.paddingVertical}>
             <Subheading style={AppStyles.centerText}>Unit Skill</Subheading>
-            <Surface style={[AppStyles.shadow, styles.surfaceBlock]}>
+            <Surface style={[AppStyles.shadow, AppStyles.contentBlock]}>
               <View style={AppStyles.row}>
                 <FastImage
                   source={{
                     uri: skillIcon(dress.groupSkills.unitSkill.iconID),
                   }}
-                  style={styles.skillIcon}
+                  style={[AppStyles.square40, AppStyles.marginRight]}
                 />
                 <View style={AppStyles.flex1}>
                   <Paragraph>
@@ -281,15 +266,15 @@ const StageGirlDetail = ({
               </View>
             </Surface>
           </View>
-          <View style={styles.block}>
+          <View style={AppStyles.paddingVertical}>
             <Subheading style={AppStyles.centerText}>Finishing ACT</Subheading>
-            <Surface style={[AppStyles.shadow, styles.surfaceBlock]}>
+            <Surface style={[AppStyles.shadow, AppStyles.contentBlock]}>
               <View style={AppStyles.row}>
                 <FastImage
                   source={{
                     uri: skillIcon(dress.groupSkills.finishACT.iconID),
                   }}
-                  style={styles.skillIcon}
+                  style={[AppStyles.square40, AppStyles.marginRight]}
                 />
                 <View style={AppStyles.flex1}>
                   <Text>

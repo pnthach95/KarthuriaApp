@@ -1,13 +1,13 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { useTheme } from 'react-native-paper';
 import { BottomSheetBackgroundProps } from '@gorhom/bottom-sheet';
-import { View } from 'react-native';
+import { borderRadius } from '~/theme/styles';
 
 const styles = StyleSheet.create({
   radius: {
-    borderTopLeftRadius: 10,
-    borderTopRightRadius: 10,
+    borderTopLeftRadius: borderRadius * 2,
+    borderTopRightRadius: borderRadius * 2,
   },
 });
 

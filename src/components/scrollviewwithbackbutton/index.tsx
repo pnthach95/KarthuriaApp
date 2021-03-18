@@ -3,6 +3,7 @@ import { View, ScrollView, StyleSheet, Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { IconButton, useTheme } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import AppStyles from '~/theme/styles';
 
 import type {
   NativeSyntheticEvent,
@@ -73,7 +74,7 @@ const ScrollViewWithBackButton = ({
   };
 
   return (
-    <View style={styles.flex1}>
+    <View style={AppStyles.flex1}>
       <View style={top} />
       <ScrollView
         {...props}
@@ -84,7 +85,7 @@ const ScrollViewWithBackButton = ({
         {children}
       </ScrollView>
       <Animated.View
-        style={[styles.back, top, { transform: [{ translateX }] }]}>
+        style={[AppStyles.absolute, top, { transform: [{ translateX }] }]}>
         <IconButton
           icon='arrow-left'
           onPress={goBack}
@@ -92,7 +93,12 @@ const ScrollViewWithBackButton = ({
         />
       </Animated.View>
       <Animated.View
-        style={[styles.right, top, { transform: [{ translateY }] }]}>
+        style={[
+          AppStyles.right0,
+          AppStyles.absolute,
+          top,
+          { transform: [{ translateY }] },
+        ]}>
         {right}
       </Animated.View>
     </View>
@@ -100,16 +106,6 @@ const ScrollViewWithBackButton = ({
 };
 
 const styles = StyleSheet.create({
-  back: {
-    position: 'absolute',
-  },
-  flex1: {
-    flex: 1,
-  },
-  right: {
-    position: 'absolute',
-    right: 0,
-  },
   scroll: {
     paddingTop: 50,
   },

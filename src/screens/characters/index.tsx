@@ -8,7 +8,7 @@ import API, { links } from '~/api';
 import { charaterImg, schoolIcon } from '~/api/images';
 import Kirin from '~/components/kirin';
 import ErrorView from '~/components/errorview';
-import AppStyles from '~/theme/styles';
+import AppStyles, { padding } from '~/theme/styles';
 
 import type {
   TCharaBasicInfo,
@@ -22,12 +22,10 @@ const styles = StyleSheet.create({
     width: responsiveScreenWidth(50),
   },
   item: {
-    paddingBottom: 10,
+    paddingBottom: padding,
   },
   schoolIcon: {
-    height: 20,
-    marginRight: 5,
-    width: 20,
+    marginRight: padding / 2,
   },
 });
 
@@ -76,7 +74,7 @@ const Charaters = ({ navigation }: CharactersScreenProps): JSX.Element => {
             <View style={AppStyles.row}>
               <FastImage
                 source={{ uri: schoolIcon(school_id) }}
-                style={styles.schoolIcon}
+                style={[AppStyles.square20, styles.schoolIcon]}
               />
               <Text>{name_ruby.ja}</Text>
             </View>

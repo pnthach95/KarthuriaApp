@@ -38,7 +38,7 @@ import {
   stageGirlImg,
 } from '~/api/images';
 import GithubService from '~/api/github';
-import AppStyles from '~/theme/styles';
+import AppStyles, { borderRadius, padding } from '~/theme/styles';
 import icon from '~/assets/common/icon.png';
 import frame from '~/assets/common/frame_accessory.png';
 
@@ -65,7 +65,7 @@ const EventImage = ({ img }: { img: string }): JSX.Element => {
   return (
     <FastImage
       source={{ uri }}
-      style={styles.eventImg}
+      style={[styles.eventImg, AppStyles.selfCenter]}
       resizeMode='contain'
       onError={onError}
     />
@@ -168,13 +168,16 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
         <ScrollView
           refreshControl={rc}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.content}>
+          contentContainerStyle={AppStyles.padding}>
           <View style={[AppStyles.row, AppStyles.center]}>
-            <FastImage source={icon} style={styles.icon} />
+            <FastImage
+              source={icon}
+              style={[AppStyles.square40, AppStyles.marginRight]}
+            />
             <Title>Project Karthuria</Title>
           </View>
           {section.event.data.length > 0 && (
-            <View style={styles.block}>
+            <View style={AppStyles.paddingVertical}>
               <Subheading style={AppStyles.centerText}>Events</Subheading>
               {section.event.data.map((item) => {
                 const begin = dayjs(item.beginAt * 1000);
@@ -185,9 +188,9 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
                 return (
                   <Surface
                     key={JSON.stringify(item)}
-                    style={[styles.item, AppStyles.shadow]}>
+                    style={[AppStyles.contentBlock, AppStyles.shadow]}>
                     <EventImage img={eventImg(item.id)} />
-                    <View style={styles.block}>
+                    <View style={AppStyles.paddingVertical}>
                       <Countdown
                         miliseconds={end.diff(dayjs())}
                         style={AppStyles.centerText}
@@ -211,7 +214,7 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
               })}
             </View>
           )}
-          <View style={styles.block}>
+          <View style={AppStyles.paddingVertical}>
             <Subheading style={AppStyles.centerText}>
               Challenge Revue
             </Subheading>
@@ -238,14 +241,19 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
                 return (
                   <Surface
                     key={item.id}
-                    style={[styles.rogueItem, AppStyles.shadow, widthView]}>
+                    style={[
+                      AppStyles.padding,
+                      AppStyles.borderRadius,
+                      AppStyles.shadow,
+                      widthView,
+                    ]}>
                     <TouchableRipple
                       borderless
-                      style={styles.rogueImg}
+                      style={[styles.rogueImg, AppStyles.selfCenter]}
                       onPress={goToDetail}>
                       <FastImage
                         source={{ uri: rogueImg(item.id) }}
-                        style={styles.rogueImg}
+                        style={[styles.rogueImg, AppStyles.selfCenter]}
                       />
                     </TouchableRipple>
                     <View style={[AppStyles.spaceBetween, textView]}>
@@ -279,12 +287,16 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
               })}
             </View>
           </View>
-          <View style={styles.block}>
+          <View style={AppStyles.paddingVertical}>
             <Subheading style={AppStyles.centerText}>
               Score Attack Revue
             </Subheading>
             <Surface
-              style={[AppStyles.shadow, styles.item, styles.titanContainer]}>
+              style={[
+                AppStyles.shadow,
+                AppStyles.contentBlock,
+                styles.titanContainer,
+              ]}>
               <View style={AppStyles.row}>
                 {Object.values(section.titan.enemy).map((item) => {
                   const source = { uri: enemyImg(item.id) };
@@ -294,10 +306,13 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
                   return (
                     <TouchableRipple
                       key={item.id}
-                      style={[styles.item, AppStyles.flex1]}
+                      style={[AppStyles.contentBlock, AppStyles.flex1]}
                       onPress={onPress}>
                       <>
-                        <FastImage source={source} style={styles.enemyImg} />
+                        <FastImage
+                          source={source}
+                          style={[AppStyles.square100, AppStyles.selfCenter]}
+                        />
                         <ProgressBar
                           progress={parseInt(item.hpLeftPercent) / 100}
                           style={styles.hpBar}
@@ -316,7 +331,7 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
                     <Caption>End</Caption>
                     <Text>{titanEnd.format('llll')}</Text>
                   </View>
-                  <View style={styles.block}>
+                  <View style={AppStyles.paddingVertical}>
                     <Countdown
                       miliseconds={titanEnd.diff(dayjs())}
                       style={AppStyles.centerText}
@@ -325,7 +340,7 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
                   </View>
                 </>
               )}
-              <View style={[AppStyles.row, styles.accessoriesRow]}>
+              <View style={[AppStyles.row, AppStyles.spaceEvenly]}>
                 {accessories &&
                   section.titan.reward.map((item) => {
                     const findA = accessories.find(
@@ -345,18 +360,21 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
                           borderless
                           onPress={onPress}
                           style={[styles.accessoryContainer, AppStyles.center]}>
-                          <View style={styles.accessoryImg}>
+                          <View style={AppStyles.square78}>
                             <FastImage
                               source={source}
-                              style={styles.accessoryImg}
+                              style={AppStyles.square78}
                             />
                             <Image
                               source={frame}
-                              style={[styles.accessoryImg, AppStyles.absolute]}
+                              style={[AppStyles.square78, AppStyles.absolute]}
                             />
                             <FastImage
                               source={stageGirl}
-                              style={[styles.stageGirl, AppStyles.absolute]}
+                              style={[
+                                AppStyles.stageGirlBottomLeft,
+                                AppStyles.absolute,
+                              ]}
                             />
                           </View>
                         </TouchableRipple>
@@ -376,74 +394,33 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
 };
 
 const styles = StyleSheet.create({
-  accessoriesRow: {
-    justifyContent: 'space-evenly',
-  },
   accessoryContainer: {
-    height: 112 * 0.7 + 10,
-    width: 112 * 0.7 + 10,
-  },
-  accessoryImg: {
-    height: 112 * 0.7,
-    width: 112 * 0.7,
-  },
-  block: {
-    paddingVertical: 10,
+    height: 88.4,
+    width: 88.4,
   },
   challengeRow: {
-    marginVertical: 5,
+    marginVertical: padding / 2,
     width: responsiveWidth(100) - 20,
   },
-  content: {
-    padding: 10,
-  },
-  enemyImg: {
-    alignSelf: 'center',
-    height: 100,
-    width: 100,
-  },
   eventImg: {
-    alignSelf: 'center',
-    height: 114 * 0.7,
-    width: 448 * 0.7,
+    height: 79.8,
+    width: 313.6,
   },
   hpBar: {
-    borderRadius: 10,
+    borderRadius: borderRadius * 2,
     height: 15,
   },
-  icon: {
-    height: 40,
-    marginRight: 10,
-    width: 40,
-  },
-  item: {
-    borderRadius: 5,
-    marginVertical: 5,
-    padding: 10,
-  },
   rogueImg: {
-    alignSelf: 'center',
-    height: 160 * 0.6,
-    width: 144 * 0.6,
-  },
-  rogueItem: {
-    borderRadius: 5,
-    padding: 10,
-  },
-  stageGirl: {
-    borderRadius: 5,
-    bottom: -5,
-    height: 30,
-    left: -5,
-    width: 30,
+    height: 96,
+    width: 86.4,
   },
   titanContainer: {
-    paddingBottom: 20,
+    paddingBottom: padding * 2,
   },
   update: {
     alignItems: 'center',
     backgroundColor: Colors.green400,
-    padding: 5,
+    padding: padding / 2,
   },
 });
 

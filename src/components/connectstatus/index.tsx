@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Text, Colors } from 'react-native-paper';
 import { NetworkConsumer } from 'react-native-offline';
-import AppStyles from '~/theme/styles';
+import AppStyles, { padding } from '~/theme/styles';
 
 /**
  * Connect Status
@@ -26,7 +26,7 @@ const ConnectStatus = (): React.ReactElement => {
 const styles = StyleSheet.create({
   box: {
     backgroundColor: Colors.red600,
-    padding: 10,
+    padding,
   },
   zero: {
     height: 0,

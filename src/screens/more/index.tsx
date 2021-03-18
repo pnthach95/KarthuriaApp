@@ -15,7 +15,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AppContext from '~/context';
 import { website } from '~/api';
 import { links } from '~/api/github';
-import AppStyles from '~/theme/styles';
+import AppStyles, { padding } from '~/theme/styles';
 import webicon from '~/assets/common/icon.png';
 
 import type { AppOptions, MoreScreenProps } from '~/typings';
@@ -49,60 +49,60 @@ const MoreScreen = ({ navigation }: MoreScreenProps): JSX.Element => {
     <ScrollView
       showsVerticalScrollIndicator={false}
       contentContainerStyle={top}>
-      <View style={styles.group}>
+      <View style={[styles.group, AppStyles.rowSpaceBetween]}>
         <Text style={styles.headline}>Settings</Text>
       </View>
       <TouchableRipple onPress={themeToggle}>
-        <View style={styles.settingRow}>
+        <View style={[styles.row, AppStyles.spaceBetween]}>
           <Text>Dark theme</Text>
           <Switch value={state.options.isDark} onValueChange={themeToggle} />
         </View>
       </TouchableRipple>
-      <View style={styles.group}>
+      <View style={[styles.group, AppStyles.rowSpaceBetween]}>
         <Text style={styles.headline}>Navigation</Text>
       </View>
       <TouchableRipple onPress={goToCharacters}>
-        <View style={styles.normalRow}>
+        <View style={styles.row}>
           <Icon name='account' color={Colors.deepOrange500} size={32} />
-          <View style={styles.space} />
+          <View style={AppStyles.spaceHorizontal} />
           <Text>Characters</Text>
         </View>
       </TouchableRipple>
       <TouchableRipple onPress={goToAccessories}>
-        <View style={styles.normalRow}>
+        <View style={styles.row}>
           <Icon name='sword' color={Colors.orange500} size={32} />
-          <View style={styles.space} />
+          <View style={AppStyles.spaceHorizontal} />
           <Text>Accessories</Text>
         </View>
       </TouchableRipple>
       <TouchableRipple onPress={goToEnemies}>
-        <View style={styles.normalRow}>
+        <View style={styles.row}>
           <Icon name='account-alert' color={Colors.deepPurple400} size={32} />
-          <View style={styles.space} />
+          <View style={AppStyles.spaceHorizontal} />
           <Text>Enemies</Text>
         </View>
       </TouchableRipple>
-      <View style={styles.group}>
+      <View style={[styles.group, AppStyles.rowSpaceBetween]}>
         <Text style={styles.headline}>Resources</Text>
       </View>
       <TouchableRipple onPress={openWebsite}>
-        <View style={styles.normalRow}>
+        <View style={styles.row}>
           <Image source={webicon} style={styles.icon} />
-          <View style={styles.space} />
+          <View style={AppStyles.spaceHorizontal} />
           <Text>Karthuria website</Text>
         </View>
       </TouchableRipple>
       <TouchableRipple onPress={openGithub}>
-        <View style={styles.normalRow}>
+        <View style={styles.row}>
           <Icon name='github' color={theme.colors.text} size={32} />
-          <View style={styles.space} />
+          <View style={AppStyles.spaceHorizontal} />
           <Text>Source code on Github</Text>
         </View>
       </TouchableRipple>
-      <View style={styles.group}>
+      <View style={[styles.group, AppStyles.rowSpaceBetween]}>
         <Text style={styles.headline}>Notes</Text>
       </View>
-      <View style={styles.normalRow}>
+      <View style={styles.row}>
         <Paragraph>
           This app is using API from Project Karthuria website ({website}) and
           is not affiliated with Bushiroad, ATeam and any other original owners.
@@ -116,12 +116,9 @@ const MoreScreen = ({ navigation }: MoreScreenProps): JSX.Element => {
 
 const styles = StyleSheet.create({
   group: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingBottom: 10,
-    paddingHorizontal: 10,
-    paddingTop: 20,
+    paddingBottom: padding,
+    paddingHorizontal: padding,
+    paddingTop: 2 * padding,
   },
   headline: {
     color: Colors.blue600,
@@ -131,19 +128,10 @@ const styles = StyleSheet.create({
     height: 32,
     width: 32,
   },
-  normalRow: {
+  row: {
     alignItems: 'center',
     flexDirection: 'row',
-    padding: 10,
-  },
-  settingRow: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    padding: 10,
-  },
-  space: {
-    width: 10,
+    padding,
   },
 });
 

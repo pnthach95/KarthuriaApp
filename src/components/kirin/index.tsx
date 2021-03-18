@@ -1,15 +1,8 @@
 import React, { useEffect, useRef } from 'react';
-import { View, StyleSheet, Animated, Easing } from 'react-native';
+import { View, Animated, Easing } from 'react-native';
 import FastImage from 'react-native-fast-image';
 import logo from '~/assets/common/kirin.png';
 import AppStyles from '~/theme/styles';
-
-const styles = StyleSheet.create({
-  logo: {
-    height: 100,
-    width: 100,
-  },
-});
 
 const Kirin = (): JSX.Element => {
   const logoAV = useRef(new Animated.Value(0)).current;
@@ -33,7 +26,11 @@ const Kirin = (): JSX.Element => {
   return (
     <View style={[AppStyles.flex1, AppStyles.center]}>
       <Animated.View style={{ transform: [{ rotate }] }}>
-        <FastImage source={logo} resizeMode='contain' style={styles.logo} />
+        <FastImage
+          source={logo}
+          resizeMode='contain'
+          style={AppStyles.square100}
+        />
       </Animated.View>
     </View>
   );

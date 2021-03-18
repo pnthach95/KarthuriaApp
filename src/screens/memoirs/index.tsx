@@ -10,7 +10,6 @@ import {
 } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BottomSheetModal, BottomSheetFlatList } from '@gorhom/bottom-sheet';
-import { responsiveWidth } from 'react-native-responsive-dimensions';
 import FastImage from 'react-native-fast-image';
 import API, { links } from '~/api';
 import { memoirImg, skillIcon } from '~/api/images';
@@ -39,30 +38,6 @@ type TFilter = Record<'characters' | 'rarity', boolean[]> & {
 };
 
 const styles = StyleSheet.create({
-  elementImg: {
-    height: responsiveWidth(10),
-    width: responsiveWidth(10),
-  },
-  elementImgContainer: {
-    borderRadius: responsiveWidth(6),
-    height: responsiveWidth(12),
-    width: responsiveWidth(12),
-  },
-  frame: {
-    alignSelf: 'center',
-    height: 160 * 0.5,
-    width: 144 * 0.5,
-  },
-  item: {
-    borderWidth: 1,
-    flex: 1,
-    padding: 5,
-  },
-  rarity: {
-    alignSelf: 'center',
-    height: 14,
-    width: 70,
-  },
   skillIcon: {
     height: 25,
     width: 25,
@@ -196,19 +171,26 @@ const Memoirs = ({ navigation }: MemoirsScreenProps): JSX.Element => {
 
     return (
       <TouchableRipple onPress={onPress} style={AppStyles.flex1}>
-        <View style={[styles.item, { borderColor: colors.border }]}>
-          <View style={styles.frame}>
+        <View style={[AppStyles.listItem, { borderColor: colors.border }]}>
+          <View style={[AppStyles.selfCenter, AppStyles.smallImg]}>
             <FastImage
               source={{ uri: memoirImg(item.basicInfo.cardID) }}
-              style={styles.frame}
+              style={[AppStyles.selfCenter, AppStyles.smallImg]}
             />
-            <Image source={frame} style={[styles.frame, AppStyles.absolute]} />
+            <Image
+              source={frame}
+              style={[
+                AppStyles.selfCenter,
+                AppStyles.smallImg,
+                AppStyles.absolute,
+              ]}
+            />
           </View>
           <View style={[AppStyles.center, AppStyles.row]}>
             <Image
               source={rarity(item.basicInfo.rarity)}
               resizeMode='contain'
-              style={styles.rarity}
+              style={AppStyles.rarityImg}
             />
             <FastImage
               source={{ uri: skillIcon(item.skill.iconID) }}
@@ -268,7 +250,7 @@ const Memoirs = ({ navigation }: MemoirsScreenProps): JSX.Element => {
         borderless
         style={[AppStyles.charaImgContainer, bgColor]}
         onPress={onPress}>
-        <Image source={charaImgs[index]} style={AppStyles.charaImg} />
+        <Image source={charaImgs[index]} style={AppStyles.squareW12} />
       </TouchableRipple>
     );
   };
@@ -299,7 +281,7 @@ const Memoirs = ({ navigation }: MemoirsScreenProps): JSX.Element => {
     return (
       <TouchableRipple
         borderless
-        style={[AppStyles.rarityImgContainer, AppStyles.selfFlexStart, bgColor]}
+        style={[AppStyles.rarityImgContainer, AppStyles.selfStart, bgColor]}
         onPress={onPress}>
         <Image source={rarity(index + 1)} resizeMode='contain' />
       </TouchableRipple>
@@ -351,11 +333,11 @@ const Memoirs = ({ navigation }: MemoirsScreenProps): JSX.Element => {
         style={[
           AppStyles.center,
           AppStyles.marginBottom,
-          styles.elementImgContainer,
+          AppStyles.elementImgContainer,
           bgColor,
         ]}
         onPress={onPress}>
-        <Image source={source} style={styles.elementImg} />
+        <Image source={source} style={AppStyles.squareW10} />
       </TouchableRipple>
     );
   };

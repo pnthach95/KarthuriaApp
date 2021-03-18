@@ -19,7 +19,7 @@ import Kirin from '~/components/kirin';
 import CustomBackdrop from '~/components/sheet/backdrop';
 import CustomBackground from '~/components/sheet/background';
 import CustomHandle from '~/components/sheet/handle';
-import AppStyles from '~/theme/styles';
+import AppStyles, { borderRadius } from '~/theme/styles';
 import { attackType, attribute, charaImgs, position, rarity } from '~/assets';
 import { characterToIndex } from '~/util';
 import frame from '~/assets/common/frame_stage_girl.png';
@@ -48,44 +48,17 @@ const styles = StyleSheet.create({
     right: 0,
     width: 20,
   },
-  attackTypeImg: {
-    height: responsiveWidth(10),
-    width: responsiveWidth(10),
-  },
-  attackTypeImgContainer: {
-    borderRadius: 5,
-    height: responsiveWidth(12),
-    width: responsiveWidth(12),
-  },
-  attribute: {
-    height: 20,
-    width: 20,
-  },
-  frame: {
-    height: 160 * 0.5,
-    width: 144 * 0.5,
-  },
-  item: {
-    alignItems: 'center',
-    borderWidth: 1,
-    flex: 1,
-    justifyContent: 'space-between',
-    padding: 5,
-  },
   positionImg: {
     height: (responsiveWidth(10) * 2) / 3,
     width: responsiveWidth(10),
   },
   positionImgContainer: {
-    borderRadius: 5,
+    borderRadius,
     height: (responsiveWidth(12) * 2) / 3,
     width: responsiveWidth(12),
   },
   rarity: {
-    alignSelf: 'center',
     bottom: 0,
-    height: 14,
-    width: 70,
   },
   role: {
     height: 40 / 3,
@@ -271,23 +244,28 @@ const StageGirls = ({ navigation }: StageGirlsScreenProps): JSX.Element => {
 
     return (
       <TouchableRipple onPress={onPress} style={AppStyles.flex1}>
-        <View style={[styles.item, { borderColor: colors.border }]}>
+        <View
+          style={[
+            AppStyles.listItem,
+            AppStyles.spaceBetween,
+            { borderColor: colors.border },
+          ]}>
           <Text style={AppStyles.centerText}>
             {basicInfo.name.en || basicInfo.name.ja}
           </Text>
           <View style={AppStyles.center}>
-            <View style={styles.frame}>
+            <View style={AppStyles.smallImg}>
               <FastImage
                 source={{ uri: stageGirlImg(basicInfo.cardID) }}
-                style={styles.frame}
+                style={AppStyles.smallImg}
               />
               <Image
                 source={frame}
-                style={[styles.frame, AppStyles.absolute]}
+                style={[AppStyles.smallImg, AppStyles.absolute]}
               />
               <Image
                 source={attribute(base.attribute)}
-                style={[styles.attribute, AppStyles.absolute]}
+                style={[AppStyles.square20, AppStyles.absolute]}
               />
               <Image
                 source={position(base.roleIndex.role)}
@@ -296,7 +274,7 @@ const StageGirls = ({ navigation }: StageGirlsScreenProps): JSX.Element => {
               <Image
                 source={rarity(basicInfo.rarity)}
                 resizeMode='contain'
-                style={[styles.rarity, AppStyles.absolute]}
+                style={[AppStyles.rarityImg, styles.rarity, AppStyles.absolute]}
               />
               <Image
                 source={attackType(base.attackType)}
@@ -355,7 +333,7 @@ const StageGirls = ({ navigation }: StageGirlsScreenProps): JSX.Element => {
         borderless
         style={[AppStyles.charaImgContainer, bgColor]}
         onPress={onPress}>
-        <Image source={charaImgs[index]} style={AppStyles.charaImg} />
+        <Image source={charaImgs[index]} style={AppStyles.squareW12} />
       </TouchableRipple>
     );
   };
@@ -386,7 +364,7 @@ const StageGirls = ({ navigation }: StageGirlsScreenProps): JSX.Element => {
         borderless
         style={[AppStyles.center, AppStyles.elementImgContainer, bgColor]}
         onPress={onPress}>
-        <Image source={attribute(index + 1)} style={AppStyles.elementImg} />
+        <Image source={attribute(index + 1)} style={AppStyles.squareW10} />
       </TouchableRipple>
     );
   };
@@ -467,7 +445,7 @@ const StageGirls = ({ navigation }: StageGirlsScreenProps): JSX.Element => {
     return (
       <TouchableRipple
         borderless
-        style={[AppStyles.rarityImgContainer, AppStyles.selfFlexStart, bgColor]}
+        style={[AppStyles.rarityImgContainer, AppStyles.selfStart, bgColor]}
         onPress={onPress}>
         <Image source={rarity(index + 2)} resizeMode='contain' />
       </TouchableRipple>
@@ -523,7 +501,7 @@ const StageGirls = ({ navigation }: StageGirlsScreenProps): JSX.Element => {
           bgColor,
         ]}
         onPress={onPress}>
-        <Image source={source} style={AppStyles.elementImg} />
+        <Image source={source} style={AppStyles.squareW10} />
       </TouchableRipple>
     );
   };
@@ -615,8 +593,9 @@ const StageGirls = ({ navigation }: StageGirlsScreenProps): JSX.Element => {
                   <TouchableRipple
                     borderless
                     style={[
+                      AppStyles.squareW12,
                       AppStyles.center,
-                      styles.attackTypeImgContainer,
+                      AppStyles.borderRadius,
                       {
                         backgroundColor: filter.attackType[0]
                           ? colors.primary
@@ -624,17 +603,15 @@ const StageGirls = ({ navigation }: StageGirlsScreenProps): JSX.Element => {
                       },
                     ]}
                     onPress={onPressAttType0}>
-                    <Image
-                      source={attackType(1)}
-                      style={styles.attackTypeImg}
-                    />
+                    <Image source={attackType(1)} style={AppStyles.squareW10} />
                   </TouchableRipple>
                   <View style={AppStyles.spaceHorizontal} />
                   <TouchableRipple
                     borderless
                     style={[
+                      AppStyles.squareW12,
                       AppStyles.center,
-                      styles.attackTypeImgContainer,
+                      AppStyles.borderRadius,
                       {
                         backgroundColor: filter.attackType[1]
                           ? colors.primary
@@ -642,10 +619,7 @@ const StageGirls = ({ navigation }: StageGirlsScreenProps): JSX.Element => {
                       },
                     ]}
                     onPress={onPressAttType1}>
-                    <Image
-                      source={attackType(2)}
-                      style={styles.attackTypeImg}
-                    />
+                    <Image source={attackType(2)} style={AppStyles.squareW10} />
                   </TouchableRipple>
                 </View>
               </>

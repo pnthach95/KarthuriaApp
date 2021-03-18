@@ -13,21 +13,9 @@ import AppStyles from '~/theme/styles';
 import type { CharacterDetailProps, TChara } from '~/typings';
 
 const styles = StyleSheet.create({
-  padding: {
-    padding: 10,
-  },
   portrait: {
-    height: 480 * 0.7,
-    width: 304 * 0.7,
-  },
-  schoolIcon: {
-    height: 40,
-    width: 40,
-  },
-  schoolRow: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    height: 336,
+    width: 212.8,
   },
 });
 
@@ -77,7 +65,7 @@ const CharacterDetail = ({ route }: CharacterDetailProps): JSX.Element => {
               style={[styles.portrait, AppStyles.absolute]}
             />
           </View>
-          <View style={styles.padding}>
+          <View style={AppStyles.padding}>
             <Caption>Birthday (month/day)</Caption>
             <Paragraph>{birthday}</Paragraph>
             <Separator height={10} />
@@ -86,7 +74,7 @@ const CharacterDetail = ({ route }: CharacterDetailProps): JSX.Element => {
               {character.info.cv.en || character.info.cv.ja}
             </Paragraph>
             <Separator height={10} />
-            <View style={styles.schoolRow}>
+            <View style={AppStyles.rowSpaceBetween}>
               <View>
                 <Caption>School</Caption>
                 <Paragraph>
@@ -96,7 +84,7 @@ const CharacterDetail = ({ route }: CharacterDetailProps): JSX.Element => {
               </View>
               <FastImage
                 source={{ uri: schoolIcon(character.basicInfo.school_id) }}
-                style={styles.schoolIcon}
+                style={AppStyles.square40}
               />
             </View>
             <Separator height={10} />

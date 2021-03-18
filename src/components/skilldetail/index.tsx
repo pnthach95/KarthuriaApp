@@ -17,16 +17,6 @@ const styles = StyleSheet.create({
   animation: {
     color: Colors.red300,
   },
-  skillIcon: {
-    height: 40,
-    marginRight: 10,
-    width: 40,
-  },
-  surfaceBlock: {
-    borderRadius: 5,
-    marginVertical: 5,
-    padding: 10,
-  },
   tiva: {
     color: Colors.blue300,
   },
@@ -48,9 +38,12 @@ const SkillDetail = ({ skill }: Props): JSX.Element => {
   const icon = { uri: skillIcon(skill.iconID) };
 
   return (
-    <Surface style={[AppStyles.shadow, styles.surfaceBlock]}>
+    <Surface style={[AppStyles.shadow, AppStyles.contentBlock]}>
       <View style={AppStyles.row}>
-        <FastImage source={icon} style={styles.skillIcon} />
+        <FastImage
+          source={icon}
+          style={[AppStyles.square40, AppStyles.marginRight]}
+        />
         <View style={AppStyles.flex1}>
           <View style={AppStyles.row}>
             <View style={AppStyles.flex1}>

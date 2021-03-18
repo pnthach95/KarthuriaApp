@@ -11,35 +11,17 @@ import FastImage from 'react-native-fast-image';
 import API, { links } from '~/api';
 import { actIcon, itemImg, stageGirlImg } from '~/api/images';
 import BaseScreen from '~/components/basescreen';
+import SkillDetail from '~/components/skilldetail';
 import AppStyles from '~/theme/styles';
 import frame from '~/assets/common/frame_accessory.png';
 import sgFrame from '~/assets/common/frame_stage_girl.png';
 
 import type { AccessoryDetailProps, TAccessory } from '~/typings';
-import SkillDetail from '~/components/skilldetail';
 
 const styles = StyleSheet.create({
-  accessoryImg: {
-    height: 112,
-    width: 112,
-  },
-  actIcon: {
-    height: 28,
-    right: 0,
-    width: 28,
-  },
-  block: {
-    paddingVertical: 10,
-  },
-  borderRadius: {
-    borderRadius: 5,
-  },
-  container: {
-    paddingHorizontal: 10,
-  },
   stageGirl: {
     height: 112,
-    width: (144 * 112) / 160,
+    width: 100.8,
   },
 });
 
@@ -82,19 +64,28 @@ const AccessoryDetail = ({
           <Headline style={AppStyles.centerText}>
             {accessory.basicInfo.name.en || accessory.basicInfo.name.ja}
           </Headline>
-          <View style={[AppStyles.row, AppStyles.spaceEvenly, styles.block]}>
+          <View
+            style={[
+              AppStyles.row,
+              AppStyles.spaceEvenly,
+              AppStyles.paddingVertical,
+            ]}>
             <View>
               <FastImage
                 source={{ uri: itemImg(accessory.basicInfo.iconID) }}
-                style={styles.accessoryImg}
+                style={AppStyles.square112}
               />
               <Image
                 source={frame}
-                style={[styles.accessoryImg, AppStyles.absolute]}
+                style={[AppStyles.square112, AppStyles.absolute]}
               />
               <FastImage
                 source={{ uri: actIcon(accessory.skillInfo.skillSlot) }}
-                style={[styles.actIcon, AppStyles.absolute]}
+                style={[
+                  AppStyles.square28,
+                  AppStyles.right0,
+                  AppStyles.absolute,
+                ]}
               />
             </View>
             <TouchableRipple borderless onPress={goToStageGirlDetail}>
@@ -110,14 +101,14 @@ const AccessoryDetail = ({
               </View>
             </TouchableRipple>
           </View>
-          <View style={styles.container}>
-            <View style={styles.block}>
+          <View style={AppStyles.paddingHorizontal}>
+            <View style={AppStyles.paddingVertical}>
               <Subheading style={AppStyles.centerText}>Skill</Subheading>
               <SkillDetail skill={accessory.skillInfo.skill.normalSkill} />
             </View>
-            <View style={styles.block}>
+            <View style={AppStyles.paddingVertical}>
               <Subheading style={AppStyles.centerText}>Max Stats</Subheading>
-              <Surface style={[AppStyles.shadow, styles.borderRadius]}>
+              <Surface style={[AppStyles.shadow, AppStyles.borderRadius]}>
                 <DataTable>
                   <DataTable.Row>
                     <DataTable.Cell>HP</DataTable.Cell>

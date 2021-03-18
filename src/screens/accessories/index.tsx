@@ -7,7 +7,7 @@ import API, { links } from '~/api';
 import { itemImg, stageGirlImg } from '~/api/images';
 import ErrorView from '~/components/errorview';
 import Kirin from '~/components/kirin';
-import AppStyles from '~/theme/styles';
+import AppStyles, { padding } from '~/theme/styles';
 import frame from '~/assets/common/frame_accessory.png';
 
 import type {
@@ -17,24 +17,10 @@ import type {
 } from '~/typings';
 
 const styles = StyleSheet.create({
-  accessoryImg: {
-    height: 112 * 0.7,
-    width: 112 * 0.7,
-  },
   item: {
     alignItems: 'center',
-    borderWidth: 1,
-    flex: 1,
     justifyContent: 'space-between',
-    padding: 5,
-    paddingBottom: 10,
-  },
-  stageGirl: {
-    borderRadius: 5,
-    bottom: -5,
-    height: 30,
-    left: -5,
-    width: 30,
+    paddingBottom: padding,
   },
 });
 
@@ -73,19 +59,24 @@ const Accessories = ({ navigation }: AccessoriesProps): JSX.Element => {
 
     return (
       <TouchableRipple onPress={onPress} style={AppStyles.flex1}>
-        <View style={[styles.item, { borderColor: colors.border }]}>
+        <View
+          style={[
+            AppStyles.listItem,
+            styles.item,
+            { borderColor: colors.border },
+          ]}>
           <View style={[AppStyles.flex1, AppStyles.center]}>
             <FastImage
               source={{ uri: itemImg(item.basicInfo.iconID) }}
-              style={styles.accessoryImg}
+              style={AppStyles.square78}
             />
             <Image
               source={frame}
-              style={[styles.accessoryImg, AppStyles.absolute]}
+              style={[AppStyles.square78, AppStyles.absolute]}
             />
             <FastImage
               source={{ uri: stageGirlImg(item.basicInfo.cardID) }}
-              style={[styles.stageGirl, AppStyles.absolute]}
+              style={[AppStyles.stageGirlBottomLeft, AppStyles.absolute]}
             />
           </View>
         </View>

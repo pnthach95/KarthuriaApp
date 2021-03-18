@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, Image } from 'react-native';
 import {
   Headline,
   Subheading,
@@ -16,29 +16,6 @@ import { attribute } from '~/assets';
 import AppStyles from '~/theme/styles';
 
 import type { EnemyDetailProps, TEnemy } from '~/typings';
-
-const styles = StyleSheet.create({
-  attribute: {
-    height: 28,
-    width: 28,
-  },
-  block: {
-    paddingVertical: 10,
-  },
-  container: {
-    paddingHorizontal: 10,
-  },
-  enemyImg: {
-    alignSelf: 'center',
-    height: 112,
-    width: 112,
-  },
-  surfaceBlock: {
-    borderRadius: 5,
-    marginVertical: 5,
-    padding: 10,
-  },
-});
 
 const EnemyDetail = ({ route }: EnemyDetailProps): JSX.Element => {
   const [loading, setLoading] = useState(true);
@@ -68,22 +45,22 @@ const EnemyDetail = ({ route }: EnemyDetailProps): JSX.Element => {
           <Headline style={AppStyles.centerText}>
             {enemy.basicInfo.name.en || enemy.basicInfo.name.ja}
           </Headline>
-          <View style={styles.block}>
-            <View style={styles.enemyImg}>
+          <View style={AppStyles.paddingVertical}>
+            <View style={[AppStyles.square112, AppStyles.selfCenter]}>
               <FastImage
                 source={{ uri: enemyImg(enemy.basicInfo.icon) }}
-                style={styles.enemyImg}
+                style={[AppStyles.square112, AppStyles.selfCenter]}
               />
               <Image
                 source={attribute(enemy.basicInfo.attribute)}
-                style={[styles.attribute, AppStyles.absolute]}
+                style={[AppStyles.square28, AppStyles.absolute]}
               />
             </View>
           </View>
 
-          <View style={styles.container}>
-            <View style={styles.block}>
-              <Surface style={[AppStyles.shadow, styles.surfaceBlock]}>
+          <View style={AppStyles.paddingHorizontal}>
+            <View style={AppStyles.paddingVertical}>
+              <Surface style={[AppStyles.shadow, AppStyles.contentBlock]}>
                 <Caption>Profile</Caption>
                 <Paragraph>
                   {enemy.basicInfo.personality.en ||
@@ -91,7 +68,7 @@ const EnemyDetail = ({ route }: EnemyDetailProps): JSX.Element => {
                 </Paragraph>
               </Surface>
             </View>
-            <View style={styles.block}>
+            <View style={AppStyles.paddingVertical}>
               <Subheading style={AppStyles.centerText}>Skill</Subheading>
               {Object.keys(enemy.skills).map((k) => {
                 const skill = enemy.skills[k];

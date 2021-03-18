@@ -14,50 +14,33 @@ import FastImage from 'react-native-fast-image';
 import dayjs from 'dayjs';
 import API, { links } from '~/api';
 import { charaIcon, memoirBigImg, skillIcon } from '~/api/images';
+import { rarity } from '~/assets';
 import BaseScreen from '~/components/basescreen';
-import AppStyles from '~/theme/styles';
+import AppStyles, { borderRadius, padding } from '~/theme/styles';
 import frame from '~/assets/common/frame_thumbnail_equip.png';
 
 import type { OnLoadEvent } from 'react-native-fast-image';
 import type { MemoirDetailProps, TEquip } from '~/typings';
-import { rarity } from '~/assets';
 
 const styles = StyleSheet.create({
   block: {
-    borderRadius: 5,
-    marginVertical: 10,
-    padding: 10,
-  },
-  charaIcon: {
-    height: 40,
-    width: 40,
+    borderRadius,
+    marginVertical: padding,
+    padding,
   },
   charaIconContainer: {
-    marginLeft: 10,
-  },
-  container: {
-    paddingHorizontal: 10,
-  },
-  frame: {
-    alignSelf: 'center',
-    height: 360 * 0.6,
-    width: 480 * 0.6,
+    marginLeft: padding,
   },
   frameBorderRadius: {
-    borderRadius: 10,
+    borderRadius: borderRadius * 2,
   },
   rarity: {
-    bottom: 5,
-    left: 5,
-  },
-  skillIcon: {
-    height: 40,
-    marginRight: 10,
-    width: 40,
+    bottom: padding / 2,
+    left: padding / 2,
   },
   table: {
-    borderRadius: 5,
-    marginVertical: 10,
+    borderRadius,
+    marginVertical: padding,
   },
 });
 
@@ -99,16 +82,19 @@ const MemoirDetail = ({
   return (
     <BaseScreen loading={loading} hasData={!!memoir}>
       {memoir && (
-        <View style={styles.container}>
+        <View style={AppStyles.paddingHorizontal}>
           <Headline style={AppStyles.centerText}>
             {memoir.basicInfo.name.en || memoir.basicInfo.name.ja}
           </Headline>
-          <View style={styles.frame}>
+          <View style={AppStyles.bigImg}>
             <FastImage
               source={{ uri: memoirBigImg(memoir.basicInfo.cardID) }}
-              style={[styles.frame, styles.frameBorderRadius]}
+              style={[AppStyles.bigImg, styles.frameBorderRadius]}
             />
-            <Image source={frame} style={[styles.frame, AppStyles.absolute]} />
+            <Image
+              source={frame}
+              style={[AppStyles.bigImg, AppStyles.absolute]}
+            />
             <FastImage
               source={rarity(memoir.basicInfo.rarity)}
               resizeMode='contain'
@@ -130,7 +116,7 @@ const MemoirDetail = ({
                         key={`chara_${chara}`}
                         onPress={onPress}
                         style={styles.charaIconContainer}>
-                        <FastImage source={source} style={styles.charaIcon} />
+                        <FastImage source={source} style={AppStyles.square40} />
                       </TouchableRipple>
                     );
                   })
@@ -183,7 +169,7 @@ const MemoirDetail = ({
             <View style={AppStyles.row}>
               <FastImage
                 source={{ uri: skillIcon(memoir.skill.iconID) }}
-                style={styles.skillIcon}
+                style={[AppStyles.square40, AppStyles.marginRight]}
               />
               <View style={AppStyles.flex1}>
                 <Paragraph>
