@@ -1,3 +1,5 @@
+export const sentry = 'secret';
+
 export const characterToIndex = (character: number): number => {
   switch (character) {
     case 101:
