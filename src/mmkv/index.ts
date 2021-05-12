@@ -26,7 +26,7 @@ const setString = async (key: TKey, value: string): Promise<void> => {
 const getObject = async <T>(key: TKey): Promise<T | null> => {
   try {
     const o = await MMKV.getMapAsync(key);
-    return (o as unknown) as T;
+    return o as unknown as T;
   } catch (error) {
     // console.log(`mmkv getObject ${key} error`, error);
     return null;
@@ -41,12 +41,8 @@ const setObject = async <T>(key: TKey, value: T): Promise<void> => {
   }
 };
 
-const remove = async (key: TKey): Promise<void> => {
-  try {
-    await MMKV.removeItem(key);
-  } catch (error) {
-    // console.log(`mmkv remove ${key} error`, error);
-  }
+const remove = (key: TKey): void => {
+  MMKV.removeItem(key);
 };
 
 export { getString, setString, getObject, setObject, remove };

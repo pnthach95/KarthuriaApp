@@ -26,14 +26,14 @@ const Countdown = ({
     const s = seconds < 10 ? `0${seconds}` : seconds;
     let m = minutes < 10 ? `0${minutes}` : minutes;
     let h = hours < 10 ? `0${hours}` : hours;
-    const d = days == 0 ? '' : String(days) + (days == 1 ? ' day ' : ' days ');
-    h = h === '00' ? '' : String(h) + (h == 1 ? ' hour ' : ' hours ');
-    m = m === '00' ? '' : String(m) + (m == 1 ? ' minute ' : ' minutes ');
+    const d = days == 0 ? '' : String(days) + ' d ';
+    h = h === '00' ? '' : String(h) + ' h ';
+    m = m === '00' ? '' : String(m) + ' m ';
     if (seconds < 0) {
       timeUpCallback && timeUpCallback();
       return 'Time up';
     }
-    return `${d}${h}${m}${s} seconds`;
+    return `${d}${h}${m}${s} s`;
   };
 
   useEffect(() => {

@@ -115,8 +115,9 @@ const Memoirs = ({ navigation }: MemoirsScreenProps): JSX.Element => {
               true,
             )
           : true;
-        const checkSkill = filter.skills.find((s) => s.id === item.skill.iconID)
-          ?.checked;
+        const checkSkill = filter.skills.find(
+          (s) => s.id === item.skill.iconID,
+        )?.checked;
         return checkRarity && checkCharacter && checkSkill;
       });
       setRMList(afterFilter);

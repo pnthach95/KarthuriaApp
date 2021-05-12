@@ -332,17 +332,22 @@ type TCurrentEvent = {
     enemy: Record<string, TTitanEnemy>;
     reward: number[];
   };
-  event: Record<string, TExtendedEvent>;
-  rogue: Record<string, TEvent>;
+  event: Record<string, TEvent>;
+  rogue: Record<string, TRogueEvent>;
 };
 
-type TEvent = {
+type TRogueEvent = {
   id: number;
   beginAt: number;
   endAt: number;
 };
 
-type TExtendedEvent = TEvent & { referenceIndex: 'Beat' | 'Shop' };
+type TEvent = {
+  id: number;
+  info: number;
+  beginAt: number[];
+  endAt: number[];
+};
 
 type TTitanEnemy = {
   id: number;

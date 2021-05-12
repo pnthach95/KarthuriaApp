@@ -49,7 +49,7 @@ import type {
   TAccessoryList,
   TCurrentEvent,
   TEvent,
-  TExtendedEvent,
+  TRogueEvent,
 } from '~/typings';
 
 type GithubVersion = {
@@ -78,18 +78,18 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
   const [version, setVersion] = useState<GithubVersion | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [section, setSection] = useState<{
-    titan: TCurrentEvent['titan'];
-    event: {
-      data: TExtendedEvent[];
-    };
-    rogue: {
-      data: TEvent[];
-    };
-  } | null>(null);
-  const [accessories, setAccessories] = useState<TAccessoryBasicInfo[] | null>(
-    null,
-  );
+  const [section, setSection] =
+    useState<{
+      titan: TCurrentEvent['titan'];
+      event: {
+        data: TEvent[];
+      };
+      rogue: {
+        data: TRogueEvent[];
+      };
+    } | null>(null);
+  const [accessories, setAccessories] =
+    useState<TAccessoryBasicInfo[] | null>(null);
   const top = {
     paddingTop: insets.top,
   };
@@ -180,9 +180,14 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
             <View style={AppStyles.paddingVertical}>
               <Subheading style={AppStyles.centerText}>Events</Subheading>
               {section.event.data.map((item) => {
-                const begin = dayjs(item.beginAt * 1000);
-                const end = dayjs(item.endAt * 1000);
-                if (end.diff(dayjs(), 'y') > 1) {
+                const begin = item.beginAt.map((i) => dayjs(i * 1000));
+                const end = item.endAt.map((i) => dayjs(i * 1000));
+                if (
+                  end.reduce(
+                    (res, current) => current.diff(dayjs(), 'y') > 1 && res,
+                    false,
+                  )
+                ) {
                   return null;
                 }
                 return (
@@ -191,24 +196,31 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
                     style={[AppStyles.contentBlock, AppStyles.shadow]}>
                     <EventImage img={eventImg(item.id)} />
                     <View style={AppStyles.paddingVertical}>
-                      <Countdown
-                        miliseconds={end.diff(dayjs())}
-                        style={AppStyles.centerText}
-                        timeUpCallback={onRefresh}
-                      />
+                      {end.map((e) => (
+                        <Countdown
+                          key={e.toISOString()}
+                          miliseconds={e.diff(dayjs())}
+                          style={AppStyles.centerText}
+                          timeUpCallback={onRefresh}
+                        />
+                      ))}
                     </View>
                     <View style={[AppStyles.row, AppStyles.spaceBetween]}>
                       <Caption>Begin</Caption>
-                      <Text>{begin.format('llll')}</Text>
+                      {begin.map((b) => (
+                        <Text key={b.toISOString()}>{b.format('llll')}</Text>
+                      ))}
                     </View>
                     <View style={[AppStyles.row, AppStyles.spaceBetween]}>
                       <Caption>End</Caption>
-                      <Text>{end.format('llll')}</Text>
+                      {end.map((e) => (
+                        <Text key={e.toISOString()}>{e.format('llll')}</Text>
+                      ))}
                     </View>
-                    <View style={[AppStyles.row, AppStyles.spaceBetween]}>
+                    {/* <View style={[AppStyles.row, AppStyles.spaceBetween]}>
                       <Caption>Type</Caption>
                       <Text>{item.referenceIndex}</Text>
-                    </View>
+                    </View> */}
                   </Surface>
                 );
               })}

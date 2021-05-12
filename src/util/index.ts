@@ -1,4 +1,5 @@
-export const sentry = 'secret';
+export const sentry =
+  'https://fa9c36cacead456f8e084339435c9b62@o208652.ingest.sentry.io/5705927';
 
 export const characterToIndex = (character: number): number => {
   switch (character) {

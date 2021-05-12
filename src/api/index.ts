@@ -1,6 +1,6 @@
 import { create } from 'apisauce';
 
-export const website = 'https://karen.makoo.eu';
+export const website = 'https://karth.top';
 
 const api = create({
   baseURL: website + '/api',
