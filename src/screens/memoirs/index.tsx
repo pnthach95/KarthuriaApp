@@ -440,4 +440,6 @@ const Memoirs = ({ navigation }: MemoirsScreenProps): JSX.Element => {
   return <ErrorView />;
 };
 
+Memoirs.whyDidYouRender = true;
+
 export default Memoirs;

@@ -33,4 +33,6 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ConnectStatus;
+ConnectStatus.whyDidYouRender = true;
+
+export default React.memo(ConnectStatus);

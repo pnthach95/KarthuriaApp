@@ -253,4 +253,6 @@ const Enemies = ({ navigation }: EnemiesProps): JSX.Element => {
   return <ErrorView />;
 };
 
+Enemies.whyDidYouRender = true;
+
 export default Enemies;

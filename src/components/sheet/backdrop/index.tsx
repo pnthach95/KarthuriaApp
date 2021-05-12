@@ -37,4 +37,6 @@ const CustomBackdrop = ({
   return <Animated.View onTouchEnd={dismissAll} style={containerStyle} />;
 };
 
+CustomBackdrop.whyDidYouRender = true;
+
 export default CustomBackdrop;

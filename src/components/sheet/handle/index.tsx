@@ -16,4 +16,6 @@ const CustomHandle = (): JSX.Element => {
   );
 };
 
+CustomHandle.whyDidYouRender = true;
+
 export default CustomHandle;

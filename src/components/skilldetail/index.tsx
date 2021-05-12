@@ -60,4 +60,6 @@ const SkillDetail = ({ skill }: Props): JSX.Element => {
   );
 };
 
+SkillDetail.whyDidYouRender = true;
+
 export default SkillDetail;

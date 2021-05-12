@@ -47,4 +47,6 @@ const Countdown = ({
   return <Text style={style}>{getFormattedTime(remaining)}</Text>;
 };
 
+Countdown.whyDidYouRender = true;
+
 export default Countdown;

@@ -1,6 +1,6 @@
 {
   "semi": true,
-  "endOfLine": "lf",
+  "endOfLine": "auto",
   "trailingComma": "all",
   "singleQuote": true,
   "jsxBracketSameLine": true,

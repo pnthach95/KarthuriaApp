@@ -36,4 +36,6 @@ const Kirin = (): JSX.Element => {
   );
 };
 
-export default Kirin;
+Kirin.whyDidYouRender = true;
+
+export default React.memo(Kirin);

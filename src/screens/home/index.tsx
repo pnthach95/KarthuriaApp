@@ -461,4 +461,6 @@ const styles = StyleSheet.create({
   },
 });
 
+MainScreen.whyDidYouRender = true;
+
 export default MainScreen;

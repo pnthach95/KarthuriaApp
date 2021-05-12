@@ -190,4 +190,6 @@ const MemoirDetail = ({
   );
 };
 
+MemoirDetail.whyDidYouRender = true;
+
 export default MemoirDetail;

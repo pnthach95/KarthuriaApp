@@ -667,4 +667,6 @@ const StageGirls = ({ navigation }: StageGirlsScreenProps): JSX.Element => {
   return <ErrorView />;
 };
 
+StageGirls.whyDidYouRender = true;
+
 export default StageGirls;

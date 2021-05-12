@@ -42,4 +42,6 @@ const BaseScreen = ({ children, loading, hasData }: Props): JSX.Element => {
   );
 };
 
+BaseScreen.whyDidYouRender = true;
+
 export default BaseScreen;

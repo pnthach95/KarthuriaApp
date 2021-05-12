@@ -160,4 +160,6 @@ const AccessoryDetail = ({
   );
 };
 
+AccessoryDetail.whyDidYouRender = true;
+
 export default AccessoryDetail;

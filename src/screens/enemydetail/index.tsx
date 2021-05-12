@@ -82,4 +82,6 @@ const EnemyDetail = ({ route }: EnemyDetailProps): JSX.Element => {
   );
 };
 
+EnemyDetail.whyDidYouRender = true;
+
 export default EnemyDetail;

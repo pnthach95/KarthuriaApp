@@ -125,4 +125,6 @@ const CharacterDetail = ({ route }: CharacterDetailProps): JSX.Element => {
   );
 };
 
+CharacterDetail.whyDidYouRender = true;
+
 export default CharacterDetail;

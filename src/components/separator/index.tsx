@@ -9,4 +9,6 @@ const Separator = ({ height = 10 }: Props): JSX.Element => {
   return <View style={{ height }} />;
 };
 
+Separator.whyDidYouRender = true;
+
 export default Separator;

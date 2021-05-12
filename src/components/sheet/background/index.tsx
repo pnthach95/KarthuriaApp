@@ -21,4 +21,6 @@ const CustomBackground = ({
   );
 };
 
+CustomBackground.whyDidYouRender = true;
+
 export default CustomBackground;

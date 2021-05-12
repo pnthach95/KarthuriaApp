@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
 import { Text, TouchableRipple } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -53,10 +53,12 @@ const Charaters = ({ navigation }: CharactersScreenProps): JSX.Element => {
     void loadData();
   }, []);
 
-  const keyExtractor = ({ basicInfo: { charaID } }: TCharaBasicInfo) =>
-    `chID_${charaID}`;
+  const keyExtractor = useCallback(
+    ({ basicInfo: { charaID } }: TCharaBasicInfo) => `chID_${charaID}`,
+    [],
+  );
 
-  const renderItem = ({ item }: { item: TCharaBasicInfo }) => {
+  const renderItem = useCallback(({ item }: { item: TCharaBasicInfo }) => {
     const { charaID, name_ruby, school_id } = item.basicInfo;
     if (name_ruby.ja) {
       const goToDetail = () =>
@@ -64,16 +66,16 @@ const Charaters = ({ navigation }: CharactersScreenProps): JSX.Element => {
           id: charaID,
         });
 
+      const charaImgSource = { uri: charaterImg(charaID) };
+      const schoolIconSource = { uri: schoolIcon(school_id) };
+
       return (
         <TouchableRipple onPress={goToDetail}>
           <View style={[AppStyles.center, styles.item]}>
-            <FastImage
-              source={{ uri: charaterImg(charaID) }}
-              style={styles.img}
-            />
+            <FastImage source={charaImgSource} style={styles.img} />
             <View style={AppStyles.row}>
               <FastImage
-                source={{ uri: schoolIcon(school_id) }}
+                source={schoolIconSource}
                 style={[AppStyles.square20, styles.schoolIcon]}
               />
               <Text>{name_ruby.ja}</Text>
@@ -83,7 +85,7 @@ const Charaters = ({ navigation }: CharactersScreenProps): JSX.Element => {
       );
     }
     return null;
-  };
+  }, []);
 
   if (loading) {
     return <Kirin />;
@@ -105,5 +107,7 @@ const Charaters = ({ navigation }: CharactersScreenProps): JSX.Element => {
 
   return <ErrorView />;
 };
+
+Charaters.whyDidYouRender = true;
 
 export default Charaters;

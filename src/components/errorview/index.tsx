@@ -13,4 +13,6 @@ const ErrorView = (): JSX.Element => {
   );
 };
 
+ErrorView.whyDidYouRender = true;
+
 export default ErrorView;

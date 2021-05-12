@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import RNBootSplash from 'react-native-bootsplash';
 import AppContext from '~/context';
 import Kirin from '~/components/kirin';
@@ -9,7 +9,6 @@ import type { AppOptions } from '~/typings';
 /** Loading Screen */
 const SplashScreen = (): JSX.Element => {
   const { dispatch } = useContext(AppContext);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getData = async () => {
@@ -18,18 +17,14 @@ const SplashScreen = (): JSX.Element => {
         dispatch({ type: 'SAVE_OPTIONS', data: options });
       }
       await RNBootSplash.hide({ fade: true });
-      setLoading(false);
+      dispatch({ type: 'SWITCH_MAIN_ROUTE', route: 'MAIN' });
     };
     void getData();
   }, []);
 
-  useEffect(() => {
-    if (!loading) {
-      dispatch({ type: 'SWITCH_MAIN_ROUTE', route: 'MAIN' });
-    }
-  }, [loading]);
-
   return <Kirin />;
 };
+
+SplashScreen.whyDidYouRender = true;
 
 export default SplashScreen;

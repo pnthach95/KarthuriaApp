@@ -295,4 +295,6 @@ const StageGirlDetail = ({
   );
 };
 
+StageGirlDetail.whyDidYouRender = true;
+
 export default StageGirlDetail;

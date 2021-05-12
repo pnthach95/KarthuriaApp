@@ -104,4 +104,6 @@ const Accessories = ({ navigation }: AccessoriesProps): JSX.Element => {
   return <ErrorView />;
 };
 
+Accessories.whyDidYouRender = true;
+
 export default Accessories;

@@ -135,4 +135,6 @@ const styles = StyleSheet.create({
   },
 });
 
+MoreScreen.whyDidYouRender = true;
+
 export default MoreScreen;
