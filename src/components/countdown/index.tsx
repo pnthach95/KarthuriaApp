@@ -21,12 +21,12 @@ const Countdown = ({
     const minutes = parseInt(((remainingSec / 60) % 60).toString(), 10);
     const hours = parseInt(((remainingSec / 3600) % 24).toString(), 10);
     const days = parseInt((remainingSec / (3600 * 24)).toString(), 10);
-    const s = seconds < 10 ? `0${seconds}` : seconds;
-    let m = minutes < 10 ? `0${minutes}` : minutes;
-    let h = hours < 10 ? `0${hours}` : hours;
-    const d = days == 0 ? '' : String(days) + ' d ';
-    h = h === '00' ? '' : String(h) + ' h ';
-    m = m === '00' ? '' : String(m) + ' m ';
+    const s = seconds < 10 ? `0${seconds}` : `${seconds}`;
+    let m = minutes < 10 ? `0${minutes}` : `${minutes}`;
+    let h = hours < 10 ? `0${hours}` : `${hours}`;
+    const d = days == 0 ? '' : `${days} d `;
+    h = h === '00' ? '' : h + ' h ';
+    m = m === '00' ? '' : m + ' m ';
     if (seconds < 0) {
       return 'Time up';
     }
