@@ -6,14 +6,12 @@ type Props = {
   miliseconds: number;
   interval?: number;
   style?: TextStyle;
-  timeUpCallback?: () => void;
 };
 
 const Countdown = ({
   miliseconds,
   interval = 1000,
   style,
-  timeUpCallback,
 }: Props): JSX.Element => {
   const [remaining, setRemaining] = useState(miliseconds);
 
@@ -30,7 +28,6 @@ const Countdown = ({
     h = h === '00' ? '' : String(h) + ' h ';
     m = m === '00' ? '' : String(m) + ' m ';
     if (seconds < 0) {
-      timeUpCallback && timeUpCallback();
       return 'Time up';
     }
     return `${d}${h}${m}${s} s`;
@@ -38,7 +35,9 @@ const Countdown = ({
 
   useEffect(() => {
     const id = setTimeout(() => {
-      setRemaining(remaining - interval);
+      if (remaining - interval > 0) {
+        setRemaining(remaining - interval);
+      }
     }, interval);
     return () => {
       clearTimeout(id);

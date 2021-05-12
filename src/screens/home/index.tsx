@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   ScrollView,
@@ -121,7 +121,25 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
       if (gotData.ok && gotData.data) {
         const data = gotData.data;
         setSection({
-          event: { data: Object.values(data.event) },
+          event: {
+            data: Object.values(data.event).map((d) => ({
+              ...d,
+              beginAt: d.beginAt.reduce<number[]>(
+                (res, current) =>
+                  res.findIndex((v) => v === current) === -1
+                    ? [...res, current]
+                    : res,
+                [],
+              ),
+              endAt: d.endAt.reduce<number[]>(
+                (res, current) =>
+                  res.findIndex((v) => v === current) === -1
+                    ? [...res, current]
+                    : res,
+                [],
+              ),
+            })),
+          },
           rogue: { data: Object.values(data.rogue) },
           titan: data.titan,
         });
@@ -141,10 +159,10 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
 
   const titanEnd = section && dayjs(section.titan.endAt * 1000);
 
-  const onRefresh = () => {
+  const onRefresh = useCallback(() => {
     setRefreshing(true);
     void loadData();
-  };
+  }, []);
 
   const rc = <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />;
 
@@ -184,7 +202,7 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
                 const end = item.endAt.map((i) => dayjs(i * 1000));
                 if (
                   end.reduce(
-                    (res, current) => current.diff(dayjs(), 'y') > 1 && res,
+                    (res, current) => current.diff(dayjs(), 'y') > 1 || res,
                     false,
                   )
                 ) {
@@ -196,26 +214,37 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
                     style={[AppStyles.contentBlock, AppStyles.shadow]}>
                     <EventImage img={eventImg(item.id)} />
                     <View style={AppStyles.paddingVertical}>
-                      {end.map((e) => (
+                      {end.map((e, i) => (
                         <Countdown
-                          key={e.toISOString()}
+                          key={`${i}-${e.toISOString()}`}
                           miliseconds={e.diff(dayjs())}
                           style={AppStyles.centerText}
-                          timeUpCallback={onRefresh}
                         />
                       ))}
                     </View>
                     <View style={[AppStyles.row, AppStyles.spaceBetween]}>
                       <Caption>Begin</Caption>
-                      {begin.map((b) => (
-                        <Text key={b.toISOString()}>{b.format('llll')}</Text>
-                      ))}
+                      <View>
+                        {begin.map((b, i) => (
+                          <Text
+                            key={`${i}-${b.toISOString()}`}
+                            style={styles.rightText}>
+                            {b.format('llll')}
+                          </Text>
+                        ))}
+                      </View>
                     </View>
                     <View style={[AppStyles.row, AppStyles.spaceBetween]}>
                       <Caption>End</Caption>
-                      {end.map((e) => (
-                        <Text key={e.toISOString()}>{e.format('llll')}</Text>
-                      ))}
+                      <View>
+                        {end.map((e, i) => (
+                          <Text
+                            key={`${i}-${e.toISOString()}`}
+                            style={styles.rightText}>
+                            {e.format('llll')}
+                          </Text>
+                        ))}
+                      </View>
                     </View>
                     {/* <View style={[AppStyles.row, AppStyles.spaceBetween]}>
                       <Caption>Type</Caption>
@@ -279,19 +308,13 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
                     {begin.diff(dayjs()) > 0 && (
                       <View style={[AppStyles.spaceBetween, textView]}>
                         <Caption>Start in</Caption>
-                        <Countdown
-                          miliseconds={begin.diff(dayjs())}
-                          timeUpCallback={onRefresh}
-                        />
+                        <Countdown miliseconds={begin.diff(dayjs())} />
                       </View>
                     )}
                     {begin.diff(dayjs()) < 0 && end.diff(dayjs()) > 0 && (
                       <View style={[AppStyles.spaceBetween, textView]}>
                         <Caption>End in</Caption>
-                        <Countdown
-                          miliseconds={end.diff(dayjs())}
-                          timeUpCallback={onRefresh}
-                        />
+                        <Countdown miliseconds={end.diff(dayjs())} />
                       </View>
                     )}
                   </Surface>
@@ -347,7 +370,6 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
                     <Countdown
                       miliseconds={titanEnd.diff(dayjs())}
                       style={AppStyles.centerText}
-                      timeUpCallback={onRefresh}
                     />
                   </View>
                 </>
@@ -421,6 +443,9 @@ const styles = StyleSheet.create({
   hpBar: {
     borderRadius: borderRadius * 2,
     height: 15,
+  },
+  rightText: {
+    textAlign: 'right',
   },
   rogueImg: {
     height: 96,
