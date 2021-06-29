@@ -247,9 +247,10 @@ type TEquipBasicInfo = {
     charas: string | number[];
     name: TLanguageObject;
     profile: TLanguageObject;
-    published: TReleased;
+    released: TReleased;
   };
   skill: TSkillObject;
+  activeSkill: 0 | 1;
 };
 
 type TEquip = {

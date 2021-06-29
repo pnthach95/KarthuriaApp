@@ -22,6 +22,7 @@ import CustomHandle from '~/components/sheet/handle';
 import AppStyles from '~/theme/styles';
 import { characterToIndex } from '~/util';
 import frame from '~/assets/common/frame_equip.png';
+import cutin from '~/assets/common/cutin.png';
 
 import type {
   TEquipBasicInfo,
@@ -38,6 +39,11 @@ type TFilter = Record<'characters' | 'rarity', boolean[]> & {
 };
 
 const styles = StyleSheet.create({
+  cutIn: {
+    height: 22,
+    marginLeft: 10,
+    width: 26,
+  },
   skillIcon: {
     height: 25,
     width: 25,
@@ -83,7 +89,7 @@ const Memoirs = ({ navigation }: MemoirsScreenProps): JSX.Element => {
         if (gotData.ok && gotData.data) {
           setMList(
             Object.values(gotData.data).sort((a, b) =>
-              a.basicInfo.published.ja < b.basicInfo.published.ja ? 1 : -1,
+              a.basicInfo.released.ja < b.basicInfo.released.ja ? 1 : -1,
             ),
           );
         }
@@ -197,6 +203,9 @@ const Memoirs = ({ navigation }: MemoirsScreenProps): JSX.Element => {
               source={{ uri: skillIcon(item.skill.iconID) }}
               style={styles.skillIcon}
             />
+            {item.activeSkill === 1 && (
+              <FastImage source={cutin} style={styles.cutIn} />
+            )}
           </View>
           <Text style={AppStyles.centerText}>
             {item.basicInfo.name.en || item.basicInfo.name.ja}
