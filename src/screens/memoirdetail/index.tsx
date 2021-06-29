@@ -9,6 +9,7 @@ import {
   TouchableRipple,
   Subheading,
   DataTable,
+  useTheme,
 } from 'react-native-paper';
 import FastImage from 'react-native-fast-image';
 import dayjs from 'dayjs';
@@ -18,11 +19,17 @@ import { rarity } from '~/assets';
 import BaseScreen from '~/components/basescreen';
 import AppStyles, { borderRadius, padding } from '~/theme/styles';
 import frame from '~/assets/common/frame_thumbnail_equip.png';
+import costEquip from '~/assets/common/cost_equip.png';
+import recastTurn from '~/assets/common/recast_turn.png';
+import firstExecutableTurn from '~/assets/common/first_executable_turn.png';
 
 import type { OnLoadEvent } from 'react-native-fast-image';
 import type { MemoirDetailProps, TEquip } from '~/typings';
 
 const styles = StyleSheet.create({
+  alignCenter: {
+    alignItems: 'center',
+  },
   block: {
     borderRadius,
     marginVertical: padding,
@@ -31,8 +38,18 @@ const styles = StyleSheet.create({
   charaIconContainer: {
     marginLeft: padding,
   },
+  cost: {
+    height: 14,
+    marginRight: 10,
+    width: 18,
+  },
   frameBorderRadius: {
     borderRadius: borderRadius * 2,
+  },
+  icon16: {
+    height: 16,
+    marginRight: 10,
+    width: 16,
   },
   rarity: {
     bottom: padding / 2,
@@ -42,15 +59,24 @@ const styles = StyleSheet.create({
     borderRadius,
     marginVertical: padding,
   },
+  underline: {
+    borderBottomWidth: 1,
+    marginBottom: 5,
+    paddingBottom: 5,
+  },
 });
 
 const MemoirDetail = ({
   route,
   navigation,
 }: MemoirDetailProps): JSX.Element => {
+  const { colors } = useTheme();
   const [loading, setLoading] = useState(true);
   const [memoir, setMemoir] = useState<TEquip | null>(null);
   const [raritySize, setRaritySize] = useState({ height: 28, width: 140 });
+  const borderBottomColor = {
+    borderBottomColor: colors.text,
+  };
 
   useEffect(() => {
     const loadData = async () => {
@@ -76,8 +102,11 @@ const MemoirDetail = ({
       width: e.nativeEvent.width * 0.2,
     });
 
-  const releasedJA = memoir && dayjs(memoir.basicInfo.published.ja * 1000);
-  const releasedWW = memoir && dayjs(memoir.basicInfo.published.ww * 1000);
+  const releasedJA = memoir && dayjs(memoir.basicInfo.released.ja * 1000);
+  const releasedWW =
+    memoir &&
+    memoir.basicInfo.released.ww &&
+    dayjs(memoir.basicInfo.released.ww * 1000);
 
   return (
     <BaseScreen loading={loading} hasData={!!memoir}>
@@ -178,6 +207,104 @@ const MemoirDetail = ({
               </View>
             </View>
           </Surface>
+          {memoir.activeSkill !== 0 && (
+            <>
+              <Subheading style={AppStyles.centerText}>Cut-in Skill</Subheading>
+              <Surface style={[AppStyles.shadow, styles.block]}>
+                <View style={AppStyles.row}>
+                  <FastImage
+                    source={{ uri: skillIcon(memoir.activeSkill.iconID) }}
+                    style={[AppStyles.square40, AppStyles.marginRight]}
+                  />
+                  <View style={AppStyles.flex1}>
+                    <View
+                      style={[
+                        AppStyles.rowSpaceBetween,
+                        styles.underline,
+                        borderBottomColor,
+                      ]}>
+                      <View style={[AppStyles.row, styles.alignCenter]}>
+                        <FastImage source={costEquip} style={styles.cost} />
+                        <Text>
+                          {
+                            memoir.activeSkill.cost[
+                              memoir.activeSkill.cost.length - 2
+                            ]
+                          }
+                          /
+                          {
+                            memoir.activeSkill.cost[
+                              memoir.activeSkill.cost.length - 1
+                            ]
+                          }
+                        </Text>
+                      </View>
+                      <View style={[AppStyles.row, styles.alignCenter]}>
+                        <FastImage
+                          source={firstExecutableTurn}
+                          style={styles.icon16}
+                        />
+                        <Text>
+                          {
+                            memoir.activeSkill.execution.firstExecutableTurns[
+                              memoir.activeSkill.execution.firstExecutableTurns
+                                .length - 2
+                            ]
+                          }
+                          /
+                          {
+                            memoir.activeSkill.execution.firstExecutableTurns[
+                              memoir.activeSkill.execution.firstExecutableTurns
+                                .length - 1
+                            ]
+                          }
+                        </Text>
+                      </View>
+                      <View style={[AppStyles.row, styles.alignCenter]}>
+                        <FastImage source={recastTurn} style={styles.icon16} />
+                        <Text>
+                          {
+                            memoir.activeSkill.execution.recastTurns[
+                              memoir.activeSkill.execution.recastTurns.length -
+                                2
+                            ]
+                          }
+                          /
+                          {
+                            memoir.activeSkill.execution.recastTurns[
+                              memoir.activeSkill.execution.recastTurns.length -
+                                1
+                            ]
+                          }
+                        </Text>
+                      </View>
+                      <View>
+                        <Text>
+                          Usage Limit{' '}
+                          {
+                            memoir.activeSkill.execution.executeLimitCounts[
+                              memoir.activeSkill.execution.executeLimitCounts
+                                .length - 2
+                            ]
+                          }
+                          /
+                          {
+                            memoir.activeSkill.execution.executeLimitCounts[
+                              memoir.activeSkill.execution.executeLimitCounts
+                                .length - 1
+                            ]
+                          }
+                        </Text>
+                      </View>
+                    </View>
+                    <Paragraph>
+                      {memoir.activeSkill.info.en || memoir.activeSkill.info.ja}
+                    </Paragraph>
+                  </View>
+                </View>
+              </Surface>
+            </>
+          )}
           <Subheading style={AppStyles.centerText}>Introduction</Subheading>
           <Surface style={[AppStyles.shadow, styles.block]}>
             <Paragraph>

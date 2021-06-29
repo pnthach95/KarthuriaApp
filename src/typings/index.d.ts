@@ -120,7 +120,7 @@ type TLanguageObject = {
 };
 
 type TReleased = {
-  ww: number;
+  ww: number | null;
   ja: number;
 };
 
@@ -260,13 +260,26 @@ type TEquip = {
     charas: number[] | string;
     name: TLanguageObject;
     profile: TLanguageObject;
-    published: TReleased;
+    released: TReleased;
   };
   stat: TBasicStat & {
     /** Power Score (Total) */
     total: number;
   };
   skill: TSkillObject;
+  activeSkill:
+    | {
+        iconID: number;
+        cost: number[];
+        attribute: number;
+        info: TLanguageObject;
+        execution: {
+          executeLimitCounts: number[];
+          firstExecutableTurns: number[];
+          recastTurns: number[];
+        };
+      }
+    | 0;
 };
 
 type TAccessoryList = Record<string, TAccessoryBasicInfo>;
