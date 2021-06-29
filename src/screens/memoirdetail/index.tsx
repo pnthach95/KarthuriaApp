@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 import {
   Caption,
+  Colors,
   Headline,
   Text,
   Paragraph,
@@ -26,6 +27,7 @@ import firstExecutableTurn from '~/assets/common/first_executable_turn.png';
 import type { OnLoadEvent } from 'react-native-fast-image';
 import type { MemoirDetailProps, TEquip } from '~/typings';
 
+const costContainerBG = '#2B2B2B';
 const styles = StyleSheet.create({
   alignCenter: {
     alignItems: 'center',
@@ -36,12 +38,21 @@ const styles = StyleSheet.create({
     padding,
   },
   charaIconContainer: {
+    borderColor: Colors.grey400,
+    borderRadius: 20,
+    borderWidth: 1,
     marginLeft: padding,
+    overflow: 'hidden',
   },
   cost: {
     height: 14,
-    marginRight: 10,
     width: 18,
+  },
+  costContainer: {
+    backgroundColor: costContainerBG,
+    borderRadius: 5,
+    marginRight: 5,
+    padding: 3,
   },
   frameBorderRadius: {
     borderRadius: borderRadius * 2,
@@ -141,12 +152,16 @@ const MemoirDetail = ({
                     const onPress = () =>
                       navigation.navigate('CharacterDetail', { id: chara });
                     return (
-                      <TouchableRipple
+                      <View
                         key={`chara_${chara}`}
-                        onPress={onPress}
                         style={styles.charaIconContainer}>
-                        <FastImage source={source} style={AppStyles.square40} />
-                      </TouchableRipple>
+                        <TouchableRipple onPress={onPress}>
+                          <FastImage
+                            source={source}
+                            style={AppStyles.square40}
+                          />
+                        </TouchableRipple>
+                      </View>
                     );
                   })
                 ) : (
@@ -224,7 +239,9 @@ const MemoirDetail = ({
                         borderBottomColor,
                       ]}>
                       <View style={[AppStyles.row, styles.alignCenter]}>
-                        <FastImage source={costEquip} style={styles.cost} />
+                        <View style={styles.costContainer}>
+                          <FastImage source={costEquip} style={styles.cost} />
+                        </View>
                         <Text>
                           {
                             memoir.activeSkill.cost[
