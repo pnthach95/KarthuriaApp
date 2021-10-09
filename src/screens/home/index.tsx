@@ -78,18 +78,18 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
   const [version, setVersion] = useState<GithubVersion | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [section, setSection] =
-    useState<{
-      titan: TCurrentEvent['titan'];
-      event: {
-        data: TEvent[];
-      };
-      rogue: {
-        data: TRogueEvent[];
-      };
-    } | null>(null);
-  const [accessories, setAccessories] =
-    useState<TAccessoryBasicInfo[] | null>(null);
+  const [section, setSection] = useState<{
+    titan: TCurrentEvent['titan'];
+    event: {
+      data: TEvent[];
+    };
+    rogue: {
+      data: TRogueEvent[];
+    };
+  } | null>(null);
+  const [accessories, setAccessories] = useState<TAccessoryBasicInfo[] | null>(
+    null,
+  );
   const top = {
     paddingTop: insets.top,
   };

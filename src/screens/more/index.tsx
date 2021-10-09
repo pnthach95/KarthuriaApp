@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { View, ScrollView, StyleSheet, Linking, Image } from 'react-native';
 import {
   Text,
@@ -12,7 +12,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getVersion } from 'react-native-device-info';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import AppContext from '~/context';
+import { useAppContext } from '~/context';
 import { website } from '~/api';
 import { links } from '~/api/github';
 import AppStyles, { padding } from '~/theme/styles';
@@ -23,7 +23,7 @@ import type { AppOptions, MoreScreenProps } from '~/typings';
 const MoreScreen = ({ navigation }: MoreScreenProps): JSX.Element => {
   const insets = useSafeAreaInsets();
   const theme = useTheme();
-  const { state, dispatch } = useContext(AppContext);
+  const { state, dispatch } = useAppContext();
   const top = { paddingTop: insets.top };
 
   /** Toggle dark theme */
@@ -55,7 +55,12 @@ const MoreScreen = ({ navigation }: MoreScreenProps): JSX.Element => {
       <TouchableRipple onPress={themeToggle}>
         <View style={[styles.row, AppStyles.spaceBetween]}>
           <Text>Dark theme</Text>
-          <Switch value={state.options.isDark} onValueChange={themeToggle} />
+          <Switch
+            value={state.options.isDark}
+            thumbColor={Colors.red500}
+            trackColor={{ false: Colors.grey300, true: Colors.red200 }}
+            onValueChange={themeToggle}
+          />
         </View>
       </TouchableRipple>
       <View style={[styles.group, AppStyles.rowSpaceBetween]}>
