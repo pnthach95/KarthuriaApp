@@ -104,6 +104,7 @@ const Tabs = (): JSX.Element => {
   return (
     <Tab.Navigator
       backBehavior='initialRoute'
+      screenOptions={{ headerShown: false }}
       tabBar={(props) => (
         //@ts-ignore
         <AnimatedTabBar tabs={tabs} style={tabStyle} {...props} />

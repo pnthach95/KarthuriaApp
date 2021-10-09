@@ -1,6 +1,6 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect } from 'react';
 import RNBootSplash from 'react-native-bootsplash';
-import AppContext from '~/context';
+import { useAppContext } from '~/context';
 import Kirin from '~/components/kirin';
 import { getObject } from '~/mmkv';
 
@@ -8,7 +8,7 @@ import type { AppOptions } from '~/typings';
 
 /** Loading Screen */
 const SplashScreen = (): JSX.Element => {
-  const { dispatch } = useContext(AppContext);
+  const { dispatch } = useAppContext();
 
   useEffect(() => {
     const getData = async () => {

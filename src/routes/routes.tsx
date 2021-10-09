@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -9,7 +9,7 @@ import { Provider as PaperProvider } from 'react-native-paper';
 import tinycolor from 'tinycolor2';
 import { setObject } from '~/mmkv';
 import { Dark, Light } from '~/theme';
-import AppContext from '~/context';
+import { useAppContext } from '~/context';
 
 import Tabs from './tabs';
 import SplashScreen from '~/screens/splash';
@@ -29,7 +29,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 const noHeader = { headerShown: false };
 
 const Routes = (): JSX.Element => {
-  const { state } = useContext(AppContext);
+  const { state } = useAppContext();
   const switchTheme = state.options.isDark ? Dark : Light;
   const statusBarColor = state.options.isDark
     ? Dark.colors.card
