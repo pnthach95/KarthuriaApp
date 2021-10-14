@@ -51,12 +51,6 @@ const AccessoryDetail = ({
     void loadData();
   }, []);
 
-  const goToStageGirlDetail = () =>
-    accessory &&
-    navigation.navigate('StageGirlDetail', {
-      id: accessory.basicInfo.cardID,
-    });
-
   return (
     <BaseScreen loading={loading} hasData={!!accessory}>
       {accessory && (
@@ -88,23 +82,35 @@ const AccessoryDetail = ({
                 ]}
               />
             </View>
-            <TouchableRipple borderless onPress={goToStageGirlDetail}>
-              <View>
-                <FastImage
-                  source={{ uri: stageGirlImg(accessory.basicInfo.cardID) }}
-                  style={styles.stageGirl}
-                />
-                <Image
-                  source={sgFrame}
-                  style={[styles.stageGirl, AppStyles.absolute]}
-                />
-              </View>
-            </TouchableRipple>
+            <View>
+              {accessory.basicInfo.cards.map((card) => {
+                const goToStageGirlDetail = () =>
+                  accessory &&
+                  navigation.navigate('StageGirlDetail', { id: card });
+                const source = { uri: stageGirlImg(card) };
+                return (
+                  <TouchableRipple
+                    key={card}
+                    borderless
+                    onPress={goToStageGirlDetail}>
+                    <View>
+                      <FastImage source={source} style={styles.stageGirl} />
+                      <Image
+                        source={sgFrame}
+                        style={[styles.stageGirl, AppStyles.absolute]}
+                      />
+                    </View>
+                  </TouchableRipple>
+                );
+              })}
+            </View>
           </View>
           <View style={AppStyles.paddingHorizontal}>
             <View style={AppStyles.paddingVertical}>
               <Subheading style={AppStyles.centerText}>Skill</Subheading>
-              <SkillDetail skill={accessory.skillInfo.skill.normalSkill} />
+              {accessory.skillInfo.skill.normalSkill && (
+                <SkillDetail skill={accessory.skillInfo.skill.normalSkill} />
+              )}
             </View>
             <View style={AppStyles.paddingVertical}>
               <Subheading style={AppStyles.centerText}>Max Stats</Subheading>

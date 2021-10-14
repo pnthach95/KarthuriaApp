@@ -298,12 +298,15 @@ type TAccessory = {
   basicInfo: {
     accID: number;
     iconID: number;
-    cardID: number;
+    cards: number[];
     name: TLanguageObject;
     sellPrice: number;
   };
   skillInfo: {
-    skill: TAct;
+    skill: {
+      normalSkill: TNormalSkill | null;
+      changeSkill: number;
+    };
     skillSlot: number;
   };
   stat: TBasicStat & {
