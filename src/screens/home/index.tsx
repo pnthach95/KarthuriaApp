@@ -383,7 +383,7 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
                     if (findA) {
                       const source = { uri: itemImg(findA.basicInfo.iconID) };
                       const stageGirl = {
-                        uri: stageGirlImg(findA.basicInfo.cardID),
+                        uri: stageGirlImg(findA.basicInfo.cards[0]),
                       };
                       const onPress = () =>
                         navigation.navigate('AccessoryDetail', { id: item });

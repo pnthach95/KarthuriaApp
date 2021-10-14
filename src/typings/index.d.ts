@@ -288,7 +288,7 @@ type TAccessoryBasicInfo = {
   basicInfo: {
     accID: number;
     iconID: number;
-    cardID: number;
+    cards: number[];
     name: string;
   };
   skillSlot: number;
