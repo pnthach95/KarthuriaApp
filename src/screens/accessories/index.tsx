@@ -75,7 +75,7 @@ const Accessories = ({ navigation }: AccessoriesProps): JSX.Element => {
               style={[AppStyles.square78, AppStyles.absolute]}
             />
             <FastImage
-              source={{ uri: stageGirlImg(item.basicInfo.cardID) }}
+              source={{ uri: stageGirlImg(item.basicInfo.cards[0]) }}
               style={[AppStyles.stageGirlBottomLeft, AppStyles.absolute]}
             />
           </View>
