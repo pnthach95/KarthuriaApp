@@ -92,6 +92,7 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
   );
   const top = {
     paddingTop: insets.top,
+    paddingHorizontal: 10,
   };
 
   useEffect(() => {
@@ -173,8 +174,8 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
   };
 
   return (
-    <View style={[AppStyles.flex1, top]}>
-      {version !== null && (
+    <View style={AppStyles.flex1}>
+      {version && (
         <TouchableRipple onPress={onDownloadApp} style={styles.update}>
           <Text>{`Download new version ${version.tag} on Github!`}</Text>
         </TouchableRipple>
@@ -186,7 +187,7 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
         <ScrollView
           refreshControl={rc}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={AppStyles.padding}>
+          contentContainerStyle={top}>
           <View style={[AppStyles.row, AppStyles.center]}>
             <FastImage
               source={icon}

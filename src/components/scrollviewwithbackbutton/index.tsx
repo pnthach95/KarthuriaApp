@@ -25,20 +25,15 @@ const ScrollViewWithBackButton = ({
   const [currentOffset, setCurrentOffset] = useState(0);
   const { colors } = useTheme();
   const navigation = useNavigation();
-  const top = useStyle(
-    () => ({
-      paddingTop: safeAreaInsets.top,
-    }),
-    [safeAreaInsets.top],
-  );
   const contentContainerStyle = useStyle(
     () => [
       styles.scroll,
       {
+        paddingTop: safeAreaInsets.top,
         paddingBottom: safeAreaInsets.bottom,
       },
     ],
-    [safeAreaInsets.bottom],
+    [safeAreaInsets.bottom, safeAreaInsets.top],
   );
   const backButtonStyle = useStyle(
     () => ({ backgroundColor: colors.background }),
@@ -105,13 +100,13 @@ const ScrollViewWithBackButton = ({
 
   return (
     <View style={AppStyles.flex1}>
-      <View style={top} />
       <ScrollView
         {...props}
         contentContainerStyle={contentContainerStyle}
         onScroll={onScroll}
         scrollEventThrottle={16}
         showsVerticalScrollIndicator={false}>
+        <View style={styles.top} />
         {children}
       </ScrollView>
       <Animated.View style={[backButtonAVStyle, translateXStyle]}>
@@ -122,7 +117,12 @@ const ScrollViewWithBackButton = ({
         />
       </Animated.View>
       <Animated.View
-        style={[AppStyles.right0, AppStyles.absolute, top, translateYStyle]}>
+        style={[
+          AppStyles.right0,
+          AppStyles.absolute,
+          contentContainerStyle,
+          translateYStyle,
+        ]}>
         {right}
       </Animated.View>
     </View>
@@ -132,6 +132,9 @@ const ScrollViewWithBackButton = ({
 const styles = StyleSheet.create({
   scroll: {
     paddingTop: 50,
+  },
+  top: {
+    height: 40,
   },
 });
 
