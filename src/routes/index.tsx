@@ -7,7 +7,6 @@ import duration from 'dayjs/plugin/duration';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import * as Sentry from '@sentry/react-native';
 import { sentry } from '~/util';
-import { AppProvider } from '~/context';
 import Routes from './routes';
 
 Sentry.init({ dsn: sentry });
@@ -19,9 +18,7 @@ const MainContainer: React.FC<null> = () => {
   return (
     <NetworkProvider>
       <SafeAreaProvider>
-        <AppProvider>
-          <Routes />
-        </AppProvider>
+        <Routes />
       </SafeAreaProvider>
     </NetworkProvider>
   );

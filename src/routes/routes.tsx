@@ -2,17 +2,17 @@ import React, { useEffect } from 'react';
 import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import RNBootSplash from 'react-native-bootsplash';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { setRootViewBackgroundColor } from '@pnthach95/react-native-root-view-background';
 import NavigationBarColor from 'react-native-navigation-bar-color';
 import { Provider as PaperProvider } from 'react-native-paper';
 import tinycolor from 'tinycolor2';
-import { setObject } from '~/mmkv';
+import useStore, { useHydration } from '~/store';
 import { Dark, Light } from '~/theme';
-import { useAppContext } from '~/context';
 
 import Tabs from './tabs';
-import SplashScreen from '~/screens/splash';
+import Kirin from '~/components/kirin';
 import Characters from '~/screens/characters';
 import CharacterDetail from '~/screens/characterdetail';
 import StageGirlDetail from '~/screens/stagegirldetail';
@@ -26,73 +26,81 @@ import type { RootStackParamList } from '~/typings';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
-const noHeader = { headerShown: false };
-
 const Routes = (): JSX.Element => {
-  const { state } = useAppContext();
-  const switchTheme = state.options.isDark ? Dark : Light;
-  const statusBarColor = state.options.isDark
-    ? Dark.colors.card
-    : Light.colors.card;
-  const statusBarStyle = state.options.isDark
-    ? 'light-content'
-    : 'dark-content';
+  const hydrated = useHydration();
+  const mainRoute = useStore((s) => s.mainRoute);
+  const options = useStore((s) => s.options);
+  const onSwitchMainRoute = useStore((s) => s.onSwitchMainRoute);
+  const switchTheme = options.isDark ? Dark : Light;
+  const statusBarColor = tinycolor(
+    options.isDark ? Dark.colors.card : Light.colors.card,
+  );
+  const statusBarStyle = options.isDark ? 'light-content' : 'dark-content';
+
+  useEffect(() => {
+    const getData = async () => {
+      await RNBootSplash.hide({ fade: true });
+      onSwitchMainRoute('MAIN');
+    };
+    if (hydrated) void getData();
+  }, [hydrated]);
 
   useEffect(() => {
     setRootViewBackgroundColor(
-      state.options.isDark ? Dark.colors.background : Light.colors.background,
+      options.isDark ? Dark.colors.background : Light.colors.background,
     );
-    const c = tinycolor(statusBarColor);
-    void NavigationBarColor(c.toHexString(), !state.options.isDark, true);
-  }, [state.options.isDark]);
-
-  useEffect(() => {
-    void setObject('options', state.options);
-  }, [state.options]);
+    void NavigationBarColor(
+      statusBarColor.toHexString(),
+      !options.isDark,
+      true,
+    );
+  }, [options.isDark]);
 
   return (
     <PaperProvider theme={switchTheme}>
       <BottomSheetModalProvider>
-        <StatusBar backgroundColor={statusBarColor} barStyle={statusBarStyle} />
+        <StatusBar
+          backgroundColor={statusBarColor.setAlpha(0.5).toHex8String()}
+          barStyle={statusBarStyle}
+          translucent
+        />
         <NavigationContainer theme={switchTheme}>
-          <Stack.Navigator screenOptions={{ headerBackTitle: 'Back' }}>
-            {state.mainRoute === 'SPLASH' ? (
-              <Stack.Screen
-                name='Splash'
-                component={SplashScreen}
-                options={noHeader}
-              />
+          <Stack.Navigator
+            screenOptions={{ headerBackTitle: 'Back', headerShown: false }}>
+            {mainRoute === 'SPLASH' ? (
+              <Stack.Screen name='Splash' component={Kirin} />
             ) : (
               <>
-                <Stack.Screen name='Main' component={Tabs} options={noHeader} />
-                <Stack.Screen name='Characters' component={Characters} />
+                <Stack.Screen name='Main' component={Tabs} />
+                <Stack.Screen
+                  name='Characters'
+                  component={Characters}
+                  options={{ headerShown: true }}
+                />
                 <Stack.Screen
                   name='CharacterDetail'
                   component={CharacterDetail}
-                  options={noHeader}
                 />
                 <Stack.Screen
                   name='StageGirlDetail'
                   component={StageGirlDetail}
-                  options={noHeader}
                 />
+                <Stack.Screen name='MemoirDetail' component={MemoirDetail} />
                 <Stack.Screen
-                  name='MemoirDetail'
-                  component={MemoirDetail}
-                  options={noHeader}
+                  name='Accessories'
+                  component={Accessories}
+                  options={{ headerShown: true }}
                 />
-                <Stack.Screen name='Accessories' component={Accessories} />
                 <Stack.Screen
                   name='AccessoryDetail'
                   component={AccessoryDetail}
-                  options={noHeader}
                 />
-                <Stack.Screen name='Enemies' component={EnemiesScreen} />
                 <Stack.Screen
-                  name='EnemyDetail'
-                  component={EnemyDetail}
-                  options={noHeader}
+                  name='Enemies'
+                  component={EnemiesScreen}
+                  options={{ headerShown: true }}
                 />
+                <Stack.Screen name='EnemyDetail' component={EnemyDetail} />
               </>
             )}
           </Stack.Navigator>

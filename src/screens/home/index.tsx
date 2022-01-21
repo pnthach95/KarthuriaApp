@@ -28,6 +28,7 @@ import ConnectStatus from '~/components/connectstatus';
 import Countdown from '~/components/countdown';
 import ErrorView from '~/components/errorview';
 import Kirin from '~/components/kirin';
+import Separator from '~/components/separator';
 import API, { links } from '~/api';
 import {
   defaultEventImg,
@@ -214,18 +215,10 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
                     key={JSON.stringify(item)}
                     style={[AppStyles.contentBlock, AppStyles.shadow]}>
                     <EventImage img={eventImg(item.id)} />
-                    <View style={AppStyles.paddingVertical}>
-                      {end.map((e, i) => (
-                        <Countdown
-                          key={`${i}-${e.toISOString()}`}
-                          miliseconds={e.diff(dayjs())}
-                          style={AppStyles.centerText}
-                        />
-                      ))}
-                    </View>
+                    <Separator />
                     <View style={[AppStyles.row, AppStyles.spaceBetween]}>
                       <Caption>Begin</Caption>
-                      <View>
+                      <View style={AppStyles.flex1}>
                         {begin.map((b, i) => (
                           <Text
                             key={`${i}-${b.toISOString()}`}
@@ -237,13 +230,19 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
                     </View>
                     <View style={[AppStyles.row, AppStyles.spaceBetween]}>
                       <Caption>End</Caption>
-                      <View>
+                      <View style={AppStyles.flex1}>
                         {end.map((e, i) => (
-                          <Text
-                            key={`${i}-${e.toISOString()}`}
-                            style={styles.rightText}>
-                            {e.format('llll')}
-                          </Text>
+                          <View key={`${i}-${e.toISOString()}`}>
+                            <Text style={styles.rightText}>
+                              {e.format('llll')}
+                            </Text>
+                            {dayjs().isAfter(begin[0]) && (
+                              <Countdown
+                                miliseconds={e.diff(dayjs())}
+                                style={styles.rightText}
+                              />
+                            )}
+                          </View>
                         ))}
                       </View>
                     </View>

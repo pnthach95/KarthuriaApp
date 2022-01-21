@@ -23,23 +23,9 @@ type FCItemProps<T> = {
 
 //#endregion
 
-//#region Context
-
 type AppOptions = {
   isDark: boolean;
 };
-
-type AppState = {
-  mainRoute: 'SPLASH' | 'MAIN';
-  options: AppOptions;
-};
-
-type ActionType =
-  | { type: 'SWITCH_MAIN_ROUTE'; route: AppState['mainRoute'] }
-  | { type: 'SAVE_CACHED_DATA'; data: CachedDataObject }
-  | { type: 'SAVE_OPTIONS'; data: AppOptions };
-
-//#endregion
 
 //#region Navigation
 

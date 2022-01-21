@@ -23,7 +23,3 @@ indent_size = 4
 
 [*.js]
 quote_type = single
-
-# Windows files
-[*.bat]
-end_of_line = crlf

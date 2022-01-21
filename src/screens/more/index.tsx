@@ -12,7 +12,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getVersion } from 'react-native-device-info';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useAppContext } from '~/context';
+import useStore from '~/store';
 import { website } from '~/api';
 import { links } from '~/api/github';
 import AppStyles, { padding } from '~/theme/styles';
@@ -23,16 +23,17 @@ import type { AppOptions, MoreScreenProps } from '~/typings';
 const MoreScreen = ({ navigation }: MoreScreenProps): JSX.Element => {
   const insets = useSafeAreaInsets();
   const theme = useTheme();
-  const { state, dispatch } = useAppContext();
+  const options = useStore((s) => s.options);
+  const onSaveOptions = useStore((s) => s.onSaveOptions);
   const top = { paddingTop: insets.top };
 
   /** Toggle dark theme */
   const themeToggle = () => {
     const data: AppOptions = {
-      ...state.options,
-      isDark: !state.options.isDark,
+      ...options,
+      isDark: !options.isDark,
     };
-    dispatch({ type: 'SAVE_OPTIONS', data });
+    onSaveOptions(data);
   };
 
   const goToCharacters = () => navigation.navigate('Characters');
@@ -56,7 +57,7 @@ const MoreScreen = ({ navigation }: MoreScreenProps): JSX.Element => {
         <View style={[styles.row, AppStyles.spaceBetween]}>
           <Text>Dark theme</Text>
           <Switch
-            value={state.options.isDark}
+            value={options.isDark}
             thumbColor={Colors.red500}
             trackColor={{ false: Colors.grey300, true: Colors.red200 }}
             onValueChange={themeToggle}
