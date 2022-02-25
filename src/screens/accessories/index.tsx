@@ -11,7 +11,7 @@ import AppStyles, { padding } from '~/theme/styles';
 import frame from '~/assets/common/frame_accessory.png';
 
 import type {
-  AccessoriesProps,
+  RootStackScreenProps,
   TAccessoryBasicInfo,
   TAccessoryList,
 } from '~/typings';
@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Accessories = ({ navigation }: AccessoriesProps): JSX.Element => {
+const Accessories = ({ navigation }: RootStackScreenProps<'Accessories'>) => {
   const insets = useSafeAreaInsets();
   const { colors } = useTheme();
   const [loading, setLoading] = useState(true);

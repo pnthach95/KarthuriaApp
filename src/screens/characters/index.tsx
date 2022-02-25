@@ -13,7 +13,7 @@ import AppStyles, { padding } from '~/theme/styles';
 import type {
   TCharaBasicInfo,
   TCharaList,
-  CharactersScreenProps,
+  RootStackScreenProps,
 } from '~/typings';
 
 const styles = StyleSheet.create({
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Charaters = ({ navigation }: CharactersScreenProps): JSX.Element => {
+const Characters = ({ navigation }: RootStackScreenProps<'Characters'>) => {
   const insets = useSafeAreaInsets();
   const [loading, setLoading] = useState(true);
   const [charaList, setCharaList] = useState<TCharaBasicInfo[]>([]);
@@ -108,6 +108,6 @@ const Charaters = ({ navigation }: CharactersScreenProps): JSX.Element => {
   return <ErrorView />;
 };
 
-Charaters.whyDidYouRender = true;
+Characters.whyDidYouRender = true;
 
-export default Charaters;
+export default Characters;

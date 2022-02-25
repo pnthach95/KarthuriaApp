@@ -25,7 +25,7 @@ import recastTurn from '~/assets/common/recast_turn.png';
 import firstExecutableTurn from '~/assets/common/first_executable_turn.png';
 
 import type { OnLoadEvent } from 'react-native-fast-image';
-import type { MemoirDetailProps, TEquip } from '~/typings';
+import type { RootStackScreenProps, TEquip } from '~/typings';
 
 const costContainerBG = '#2B2B2B';
 const styles = StyleSheet.create({
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
 const MemoirDetail = ({
   route,
   navigation,
-}: MemoirDetailProps): JSX.Element => {
+}: RootStackScreenProps<'MemoirDetail'>) => {
   const { colors } = useTheme();
   const [loading, setLoading] = useState(true);
   const [memoir, setMemoir] = useState<TEquip | null>(null);

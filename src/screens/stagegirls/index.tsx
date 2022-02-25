@@ -25,9 +25,9 @@ import { characterToIndex } from '~/util';
 import frame from '~/assets/common/frame_stage_girl.png';
 
 import type {
+  MainBottomTabScreenProps,
   TDressBasicInfo,
   TDressList,
-  StageGirlsScreenProps,
   TRole,
   TSkillsOnFilter,
 } from '~/typings';
@@ -67,7 +67,9 @@ const styles = StyleSheet.create({
   },
 });
 
-const StageGirls = ({ navigation }: StageGirlsScreenProps): JSX.Element => {
+const StageGirlsScreen = ({
+  navigation,
+}: MainBottomTabScreenProps<'StageGirlsScreen'>) => {
   const insets = useSafeAreaInsets();
   const { colors } = useTheme();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
@@ -667,6 +669,6 @@ const StageGirls = ({ navigation }: StageGirlsScreenProps): JSX.Element => {
   return <ErrorView />;
 };
 
-StageGirls.whyDidYouRender = true;
+StageGirlsScreen.whyDidYouRender = true;
 
-export default StageGirls;
+export default StageGirlsScreen;

@@ -10,7 +10,7 @@ import BaseScreen from '~/components/basescreen';
 import Separator from '~/components/separator';
 import AppStyles from '~/theme/styles';
 
-import type { CharacterDetailProps, TChara } from '~/typings';
+import type { RootStackScreenProps, TChara } from '~/typings';
 
 const styles = StyleSheet.create({
   portrait: {
@@ -19,7 +19,9 @@ const styles = StyleSheet.create({
   },
 });
 
-const CharacterDetail = ({ route }: CharacterDetailProps): JSX.Element => {
+const CharacterDetail = ({
+  route,
+}: RootStackScreenProps<'CharacterDetail'>) => {
   const [loading, setLoading] = useState(true);
   const [character, setCharater] = useState<TChara | null>(null);
 

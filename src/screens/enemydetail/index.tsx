@@ -15,9 +15,9 @@ import SkillDetail from '~/components/skilldetail';
 import { attribute } from '~/assets';
 import AppStyles from '~/theme/styles';
 
-import type { EnemyDetailProps, TEnemy } from '~/typings';
+import type { RootStackScreenProps, TEnemy } from '~/typings';
 
-const EnemyDetail = ({ route }: EnemyDetailProps): JSX.Element => {
+const EnemyDetail = ({ route }: RootStackScreenProps<'EnemyDetail'>) => {
   const [loading, setLoading] = useState(true);
   const [enemy, setEnemy] = useState<TEnemy | null>(null);
 

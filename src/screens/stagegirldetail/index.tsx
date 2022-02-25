@@ -22,7 +22,7 @@ import AppStyles, { borderRadius, padding } from '~/theme/styles';
 import { attackTypeText, attribute, position, rarity } from '~/assets';
 import frame from '~/assets/common/frame_thumbnail_dress.png';
 
-import type { TDress, StageGirlDetailProps, TChara } from '~/typings';
+import type { TDress, RootStackScreenProps, TChara } from '~/typings';
 
 const styles = StyleSheet.create({
   attackType: {
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
 const StageGirlDetail = ({
   navigation,
   route,
-}: StageGirlDetailProps): JSX.Element => {
+}: RootStackScreenProps<'StageGirlDetail'>) => {
   const [loading, setLoading] = useState(true);
   const [dress, setDress] = useState<TDress | null>(null);
   const [character, setCharater] = useState<TChara | null>(null);

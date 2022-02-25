@@ -21,7 +21,11 @@ import CustomHandle from '~/components/sheet/handle';
 import AppStyles from '~/theme/styles';
 import { attribute } from '~/assets';
 
-import type { EnemiesProps, TEnemyBasicInfo, TEnemyList } from '~/typings';
+import type {
+  RootStackScreenProps,
+  TEnemyBasicInfo,
+  TEnemyList,
+} from '~/typings';
 
 const styles = StyleSheet.create({
   frame: {
@@ -34,7 +38,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Enemies = ({ navigation }: EnemiesProps): JSX.Element => {
+const Enemies = ({ navigation }: RootStackScreenProps<'Enemies'>) => {
   const insets = useSafeAreaInsets();
   const { colors } = useTheme();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);

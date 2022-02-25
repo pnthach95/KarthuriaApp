@@ -36,27 +36,9 @@ type BottomTabList = {
   MoreScreen: undefined;
 };
 
-type MainScreenProps = {
+type MainBottomTabScreenProps<T extends keyof BottomTabList> = {
   navigation: CompositeNavigationProp<
-    BottomTabNavigationProp<BottomTabList, 'MainScreen'>,
-    StackNavigationProp<RootStackParamList>
-  >;
-};
-type StageGirlsScreenProps = {
-  navigation: CompositeNavigationProp<
-    BottomTabNavigationProp<BottomTabList, 'StageGirlsScreen'>,
-    StackNavigationProp<RootStackParamList>
-  >;
-};
-type MemoirsScreenProps = {
-  navigation: CompositeNavigationProp<
-    BottomTabNavigationProp<BottomTabList, 'MemoirsScreen'>,
-    StackNavigationProp<RootStackParamList>
-  >;
-};
-type MoreScreenProps = {
-  navigation: CompositeNavigationProp<
-    BottomTabNavigationProp<BottomTabList, 'MoreScreen'>,
+    BottomTabNavigationProp<BottomTabList, T>,
     StackNavigationProp<RootStackParamList>
   >;
 };
@@ -73,23 +55,8 @@ type RootStackParamList = {
   Enemies: undefined;
   EnemyDetail: { id: string };
 };
-type CharactersScreenProps = StackScreenProps<RootStackParamList, 'Characters'>;
-type CharacterDetailProps = StackScreenProps<
-  RootStackParamList,
-  'CharacterDetail'
->;
-type StageGirlDetailProps = StackScreenProps<
-  RootStackParamList,
-  'StageGirlDetail'
->;
-type MemoirDetailProps = StackScreenProps<RootStackParamList, 'MemoirDetail'>;
-type AccessoriesProps = StackScreenProps<RootStackParamList, 'Accessories'>;
-type AccessoryDetailProps = StackScreenProps<
-  RootStackParamList,
-  'AccessoryDetail'
->;
-type EnemiesProps = StackScreenProps<RootStackParamList, 'Enemies'>;
-type EnemyDetailProps = StackScreenProps<RootStackParamList, 'EnemyDetail'>;
+type RootStackScreenProps<T extends keyof RootStackParamList> =
+  StackScreenProps<RootStackParamList, T>;
 
 //#endregion
 

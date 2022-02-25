@@ -16,7 +16,7 @@ import AppStyles from '~/theme/styles';
 import frame from '~/assets/common/frame_accessory.png';
 import sgFrame from '~/assets/common/frame_stage_girl.png';
 
-import type { AccessoryDetailProps, TAccessory } from '~/typings';
+import type { RootStackScreenProps, TAccessory } from '~/typings';
 
 const styles = StyleSheet.create({
   stageGirl: {
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
 const AccessoryDetail = ({
   navigation,
   route,
-}: AccessoryDetailProps): JSX.Element => {
+}: RootStackScreenProps<'AccessoryDetail'>) => {
   const [loading, setLoading] = useState(true);
   const [accessory, setAccessory] = useState<TAccessory | null>(null);
 

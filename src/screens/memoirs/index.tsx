@@ -25,9 +25,9 @@ import frame from '~/assets/common/frame_equip.png';
 import cutin from '~/assets/common/cutin.png';
 
 import type {
+  MainBottomTabScreenProps,
   TEquipBasicInfo,
   TEquipList,
-  MemoirsScreenProps,
   TSkillsOnFilter,
 } from '~/typings';
 
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Memoirs = ({ navigation }: MemoirsScreenProps): JSX.Element => {
+const Memoirs = ({ navigation }: MainBottomTabScreenProps<'MemoirsScreen'>) => {
   const insets = useSafeAreaInsets();
   const { colors } = useTheme();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);

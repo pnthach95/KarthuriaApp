@@ -18,9 +18,9 @@ import { links } from '~/api/github';
 import AppStyles, { padding } from '~/theme/styles';
 import webicon from '~/assets/common/icon.png';
 
-import type { AppOptions, MoreScreenProps } from '~/typings';
+import type { AppOptions, MainBottomTabScreenProps } from '~/typings';
 
-const MoreScreen = ({ navigation }: MoreScreenProps): JSX.Element => {
+const MoreScreen = ({ navigation }: MainBottomTabScreenProps<'MoreScreen'>) => {
   const insets = useSafeAreaInsets();
   const theme = useTheme();
   const options = useStore((s) => s.options);
