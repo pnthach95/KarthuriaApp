@@ -3,12 +3,11 @@ import { View } from 'react-native';
 
 type Props = {
   height?: number;
+  width?: number;
 };
 
-const Separator = ({ height = 10 }: Props): JSX.Element => {
-  return <View style={{ height }} />;
+const Separator = ({ height = 10, width }: Props) => {
+  return <View style={{ height, width }} />;
 };
-
-Separator.whyDidYouRender = true;
 
 export default Separator;

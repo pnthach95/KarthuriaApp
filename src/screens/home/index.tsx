@@ -47,7 +47,7 @@ import frame from '~/assets/common/frame_accessory.png';
 
 import type { ListRenderItem, ViewStyle } from 'react-native';
 import type {
-  MainScreenProps,
+  MainBottomTabScreenProps,
   TAccessoryBasicInfo,
   TAccessoryList,
   TCurrentEvent,
@@ -61,7 +61,9 @@ type GithubVersion = {
   link: string;
 };
 
-const EventImage = ({ img }: { img: string }): JSX.Element => {
+const challengeRevueSeparator = () => <Separator width={10} />;
+
+const EventImage = ({ img }: { img: string }) => {
   const [uri, setURI] = useState(img);
   const onError = () => setURI(defaultEventImg);
 
@@ -76,7 +78,7 @@ const EventImage = ({ img }: { img: string }): JSX.Element => {
 };
 
 /** Main Screen */
-const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
+const MainScreen = ({ navigation }: MainBottomTabScreenProps<'MainScreen'>) => {
   const insets = useSafeAreaInsets();
   const [version, setVersion] = useState<GithubVersion | null>(null);
   const [loading, setLoading] = useState(true);
@@ -329,6 +331,8 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
                   <FlatList
                     horizontal
                     data={section.rogue.data}
+                    showsHorizontalScrollIndicator={false}
+                    ItemSeparatorComponent={challengeRevueSeparator}
                     renderItem={renderChallengeRevue}
                   />
                 </View>
