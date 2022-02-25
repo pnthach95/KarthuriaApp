@@ -3,31 +3,18 @@ import { Appearance } from 'react-native';
 import MMKVStorage from 'react-native-mmkv-storage';
 import create from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { SetState, GetState } from 'zustand';
-import type { StateStorage, StoreApiWithPersist } from 'zustand/middleware';
+import type { SetState, GetState, Mutate, StoreApi } from 'zustand';
+import type { StateStorage } from 'zustand/middleware';
 import type { StoreState } from './types';
 
 const MMKV = new MMKVStorage.Loader().withInstanceID('zustand').initialize();
-
-const zustandStorage: StateStorage = {
-  setItem: (key, value) => {
-    MMKV.setString(key, value);
-  },
-  getItem: (key) => {
-    const value = MMKV.getString(key);
-    return value || null;
-  },
-  removeItem: (key) => {
-    MMKV.removeItem(key);
-  },
-};
 
 const useStore = create(
   persist<
     StoreState,
     SetState<StoreState>,
     GetState<StoreState>,
-    StoreApiWithPersist<StoreState>
+    Mutate<StoreApi<StoreState>, [['zustand/persist', Partial<StoreState>]]>
   >(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     (set, get) => ({
@@ -41,9 +28,8 @@ const useStore = create(
     {
       name: 'karthuria',
       version: 1,
-      getStorage: () => zustandStorage,
+      getStorage: () => MMKV as StateStorage,
       partialize: (state) =>
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-call
         Object.fromEntries(
           Object.entries(state).filter(([key]) => !['mainRoute'].includes(key)),
         ),
