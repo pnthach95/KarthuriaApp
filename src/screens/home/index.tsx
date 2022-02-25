@@ -7,6 +7,8 @@ import {
   RefreshControl,
   Image,
   Linking,
+  StatusBar,
+  FlatList,
 } from 'react-native';
 import {
   Text,
@@ -19,7 +21,7 @@ import {
   Surface,
 } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { responsiveWidth } from 'react-native-responsive-dimensions';
+import { responsiveScreenWidth } from 'react-native-responsive-dimensions';
 import { getVersion } from 'react-native-device-info';
 import FastImage from 'react-native-fast-image';
 import compareVersions from 'compare-versions';
@@ -43,7 +45,7 @@ import AppStyles, { borderRadius, padding } from '~/theme/styles';
 import icon from '~/assets/common/icon.png';
 import frame from '~/assets/common/frame_accessory.png';
 
-import type { ViewStyle } from 'react-native';
+import type { ListRenderItem, ViewStyle } from 'react-native';
 import type {
   MainScreenProps,
   TAccessoryBasicInfo,
@@ -142,7 +144,7 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
               ),
             })),
           },
-          rogue: { data: Object.values(data.rogue) },
+          rogue: { data: data.rogue ? Object.values(data.rogue) : [] },
           titan: data.titan,
         });
       }
@@ -166,12 +168,70 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
     void loadData();
   }, []);
 
-  const rc = <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />;
+  const rc = (
+    <RefreshControl
+      refreshing={refreshing}
+      progressViewOffset={StatusBar.currentHeight}
+      onRefresh={onRefresh}
+    />
+  );
 
   const onDownloadApp = () => {
     if (version) {
       void Linking.openURL(version.link);
     }
+  };
+
+  const renderChallengeRevue: ListRenderItem<TRogueEvent> = ({ item }) => {
+    const begin = dayjs(item.beginAt * 1000);
+    const end = dayjs(item.endAt * 1000);
+    const goToDetail = () =>
+      navigation.navigate('StageGirlDetail', { id: item.id });
+    const length = section ? section.rogue.data.length : 1;
+    const textView: ViewStyle = {
+      flexDirection: length === 1 ? 'row' : 'column',
+      alignItems: length === 1 ? 'center' : 'flex-start',
+    };
+    return (
+      <Surface
+        key={item.id}
+        style={[
+          AppStyles.padding,
+          AppStyles.borderRadius,
+          AppStyles.shadow,
+          styles.challengeRevue,
+        ]}>
+        <TouchableRipple
+          borderless
+          style={[styles.rogueImg, AppStyles.selfCenter]}
+          onPress={goToDetail}>
+          <FastImage
+            source={{ uri: rogueImg(item.id) }}
+            style={[styles.rogueImg, AppStyles.selfCenter]}
+          />
+        </TouchableRipple>
+        <View style={[AppStyles.spaceBetween, textView]}>
+          <Caption>Begin</Caption>
+          <Text>{begin.format('llll')}</Text>
+        </View>
+        <View style={[AppStyles.spaceBetween, textView]}>
+          <Caption>End</Caption>
+          <Text>{end.format('llll')}</Text>
+        </View>
+        {begin.diff(dayjs()) > 0 && (
+          <View style={[AppStyles.spaceBetween, textView]}>
+            <Caption>Start in</Caption>
+            <Countdown miliseconds={begin.diff(dayjs())} />
+          </View>
+        )}
+        {begin.diff(dayjs()) < 0 && end.diff(dayjs()) > 0 && (
+          <View style={[AppStyles.spaceBetween, textView]}>
+            <Caption>End in</Caption>
+            <Countdown miliseconds={end.diff(dayjs())} />
+          </View>
+        )}
+      </Surface>
+    );
   };
 
   return (
@@ -184,244 +244,212 @@ const MainScreen = ({ navigation }: MainScreenProps): JSX.Element => {
       <ConnectStatus />
       {loading ? (
         <Kirin />
-      ) : section ? (
+      ) : (
         <ScrollView
           refreshControl={rc}
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={top}>
-          <View style={[AppStyles.row, AppStyles.center]}>
-            <FastImage
-              source={icon}
-              style={[AppStyles.square40, AppStyles.marginRight]}
-            />
-            <Title>Project Karthuria</Title>
-          </View>
-          {section.event.data.length > 0 && (
-            <View style={AppStyles.paddingVertical}>
-              <Subheading style={AppStyles.centerText}>Events</Subheading>
-              {section.event.data.map((item) => {
-                const begin = item.beginAt.map((i) => dayjs(i * 1000));
-                const end = item.endAt.map((i) => dayjs(i * 1000));
-                if (
-                  end.reduce(
-                    (res, current) => current.diff(dayjs(), 'y') > 1 || res,
-                    false,
-                  )
-                ) {
-                  return null;
-                }
-                return (
-                  <Surface
-                    key={JSON.stringify(item)}
-                    style={[AppStyles.contentBlock, AppStyles.shadow]}>
-                    <EventImage img={eventImg(item.id)} />
-                    <Separator />
-                    <View style={[AppStyles.row, AppStyles.spaceBetween]}>
-                      <Caption>Begin</Caption>
-                      <View style={AppStyles.flex1}>
-                        {begin.map((b, i) => (
-                          <Text
-                            key={`${i}-${b.toISOString()}`}
-                            style={styles.rightText}>
-                            {b.format('llll')}
-                          </Text>
-                        ))}
-                      </View>
-                    </View>
-                    <View style={[AppStyles.row, AppStyles.spaceBetween]}>
-                      <Caption>End</Caption>
-                      <View style={AppStyles.flex1}>
-                        {end.map((e, i) => (
-                          <View key={`${i}-${e.toISOString()}`}>
-                            <Text style={styles.rightText}>
-                              {e.format('llll')}
-                            </Text>
-                            {dayjs().isAfter(begin[0]) && (
-                              <Countdown
-                                miliseconds={e.diff(dayjs())}
-                                style={styles.rightText}
-                              />
-                            )}
+          contentContainerStyle={[
+            top,
+            AppStyles.grow,
+            AppStyles.columnWrapper,
+          ]}>
+          {section ? (
+            <>
+              <View style={[AppStyles.row, AppStyles.center]}>
+                <FastImage
+                  source={icon}
+                  style={[AppStyles.square40, AppStyles.marginRight]}
+                />
+                <Title>Project Karthuria</Title>
+              </View>
+              {section.event.data.length > 0 && (
+                <View style={AppStyles.paddingVertical}>
+                  <Subheading style={AppStyles.centerText}>Events</Subheading>
+                  {section.event.data.map((item) => {
+                    const begin = item.beginAt.map((i) => dayjs(i * 1000));
+                    const end = item.endAt.map((i) => dayjs(i * 1000));
+                    if (
+                      end.reduce(
+                        (res, current) => current.diff(dayjs(), 'y') > 1 || res,
+                        false,
+                      )
+                    ) {
+                      return null;
+                    }
+                    return (
+                      <Surface
+                        key={JSON.stringify(item)}
+                        style={[AppStyles.contentBlock, AppStyles.shadow]}>
+                        <EventImage img={eventImg(item.id)} />
+                        <Separator />
+                        <View style={[AppStyles.row, AppStyles.spaceBetween]}>
+                          <Caption>Begin</Caption>
+                          <View style={AppStyles.flex1}>
+                            {begin.map((b, i) => (
+                              <Text
+                                key={`${i}-${b.toISOString()}`}
+                                style={styles.rightText}>
+                                {b.format('llll')}
+                              </Text>
+                            ))}
                           </View>
-                        ))}
-                      </View>
-                    </View>
-                    {/* <View style={[AppStyles.row, AppStyles.spaceBetween]}>
+                        </View>
+                        <View style={[AppStyles.row, AppStyles.spaceBetween]}>
+                          <Caption>End</Caption>
+                          <View style={AppStyles.flex1}>
+                            {end.map((e, i) => (
+                              <View key={`${i}-${e.toISOString()}`}>
+                                <Text style={styles.rightText}>
+                                  {e.format('llll')}
+                                </Text>
+                                {dayjs().isAfter(begin[0]) && (
+                                  <Countdown
+                                    miliseconds={e.diff(dayjs())}
+                                    style={styles.rightText}
+                                  />
+                                )}
+                              </View>
+                            ))}
+                          </View>
+                        </View>
+                        {/* <View style={[AppStyles.row, AppStyles.spaceBetween]}>
                       <Caption>Type</Caption>
                       <Text>{item.referenceIndex}</Text>
                     </View> */}
-                  </Surface>
-                );
-              })}
-            </View>
-          )}
-          <View style={AppStyles.paddingVertical}>
-            <Subheading style={AppStyles.centerText}>
-              Challenge Revue
-            </Subheading>
-            <View
-              style={[
-                AppStyles.row,
-                AppStyles.spaceBetween,
-                styles.challengeRow,
-              ]}>
-              {section.rogue.data.map((item) => {
-                const begin = dayjs(item.beginAt * 1000);
-                const end = dayjs(item.endAt * 1000);
-                const goToDetail = () =>
-                  navigation.navigate('StageGirlDetail', { id: item.id });
-                const { length } = section.rogue.data;
-                const textView: ViewStyle = {
-                  flexDirection: length === 1 ? 'row' : 'column',
-                  alignItems: length === 1 ? 'center' : 'flex-start',
-                };
-                const widthView: ViewStyle = {
-                  width:
-                    styles.challengeRow.width / length - (length > 1 ? 5 : 0),
-                };
-                return (
-                  <Surface
-                    key={item.id}
-                    style={[
-                      AppStyles.padding,
-                      AppStyles.borderRadius,
-                      AppStyles.shadow,
-                      widthView,
-                    ]}>
-                    <TouchableRipple
-                      borderless
-                      style={[styles.rogueImg, AppStyles.selfCenter]}
-                      onPress={goToDetail}>
-                      <FastImage
-                        source={{ uri: rogueImg(item.id) }}
-                        style={[styles.rogueImg, AppStyles.selfCenter]}
-                      />
-                    </TouchableRipple>
-                    <View style={[AppStyles.spaceBetween, textView]}>
-                      <Caption>Begin</Caption>
-                      <Text>{begin.format('llll')}</Text>
-                    </View>
-                    <View style={[AppStyles.spaceBetween, textView]}>
-                      <Caption>End</Caption>
-                      <Text>{end.format('llll')}</Text>
-                    </View>
-                    {begin.diff(dayjs()) > 0 && (
-                      <View style={[AppStyles.spaceBetween, textView]}>
-                        <Caption>Start in</Caption>
-                        <Countdown miliseconds={begin.diff(dayjs())} />
-                      </View>
-                    )}
-                    {begin.diff(dayjs()) < 0 && end.diff(dayjs()) > 0 && (
-                      <View style={[AppStyles.spaceBetween, textView]}>
-                        <Caption>End in</Caption>
-                        <Countdown miliseconds={end.diff(dayjs())} />
-                      </View>
-                    )}
-                  </Surface>
-                );
-              })}
-            </View>
-          </View>
-          <View style={AppStyles.paddingVertical}>
-            <Subheading style={AppStyles.centerText}>
-              Score Attack Revue
-            </Subheading>
-            <Surface
-              style={[
-                AppStyles.shadow,
-                AppStyles.contentBlock,
-                styles.titanContainer,
-              ]}>
-              <View style={AppStyles.row}>
-                {Object.values(section.titan.enemy).map((item) => {
-                  const source = { uri: enemyImg(item.id) };
-                  const onPress = () =>
-                    navigation.navigate('EnemyDetail', { id: `${item.id}_0` });
-
-                  return (
-                    <TouchableRipple
-                      key={item.id}
-                      style={[AppStyles.contentBlock, AppStyles.flex1]}
-                      onPress={onPress}>
-                      <>
-                        <FastImage
-                          source={source}
-                          style={[AppStyles.square100, AppStyles.selfCenter]}
-                        />
-                        <ProgressBar
-                          progress={parseInt(item.hpLeftPercent) / 100}
-                          style={styles.hpBar}
-                        />
-                        <Text style={AppStyles.centerText}>
-                          {item.hpLeft} ({item.hpLeftPercent}%)
-                        </Text>
-                      </>
-                    </TouchableRipple>
-                  );
-                })}
-              </View>
-              {titanEnd && (
-                <>
-                  <View style={[AppStyles.row, AppStyles.spaceBetween]}>
-                    <Caption>End</Caption>
-                    <Text>{titanEnd.format('llll')}</Text>
-                  </View>
-                  <View style={AppStyles.paddingVertical}>
-                    <Countdown
-                      miliseconds={titanEnd.diff(dayjs())}
-                      style={AppStyles.centerText}
-                    />
-                  </View>
-                </>
-              )}
-              <View style={[AppStyles.row, AppStyles.spaceEvenly]}>
-                {accessories &&
-                  section.titan.reward.map((item) => {
-                    const findA = accessories.find(
-                      (a) => a.basicInfo.accID === item,
+                      </Surface>
                     );
-                    if (findA) {
-                      const source = { uri: itemImg(findA.basicInfo.iconID) };
-                      const stageGirl = {
-                        uri: stageGirlImg(findA.basicInfo.cards[0]),
-                      };
+                  })}
+                </View>
+              )}
+              {section.rogue.data.length > 0 && (
+                <View style={AppStyles.paddingVertical}>
+                  <Subheading style={AppStyles.centerText}>
+                    Challenge Revue
+                  </Subheading>
+                  <FlatList
+                    horizontal
+                    data={section.rogue.data}
+                    renderItem={renderChallengeRevue}
+                  />
+                </View>
+              )}
+              <View style={AppStyles.paddingVertical}>
+                <Subheading style={AppStyles.centerText}>
+                  Score Attack Revue
+                </Subheading>
+                <Surface
+                  style={[
+                    AppStyles.shadow,
+                    AppStyles.contentBlock,
+                    styles.titanContainer,
+                  ]}>
+                  <View style={AppStyles.row}>
+                    {Object.values(section.titan.enemy).map((item) => {
+                      const source = { uri: enemyImg(item.id) };
                       const onPress = () =>
-                        navigation.navigate('AccessoryDetail', { id: item });
+                        navigation.navigate('EnemyDetail', {
+                          id: `${item.id}_0`,
+                        });
 
                       return (
                         <TouchableRipple
-                          key={item}
-                          borderless
-                          onPress={onPress}
-                          style={[styles.accessoryContainer, AppStyles.center]}>
-                          <View style={AppStyles.square78}>
+                          key={item.id}
+                          style={[AppStyles.contentBlock, AppStyles.flex1]}
+                          onPress={onPress}>
+                          <>
                             <FastImage
                               source={source}
-                              style={AppStyles.square78}
-                            />
-                            <Image
-                              source={frame}
-                              style={[AppStyles.square78, AppStyles.absolute]}
-                            />
-                            <FastImage
-                              source={stageGirl}
                               style={[
-                                AppStyles.stageGirlBottomLeft,
-                                AppStyles.absolute,
+                                AppStyles.square100,
+                                AppStyles.selfCenter,
                               ]}
                             />
-                          </View>
+                            <ProgressBar
+                              progress={parseInt(item.hpLeftPercent) / 100}
+                              style={styles.hpBar}
+                            />
+                            <Text style={AppStyles.centerText}>
+                              {item.hpLeft} ({item.hpLeftPercent}%)
+                            </Text>
+                          </>
                         </TouchableRipple>
                       );
-                    }
-                    return null;
-                  })}
+                    })}
+                  </View>
+                  {titanEnd && (
+                    <>
+                      <View style={[AppStyles.row, AppStyles.spaceBetween]}>
+                        <Caption>End</Caption>
+                        <Text>{titanEnd.format('llll')}</Text>
+                      </View>
+                      <View style={AppStyles.paddingVertical}>
+                        <Countdown
+                          miliseconds={titanEnd.diff(dayjs())}
+                          style={AppStyles.centerText}
+                        />
+                      </View>
+                    </>
+                  )}
+                  <View style={[AppStyles.row, AppStyles.spaceEvenly]}>
+                    {accessories &&
+                      section.titan.reward.map((item) => {
+                        const findA = accessories.find(
+                          (a) => a.basicInfo.accID === item,
+                        );
+                        if (findA) {
+                          const source = {
+                            uri: itemImg(findA.basicInfo.iconID),
+                          };
+                          const stageGirl = {
+                            uri: stageGirlImg(findA.basicInfo.cards[0]),
+                          };
+                          const onPress = () =>
+                            navigation.navigate('AccessoryDetail', {
+                              id: item,
+                            });
+
+                          return (
+                            <TouchableRipple
+                              key={item}
+                              borderless
+                              onPress={onPress}
+                              style={[
+                                styles.accessoryContainer,
+                                AppStyles.center,
+                              ]}>
+                              <View style={AppStyles.square78}>
+                                <FastImage
+                                  source={source}
+                                  style={AppStyles.square78}
+                                />
+                                <Image
+                                  source={frame}
+                                  style={[
+                                    AppStyles.square78,
+                                    AppStyles.absolute,
+                                  ]}
+                                />
+                                <FastImage
+                                  source={stageGirl}
+                                  style={[
+                                    AppStyles.stageGirlBottomLeft,
+                                    AppStyles.absolute,
+                                  ]}
+                                />
+                              </View>
+                            </TouchableRipple>
+                          );
+                        }
+                        return null;
+                      })}
+                  </View>
+                </Surface>
               </View>
-            </Surface>
-          </View>
+            </>
+          ) : (
+            <ErrorView />
+          )}
         </ScrollView>
-      ) : (
-        <ErrorView />
       )}
     </View>
   );
@@ -432,9 +460,8 @@ const styles = StyleSheet.create({
     height: 88.4,
     width: 88.4,
   },
-  challengeRow: {
-    marginVertical: padding / 2,
-    width: responsiveWidth(100) - 20,
+  challengeRevue: {
+    width: responsiveScreenWidth(66),
   },
   eventImg: {
     height: 79.8,

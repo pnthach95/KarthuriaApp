@@ -50,6 +50,9 @@ export default StyleSheet.create({
   flex1: {
     flex: 1,
   },
+  grow: {
+    flexGrow: 1,
+  },
   listItem: {
     borderWidth: 1,
     flex: 1,

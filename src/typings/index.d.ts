@@ -336,7 +336,7 @@ type TCurrentEvent = {
     reward: number[];
   };
   event: Record<string, TEvent>;
-  rogue: Record<string, TRogueEvent>;
+  rogue?: Record<string, TRogueEvent>;
 };
 
 type TRogueEvent = {
