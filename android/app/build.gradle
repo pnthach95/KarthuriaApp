@@ -141,8 +141,8 @@ android {
         applicationId "vn.pnthach.karthuria"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 8
-        versionName "1.6.0"
+        versionCode 9
+        versionName "1.7.0"
         multiDexEnabled true
         buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
 
