@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.EmptyReactNativeConfig;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.karthuria.BuildConfig;
-import com.karthuria.newarchitecture.components.MainComponentsRegistry;
-import com.karthuria.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import vn.pnthach.karthuria.BuildConfig;
+import vn.pnthach.karthuria.newarchitecture.components.MainComponentsRegistry;
+import vn.pnthach.karthuria.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 
