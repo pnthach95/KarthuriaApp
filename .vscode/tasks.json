@@ -43,7 +43,7 @@
       "windows": {
         "command": "cd android && gradlew clean"
       },
-      "linux": {
+      "osx": {
         "command": "cd android && ./gradlew clean"
       }
     },
@@ -54,7 +54,7 @@
       "windows": {
         "command": "cd android && gradlew clean && cd .. && npx react-native run-android"
       },
-      "linux": {
+      "osx": {
         "command": "cd android && ./gradlew clean && cd .. && npx react-native run-android"
       }
     },
@@ -65,7 +65,7 @@
       "windows": {
         "command": "cd android && gradlew assembleRelease"
       },
-      "linux": {
+      "osx": {
         "command": "cd android && ./gradlew assembleRelease"
       }
     },
@@ -76,29 +76,8 @@
       "windows": {
         "command": "npx jetify && cd android && gradlew bundleRelease"
       },
-      "linux": {
+      "osx": {
         "command": "npx jetify && cd android && ./gradlew bundleRelease"
-      }
-    },
-    {
-      "label": "Run iPhone 5s (10.3.1)",
-      "type": "shell",
-      "osx": {
-        "command": "npx react-native run-ios --simulator='iPhone 5s (10.3.1)'"
-      }
-    },
-    {
-      "label": "Run iPhone 8",
-      "type": "shell",
-      "osx": {
-        "command": "npx react-native run-ios --simulator='iPhone 8'"
-      }
-    },
-    {
-      "label": "Run iPhone 11",
-      "type": "shell",
-      "osx": {
-        "command": "npx react-native run-ios --simulator='iPhone 11'"
       }
     }
   ]

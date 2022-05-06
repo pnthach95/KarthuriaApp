@@ -5,9 +5,7 @@ import {
   Platform,
   StyleSheet,
   RefreshControl,
-  Image,
   Linking,
-  StatusBar,
   FlatList,
 } from 'react-native';
 import {
@@ -95,10 +93,6 @@ const MainScreen = ({ navigation }: MainBottomTabScreenProps<'MainScreen'>) => {
   const [accessories, setAccessories] = useState<TAccessoryBasicInfo[] | null>(
     null,
   );
-  const top = {
-    paddingTop: insets.top,
-    paddingHorizontal: 10,
-  };
 
   useEffect(() => {
     const checkVersion = async () => {
@@ -128,18 +122,18 @@ const MainScreen = ({ navigation }: MainBottomTabScreenProps<'MainScreen'>) => {
         const data = gotData.data;
         setSection({
           event: {
-            data: Object.values(data.event).map((d) => ({
+            data: Object.values(data.event).map(d => ({
               ...d,
               beginAt: d.beginAt.reduce<number[]>(
                 (res, current) =>
-                  res.findIndex((v) => v === current) === -1
+                  res.findIndex(v => v === current) === -1
                     ? [...res, current]
                     : res,
                 [],
               ),
               endAt: d.endAt.reduce<number[]>(
                 (res, current) =>
-                  res.findIndex((v) => v === current) === -1
+                  res.findIndex(v => v === current) === -1
                     ? [...res, current]
                     : res,
                 [],
@@ -173,7 +167,7 @@ const MainScreen = ({ navigation }: MainBottomTabScreenProps<'MainScreen'>) => {
   const rc = (
     <RefreshControl
       refreshing={refreshing}
-      progressViewOffset={StatusBar.currentHeight}
+      progressViewOffset={insets.top}
       onRefresh={onRefresh}
     />
   );
@@ -238,12 +232,6 @@ const MainScreen = ({ navigation }: MainBottomTabScreenProps<'MainScreen'>) => {
 
   return (
     <View style={AppStyles.flex1}>
-      {version && (
-        <TouchableRipple onPress={onDownloadApp} style={styles.update}>
-          <Text>{`Download new version ${version.tag} on Github!`}</Text>
-        </TouchableRipple>
-      )}
-      <ConnectStatus />
       {loading ? (
         <Kirin />
       ) : (
@@ -251,10 +239,16 @@ const MainScreen = ({ navigation }: MainBottomTabScreenProps<'MainScreen'>) => {
           refreshControl={rc}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={[
-            top,
+            AppStyles.paddingHorizontal,
             AppStyles.grow,
             AppStyles.columnWrapper,
           ]}>
+          <ConnectStatus />
+          {version && (
+            <TouchableRipple onPress={onDownloadApp} style={styles.update}>
+              <Text>{`Download new version ${version.tag} on Github!`}</Text>
+            </TouchableRipple>
+          )}
           {section ? (
             <>
               <View style={[AppStyles.row, AppStyles.center]}>
@@ -267,9 +261,9 @@ const MainScreen = ({ navigation }: MainBottomTabScreenProps<'MainScreen'>) => {
               {section.event.data.length > 0 && (
                 <View style={AppStyles.paddingVertical}>
                   <Subheading style={AppStyles.centerText}>Events</Subheading>
-                  {section.event.data.map((item) => {
-                    const begin = item.beginAt.map((i) => dayjs(i * 1000));
-                    const end = item.endAt.map((i) => dayjs(i * 1000));
+                  {section.event.data.map(item => {
+                    const begin = item.beginAt.map(i => dayjs(i * 1000));
+                    const end = item.endAt.map(i => dayjs(i * 1000));
                     if (
                       end.reduce(
                         (res, current) => current.diff(dayjs(), 'y') > 1 || res,
@@ -348,7 +342,7 @@ const MainScreen = ({ navigation }: MainBottomTabScreenProps<'MainScreen'>) => {
                     styles.titanContainer,
                   ]}>
                   <View style={AppStyles.row}>
-                    {Object.values(section.titan.enemy).map((item) => {
+                    {Object.values(section.titan.enemy).map(item => {
                       const source = { uri: enemyImg(item.id) };
                       const onPress = () =>
                         navigation.navigate('EnemyDetail', {
@@ -396,9 +390,9 @@ const MainScreen = ({ navigation }: MainBottomTabScreenProps<'MainScreen'>) => {
                   )}
                   <View style={[AppStyles.row, AppStyles.spaceEvenly]}>
                     {accessories &&
-                      section.titan.reward.map((item) => {
+                      section.titan.reward.map(item => {
                         const findA = accessories.find(
-                          (a) => a.basicInfo.accID === item,
+                          a => a.basicInfo.accID === item,
                         );
                         if (findA) {
                           const source = {
@@ -426,7 +420,7 @@ const MainScreen = ({ navigation }: MainBottomTabScreenProps<'MainScreen'>) => {
                                   source={source}
                                   style={AppStyles.square78}
                                 />
-                                <Image
+                                <FastImage
                                   source={frame}
                                   style={[
                                     AppStyles.square78,

@@ -28,9 +28,9 @@ const Stack = createStackNavigator<RootStackParamList>();
 
 const Routes = (): JSX.Element => {
   const hydrated = useHydration();
-  const mainRoute = useStore((s) => s.mainRoute);
-  const options = useStore((s) => s.options);
-  const onSwitchMainRoute = useStore((s) => s.onSwitchMainRoute);
+  const mainRoute = useStore(s => s.mainRoute);
+  const options = useStore(s => s.options);
+  const onSwitchMainRoute = useStore(s => s.onSwitchMainRoute);
   const switchTheme = options.isDark ? Dark : Light;
   const statusBarColor = tinycolor(
     options.isDark ? Dark.colors.card : Light.colors.card,
