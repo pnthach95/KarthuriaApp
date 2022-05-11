@@ -10,7 +10,7 @@ import {
 } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BottomSheetModal, BottomSheetFlatList } from '@gorhom/bottom-sheet';
-import FastImage from 'react-native-fast-image';
+import { CachedImage } from '@georstat/react-native-image-cache';
 import API, { links } from '~/api';
 import { memoirImg, skillIcon } from '~/api/images';
 import { charaImgs, rarity } from '~/assets';
@@ -94,7 +94,7 @@ const Memoirs = ({ navigation }: MainBottomTabScreenProps<'MemoirsScreen'>) => {
           );
         }
         if (sData.ok && sData.data) {
-          const skills = Object.keys(sData.data).map((k) => ({
+          const skills = Object.keys(sData.data).map(k => ({
             id: parseInt(k),
             checked: true,
           }));
@@ -112,7 +112,7 @@ const Memoirs = ({ navigation }: MainBottomTabScreenProps<'MemoirsScreen'>) => {
   /** Handle filter */
   useEffect(() => {
     if (mList.length > 0) {
-      const afterFilter = mList.filter((item) => {
+      const afterFilter = mList.filter(item => {
         const checkRarity = filter.rarity[item.basicInfo.rarity - 1];
         const checkCharacter = Array.isArray(item.basicInfo.charas)
           ? item.basicInfo.charas.reduce(
@@ -122,7 +122,7 @@ const Memoirs = ({ navigation }: MainBottomTabScreenProps<'MemoirsScreen'>) => {
             )
           : true;
         const checkSkill = filter.skills.find(
-          (s) => s.id === item.skill.iconID,
+          s => s.id === item.skill.iconID,
         )?.checked;
         return checkRarity && checkCharacter && checkSkill;
       });
@@ -180,8 +180,8 @@ const Memoirs = ({ navigation }: MainBottomTabScreenProps<'MemoirsScreen'>) => {
       <TouchableRipple onPress={onPress} style={AppStyles.flex1}>
         <View style={[AppStyles.listItem, { borderColor: colors.border }]}>
           <View style={[AppStyles.selfCenter, AppStyles.smallImg]}>
-            <FastImage
-              source={{ uri: memoirImg(item.basicInfo.cardID) }}
+            <CachedImage
+              source={memoirImg(item.basicInfo.cardID)}
               style={[AppStyles.selfCenter, AppStyles.smallImg]}
             />
             <Image
@@ -199,12 +199,12 @@ const Memoirs = ({ navigation }: MainBottomTabScreenProps<'MemoirsScreen'>) => {
               resizeMode='contain'
               style={AppStyles.rarityImg}
             />
-            <FastImage
-              source={{ uri: skillIcon(item.skill.iconID) }}
+            <CachedImage
+              source={skillIcon(item.skill.iconID)}
               style={styles.skillIcon}
             />
             {item.activeSkill === 1 && (
-              <FastImage source={cutin} style={styles.cutIn} />
+              <Image source={cutin} style={styles.cutIn} />
             )}
           </View>
           <Text style={AppStyles.centerText}>
@@ -305,7 +305,7 @@ const Memoirs = ({ navigation }: MainBottomTabScreenProps<'MemoirsScreen'>) => {
   const toggleAllSkills = () => {
     setFilter({
       ...filter,
-      skills: filter.skills.map((item) => ({
+      skills: filter.skills.map(item => ({
         ...item,
         checked: !filterAll.skills,
       })),

@@ -10,7 +10,7 @@ import {
 } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet';
-import FastImage from 'react-native-fast-image';
+import { CachedImage } from '@georstat/react-native-image-cache';
 import API, { links } from '~/api';
 import { enemyImg } from '~/api/images';
 import ErrorView from '~/components/errorview';
@@ -83,7 +83,7 @@ const Enemies = ({ navigation }: RootStackScreenProps<'Enemies'>) => {
   /** Handle filter */
   useEffect(() => {
     if (eList.length > 0) {
-      const afterFilter = eList.filter((item) => {
+      const afterFilter = eList.filter(item => {
         const checkElement = filter.elements[item.basicInfo.attribute - 1];
         const checkType = filter.type[item.basicInfo.isDress];
         return checkElement && checkType;
@@ -99,7 +99,7 @@ const Enemies = ({ navigation }: RootStackScreenProps<'Enemies'>) => {
   const toggleAllElements = () => {
     setFilter({
       ...filter,
-      elements: filter.elements.map((item) => !item),
+      elements: filter.elements.map(item => !item),
     });
     setFilterAll({
       elements: !filterAll.elements,
@@ -130,9 +130,6 @@ const Enemies = ({ navigation }: RootStackScreenProps<'Enemies'>) => {
     const onPress = () => {
       navigation.navigate('EnemyDetail', { id: basicInfo.enemyID });
     };
-    const source = {
-      uri: enemyImg(basicInfo.icon),
-    };
     const a = attribute(basicInfo.attribute);
 
     return (
@@ -145,7 +142,10 @@ const Enemies = ({ navigation }: RootStackScreenProps<'Enemies'>) => {
           ]}>
           <View style={AppStyles.center}>
             <View style={styles.frame}>
-              <FastImage source={source} style={styles.frame} />
+              <CachedImage
+                source={enemyImg(basicInfo.icon)}
+                style={styles.frame}
+              />
               <Image
                 source={a}
                 style={[AppStyles.square20, AppStyles.absolute]}

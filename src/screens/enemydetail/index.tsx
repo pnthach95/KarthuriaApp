@@ -7,7 +7,7 @@ import {
   Caption,
   Paragraph,
 } from 'react-native-paper';
-import FastImage from 'react-native-fast-image';
+import { CachedImage } from '@georstat/react-native-image-cache';
 import API, { links } from '~/api';
 import { enemyImg } from '~/api/images';
 import BaseScreen from '~/components/basescreen';
@@ -47,8 +47,8 @@ const EnemyDetail = ({ route }: RootStackScreenProps<'EnemyDetail'>) => {
           </Headline>
           <View style={AppStyles.paddingVertical}>
             <View style={[AppStyles.square112, AppStyles.selfCenter]}>
-              <FastImage
-                source={{ uri: enemyImg(enemy.basicInfo.icon) }}
+              <CachedImage
+                source={enemyImg(enemy.basicInfo.icon)}
                 style={[AppStyles.square112, AppStyles.selfCenter]}
               />
               <Image
@@ -70,7 +70,7 @@ const EnemyDetail = ({ route }: RootStackScreenProps<'EnemyDetail'>) => {
             </View>
             <View style={AppStyles.paddingVertical}>
               <Subheading style={AppStyles.centerText}>Skill</Subheading>
-              {Object.keys(enemy.skills).map((k) => {
+              {Object.keys(enemy.skills).map(k => {
                 const skill = enemy.skills[k];
                 return <SkillDetail key={k} skill={skill.normalSkill} />;
               })}

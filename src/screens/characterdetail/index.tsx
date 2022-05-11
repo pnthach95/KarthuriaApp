@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Headline, Caption, Paragraph } from 'react-native-paper';
-import FastImage from 'react-native-fast-image';
+import { CachedImage } from '@georstat/react-native-image-cache';
 import dayjs from 'dayjs';
 import API, { links } from '~/api';
 import { schoolIcon } from '~/api/images';
@@ -58,12 +58,12 @@ const CharacterDetail = ({
             {character.info.name.en || character.info.name.ja}
           </Headline>
           <View style={AppStyles.center}>
-            <FastImage
-              source={{ uri: charaBase(character.basicInfo.charaID) }}
+            <CachedImage
+              source={charaBase(character.basicInfo.charaID)}
               style={styles.portrait}
             />
-            <FastImage
-              source={{ uri: charaPortrait(character.basicInfo.charaID) }}
+            <CachedImage
+              source={charaPortrait(character.basicInfo.charaID)}
               style={[styles.portrait, AppStyles.absolute]}
             />
           </View>
@@ -84,8 +84,8 @@ const CharacterDetail = ({
                     character.info.department_1.ja}
                 </Paragraph>
               </View>
-              <FastImage
-                source={{ uri: schoolIcon(character.basicInfo.school_id) }}
+              <CachedImage
+                source={schoolIcon(character.basicInfo.school_id)}
                 style={AppStyles.square40}
               />
             </View>

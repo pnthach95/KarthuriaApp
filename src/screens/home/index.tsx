@@ -7,6 +7,7 @@ import {
   RefreshControl,
   Linking,
   FlatList,
+  Image,
 } from 'react-native';
 import {
   Text,
@@ -21,7 +22,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { responsiveScreenWidth } from 'react-native-responsive-dimensions';
 import { getVersion } from 'react-native-device-info';
-import FastImage from 'react-native-fast-image';
+import { CachedImage } from '@georstat/react-native-image-cache';
 import compareVersions from 'compare-versions';
 import dayjs from 'dayjs';
 import ConnectStatus from '~/components/connectstatus';
@@ -66,8 +67,8 @@ const EventImage = ({ img }: { img: string }) => {
   const onError = () => setURI(defaultEventImg);
 
   return (
-    <FastImage
-      source={{ uri }}
+    <CachedImage
+      source={uri}
       style={[styles.eventImg, AppStyles.selfCenter]}
       resizeMode='contain'
       onError={onError}
@@ -201,8 +202,8 @@ const MainScreen = ({ navigation }: MainBottomTabScreenProps<'MainScreen'>) => {
           borderless
           style={[styles.rogueImg, AppStyles.selfCenter]}
           onPress={goToDetail}>
-          <FastImage
-            source={{ uri: rogueImg(item.id) }}
+          <CachedImage
+            source={rogueImg(item.id)}
             style={[styles.rogueImg, AppStyles.selfCenter]}
           />
         </TouchableRipple>
@@ -252,7 +253,7 @@ const MainScreen = ({ navigation }: MainBottomTabScreenProps<'MainScreen'>) => {
           {section ? (
             <>
               <View style={[AppStyles.row, AppStyles.center]}>
-                <FastImage
+                <Image
                   source={icon}
                   style={[AppStyles.square40, AppStyles.marginRight]}
                 />
@@ -343,7 +344,6 @@ const MainScreen = ({ navigation }: MainBottomTabScreenProps<'MainScreen'>) => {
                   ]}>
                   <View style={AppStyles.row}>
                     {Object.values(section.titan.enemy).map(item => {
-                      const source = { uri: enemyImg(item.id) };
                       const onPress = () =>
                         navigation.navigate('EnemyDetail', {
                           id: `${item.id}_0`,
@@ -355,8 +355,8 @@ const MainScreen = ({ navigation }: MainBottomTabScreenProps<'MainScreen'>) => {
                           style={[AppStyles.contentBlock, AppStyles.flex1]}
                           onPress={onPress}>
                           <>
-                            <FastImage
-                              source={source}
+                            <CachedImage
+                              source={enemyImg(item.id)}
                               style={[
                                 AppStyles.square100,
                                 AppStyles.selfCenter,
@@ -395,12 +395,6 @@ const MainScreen = ({ navigation }: MainBottomTabScreenProps<'MainScreen'>) => {
                           a => a.basicInfo.accID === item,
                         );
                         if (findA) {
-                          const source = {
-                            uri: itemImg(findA.basicInfo.iconID),
-                          };
-                          const stageGirl = {
-                            uri: stageGirlImg(findA.basicInfo.cards[0]),
-                          };
                           const onPress = () =>
                             navigation.navigate('AccessoryDetail', {
                               id: item,
@@ -416,19 +410,21 @@ const MainScreen = ({ navigation }: MainBottomTabScreenProps<'MainScreen'>) => {
                                 AppStyles.center,
                               ]}>
                               <View style={AppStyles.square78}>
-                                <FastImage
-                                  source={source}
+                                <CachedImage
+                                  source={itemImg(findA.basicInfo.iconID)}
                                   style={AppStyles.square78}
                                 />
-                                <FastImage
+                                <Image
                                   source={frame}
                                   style={[
                                     AppStyles.square78,
                                     AppStyles.absolute,
                                   ]}
                                 />
-                                <FastImage
-                                  source={stageGirl}
+                                <CachedImage
+                                  source={stageGirlImg(
+                                    findA.basicInfo.cards[0],
+                                  )}
                                   style={[
                                     AppStyles.stageGirlBottomLeft,
                                     AppStyles.absolute,

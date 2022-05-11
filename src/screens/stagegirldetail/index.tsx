@@ -11,7 +11,7 @@ import {
   Surface,
   TouchableRipple,
 } from 'react-native-paper';
-import FastImage from 'react-native-fast-image';
+import { CachedImage } from '@georstat/react-native-image-cache';
 import dayjs from 'dayjs';
 import API, { links } from '~/api';
 import { skillIcon, stageGirlBigImg } from '~/api/images';
@@ -48,6 +48,12 @@ const styles = StyleSheet.create({
     width: 40,
   },
 });
+
+const loadingImage = () => (
+  <View style={[AppStyles.flex1, AppStyles.center, AppStyles.bigImg]}>
+    <ActivityIndicator size='large' />
+  </View>
+);
 
 const StageGirlDetail = ({
   navigation,
@@ -112,13 +118,10 @@ const StageGirlDetail = ({
             </TouchableRipple>
           )}
           <View style={AppStyles.bigImg}>
-            <View
-              style={[AppStyles.absolute, AppStyles.center, AppStyles.bigImg]}>
-              <ActivityIndicator size='large' />
-            </View>
-            <FastImage
-              source={{ uri: stageGirlBigImg(dress.basicInfo.cardID || '0') }}
+            <CachedImage
+              source={stageGirlBigImg(dress.basicInfo.cardID || '0')}
               style={AppStyles.bigImg}
+              loadingImageComponent={loadingImage}
             />
             <Image
               source={frame}
@@ -223,14 +226,13 @@ const StageGirlDetail = ({
           <View style={AppStyles.paddingVertical}>
             <Subheading style={AppStyles.centerText}>Auto Skills</Subheading>
             {Object.values(dress.skills).map((autoSkill, index) => {
-              const icon = { uri: skillIcon(autoSkill.iconID) };
               return (
                 <Surface
                   key={`autoSkill${index}`}
                   style={[AppStyles.shadow, AppStyles.contentBlock]}>
                   <View style={AppStyles.row}>
-                    <FastImage
-                      source={icon}
+                    <CachedImage
+                      source={skillIcon(autoSkill.iconID)}
                       style={[AppStyles.square40, AppStyles.marginRight]}
                     />
                     <View style={AppStyles.flex1}>
@@ -251,10 +253,8 @@ const StageGirlDetail = ({
             <Subheading style={AppStyles.centerText}>Unit Skill</Subheading>
             <Surface style={[AppStyles.shadow, AppStyles.contentBlock]}>
               <View style={AppStyles.row}>
-                <FastImage
-                  source={{
-                    uri: skillIcon(dress.groupSkills.unitSkill.iconID),
-                  }}
+                <CachedImage
+                  source={skillIcon(dress.groupSkills.unitSkill.iconID)}
                   style={[AppStyles.square40, AppStyles.marginRight]}
                 />
                 <View style={AppStyles.flex1}>
@@ -270,10 +270,8 @@ const StageGirlDetail = ({
             <Subheading style={AppStyles.centerText}>Finishing ACT</Subheading>
             <Surface style={[AppStyles.shadow, AppStyles.contentBlock]}>
               <View style={AppStyles.row}>
-                <FastImage
-                  source={{
-                    uri: skillIcon(dress.groupSkills.finishACT.iconID),
-                  }}
+                <CachedImage
+                  source={skillIcon(dress.groupSkills.finishACT.iconID)}
                   style={[AppStyles.square40, AppStyles.marginRight]}
                 />
                 <View style={AppStyles.flex1}>

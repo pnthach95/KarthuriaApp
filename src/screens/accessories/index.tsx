@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, FlatList, StyleSheet, Image } from 'react-native';
 import { useTheme, TouchableRipple } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import FastImage from 'react-native-fast-image';
+import { CachedImage } from '@georstat/react-native-image-cache';
 import API, { links } from '~/api';
 import { itemImg, stageGirlImg } from '~/api/images';
 import ErrorView from '~/components/errorview';
@@ -66,16 +66,16 @@ const Accessories = ({ navigation }: RootStackScreenProps<'Accessories'>) => {
             { borderColor: colors.border },
           ]}>
           <View style={[AppStyles.flex1, AppStyles.center]}>
-            <FastImage
-              source={{ uri: itemImg(item.basicInfo.iconID) }}
+            <CachedImage
+              source={itemImg(item.basicInfo.iconID)}
               style={AppStyles.square78}
             />
             <Image
               source={frame}
               style={[AppStyles.square78, AppStyles.absolute]}
             />
-            <FastImage
-              source={{ uri: stageGirlImg(item.basicInfo.cards[0]) }}
+            <CachedImage
+              source={stageGirlImg(item.basicInfo.cards[0])}
               style={[AppStyles.stageGirlBottomLeft, AppStyles.absolute]}
             />
           </View>

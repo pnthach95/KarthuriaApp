@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Caption, Text, Surface, Paragraph, Colors } from 'react-native-paper';
-import FastImage from 'react-native-fast-image';
+import { CachedImage } from '@georstat/react-native-image-cache';
 import { skillIcon } from '~/api/images';
 import AppStyles from '~/theme/styles';
 
@@ -34,14 +34,12 @@ const Animation = ({ info }: InfoProps): JSX.Element => (
   </Paragraph>
 );
 
-const SkillDetail = ({ skill }: Props): JSX.Element => {
-  const icon = { uri: skillIcon(skill.iconID) };
-
+const SkillDetail = ({ skill }: Props) => {
   return (
     <Surface style={[AppStyles.shadow, AppStyles.contentBlock]}>
       <View style={AppStyles.row}>
-        <FastImage
-          source={icon}
+        <CachedImage
+          source={skillIcon(skill.iconID)}
           style={[AppStyles.square40, AppStyles.marginRight]}
         />
         <View style={AppStyles.flex1}>

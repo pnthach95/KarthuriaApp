@@ -7,7 +7,7 @@ import {
   DataTable,
   TouchableRipple,
 } from 'react-native-paper';
-import FastImage from 'react-native-fast-image';
+import { CachedImage } from '@georstat/react-native-image-cache';
 import API, { links } from '~/api';
 import { actIcon, itemImg, stageGirlImg } from '~/api/images';
 import BaseScreen from '~/components/basescreen';
@@ -65,16 +65,16 @@ const AccessoryDetail = ({
               AppStyles.paddingVertical,
             ]}>
             <View>
-              <FastImage
-                source={{ uri: itemImg(accessory.basicInfo.iconID) }}
+              <CachedImage
+                source={itemImg(accessory.basicInfo.iconID)}
                 style={AppStyles.square112}
               />
               <Image
                 source={frame}
                 style={[AppStyles.square112, AppStyles.absolute]}
               />
-              <FastImage
-                source={{ uri: actIcon(accessory.skillInfo.skillSlot) }}
+              <CachedImage
+                source={actIcon(accessory.skillInfo.skillSlot)}
                 style={[
                   AppStyles.square28,
                   AppStyles.right0,
@@ -83,18 +83,21 @@ const AccessoryDetail = ({
               />
             </View>
             <View>
-              {accessory.basicInfo.cards.map((card) => {
+              {accessory.basicInfo.cards.map(card => {
                 const goToStageGirlDetail = () =>
                   accessory &&
                   navigation.navigate('StageGirlDetail', { id: card });
-                const source = { uri: stageGirlImg(card) };
+
                 return (
                   <TouchableRipple
                     key={card}
                     borderless
                     onPress={goToStageGirlDetail}>
                     <View>
-                      <FastImage source={source} style={styles.stageGirl} />
+                      <CachedImage
+                        source={stageGirlImg(card)}
+                        style={styles.stageGirl}
+                      />
                       <Image
                         source={sgFrame}
                         style={[styles.stageGirl, AppStyles.absolute]}

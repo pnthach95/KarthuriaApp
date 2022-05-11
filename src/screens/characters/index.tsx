@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
 import { Text, TouchableRipple } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import FastImage from 'react-native-fast-image';
+import { CachedImage } from '@georstat/react-native-image-cache';
 import { responsiveScreenWidth } from 'react-native-responsive-dimensions';
 import API, { links } from '~/api';
 import { charaterImg, schoolIcon } from '~/api/images';
@@ -66,16 +66,13 @@ const Characters = ({ navigation }: RootStackScreenProps<'Characters'>) => {
           id: charaID,
         });
 
-      const charaImgSource = { uri: charaterImg(charaID) };
-      const schoolIconSource = { uri: schoolIcon(school_id) };
-
       return (
         <TouchableRipple onPress={goToDetail}>
           <View style={[AppStyles.center, styles.item]}>
-            <FastImage source={charaImgSource} style={styles.img} />
+            <CachedImage source={charaterImg(charaID)} style={styles.img} />
             <View style={AppStyles.row}>
-              <FastImage
-                source={schoolIconSource}
+              <CachedImage
+                source={schoolIcon(school_id)}
                 style={[AppStyles.square20, styles.schoolIcon]}
               />
               <Text>{name_ruby.ja}</Text>

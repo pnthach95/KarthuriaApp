@@ -9,7 +9,7 @@ import {
   useTheme,
 } from 'react-native-paper';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import FastImage from 'react-native-fast-image';
+import { CachedImage } from '@georstat/react-native-image-cache';
 import { responsiveWidth } from 'react-native-responsive-dimensions';
 import { BottomSheetModal, BottomSheetFlatList } from '@gorhom/bottom-sheet';
 import API, { links } from '~/api';
@@ -116,7 +116,7 @@ const StageGirlsScreen = ({
           setSGList(sg);
         }
         if (sData.ok && sData.data) {
-          const skills = Object.keys(sData.data).map((k) => ({
+          const skills = Object.keys(sData.data).map(k => ({
             id: parseInt(k),
             checked: true,
           }));
@@ -134,7 +134,7 @@ const StageGirlsScreen = ({
   /** Handle filter */
   useEffect(() => {
     if (sgList.length > 0) {
-      const afterFilter = sgList.filter((item) => {
+      const afterFilter = sgList.filter(item => {
         const p = () => {
           switch (item.base.roleIndex.role) {
             case 'front':
@@ -152,7 +152,7 @@ const StageGirlsScreen = ({
         const checkCharacter =
           filter.characters[characterToIndex(item.basicInfo.character)];
         const checkSkill = item.base.skills.reduce((res, current) => {
-          const findSkill = filter.skills.find((f) => f.id === current);
+          const findSkill = filter.skills.find(f => f.id === current);
           if (findSkill) {
             return res && findSkill.checked;
           }
@@ -257,8 +257,8 @@ const StageGirlsScreen = ({
           </Text>
           <View style={AppStyles.center}>
             <View style={AppStyles.smallImg}>
-              <FastImage
-                source={{ uri: stageGirlImg(basicInfo.cardID) }}
+              <CachedImage
+                source={stageGirlImg(basicInfo.cardID)}
                 style={AppStyles.smallImg}
               />
               <Image
@@ -461,7 +461,7 @@ const StageGirlsScreen = ({
   const toggleAllSkills = () => {
     setFilter({
       ...filter,
-      skills: filter.skills.map((item) => ({
+      skills: filter.skills.map(item => ({
         ...item,
         checked: !filterAll.skills,
       })),

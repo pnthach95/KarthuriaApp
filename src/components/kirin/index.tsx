@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Animated, Easing } from 'react-native';
-import FastImage from 'react-native-fast-image';
+import { View, Animated, Easing, Image } from 'react-native';
 import logo from '~/assets/common/kirin.png';
 import AppStyles from '~/theme/styles';
 
@@ -26,11 +25,7 @@ const Kirin = (): JSX.Element => {
   return (
     <View style={[AppStyles.flex1, AppStyles.center]}>
       <Animated.View style={{ transform: [{ rotate }] }}>
-        <FastImage
-          source={logo}
-          resizeMode='contain'
-          style={AppStyles.square100}
-        />
+        <Image source={logo} resizeMode='contain' style={AppStyles.square100} />
       </Animated.View>
     </View>
   );

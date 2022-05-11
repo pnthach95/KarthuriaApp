@@ -12,7 +12,7 @@ import {
   DataTable,
   useTheme,
 } from 'react-native-paper';
-import FastImage from 'react-native-fast-image';
+import { CachedImage } from '@georstat/react-native-image-cache';
 import dayjs from 'dayjs';
 import API, { links } from '~/api';
 import { charaIcon, memoirBigImg, skillIcon } from '~/api/images';
@@ -24,7 +24,7 @@ import costEquip from '~/assets/common/cost_equip.png';
 import recastTurn from '~/assets/common/recast_turn.png';
 import firstExecutableTurn from '~/assets/common/first_executable_turn.png';
 
-import type { OnLoadEvent } from 'react-native-fast-image';
+import type { ImageProps } from 'react-native';
 import type { RootStackScreenProps, TEquip } from '~/typings';
 
 const costContainerBG = '#2B2B2B';
@@ -107,10 +107,10 @@ const MemoirDetail = ({
     void loadData();
   }, []);
 
-  const onLoad = (e: OnLoadEvent) =>
+  const onLoad: ImageProps['onLoad'] = e =>
     setRaritySize({
-      height: e.nativeEvent.height * 0.2,
-      width: e.nativeEvent.width * 0.2,
+      height: e.nativeEvent.source.height * 0.2,
+      width: e.nativeEvent.source.width * 0.2,
     });
 
   const releasedJA = memoir && dayjs(memoir.basicInfo.released.ja * 1000);
@@ -127,15 +127,15 @@ const MemoirDetail = ({
             {memoir.basicInfo.name.en || memoir.basicInfo.name.ja}
           </Headline>
           <View style={AppStyles.bigImg}>
-            <FastImage
-              source={{ uri: memoirBigImg(memoir.basicInfo.cardID) }}
+            <CachedImage
+              source={memoirBigImg(memoir.basicInfo.cardID)}
               style={[AppStyles.bigImg, styles.frameBorderRadius]}
             />
             <Image
               source={frame}
               style={[AppStyles.bigImg, AppStyles.absolute]}
             />
-            <FastImage
+            <Image
               source={rarity(memoir.basicInfo.rarity)}
               resizeMode='contain'
               onLoad={onLoad}
@@ -147,8 +147,7 @@ const MemoirDetail = ({
               <Caption>Characters</Caption>
               <View style={AppStyles.row}>
                 {Array.isArray(memoir.basicInfo.charas) ? (
-                  memoir.basicInfo.charas.map((chara) => {
-                    const source = { uri: charaIcon(chara) };
+                  memoir.basicInfo.charas.map(chara => {
                     const onPress = () =>
                       navigation.navigate('CharacterDetail', { id: chara });
                     return (
@@ -156,8 +155,8 @@ const MemoirDetail = ({
                         key={`chara_${chara}`}
                         style={styles.charaIconContainer}>
                         <TouchableRipple onPress={onPress}>
-                          <FastImage
-                            source={source}
+                          <CachedImage
+                            source={charaIcon(chara)}
                             style={AppStyles.square40}
                           />
                         </TouchableRipple>
@@ -211,8 +210,8 @@ const MemoirDetail = ({
           <Subheading style={AppStyles.centerText}>Auto Skills</Subheading>
           <Surface style={[AppStyles.shadow, styles.block]}>
             <View style={AppStyles.row}>
-              <FastImage
-                source={{ uri: skillIcon(memoir.skill.iconID) }}
+              <CachedImage
+                source={skillIcon(memoir.skill.iconID)}
                 style={[AppStyles.square40, AppStyles.marginRight]}
               />
               <View style={AppStyles.flex1}>
@@ -227,8 +226,8 @@ const MemoirDetail = ({
               <Subheading style={AppStyles.centerText}>Cut-in Skill</Subheading>
               <Surface style={[AppStyles.shadow, styles.block]}>
                 <View style={AppStyles.row}>
-                  <FastImage
-                    source={{ uri: skillIcon(memoir.activeSkill.iconID) }}
+                  <CachedImage
+                    source={skillIcon(memoir.activeSkill.iconID)}
                     style={[AppStyles.square40, AppStyles.marginRight]}
                   />
                   <View style={AppStyles.flex1}>
@@ -240,7 +239,7 @@ const MemoirDetail = ({
                       ]}>
                       <View style={[AppStyles.row, styles.alignCenter]}>
                         <View style={styles.costContainer}>
-                          <FastImage source={costEquip} style={styles.cost} />
+                          <Image source={costEquip} style={styles.cost} />
                         </View>
                         <Text>
                           {
@@ -257,7 +256,7 @@ const MemoirDetail = ({
                         </Text>
                       </View>
                       <View style={[AppStyles.row, styles.alignCenter]}>
-                        <FastImage
+                        <Image
                           source={firstExecutableTurn}
                           style={styles.icon16}
                         />
@@ -278,7 +277,7 @@ const MemoirDetail = ({
                         </Text>
                       </View>
                       <View style={[AppStyles.row, styles.alignCenter]}>
-                        <FastImage source={recastTurn} style={styles.icon16} />
+                        <Image source={recastTurn} style={styles.icon16} />
                         <Text>
                           {
                             memoir.activeSkill.execution.recastTurns[

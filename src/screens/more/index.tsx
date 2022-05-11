@@ -9,6 +9,7 @@ import {
   useTheme,
   Caption,
 } from 'react-native-paper';
+import { CacheManager } from '@georstat/react-native-image-cache';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { getVersion } from 'react-native-device-info';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -20,11 +21,23 @@ import webicon from '~/assets/common/icon.png';
 
 import type { AppOptions, MainBottomTabScreenProps } from '~/typings';
 
+const openWebsite = () => Linking.openURL(website);
+
+const openGithub = () => Linking.openURL(links.GITHUB_PROJECT);
+
+const clearCache = async () => {
+  try {
+    await CacheManager.clearCache();
+  } catch {
+    //
+  }
+};
+
 const MoreScreen = ({ navigation }: MainBottomTabScreenProps<'MoreScreen'>) => {
   const insets = useSafeAreaInsets();
   const theme = useTheme();
-  const options = useStore((s) => s.options);
-  const onSaveOptions = useStore((s) => s.onSaveOptions);
+  const options = useStore(s => s.options);
+  const onSaveOptions = useStore(s => s.onSaveOptions);
   const top = { paddingTop: insets.top };
 
   /** Toggle dark theme */
@@ -42,10 +55,6 @@ const MoreScreen = ({ navigation }: MainBottomTabScreenProps<'MoreScreen'>) => {
 
   const goToEnemies = () => navigation.navigate('Enemies');
 
-  const openWebsite = () => Linking.openURL(website);
-
-  const openGithub = () => Linking.openURL(links.GITHUB_PROJECT);
-
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
@@ -62,6 +71,11 @@ const MoreScreen = ({ navigation }: MainBottomTabScreenProps<'MoreScreen'>) => {
             trackColor={{ false: Colors.grey300, true: Colors.red200 }}
             onValueChange={themeToggle}
           />
+        </View>
+      </TouchableRipple>
+      <TouchableRipple onPress={clearCache}>
+        <View style={[styles.row, AppStyles.spaceBetween]}>
+          <Text>Clear cache</Text>
         </View>
       </TouchableRipple>
       <View style={[styles.group, AppStyles.rowSpaceBetween]}>

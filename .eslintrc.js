@@ -43,6 +43,7 @@ module.exports = {
     '@typescript-eslint/no-unsafe-assignment': 'off',
     '@typescript-eslint/ban-ts-comment': 'off',
     '@typescript-eslint/unbound-method': 'off',
+    '@typescript-eslint/no-misused-promises': 0,
     'react-native/no-raw-text': 'off',
     'import/extensions': 0,
     'class-methods-use-this': 'off',
