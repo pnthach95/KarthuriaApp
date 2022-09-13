@@ -1,14 +1,16 @@
+import AppStyles, {padding} from '~/theme/styles';
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Text, Colors } from 'react-native-paper';
-import { NetworkConsumer } from 'react-native-offline';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import AppStyles, { padding } from '~/theme/styles';
+import {useTranslation} from 'react-i18next';
+import {StyleSheet, View} from 'react-native';
+import {NetworkConsumer} from 'react-native-offline';
+import {Colors, Text} from 'react-native-paper';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 /**
  * Connect Status
  */
-const ConnectStatus = (): React.ReactElement => {
+const ConnectStatus = () => {
+  const {t} = useTranslation();
   const insets = useSafeAreaInsets();
   const safeInsets = {
     paddingTop: insets.top,
@@ -16,12 +18,14 @@ const ConnectStatus = (): React.ReactElement => {
 
   return (
     <NetworkConsumer>
-      {({ isConnected }) =>
+      {({isConnected}) =>
         isConnected ? (
           <View style={safeInsets} />
         ) : (
           <View style={[styles.box, safeInsets]}>
-            <Text style={AppStyles.whiteText}>No internet connection</Text>
+            <Text style={AppStyles.whiteText}>
+              {t('no-internet-connection')}
+            </Text>
           </View>
         )
       }

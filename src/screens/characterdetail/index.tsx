@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Headline, Caption, Paragraph } from 'react-native-paper';
-import { CachedImage } from '@georstat/react-native-image-cache';
-import dayjs from 'dayjs';
-import API, { links } from '~/api';
-import { schoolIcon } from '~/api/images';
-import { charaBase, charaPortrait } from '~/api/images';
+import API, {links} from '~/api';
+import {schoolIcon} from '~/api/images';
+import {charaBase, charaPortrait} from '~/api/images';
 import BaseScreen from '~/components/basescreen';
 import Separator from '~/components/separator';
 import AppStyles from '~/theme/styles';
-
-import type { RootStackScreenProps, TChara } from '~/typings';
+import {CachedImage} from '@georstat/react-native-image-cache';
+import dayjs from 'dayjs';
+import React, {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {StyleSheet, View} from 'react-native';
+import {Caption, Headline, Paragraph} from 'react-native-paper';
+import type {RootStackScreenProps} from '~/typings/navigation';
 
 const styles = StyleSheet.create({
   portrait: {
@@ -19,9 +19,10 @@ const styles = StyleSheet.create({
   },
 });
 
-const CharacterDetail = ({
+const CharacterDetailScreen = ({
   route,
 }: RootStackScreenProps<'CharacterDetail'>) => {
+  const {t} = useTranslation();
   const [loading, setLoading] = useState(true);
   const [character, setCharater] = useState<TChara | null>(null);
 
@@ -68,17 +69,17 @@ const CharacterDetail = ({
             />
           </View>
           <View style={AppStyles.padding}>
-            <Caption>Birthday (month/day)</Caption>
+            <Caption>{t('birthday')}</Caption>
             <Paragraph>{birthday}</Paragraph>
             <Separator height={10} />
-            <Caption>Voice Actor</Caption>
+            <Caption>{t('voice-actor')}</Caption>
             <Paragraph>
               {character.info.cv.en || character.info.cv.ja}
             </Paragraph>
             <Separator height={10} />
             <View style={AppStyles.rowSpaceBetween}>
               <View>
-                <Caption>School</Caption>
+                <Caption>{t('school')}</Caption>
                 <Paragraph>
                   {character.info.department_1.en ||
                     character.info.department_1.ja}
@@ -90,33 +91,33 @@ const CharacterDetail = ({
               />
             </View>
             <Separator height={10} />
-            <Caption>Department</Caption>
+            <Caption>{t('department')}</Caption>
             <Paragraph>
               {character.info.department_2.en || character.info.department_2.ja}
             </Paragraph>
             <Separator height={10} />
-            <Caption>Liked Food</Caption>
+            <Caption>{t('liked-food')}</Caption>
             <Paragraph>
               {character.info.like_foods.en || character.info.like_foods.ja}
             </Paragraph>
             <Separator height={10} />
-            <Caption>Disliked Food</Caption>
+            <Caption>{t('disliked-food')}</Caption>
             <Paragraph>
               {character.info.dislike_foods.en ||
                 character.info.dislike_foods.ja}
             </Paragraph>
             <Separator height={10} />
-            <Caption>Likes</Caption>
+            <Caption>{t('likes')}</Caption>
             <Paragraph>
               {character.info.likes.en || character.info.likes.ja}
             </Paragraph>
             <Separator height={10} />
-            <Caption>Dislikes</Caption>
+            <Caption>{t('dislikes')}</Caption>
             <Paragraph>
               {character.info.dislikes.en || character.info.dislikes.ja}
             </Paragraph>
             <Separator height={10} />
-            <Caption>Introduction</Caption>
+            <Caption>{t('introduction')}</Caption>
             <Paragraph>
               {character.info.introduction.en || character.info.introduction.ja}
             </Paragraph>
@@ -127,6 +128,6 @@ const CharacterDetail = ({
   );
 };
 
-CharacterDetail.whyDidYouRender = true;
+CharacterDetailScreen.whyDidYouRender = true;
 
-export default CharacterDetail;
+export default CharacterDetailScreen;

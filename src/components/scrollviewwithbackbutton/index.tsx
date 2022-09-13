@@ -1,14 +1,14 @@
-import React, { useRef, useState, useCallback } from 'react';
-import { View, ScrollView, StyleSheet, Animated } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { IconButton, useTheme } from 'react-native-paper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useStyle } from 'react-native-style-utilities';
 import AppStyles from '~/theme/styles';
+import {useNavigation} from '@react-navigation/native';
+import React, {useCallback, useRef, useState} from 'react';
+import {Animated, ScrollView, StyleSheet, View} from 'react-native';
+import {IconButton, useTheme} from 'react-native-paper';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useStyle} from 'react-native-style-utilities';
 
 import type {
-  NativeSyntheticEvent,
   NativeScrollEvent,
+  NativeSyntheticEvent,
   ScrollViewProps,
 } from 'react-native';
 
@@ -19,11 +19,11 @@ const ScrollViewWithBackButton = ({
 }: ScrollViewProps & {
   children?: React.ReactNode;
   right?: React.ReactNode;
-}): JSX.Element => {
+}) => {
   const scrollAV = useRef(new Animated.Value(0)).current;
   const safeAreaInsets = useSafeAreaInsets();
   const [currentOffset, setCurrentOffset] = useState(0);
-  const { colors } = useTheme();
+  const {colors} = useTheme();
   const navigation = useNavigation();
   const contentContainerStyle = useStyle(
     () => [
@@ -36,7 +36,7 @@ const ScrollViewWithBackButton = ({
     [safeAreaInsets.bottom, safeAreaInsets.top],
   );
   const backButtonStyle = useStyle(
-    () => ({ backgroundColor: colors.background }),
+    () => ({backgroundColor: colors.background}),
     [colors.background],
   );
   const goBack = useCallback(() => navigation.goBack(), []);
@@ -53,8 +53,8 @@ const ScrollViewWithBackButton = ({
     extrapolate: 'clamp',
   });
 
-  const translateXStyle = { transform: [{ translateX }] };
-  const translateYStyle = { transform: [{ translateY }] };
+  const translateXStyle = {transform: [{translateX}]};
+  const translateYStyle = {transform: [{translateY}]};
 
   const backButtonAVStyle = useStyle(
     () => [
@@ -103,17 +103,17 @@ const ScrollViewWithBackButton = ({
       <ScrollView
         {...props}
         contentContainerStyle={contentContainerStyle}
-        onScroll={onScroll}
         scrollEventThrottle={16}
-        showsVerticalScrollIndicator={false}>
+        showsVerticalScrollIndicator={false}
+        onScroll={onScroll}>
         <View style={styles.top} />
         {children}
       </ScrollView>
       <Animated.View style={[backButtonAVStyle, translateXStyle]}>
         <IconButton
           icon='arrow-left'
-          onPress={goBack}
           style={backButtonStyle}
+          onPress={goBack}
         />
       </Animated.View>
       <Animated.View

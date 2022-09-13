@@ -1,5 +1,25 @@
-import React, { useEffect, useState, useRef, useMemo } from 'react';
-import { FlatList, View, StyleSheet, Image } from 'react-native';
+import API, {links} from '~/api';
+import {skillIcon, stageGirlImg} from '~/api/images';
+import {attackType, attribute, charaImgs, position, rarity} from '~/assets';
+import frame from '~/assets/common/frame_stage_girl.png';
+import ErrorView from '~/components/errorview';
+import Kirin from '~/components/kirin';
+import CustomBackdrop from '~/components/sheet/backdrop';
+import CustomBackground from '~/components/sheet/background';
+import CustomHandle from '~/components/sheet/handle';
+import AppStyles, {borderRadius} from '~/theme/styles';
+import {characterToIndex} from '~/util';
+import {CachedImage} from '@georstat/react-native-image-cache';
+import {BottomSheetFlatList, BottomSheetModal} from '@gorhom/bottom-sheet';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {
+  FlatList,
+  Image,
+  type ListRenderItem,
+  StyleSheet,
+  View,
+} from 'react-native';
 import {
   Button,
   Caption,
@@ -8,29 +28,9 @@ import {
   TouchableRipple,
   useTheme,
 } from 'react-native-paper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { CachedImage } from '@georstat/react-native-image-cache';
-import { responsiveWidth } from 'react-native-responsive-dimensions';
-import { BottomSheetModal, BottomSheetFlatList } from '@gorhom/bottom-sheet';
-import API, { links } from '~/api';
-import { skillIcon, stageGirlImg } from '~/api/images';
-import ErrorView from '~/components/errorview';
-import Kirin from '~/components/kirin';
-import CustomBackdrop from '~/components/sheet/backdrop';
-import CustomBackground from '~/components/sheet/background';
-import CustomHandle from '~/components/sheet/handle';
-import AppStyles, { borderRadius } from '~/theme/styles';
-import { attackType, attribute, charaImgs, position, rarity } from '~/assets';
-import { characterToIndex } from '~/util';
-import frame from '~/assets/common/frame_stage_girl.png';
-
-import type {
-  MainBottomTabScreenProps,
-  TDressBasicInfo,
-  TDressList,
-  TRole,
-  TSkillsOnFilter,
-} from '~/typings';
+import {responsiveWidth} from 'react-native-responsive-dimensions';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import type {MainBottomTabScreenProps} from '~/typings/navigation';
 
 type TFilter = Record<
   'characters' | 'elements' | 'position' | 'attackType' | 'rarity',
@@ -67,11 +67,22 @@ const styles = StyleSheet.create({
   },
 });
 
+const sgKeyExtractor = ({basicInfo}: TDressBasicInfo) =>
+  `sg_${basicInfo.cardID}`;
+const charaKeyExtractor = (item: boolean, i: number) => `charaImg_${i}`;
+const elementKeyExtractor = (item: boolean, i: number) => `element_${i}`;
+const positionKeyExtractor = (item: boolean, i: number): string => `p_${i}`;
+const rarityKeyExtractor = (item: boolean, i: number) => `rarity_${i}`;
+const skillKeyExtractor = (item: TFilter['skills'][0], i: number) =>
+  `skill_${i}`;
+const raritySeparator = () => <View style={AppStyles.spaceHorizontal} />;
+
 const StageGirlsScreen = ({
   navigation,
 }: MainBottomTabScreenProps<'StageGirlsScreen'>) => {
+  const {t} = useTranslation();
   const insets = useSafeAreaInsets();
-  const { colors } = useTheme();
+  const {colors} = useTheme();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['40%'], []);
   /** Loading state */
@@ -120,7 +131,7 @@ const StageGirlsScreen = ({
             id: parseInt(k),
             checked: true,
           }));
-          setFilter({ ...filter, skills });
+          setFilter({...filter, skills});
         }
       } catch (error) {
         //
@@ -235,22 +246,19 @@ const StageGirlsScreen = ({
 
   //#region Render stage girls
 
-  const sgKeyExtractor = ({ basicInfo }: TDressBasicInfo) =>
-    `sg_${basicInfo.cardID}`;
-
-  const sgRenderItem = ({ item }: { item: TDressBasicInfo }) => {
-    const { basicInfo, base, stat } = item;
+  const sgRenderItem: ListRenderItem<TDressBasicInfo> = ({item}) => {
+    const {basicInfo, base, stat} = item;
     const onPress = () => {
-      navigation.navigate('StageGirlDetail', { id: basicInfo.cardID });
+      navigation.navigate('StageGirlDetail', {id: basicInfo.cardID});
     };
 
     return (
-      <TouchableRipple onPress={onPress} style={AppStyles.flex1}>
+      <TouchableRipple style={AppStyles.flex1} onPress={onPress}>
         <View
           style={[
             AppStyles.listItem,
             AppStyles.spaceBetween,
-            { borderColor: colors.border },
+            {borderColor: colors.border},
           ]}>
           <Text style={AppStyles.centerText}>
             {basicInfo.name.en || basicInfo.name.ja}
@@ -274,8 +282,8 @@ const StageGirlsScreen = ({
                 style={[styles.role, AppStyles.absolute]}
               />
               <Image
-                source={rarity(basicInfo.rarity)}
                 resizeMode='contain'
+                source={rarity(basicInfo.rarity)}
                 style={[AppStyles.rarityImg, styles.rarity, AppStyles.absolute]}
               />
               <Image
@@ -283,7 +291,9 @@ const StageGirlsScreen = ({
                 style={[styles.attackType, AppStyles.absolute]}
               />
             </View>
-            <Text style={AppStyles.centerText}>Total: {stat.total}</Text>
+            <Text style={AppStyles.centerText}>
+              {t('total-stat', {total: stat.total})}
+            </Text>
           </View>
         </View>
       </TouchableRipple>
@@ -293,7 +303,7 @@ const StageGirlsScreen = ({
   const emptyList = () => {
     return (
       <View style={[AppStyles.flex1, AppStyles.center, AppStyles.marginTop]}>
-        <Text>No data. Please check filter.</Text>
+        <Text>{t('no-data')}</Text>
       </View>
     );
   };
@@ -313,15 +323,7 @@ const StageGirlsScreen = ({
     });
   };
 
-  const charaKeyExtractor = (item: boolean, i: number) => `charaImg_${i}`;
-
-  const charaRenderItem = ({
-    item,
-    index,
-  }: {
-    item: boolean;
-    index: number;
-  }) => {
+  const charaRenderItem: ListRenderItem<boolean> = ({item, index}) => {
     const bgColor = {
       backgroundColor: item ? colors.primary : undefined,
     };
@@ -344,15 +346,7 @@ const StageGirlsScreen = ({
 
   //#region Render element filter
 
-  const elementKeyExtractor = (item: boolean, i: number) => `element_${i}`;
-
-  const elementRenderItem = ({
-    item,
-    index,
-  }: {
-    item: boolean;
-    index: number;
-  }) => {
+  const elementRenderItem: ListRenderItem<boolean> = ({item, index}) => {
     const bgColor = {
       backgroundColor: item ? colors.primary : undefined,
     };
@@ -375,15 +369,7 @@ const StageGirlsScreen = ({
 
   //#region Render position filter
 
-  const positionKeyExtractor = (item: boolean, i: number): string => `p_${i}`;
-
-  const positionRenderItem = ({
-    item,
-    index,
-  }: {
-    item: boolean;
-    index: number;
-  }) => {
+  const positionRenderItem: ListRenderItem<boolean> = ({item, index}) => {
     const bgColor = {
       backgroundColor: item ? colors.primary : undefined,
     };
@@ -425,17 +411,7 @@ const StageGirlsScreen = ({
 
   //#region Render rarity filter
 
-  const rarityKeyExtractor = (item: boolean, i: number) => `rarity_${i}`;
-
-  const raritySeparator = () => <View style={AppStyles.spaceHorizontal} />;
-
-  const rarityRenderItem = ({
-    item,
-    index,
-  }: {
-    item: boolean;
-    index: number;
-  }) => {
+  const rarityRenderItem: ListRenderItem<boolean> = ({item, index}) => {
     const bgColor = {
       backgroundColor: item ? colors.primary : undefined,
     };
@@ -449,7 +425,7 @@ const StageGirlsScreen = ({
         borderless
         style={[AppStyles.rarityImgContainer, AppStyles.selfStart, bgColor]}
         onPress={onPress}>
-        <Image source={rarity(index + 2)} resizeMode='contain' />
+        <Image resizeMode='contain' source={rarity(index + 2)} />
       </TouchableRipple>
     );
   };
@@ -472,15 +448,9 @@ const StageGirlsScreen = ({
     });
   };
 
-  const skillKeyExtractor = (item: TFilter['skills'][0], i: number) =>
-    `skill_${i}`;
-
-  const skillRenderItem = ({
+  const skillRenderItem: ListRenderItem<TFilter['skills'][0]> = ({
     item,
     index,
-  }: {
-    item: TFilter['skills'][0];
-    index: number;
   }) => {
     const bgColor = {
       backgroundColor: item.checked ? colors.primary : undefined,
@@ -489,10 +459,10 @@ const StageGirlsScreen = ({
       setFilter({
         ...filter,
         skills: filter.skills.map((v, j) =>
-          index === j ? { ...v, checked: !v.checked } : v,
+          index === j ? {...v, checked: !v.checked} : v,
         ),
       });
-    const source = { uri: skillIcon(item.id) };
+    const source = {uri: skillIcon(item.id)};
     return (
       <TouchableRipple
         borderless
@@ -519,45 +489,45 @@ const StageGirlsScreen = ({
       <>
         <FlatList
           data={rsgList}
+          initialNumToRender={12}
           keyExtractor={sgKeyExtractor}
-          renderItem={sgRenderItem}
-          style={top}
           ListEmptyComponent={emptyList}
           numColumns={2}
-          initialNumToRender={12}
+          renderItem={sgRenderItem}
+          style={top}
         />
         <FAB.Group
+          actions={fabActions}
+          icon={fabState ? 'filter-outline' : 'filter'}
           open={fabState}
           visible={true}
-          icon={fabState ? 'filter-outline' : 'filter'}
-          onStateChange={openFABGroup}
-          actions={fabActions}
           onPress={openFABGroup}
+          onStateChange={openFABGroup}
         />
         <BottomSheetModal
           ref={bottomSheetModalRef}
-          snapPoints={snapPoints}
           backdropComponent={CustomBackdrop}
           backgroundComponent={CustomBackground}
-          handleComponent={CustomHandle}>
+          handleComponent={CustomHandle}
+          snapPoints={snapPoints}>
           <View style={[AppStyles.paddingHorizontal, AppStyles.flex1]}>
             {/* Character filter */}
             {filterKey === 'characters' && (
               <>
                 <View
                   style={[AppStyles.rowSpaceBetween, AppStyles.marginBottom]}>
-                  <Caption>Characters</Caption>
+                  <Caption>{t('characters')}</Caption>
                   <Button
                     mode={filterAll.characters ? 'contained' : 'outlined'}
                     onPress={toggleAllCharacters}>
-                    All
+                    {t('all')}
                   </Button>
                 </View>
                 <BottomSheetFlatList
+                  columnWrapperStyle={AppStyles.spaceBetween}
                   data={filter.characters}
                   keyExtractor={charaKeyExtractor}
                   numColumns={7}
-                  columnWrapperStyle={AppStyles.spaceBetween}
                   renderItem={charaRenderItem}
                 />
               </>
@@ -565,12 +535,12 @@ const StageGirlsScreen = ({
             {/* Element filter */}
             {filterKey === 'elements' && (
               <>
-                <Caption>Elements</Caption>
+                <Caption>{t('elements')}</Caption>
                 <BottomSheetFlatList
+                  columnWrapperStyle={AppStyles.spaceBetween}
                   data={filter.elements}
                   keyExtractor={elementKeyExtractor}
                   numColumns={7}
-                  columnWrapperStyle={AppStyles.spaceBetween}
                   renderItem={elementRenderItem}
                 />
               </>
@@ -578,10 +548,10 @@ const StageGirlsScreen = ({
             {/* Position filter */}
             {filterKey === 'position' && (
               <>
-                <Caption>Position</Caption>
+                <Caption>{t('position')}</Caption>
                 <BottomSheetFlatList
-                  data={filter.position}
                   horizontal
+                  data={filter.position}
                   keyExtractor={positionKeyExtractor}
                   renderItem={positionRenderItem}
                 />
@@ -590,7 +560,7 @@ const StageGirlsScreen = ({
             {/* Attack type filter */}
             {filterKey === 'attackType' && (
               <>
-                <Caption>Attack Type</Caption>
+                <Caption>{t('attack-type')}</Caption>
                 <View style={AppStyles.row}>
                   <TouchableRipple
                     borderless
@@ -629,12 +599,12 @@ const StageGirlsScreen = ({
             {/* Rarity filter */}
             {filterKey === 'rarity' && (
               <>
-                <Caption>Rarity</Caption>
+                <Caption>{t('rarity')}</Caption>
                 <BottomSheetFlatList
-                  data={filter.rarity}
-                  keyExtractor={rarityKeyExtractor}
                   horizontal
+                  data={filter.rarity}
                   ItemSeparatorComponent={raritySeparator}
+                  keyExtractor={rarityKeyExtractor}
                   renderItem={rarityRenderItem}
                 />
               </>
@@ -644,18 +614,18 @@ const StageGirlsScreen = ({
               <>
                 <View
                   style={[AppStyles.rowSpaceBetween, AppStyles.marginBottom]}>
-                  <Caption>Skills</Caption>
+                  <Caption>{t('skills')}</Caption>
                   <Button
                     mode={filterAll.skills ? 'contained' : 'outlined'}
                     onPress={toggleAllSkills}>
-                    All
+                    {t('all')}
                   </Button>
                 </View>
                 <BottomSheetFlatList
-                  data={filter.skills}
-                  numColumns={7}
-                  keyExtractor={skillKeyExtractor}
                   columnWrapperStyle={AppStyles.spaceBetween}
+                  data={filter.skills}
+                  keyExtractor={skillKeyExtractor}
+                  numColumns={7}
                   renderItem={skillRenderItem}
                 />
               </>

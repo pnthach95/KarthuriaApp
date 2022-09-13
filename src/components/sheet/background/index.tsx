@@ -1,8 +1,8 @@
+import {borderRadius} from '~/theme/styles';
+import {BottomSheetBackgroundProps} from '@gorhom/bottom-sheet';
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { useTheme } from 'react-native-paper';
-import { BottomSheetBackgroundProps } from '@gorhom/bottom-sheet';
-import { borderRadius } from '~/theme/styles';
+import {StyleSheet, View} from 'react-native';
+import {useTheme} from 'react-native-paper';
 
 const styles = StyleSheet.create({
   radius: {
@@ -11,13 +11,11 @@ const styles = StyleSheet.create({
   },
 });
 
-const CustomBackground = ({
-  style,
-}: BottomSheetBackgroundProps): JSX.Element => {
-  const { colors } = useTheme();
+const CustomBackground = ({style}: BottomSheetBackgroundProps) => {
+  const {colors} = useTheme();
 
   return (
-    <View style={[style, styles.radius, { backgroundColor: colors.card }]} />
+    <View style={[style, styles.radius, {backgroundColor: colors.card}]} />
   );
 };
 

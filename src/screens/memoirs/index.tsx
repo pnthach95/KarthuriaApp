@@ -1,5 +1,26 @@
-import React, { useEffect, useState, useRef, useMemo } from 'react';
-import { View, FlatList, StyleSheet, Image } from 'react-native';
+import API, {links} from '~/api';
+import {memoirImg, skillIcon} from '~/api/images';
+import {charaImgs, rarity} from '~/assets';
+import cutin from '~/assets/common/cutin.png';
+import frame from '~/assets/common/frame_equip.png';
+import ErrorView from '~/components/errorview';
+import Kirin from '~/components/kirin';
+import CustomBackdrop from '~/components/sheet/backdrop';
+import CustomBackground from '~/components/sheet/background';
+import CustomHandle from '~/components/sheet/handle';
+import AppStyles from '~/theme/styles';
+import {characterToIndex} from '~/util';
+import {CachedImage} from '@georstat/react-native-image-cache';
+import {BottomSheetFlatList, BottomSheetModal} from '@gorhom/bottom-sheet';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {
+  FlatList,
+  Image,
+  type ListRenderItem,
+  StyleSheet,
+  View,
+} from 'react-native';
 import {
   Button,
   Caption,
@@ -8,28 +29,8 @@ import {
   TouchableRipple,
   useTheme,
 } from 'react-native-paper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { BottomSheetModal, BottomSheetFlatList } from '@gorhom/bottom-sheet';
-import { CachedImage } from '@georstat/react-native-image-cache';
-import API, { links } from '~/api';
-import { memoirImg, skillIcon } from '~/api/images';
-import { charaImgs, rarity } from '~/assets';
-import ErrorView from '~/components/errorview';
-import Kirin from '~/components/kirin';
-import CustomBackdrop from '~/components/sheet/backdrop';
-import CustomBackground from '~/components/sheet/background';
-import CustomHandle from '~/components/sheet/handle';
-import AppStyles from '~/theme/styles';
-import { characterToIndex } from '~/util';
-import frame from '~/assets/common/frame_equip.png';
-import cutin from '~/assets/common/cutin.png';
-
-import type {
-  MainBottomTabScreenProps,
-  TEquipBasicInfo,
-  TEquipList,
-  TSkillsOnFilter,
-} from '~/typings';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import type {MainBottomTabScreenProps} from '~/typings/navigation';
 
 type TFilter = Record<'characters' | 'rarity', boolean[]> & {
   skills: {
@@ -50,9 +51,20 @@ const styles = StyleSheet.create({
   },
 });
 
-const Memoirs = ({ navigation }: MainBottomTabScreenProps<'MemoirsScreen'>) => {
+const mKeyExtractor = (item: TEquipBasicInfo) =>
+  'memoir_' + item.basicInfo.cardID;
+const charaKeyExtractor = (item: boolean, i: number) => `charaImg_${i}`;
+const skillKeyExtractor = (item: TFilter['skills'][0], i: number) =>
+  `skill_${i}`;
+const rarityKeyExtractor = (item: boolean, i: number) => `rarity_${i}`;
+const raritySeparator = () => <View style={AppStyles.spaceHorizontal} />;
+
+const MemoirsScreen = ({
+  navigation,
+}: MainBottomTabScreenProps<'MemoirsScreen'>) => {
+  const {t} = useTranslation();
   const insets = useSafeAreaInsets();
-  const { colors } = useTheme();
+  const {colors} = useTheme();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['40%'], []);
   /** FAB state */
@@ -98,7 +110,7 @@ const Memoirs = ({ navigation }: MainBottomTabScreenProps<'MemoirsScreen'>) => {
             id: parseInt(k),
             checked: true,
           }));
-          setFilter({ ...filter, skills });
+          setFilter({...filter, skills});
         }
       } catch (error) {
         //
@@ -169,16 +181,13 @@ const Memoirs = ({ navigation }: MainBottomTabScreenProps<'MemoirsScreen'>) => {
 
   //#region Memoir list
 
-  const mKeyExtractor = (item: TEquipBasicInfo) =>
-    'memoir_' + item.basicInfo.cardID;
-
-  const mRenderItem = ({ item }: { item: TEquipBasicInfo }) => {
+  const mRenderItem: ListRenderItem<TEquipBasicInfo> = ({item}) => {
     const onPress = () =>
-      navigation.navigate('MemoirDetail', { id: item.basicInfo.cardID });
+      navigation.navigate('MemoirDetail', {id: item.basicInfo.cardID});
 
     return (
-      <TouchableRipple onPress={onPress} style={AppStyles.flex1}>
-        <View style={[AppStyles.listItem, { borderColor: colors.border }]}>
+      <TouchableRipple style={AppStyles.flex1} onPress={onPress}>
+        <View style={[AppStyles.listItem, {borderColor: colors.border}]}>
           <View style={[AppStyles.selfCenter, AppStyles.smallImg]}>
             <CachedImage
               source={memoirImg(item.basicInfo.cardID)}
@@ -195,8 +204,8 @@ const Memoirs = ({ navigation }: MainBottomTabScreenProps<'MemoirsScreen'>) => {
           </View>
           <View style={[AppStyles.center, AppStyles.row]}>
             <Image
-              source={rarity(item.basicInfo.rarity)}
               resizeMode='contain'
+              source={rarity(item.basicInfo.rarity)}
               style={AppStyles.rarityImg}
             />
             <CachedImage
@@ -218,7 +227,7 @@ const Memoirs = ({ navigation }: MainBottomTabScreenProps<'MemoirsScreen'>) => {
   const emptyList = () => {
     return (
       <View style={[AppStyles.flex1, AppStyles.center, AppStyles.marginTop]}>
-        <Text>No data. Please check filter.</Text>
+        <Text>{t('no-data')}</Text>
       </View>
     );
   };
@@ -238,15 +247,7 @@ const Memoirs = ({ navigation }: MainBottomTabScreenProps<'MemoirsScreen'>) => {
     });
   };
 
-  const charaKeyExtractor = (item: boolean, i: number) => `charaImg_${i}`;
-
-  const charaRenderItem = ({
-    item,
-    index,
-  }: {
-    item: boolean;
-    index: number;
-  }) => {
+  const charaRenderItem: ListRenderItem<boolean> = ({item, index}) => {
     const bgColor = {
       backgroundColor: item ? colors.primary : undefined,
     };
@@ -269,17 +270,7 @@ const Memoirs = ({ navigation }: MainBottomTabScreenProps<'MemoirsScreen'>) => {
 
   //#region Render rarity filter
 
-  const rarityKeyExtractor = (item: boolean, i: number) => `rarity_${i}`;
-
-  const raritySeparator = () => <View style={AppStyles.spaceHorizontal} />;
-
-  const rarityRenderItem = ({
-    item,
-    index,
-  }: {
-    item: boolean;
-    index: number;
-  }) => {
+  const rarityRenderItem: ListRenderItem<boolean> = ({item, index}) => {
     const bgColor = {
       backgroundColor: item ? colors.primary : undefined,
     };
@@ -293,7 +284,7 @@ const Memoirs = ({ navigation }: MainBottomTabScreenProps<'MemoirsScreen'>) => {
         borderless
         style={[AppStyles.rarityImgContainer, AppStyles.selfStart, bgColor]}
         onPress={onPress}>
-        <Image source={rarity(index + 1)} resizeMode='contain' />
+        <Image resizeMode='contain' source={rarity(index + 1)} />
       </TouchableRipple>
     );
   };
@@ -316,15 +307,9 @@ const Memoirs = ({ navigation }: MainBottomTabScreenProps<'MemoirsScreen'>) => {
     });
   };
 
-  const skillKeyExtractor = (item: TFilter['skills'][0], i: number) =>
-    `skill_${i}`;
-
-  const skillRenderItem = ({
+  const skillRenderItem: ListRenderItem<TFilter['skills'][0]> = ({
     item,
     index,
-  }: {
-    item: TFilter['skills'][0];
-    index: number;
   }) => {
     const bgColor = {
       backgroundColor: item.checked ? colors.primary : undefined,
@@ -333,10 +318,10 @@ const Memoirs = ({ navigation }: MainBottomTabScreenProps<'MemoirsScreen'>) => {
       setFilter({
         ...filter,
         skills: filter.skills.map((v, j) =>
-          index === j ? { ...v, checked: !v.checked } : v,
+          index === j ? {...v, checked: !v.checked} : v,
         ),
       });
-    const source = { uri: skillIcon(item.id) };
+    const source = {uri: skillIcon(item.id)};
     return (
       <TouchableRipple
         borderless
@@ -363,45 +348,45 @@ const Memoirs = ({ navigation }: MainBottomTabScreenProps<'MemoirsScreen'>) => {
       <>
         <FlatList
           data={rmList}
-          numColumns={2}
+          initialNumToRender={12}
           keyExtractor={mKeyExtractor}
+          ListEmptyComponent={emptyList}
+          numColumns={2}
           renderItem={mRenderItem}
           style={top}
-          initialNumToRender={12}
-          ListEmptyComponent={emptyList}
         />
         <FAB.Group
+          actions={fabActions}
+          icon={fabState ? 'filter-outline' : 'filter'}
           open={fabState}
           visible={true}
-          icon={fabState ? 'filter-outline' : 'filter'}
-          onStateChange={openFABGroup}
-          actions={fabActions}
           onPress={openFABGroup}
+          onStateChange={openFABGroup}
         />
         <BottomSheetModal
           ref={bottomSheetModalRef}
-          snapPoints={snapPoints}
           backdropComponent={CustomBackdrop}
           backgroundComponent={CustomBackground}
-          handleComponent={CustomHandle}>
+          handleComponent={CustomHandle}
+          snapPoints={snapPoints}>
           <View style={[AppStyles.paddingHorizontal, AppStyles.flex1]}>
             {/* Character filter */}
             {filterKey === 'characters' && (
               <>
                 <View
                   style={[AppStyles.rowSpaceBetween, AppStyles.marginBottom]}>
-                  <Caption>Characters</Caption>
+                  <Caption>{t('characters')}</Caption>
                   <Button
                     mode={filterAll.characters ? 'contained' : 'outlined'}
                     onPress={toggleAllCharacters}>
-                    All
+                    {t('all')}
                   </Button>
                 </View>
                 <BottomSheetFlatList
+                  columnWrapperStyle={AppStyles.spaceBetween}
                   data={filter.characters}
                   keyExtractor={charaKeyExtractor}
                   numColumns={7}
-                  columnWrapperStyle={AppStyles.spaceBetween}
                   renderItem={charaRenderItem}
                 />
               </>
@@ -409,12 +394,12 @@ const Memoirs = ({ navigation }: MainBottomTabScreenProps<'MemoirsScreen'>) => {
             {/* Rarity filter */}
             {filterKey === 'rarity' && (
               <>
-                <Caption>Rarity</Caption>
+                <Caption>{t('rarity')}</Caption>
                 <BottomSheetFlatList
-                  data={filter.rarity}
-                  keyExtractor={rarityKeyExtractor}
                   horizontal
+                  data={filter.rarity}
                   ItemSeparatorComponent={raritySeparator}
+                  keyExtractor={rarityKeyExtractor}
                   renderItem={rarityRenderItem}
                 />
               </>
@@ -424,18 +409,18 @@ const Memoirs = ({ navigation }: MainBottomTabScreenProps<'MemoirsScreen'>) => {
               <>
                 <View
                   style={[AppStyles.rowSpaceBetween, AppStyles.marginBottom]}>
-                  <Caption>Skills</Caption>
+                  <Caption>{t('skills')}</Caption>
                   <Button
                     mode={filterAll.skills ? 'contained' : 'outlined'}
                     onPress={toggleAllSkills}>
-                    All
+                    {t('all')}
                   </Button>
                 </View>
                 <BottomSheetFlatList
-                  data={filter.skills}
-                  numColumns={7}
-                  keyExtractor={skillKeyExtractor}
                   columnWrapperStyle={AppStyles.spaceBetween}
+                  data={filter.skills}
+                  keyExtractor={skillKeyExtractor}
+                  numColumns={7}
                   renderItem={skillRenderItem}
                 />
               </>
@@ -449,6 +434,6 @@ const Memoirs = ({ navigation }: MainBottomTabScreenProps<'MemoirsScreen'>) => {
   return <ErrorView />;
 };
 
-Memoirs.whyDidYouRender = true;
+MemoirsScreen.whyDidYouRender = true;
 
-export default Memoirs;
+export default MemoirsScreen;

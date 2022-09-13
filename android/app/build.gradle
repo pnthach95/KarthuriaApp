@@ -162,11 +162,9 @@ android {
                     // Make sure this target name is the same you specify inside the
                     // src/main/jni/Android.mk file for the `LOCAL_MODULE` variable.
                     targets "karthuria_appmodules"
-
                     // Fix for windows limit on number of character in file paths and in command lines
                     if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-                        arguments "NDK_OUT=${rootProject.projectDir.getParent()}\\.cxx",
-                            "NDK_APP_SHORT_COMMANDS=true"
+                        arguments "NDK_APP_SHORT_COMMANDS=true"
                     }
                 }
             }
@@ -279,7 +277,7 @@ dependencies {
 
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
-    implementation "androidx.core:core-splashscreen:1.0.0-beta01"
+    implementation "androidx.core:core-splashscreen:1.0.0"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {

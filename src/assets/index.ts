@@ -1,3 +1,7 @@
+import at1 from '~/assets/attacktype/1.png';
+import at2 from '~/assets/attacktype/2.png';
+import att1 from '~/assets/attacktype/text_1.png';
+import att2 from '~/assets/attacktype/text_2.png';
 import a1 from '~/assets/attributes/1.png';
 import a2 from '~/assets/attributes/2.png';
 import a3 from '~/assets/attributes/3.png';
@@ -5,17 +9,6 @@ import a4 from '~/assets/attributes/4.png';
 import a5 from '~/assets/attributes/5.png';
 import a6 from '~/assets/attributes/6.png';
 import a7 from '~/assets/attributes/7.png';
-import pBack from '~/assets/positions/back.png';
-import pMid from '~/assets/positions/middle.png';
-import pFront from '~/assets/positions/front.png';
-import r1 from '~/assets/rarities/1_1.png';
-import r2 from '~/assets/rarities/2_2.png';
-import r3 from '~/assets/rarities/3_3.png';
-import r4 from '~/assets/rarities/4_4.png';
-import at1 from '~/assets/attacktype/1.png';
-import at2 from '~/assets/attacktype/2.png';
-import att1 from '~/assets/attacktype/text_1.png';
-import att2 from '~/assets/attacktype/text_2.png';
 import char101 from '~/assets/characters/101.png';
 import char102 from '~/assets/characters/102.png';
 import char103 from '~/assets/characters/103.png';
@@ -43,8 +36,13 @@ import char405 from '~/assets/characters/405.png';
 import char501 from '~/assets/characters/501.png';
 import char502 from '~/assets/characters/502.png';
 import char503 from '~/assets/characters/503.png';
-
-import type { TRole } from '~/typings';
+import pBack from '~/assets/positions/back.png';
+import pFront from '~/assets/positions/front.png';
+import pMid from '~/assets/positions/middle.png';
+import r1 from '~/assets/rarities/1_1.png';
+import r2 from '~/assets/rarities/2_2.png';
+import r3 from '~/assets/rarities/3_3.png';
+import r4 from '~/assets/rarities/4_4.png';
 
 export const elementImgs = [a1, a2, a3, a4, a5, a6, a7];
 

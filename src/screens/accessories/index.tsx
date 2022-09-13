@@ -1,20 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { View, FlatList, StyleSheet, Image } from 'react-native';
-import { useTheme, TouchableRipple } from 'react-native-paper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { CachedImage } from '@georstat/react-native-image-cache';
-import API, { links } from '~/api';
-import { itemImg, stageGirlImg } from '~/api/images';
+import API, {links} from '~/api';
+import {itemImg, stageGirlImg} from '~/api/images';
+import frame from '~/assets/common/frame_accessory.png';
 import ErrorView from '~/components/errorview';
 import Kirin from '~/components/kirin';
-import AppStyles, { padding } from '~/theme/styles';
-import frame from '~/assets/common/frame_accessory.png';
-
-import type {
-  RootStackScreenProps,
-  TAccessoryBasicInfo,
-  TAccessoryList,
-} from '~/typings';
+import AppStyles, {padding} from '~/theme/styles';
+import {CachedImage} from '@georstat/react-native-image-cache';
+import React, {useEffect, useState} from 'react';
+import {FlatList, Image, StyleSheet, View} from 'react-native';
+import {TouchableRipple, useTheme} from 'react-native-paper';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import type {RootStackScreenProps} from '~/typings/navigation';
 
 const styles = StyleSheet.create({
   item: {
@@ -24,9 +19,14 @@ const styles = StyleSheet.create({
   },
 });
 
-const Accessories = ({ navigation }: RootStackScreenProps<'Accessories'>) => {
+const keyExtractor = (item: TAccessoryBasicInfo) =>
+  `acc_${item.basicInfo.accID}`;
+
+const AccessoriesScreen = ({
+  navigation,
+}: RootStackScreenProps<'Accessories'>) => {
   const insets = useSafeAreaInsets();
-  const { colors } = useTheme();
+  const {colors} = useTheme();
   const [loading, setLoading] = useState(true);
   const [aList, setAList] = useState<TAccessoryBasicInfo[] | null>(null);
   const bottom = {
@@ -49,21 +49,18 @@ const Accessories = ({ navigation }: RootStackScreenProps<'Accessories'>) => {
     void loadData();
   }, []);
 
-  const keyExtractor = (item: TAccessoryBasicInfo) =>
-    `acc_${item.basicInfo.accID}`;
-
-  const renderItem = ({ item }: { item: TAccessoryBasicInfo }) => {
+  const renderItem = ({item}: {item: TAccessoryBasicInfo}) => {
     const onPress = () => {
-      navigation.navigate('AccessoryDetail', { id: item.basicInfo.accID });
+      navigation.navigate('AccessoryDetail', {id: item.basicInfo.accID});
     };
 
     return (
-      <TouchableRipple onPress={onPress} style={AppStyles.flex1}>
+      <TouchableRipple style={AppStyles.flex1} onPress={onPress}>
         <View
           style={[
             AppStyles.listItem,
             styles.item,
-            { borderColor: colors.border },
+            {borderColor: colors.border},
           ]}>
           <View style={[AppStyles.flex1, AppStyles.center]}>
             <CachedImage
@@ -91,11 +88,11 @@ const Accessories = ({ navigation }: RootStackScreenProps<'Accessories'>) => {
   if (aList) {
     return (
       <FlatList
-        data={aList}
-        numColumns={2}
-        keyExtractor={keyExtractor}
         contentContainerStyle={bottom}
+        data={aList}
         initialNumToRender={12}
+        keyExtractor={keyExtractor}
+        numColumns={2}
         renderItem={renderItem}
       />
     );
@@ -104,6 +101,6 @@ const Accessories = ({ navigation }: RootStackScreenProps<'Accessories'>) => {
   return <ErrorView />;
 };
 
-Accessories.whyDidYouRender = true;
+AccessoriesScreen.whyDidYouRender = true;
 
-export default Accessories;
+export default AccessoriesScreen;

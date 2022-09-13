@@ -1,36 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import {
-  View,
-  ScrollView,
-  Platform,
-  StyleSheet,
-  RefreshControl,
-  Linking,
-  FlatList,
-  Image,
-} from 'react-native';
-import {
-  Text,
-  Title,
-  Colors,
-  TouchableRipple,
-  Caption,
-  ProgressBar,
-  Subheading,
-  Surface,
-} from 'react-native-paper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { responsiveScreenWidth } from 'react-native-responsive-dimensions';
-import { getVersion } from 'react-native-device-info';
-import { CachedImage } from '@georstat/react-native-image-cache';
-import compareVersions from 'compare-versions';
-import dayjs from 'dayjs';
-import ConnectStatus from '~/components/connectstatus';
-import Countdown from '~/components/countdown';
-import ErrorView from '~/components/errorview';
-import Kirin from '~/components/kirin';
-import Separator from '~/components/separator';
-import API, { links } from '~/api';
+import API, {links} from '~/api';
+import GithubService from '~/api/github';
 import {
   defaultEventImg,
   enemyImg,
@@ -39,20 +8,44 @@ import {
   rogueImg,
   stageGirlImg,
 } from '~/api/images';
-import GithubService from '~/api/github';
-import AppStyles, { borderRadius, padding } from '~/theme/styles';
-import icon from '~/assets/common/icon.png';
 import frame from '~/assets/common/frame_accessory.png';
-
-import type { ListRenderItem, ViewStyle } from 'react-native';
-import type {
-  MainBottomTabScreenProps,
-  TAccessoryBasicInfo,
-  TAccessoryList,
-  TCurrentEvent,
-  TEvent,
-  TRogueEvent,
-} from '~/typings';
+import icon from '~/assets/common/icon.png';
+import ConnectStatus from '~/components/connectstatus';
+import Countdown from '~/components/countdown';
+import ErrorView from '~/components/errorview';
+import Kirin from '~/components/kirin';
+import Separator from '~/components/separator';
+import AppStyles, {borderRadius, padding} from '~/theme/styles';
+import {CachedImage} from '@georstat/react-native-image-cache';
+import compareVersions from 'compare-versions';
+import dayjs from 'dayjs';
+import React, {useCallback, useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {
+  FlatList,
+  Image,
+  Linking,
+  Platform,
+  RefreshControl,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
+import {getVersion} from 'react-native-device-info';
+import {
+  Caption,
+  Colors,
+  ProgressBar,
+  Subheading,
+  Surface,
+  Text,
+  Title,
+  TouchableRipple,
+} from 'react-native-paper';
+import {responsiveScreenWidth} from 'react-native-responsive-dimensions';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import type {ListRenderItem, ViewStyle} from 'react-native';
+import type {MainBottomTabScreenProps} from '~/typings/navigation';
 
 type GithubVersion = {
   tag: string;
@@ -62,22 +55,23 @@ type GithubVersion = {
 
 const challengeRevueSeparator = () => <Separator width={10} />;
 
-const EventImage = ({ img }: { img: string }) => {
+const EventImage = ({img}: {img: string}) => {
   const [uri, setURI] = useState(img);
   const onError = () => setURI(defaultEventImg);
 
   return (
     <CachedImage
+      resizeMode='contain'
       source={uri}
       style={[styles.eventImg, AppStyles.selfCenter]}
-      resizeMode='contain'
       onError={onError}
     />
   );
 };
 
 /** Main Screen */
-const MainScreen = ({ navigation }: MainBottomTabScreenProps<'MainScreen'>) => {
+const MainScreen = ({navigation}: MainBottomTabScreenProps<'MainScreen'>) => {
+  const {t} = useTranslation();
   const insets = useSafeAreaInsets();
   const [version, setVersion] = useState<GithubVersion | null>(null);
   const [loading, setLoading] = useState(true);
@@ -141,7 +135,7 @@ const MainScreen = ({ navigation }: MainBottomTabScreenProps<'MainScreen'>) => {
               ),
             })),
           },
-          rogue: { data: data.rogue ? Object.values(data.rogue) : [] },
+          rogue: {data: data.rogue ? Object.values(data.rogue) : []},
           titan: data.titan,
         });
       }
@@ -167,8 +161,8 @@ const MainScreen = ({ navigation }: MainBottomTabScreenProps<'MainScreen'>) => {
 
   const rc = (
     <RefreshControl
-      refreshing={refreshing}
       progressViewOffset={insets.top}
+      refreshing={refreshing}
       onRefresh={onRefresh}
     />
   );
@@ -179,11 +173,11 @@ const MainScreen = ({ navigation }: MainBottomTabScreenProps<'MainScreen'>) => {
     }
   };
 
-  const renderChallengeRevue: ListRenderItem<TRogueEvent> = ({ item }) => {
+  const renderChallengeRevue: ListRenderItem<TRogueEvent> = ({item}) => {
     const begin = dayjs(item.beginAt * 1000);
     const end = dayjs(item.endAt * 1000);
     const goToDetail = () =>
-      navigation.navigate('StageGirlDetail', { id: item.id });
+      navigation.navigate('StageGirlDetail', {id: item.id});
     const length = section ? section.rogue.data.length : 1;
     const textView: ViewStyle = {
       flexDirection: length === 1 ? 'row' : 'column',
@@ -208,22 +202,22 @@ const MainScreen = ({ navigation }: MainBottomTabScreenProps<'MainScreen'>) => {
           />
         </TouchableRipple>
         <View style={[AppStyles.spaceBetween, textView]}>
-          <Caption>Begin</Caption>
+          <Caption>{t('begin')}</Caption>
           <Text>{begin.format('llll')}</Text>
         </View>
         <View style={[AppStyles.spaceBetween, textView]}>
-          <Caption>End</Caption>
+          <Caption>{t('end')}</Caption>
           <Text>{end.format('llll')}</Text>
         </View>
         {begin.diff(dayjs()) > 0 && (
           <View style={[AppStyles.spaceBetween, textView]}>
-            <Caption>Start in</Caption>
+            <Caption>{t('start-in')}</Caption>
             <Countdown miliseconds={begin.diff(dayjs())} />
           </View>
         )}
         {begin.diff(dayjs()) < 0 && end.diff(dayjs()) > 0 && (
           <View style={[AppStyles.spaceBetween, textView]}>
-            <Caption>End in</Caption>
+            <Caption>{t('end-in')}</Caption>
             <Countdown miliseconds={end.diff(dayjs())} />
           </View>
         )}
@@ -237,17 +231,19 @@ const MainScreen = ({ navigation }: MainBottomTabScreenProps<'MainScreen'>) => {
         <Kirin />
       ) : (
         <ScrollView
-          refreshControl={rc}
-          showsVerticalScrollIndicator={false}
           contentContainerStyle={[
             AppStyles.paddingHorizontal,
             AppStyles.grow,
             AppStyles.columnWrapper,
-          ]}>
+          ]}
+          refreshControl={rc}
+          showsVerticalScrollIndicator={false}>
           <ConnectStatus />
           {version && (
-            <TouchableRipple onPress={onDownloadApp} style={styles.update}>
-              <Text>{`Download new version ${version.tag} on Github!`}</Text>
+            <TouchableRipple style={styles.update} onPress={onDownloadApp}>
+              <Text>
+                {t('download-new-version-on-github', {vTag: version.tag})}
+              </Text>
             </TouchableRipple>
           )}
           {section ? (
@@ -257,11 +253,13 @@ const MainScreen = ({ navigation }: MainBottomTabScreenProps<'MainScreen'>) => {
                   source={icon}
                   style={[AppStyles.square40, AppStyles.marginRight]}
                 />
-                <Title>Project Karthuria</Title>
+                <Title>{t('project-karthuria')}</Title>
               </View>
               {section.event.data.length > 0 && (
                 <View style={AppStyles.paddingVertical}>
-                  <Subheading style={AppStyles.centerText}>Events</Subheading>
+                  <Subheading style={AppStyles.centerText}>
+                    {t('events')}
+                  </Subheading>
                   {section.event.data.map(item => {
                     const begin = item.beginAt.map(i => dayjs(i * 1000));
                     const end = item.endAt.map(i => dayjs(i * 1000));
@@ -280,7 +278,7 @@ const MainScreen = ({ navigation }: MainBottomTabScreenProps<'MainScreen'>) => {
                         <EventImage img={eventImg(item.id)} />
                         <Separator />
                         <View style={[AppStyles.row, AppStyles.spaceBetween]}>
-                          <Caption>Begin</Caption>
+                          <Caption>{t('begin')}</Caption>
                           <View style={AppStyles.flex1}>
                             {begin.map((b, i) => (
                               <Text
@@ -292,7 +290,7 @@ const MainScreen = ({ navigation }: MainBottomTabScreenProps<'MainScreen'>) => {
                           </View>
                         </View>
                         <View style={[AppStyles.row, AppStyles.spaceBetween]}>
-                          <Caption>End</Caption>
+                          <Caption>{t('end')}</Caption>
                           <View style={AppStyles.flex1}>
                             {end.map((e, i) => (
                               <View key={`${i}-${e.toISOString()}`}>
@@ -321,20 +319,20 @@ const MainScreen = ({ navigation }: MainBottomTabScreenProps<'MainScreen'>) => {
               {section.rogue.data.length > 0 && (
                 <View style={AppStyles.paddingVertical}>
                   <Subheading style={AppStyles.centerText}>
-                    Challenge Revue
+                    {t('challenge-revue')}
                   </Subheading>
                   <FlatList
                     horizontal
                     data={section.rogue.data}
-                    showsHorizontalScrollIndicator={false}
                     ItemSeparatorComponent={challengeRevueSeparator}
                     renderItem={renderChallengeRevue}
+                    showsHorizontalScrollIndicator={false}
                   />
                 </View>
               )}
               <View style={AppStyles.paddingVertical}>
                 <Subheading style={AppStyles.centerText}>
-                  Score Attack Revue
+                  {t('score-attack-revue')}
                 </Subheading>
                 <Surface
                   style={[
@@ -377,7 +375,7 @@ const MainScreen = ({ navigation }: MainBottomTabScreenProps<'MainScreen'>) => {
                   {titanEnd && (
                     <>
                       <View style={[AppStyles.row, AppStyles.spaceBetween]}>
-                        <Caption>End</Caption>
+                        <Caption>{t('end')}</Caption>
                         <Text>{titanEnd.format('llll')}</Text>
                       </View>
                       <View style={AppStyles.paddingVertical}>
@@ -404,11 +402,11 @@ const MainScreen = ({ navigation }: MainBottomTabScreenProps<'MainScreen'>) => {
                             <TouchableRipple
                               key={item}
                               borderless
-                              onPress={onPress}
                               style={[
                                 styles.accessoryContainer,
                                 AppStyles.center,
-                              ]}>
+                              ]}
+                              onPress={onPress}>
                               <View style={AppStyles.square78}>
                                 <CachedImage
                                   source={itemImg(findA.basicInfo.iconID)}

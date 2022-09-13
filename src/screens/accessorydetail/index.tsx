@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Image } from 'react-native';
-import {
-  Headline,
-  Subheading,
-  Surface,
-  DataTable,
-  TouchableRipple,
-} from 'react-native-paper';
-import { CachedImage } from '@georstat/react-native-image-cache';
-import API, { links } from '~/api';
-import { actIcon, itemImg, stageGirlImg } from '~/api/images';
+import API, {links} from '~/api';
+import {actIcon, itemImg, stageGirlImg} from '~/api/images';
+import frame from '~/assets/common/frame_accessory.png';
+import sgFrame from '~/assets/common/frame_stage_girl.png';
 import BaseScreen from '~/components/basescreen';
 import SkillDetail from '~/components/skilldetail';
 import AppStyles from '~/theme/styles';
-import frame from '~/assets/common/frame_accessory.png';
-import sgFrame from '~/assets/common/frame_stage_girl.png';
-
-import type { RootStackScreenProps, TAccessory } from '~/typings';
+import {CachedImage} from '@georstat/react-native-image-cache';
+import React, {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {Image, StyleSheet, View} from 'react-native';
+import {
+  DataTable,
+  Headline,
+  Subheading,
+  Surface,
+  TouchableRipple,
+} from 'react-native-paper';
+import type {RootStackScreenProps} from '~/typings/navigation';
 
 const styles = StyleSheet.create({
   stageGirl: {
@@ -25,17 +25,18 @@ const styles = StyleSheet.create({
   },
 });
 
-const AccessoryDetail = ({
+const AccessoryDetailScreen = ({
   navigation,
   route,
 }: RootStackScreenProps<'AccessoryDetail'>) => {
+  const {t} = useTranslation();
   const [loading, setLoading] = useState(true);
   const [accessory, setAccessory] = useState<TAccessory | null>(null);
 
   useEffect(() => {
     const loadData = async () => {
       try {
-        const { id } = route.params;
+        const {id} = route.params;
         const gotData = await API.get<TAccessory>(
           links.ACCESSORY + `${id}.json`,
         );
@@ -52,7 +53,7 @@ const AccessoryDetail = ({
   }, []);
 
   return (
-    <BaseScreen loading={loading} hasData={!!accessory}>
+    <BaseScreen hasData={!!accessory} loading={loading}>
       {accessory && (
         <>
           <Headline style={AppStyles.centerText}>
@@ -86,7 +87,7 @@ const AccessoryDetail = ({
               {accessory.basicInfo.cards.map(card => {
                 const goToStageGirlDetail = () =>
                   accessory &&
-                  navigation.navigate('StageGirlDetail', { id: card });
+                  navigation.navigate('StageGirlDetail', {id: card});
 
                 return (
                   <TouchableRipple
@@ -110,51 +111,53 @@ const AccessoryDetail = ({
           </View>
           <View style={AppStyles.paddingHorizontal}>
             <View style={AppStyles.paddingVertical}>
-              <Subheading style={AppStyles.centerText}>Skill</Subheading>
+              <Subheading style={AppStyles.centerText}>{t('skill')}</Subheading>
               {accessory.skillInfo.skill.normalSkill && (
                 <SkillDetail skill={accessory.skillInfo.skill.normalSkill} />
               )}
             </View>
             <View style={AppStyles.paddingVertical}>
-              <Subheading style={AppStyles.centerText}>Max Stats</Subheading>
+              <Subheading style={AppStyles.centerText}>
+                {t('max-stats')}
+              </Subheading>
               <Surface style={[AppStyles.shadow, AppStyles.borderRadius]}>
                 <DataTable>
                   <DataTable.Row>
-                    <DataTable.Cell>HP</DataTable.Cell>
+                    <DataTable.Cell>{t('hp')}</DataTable.Cell>
                     <DataTable.Cell numeric>{accessory.stat.hp}</DataTable.Cell>
                   </DataTable.Row>
                   <DataTable.Row>
-                    <DataTable.Cell>Act Power</DataTable.Cell>
+                    <DataTable.Cell>{t('act-power')}</DataTable.Cell>
                     <DataTable.Cell numeric>
                       {accessory.stat.atk}
                     </DataTable.Cell>
                   </DataTable.Row>
                   <DataTable.Row>
-                    <DataTable.Cell>Normal Defense</DataTable.Cell>
+                    <DataTable.Cell>{t('normal-defense')}</DataTable.Cell>
                     <DataTable.Cell numeric>
                       {accessory.stat.pdef}
                     </DataTable.Cell>
                   </DataTable.Row>
                   <DataTable.Row>
-                    <DataTable.Cell>Special Defense</DataTable.Cell>
+                    <DataTable.Cell>{t('special-defense')}</DataTable.Cell>
                     <DataTable.Cell numeric>
                       {accessory.stat.mdef}
                     </DataTable.Cell>
                   </DataTable.Row>
                   <DataTable.Row>
-                    <DataTable.Cell>Agility</DataTable.Cell>
+                    <DataTable.Cell>{t('agility')}</DataTable.Cell>
                     <DataTable.Cell numeric>
                       {accessory.stat.agi}
                     </DataTable.Cell>
                   </DataTable.Row>
                   <DataTable.Row>
-                    <DataTable.Cell>Dexterity</DataTable.Cell>
+                    <DataTable.Cell>{t('dexterity')}</DataTable.Cell>
                     <DataTable.Cell numeric>
                       {accessory.stat.dex}
                     </DataTable.Cell>
                   </DataTable.Row>
                   <DataTable.Row>
-                    <DataTable.Cell>Critical</DataTable.Cell>
+                    <DataTable.Cell>{t('critical')}</DataTable.Cell>
                     <DataTable.Cell numeric>
                       {accessory.stat.cri}
                     </DataTable.Cell>
@@ -169,6 +172,6 @@ const AccessoryDetail = ({
   );
 };
 
-AccessoryDetail.whyDidYouRender = true;
+AccessoryDetailScreen.whyDidYouRender = true;
 
-export default AccessoryDetail;
+export default AccessoryDetailScreen;

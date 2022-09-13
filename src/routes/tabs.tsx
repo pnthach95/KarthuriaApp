@@ -1,20 +1,16 @@
-import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import AnimatedTabBar from '@gorhom/animated-tabbar';
-import { useTheme, Colors } from 'react-native-paper';
-import Animated from 'react-native-reanimated';
-import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
-
 import HomeScreen from '~/screens/home';
-import StageGirlsScreen from '~/screens/stagegirls';
 import MemoirsScreen from '~/screens/memoirs';
 import MoreScreen from '~/screens/more';
-
-import type {
-  TabsConfig,
-  BubbleTabBarItemConfig,
-} from '@gorhom/animated-tabbar';
-import type { BottomTabList } from '~/typings';
+import StageGirlsScreen from '~/screens/stagegirls';
+import AnimatedTabBar from '@gorhom/animated-tabbar';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import React from 'react';
+import {useTranslation} from 'react-i18next';
+import {Colors, useTheme} from 'react-native-paper';
+import Animated from 'react-native-reanimated';
+import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
+import type {BubbleTabBarItemConfig, TabsConfig} from '@gorhom/animated-tabbar';
+import type {BottomTabList} from '~/typings/navigation';
 
 type IconProps = {
   color: Animated.Node<string>;
@@ -25,17 +21,17 @@ const Tab = createBottomTabNavigator<BottomTabList>();
 
 const Icon = Animated.createAnimatedComponent(Ionicons);
 
-const homeIcon = ({ size, color }: IconProps) => (
-  <Icon name='home' size={size} color={color} />
+const homeIcon = ({size, color}: IconProps) => (
+  <Icon color={color} name='home' size={size} />
 );
-const stageGirlsIcon = ({ size, color }: IconProps) => (
-  <Icon name='star-four-points' size={size} color={color} />
+const stageGirlsIcon = ({size, color}: IconProps) => (
+  <Icon color={color} name='star-four-points' size={size} />
 );
-const memoirsIcon = ({ size, color }: IconProps) => (
-  <Icon name='image-area' size={size} color={color} />
+const memoirsIcon = ({size, color}: IconProps) => (
+  <Icon color={color} name='image-area' size={size} />
 );
-const moreIcon = ({ size, color }: IconProps) => (
-  <Icon name='dots-horizontal' size={size} color={color} />
+const moreIcon = ({size, color}: IconProps) => (
+  <Icon color={color} name='dots-horizontal' size={size} />
 );
 
 const tabs: TabsConfig<BubbleTabBarItemConfig, BottomTabList> = {
@@ -97,37 +93,38 @@ const tabs: TabsConfig<BubbleTabBarItemConfig, BottomTabList> = {
   },
 };
 
-const Tabs = (): JSX.Element => {
-  const { colors } = useTheme();
-  const tabStyle = { backgroundColor: colors.card };
+const Tabs = () => {
+  const {colors} = useTheme();
+  const {t} = useTranslation();
+  const tabStyle = {backgroundColor: colors.card};
 
   return (
     <Tab.Navigator
       backBehavior='initialRoute'
-      screenOptions={{ headerShown: false }}
+      screenOptions={{headerShown: false}}
       tabBar={props => (
         //@ts-ignore
-        <AnimatedTabBar tabs={tabs} style={tabStyle} {...props} />
+        <AnimatedTabBar style={tabStyle} tabs={tabs} {...props} />
       )}>
       <Tab.Screen
-        name='MainScreen'
         component={HomeScreen}
-        options={{ tabBarLabel: 'Home' }}
+        name='MainScreen'
+        options={{tabBarLabel: t('bottom-tabs.t1')}}
       />
       <Tab.Screen
-        name='StageGirlsScreen'
         component={StageGirlsScreen}
-        options={{ tabBarLabel: 'Stage Girls' }}
+        name='StageGirlsScreen'
+        options={{tabBarLabel: t('bottom-tabs.t2')}}
       />
       <Tab.Screen
-        name='MemoirsScreen'
         component={MemoirsScreen}
-        options={{ tabBarLabel: 'Memoirs' }}
+        name='MemoirsScreen'
+        options={{tabBarLabel: t('bottom-tabs.t3')}}
       />
       <Tab.Screen
-        name='MoreScreen'
         component={MoreScreen}
-        options={{ tabBarLabel: 'More' }}
+        name='MoreScreen'
+        options={{tabBarLabel: t('bottom-tabs.t4')}}
       />
     </Tab.Navigator>
   );

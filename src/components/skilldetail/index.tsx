@@ -1,17 +1,14 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Caption, Text, Surface, Paragraph, Colors } from 'react-native-paper';
-import { CachedImage } from '@georstat/react-native-image-cache';
-import { skillIcon } from '~/api/images';
+import {skillIcon} from '~/api/images';
 import AppStyles from '~/theme/styles';
-
-import type { TNormalSkill } from '~/typings';
+import {CachedImage} from '@georstat/react-native-image-cache';
+import React from 'react';
+import {useTranslation} from 'react-i18next';
+import {StyleSheet, View} from 'react-native';
+import {Caption, Colors, Paragraph, Surface, Text} from 'react-native-paper';
 
 type Props = {
   skill: TNormalSkill;
 };
-
-type InfoProps = { info: string };
 
 const styles = StyleSheet.create({
   animation: {
@@ -22,19 +19,9 @@ const styles = StyleSheet.create({
   },
 });
 
-const TiVa = ({ info }: InfoProps): JSX.Element => (
-  <Paragraph>
-    Ti/Va: <Paragraph style={styles.tiva}>{info}</Paragraph>
-  </Paragraph>
-);
+const SkillDetail = ({skill}: Props) => {
+  const {t} = useTranslation();
 
-const Animation = ({ info }: InfoProps): JSX.Element => (
-  <Paragraph>
-    Animation: <Paragraph style={styles.animation}>{info}</Paragraph>
-  </Paragraph>
-);
-
-const SkillDetail = ({ skill }: Props) => {
   return (
     <Surface style={[AppStyles.shadow, AppStyles.contentBlock]}>
       <View style={AppStyles.row}>
@@ -47,11 +34,20 @@ const SkillDetail = ({ skill }: Props) => {
             <View style={AppStyles.flex1}>
               <Text>{skill.name.en || skill.name.ja}</Text>
             </View>
-            <Text>AP: {skill.cost}</Text>
+            <Text>
+              {t('ap')}
+              {skill.cost}
+            </Text>
           </View>
           <Caption>{skill.description.en || skill.description.ja}</Caption>
-          <TiVa info={skill.skillInfo} />
-          <Animation info={skill.skillCycle} />
+          <Paragraph>
+            {t('ti-va')}
+            <Paragraph style={styles.tiva}>{skill.skillInfo}</Paragraph>
+          </Paragraph>
+          <Paragraph>
+            {t('animation')}
+            <Paragraph style={styles.animation}>{skill.skillCycle}</Paragraph>
+          </Paragraph>
         </View>
       </View>
     </Surface>

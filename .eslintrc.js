@@ -1,29 +1,24 @@
 module.exports = {
   root: true,
+  extends: '@react-native-community',
   parser: '@typescript-eslint/parser',
-  parserOptions: {
-    project: './tsconfig.json',
-    sourceType: 'module',
-    ecmaVersion: 2020,
-    ecmaFeatures: {
-      jsx: true,
-    },
-  },
   plugins: [
     '@typescript-eslint',
-    'prettier',
     'react',
     'react-hooks',
     'react-native',
     'import',
   ],
-  extends: [
-    'eslint:recommended',
-    'plugin:react/recommended',
-    'plugin:@typescript-eslint/eslint-recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:@typescript-eslint/recommended-requiring-type-checking',
-    'plugin:react-native/all',
+  extends: ['plugin:react-native/all'],
+  overrides: [
+    {
+      files: ['*.ts', '*.tsx'],
+      rules: {
+        '@typescript-eslint/no-shadow': ['error'],
+        'no-shadow': 'off',
+        'no-undef': 'off',
+      },
+    },
   ],
   rules: {
     'react/prop-types': [
@@ -43,12 +38,43 @@ module.exports = {
     '@typescript-eslint/no-unsafe-assignment': 'off',
     '@typescript-eslint/ban-ts-comment': 'off',
     '@typescript-eslint/unbound-method': 'off',
+    '@typescript-eslint/no-explicit-any': 'error',
     '@typescript-eslint/no-misused-promises': 0,
-    'react-native/no-raw-text': 'off',
+    'react-native/no-raw-text': 'error',
     'import/extensions': 0,
     'class-methods-use-this': 'off',
     'no-use-before-define': 'off',
-    'prettier/prettier': 'error',
+    'react/jsx-sort-props': [
+      'warn',
+      {
+        callbacksLast: true,
+        shorthandFirst: true,
+        ignoreCase: true,
+        reservedFirst: true,
+      },
+    ],
+    'object-shorthand': ['error', 'always'],
+    'comma-dangle': 'off',
+    '@typescript-eslint/comma-dangle': ['error', 'always-multiline'],
+    eqeqeq: ['error', 'always'],
+    'import/order': [
+      'error',
+      {
+        groups: [
+          'builtin',
+          'internal',
+          'external',
+          'parent',
+          'sibling',
+          'index',
+          'type',
+        ],
+        alphabetize: {
+          order: 'asc',
+        },
+      },
+    ],
+    'sort-imports': ['error', {ignoreDeclarationSort: true}],
   },
   settings: {
     react: {

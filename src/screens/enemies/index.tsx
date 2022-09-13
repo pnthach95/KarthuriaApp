@@ -1,5 +1,17 @@
-import React, { useEffect, useState, useMemo, useRef } from 'react';
-import { FlatList, View, StyleSheet, Image } from 'react-native';
+import API, {links} from '~/api';
+import {enemyImg} from '~/api/images';
+import {attribute} from '~/assets';
+import ErrorView from '~/components/errorview';
+import Kirin from '~/components/kirin';
+import CustomBackdrop from '~/components/sheet/backdrop';
+import CustomBackground from '~/components/sheet/background';
+import CustomHandle from '~/components/sheet/handle';
+import AppStyles from '~/theme/styles';
+import {CachedImage} from '@georstat/react-native-image-cache';
+import {BottomSheetModal, BottomSheetScrollView} from '@gorhom/bottom-sheet';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {FlatList, Image, StyleSheet, View} from 'react-native';
 import {
   Button,
   Caption,
@@ -8,24 +20,8 @@ import {
   TouchableRipple,
   useTheme,
 } from 'react-native-paper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { BottomSheetModal, BottomSheetScrollView } from '@gorhom/bottom-sheet';
-import { CachedImage } from '@georstat/react-native-image-cache';
-import API, { links } from '~/api';
-import { enemyImg } from '~/api/images';
-import ErrorView from '~/components/errorview';
-import Kirin from '~/components/kirin';
-import CustomBackdrop from '~/components/sheet/backdrop';
-import CustomBackground from '~/components/sheet/background';
-import CustomHandle from '~/components/sheet/handle';
-import AppStyles from '~/theme/styles';
-import { attribute } from '~/assets';
-
-import type {
-  RootStackScreenProps,
-  TEnemyBasicInfo,
-  TEnemyList,
-} from '~/typings';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import type {RootStackScreenProps} from '~/typings/navigation';
 
 const styles = StyleSheet.create({
   frame: {
@@ -38,9 +34,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const Enemies = ({ navigation }: RootStackScreenProps<'Enemies'>) => {
+const keyExtractor = ({basicInfo}: TEnemyBasicInfo) =>
+  `en_${basicInfo.enemyID}`;
+
+const Enemies = ({navigation}: RootStackScreenProps<'Enemies'>) => {
+  const {t} = useTranslation();
   const insets = useSafeAreaInsets();
-  const { colors } = useTheme();
+  const {colors} = useTheme();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['40%'], []);
   /** Loading state */
@@ -122,23 +122,20 @@ const Enemies = ({ navigation }: RootStackScreenProps<'Enemies'>) => {
 
   //#region Render enemies
 
-  const keyExtractor = ({ basicInfo }: TEnemyBasicInfo) =>
-    `sg_${basicInfo.enemyID}`;
-
-  const renderItem = ({ item }: { item: TEnemyBasicInfo }) => {
-    const { basicInfo } = item;
+  const renderItem = ({item}: {item: TEnemyBasicInfo}) => {
+    const {basicInfo} = item;
     const onPress = () => {
-      navigation.navigate('EnemyDetail', { id: basicInfo.enemyID });
+      navigation.navigate('EnemyDetail', {id: basicInfo.enemyID});
     };
     const a = attribute(basicInfo.attribute);
 
     return (
-      <TouchableRipple onPress={onPress} style={AppStyles.flex1}>
+      <TouchableRipple style={AppStyles.flex1} onPress={onPress}>
         <View
           style={[
             AppStyles.listItem,
             styles.item,
-            { borderColor: colors.border },
+            {borderColor: colors.border},
           ]}>
           <View style={AppStyles.center}>
             <View style={styles.frame}>
@@ -160,7 +157,7 @@ const Enemies = ({ navigation }: RootStackScreenProps<'Enemies'>) => {
   const emptyList = () => {
     return (
       <View style={[AppStyles.flex1, AppStyles.center, AppStyles.marginTop]}>
-        <Text>No data. Please check filter.</Text>
+        <Text>{t('no-data')}</Text>
       </View>
     );
   };
@@ -176,28 +173,28 @@ const Enemies = ({ navigation }: RootStackScreenProps<'Enemies'>) => {
       <>
         <FlatList
           data={reList}
+          initialNumToRender={16}
           keyExtractor={keyExtractor}
+          ListEmptyComponent={emptyList}
+          numColumns={2}
           renderItem={renderItem}
           style={bottom}
-          numColumns={2}
-          ListEmptyComponent={emptyList}
-          initialNumToRender={16}
         />
-        <FAB icon={'filter'} onPress={openSheet} style={AppStyles.fab} />
+        <FAB icon={'filter'} style={AppStyles.fab} onPress={openSheet} />
         <BottomSheetModal
           ref={bottomSheetModalRef}
-          snapPoints={snapPoints}
           backdropComponent={CustomBackdrop}
           backgroundComponent={CustomBackground}
-          handleComponent={CustomHandle}>
+          handleComponent={CustomHandle}
+          snapPoints={snapPoints}>
           <BottomSheetScrollView
             contentContainerStyle={AppStyles.paddingHorizontal}>
             <View style={[AppStyles.rowSpaceBetween, AppStyles.marginBottom]}>
-              <Caption>Skills</Caption>
+              <Caption>{t('skills')}</Caption>
               <Button
                 mode={filterAll.elements ? 'contained' : 'outlined'}
                 onPress={toggleAllElements}>
-                All
+                {t('all')}
               </Button>
             </View>
             <View style={[AppStyles.row, AppStyles.spaceBetween]}>
@@ -231,21 +228,21 @@ const Enemies = ({ navigation }: RootStackScreenProps<'Enemies'>) => {
               })}
             </View>
             <View style={AppStyles.marginBottom}>
-              <Caption>Enemy type</Caption>
+              <Caption>{t('enemy-type')}</Caption>
             </View>
             <View style={AppStyles.row}>
               <Button
                 mode={filter.type[1] ? 'contained' : 'outlined'}
-                onPress={setStageGirlType}
-                uppercase={false}>
-                Stage girls
+                uppercase={false}
+                onPress={setStageGirlType}>
+                {t('stage-girls')}
               </Button>
               <View style={AppStyles.spaceHorizontal} />
               <Button
                 mode={filter.type[0] ? 'contained' : 'outlined'}
-                onPress={setElseType}
-                uppercase={false}>
-                Else
+                uppercase={false}
+                onPress={setElseType}>
+                {t('else')}
               </Button>
             </View>
           </BottomSheetScrollView>

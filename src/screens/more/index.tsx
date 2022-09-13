@@ -1,25 +1,25 @@
+import {website} from '~/api';
+import {links} from '~/api/github';
+import webicon from '~/assets/common/icon.png';
+import useStore, {onSaveOptions} from '~/store';
+import AppStyles, {padding} from '~/theme/styles';
+import {CacheManager} from '@georstat/react-native-image-cache';
 import React from 'react';
-import { View, ScrollView, StyleSheet, Linking, Image } from 'react-native';
+import {useTranslation} from 'react-i18next';
+import {Image, Linking, ScrollView, StyleSheet, View} from 'react-native';
+import {getVersion} from 'react-native-device-info';
 import {
-  Text,
+  Caption,
+  Colors,
   Paragraph,
   Switch,
+  Text,
   TouchableRipple,
-  Colors,
   useTheme,
-  Caption,
 } from 'react-native-paper';
-import { CacheManager } from '@georstat/react-native-image-cache';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { getVersion } from 'react-native-device-info';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import useStore from '~/store';
-import { website } from '~/api';
-import { links } from '~/api/github';
-import AppStyles, { padding } from '~/theme/styles';
-import webicon from '~/assets/common/icon.png';
-
-import type { AppOptions, MainBottomTabScreenProps } from '~/typings';
+import type {MainBottomTabScreenProps} from '~/typings/navigation';
 
 const openWebsite = () => Linking.openURL(website);
 
@@ -33,12 +33,12 @@ const clearCache = async () => {
   }
 };
 
-const MoreScreen = ({ navigation }: MainBottomTabScreenProps<'MoreScreen'>) => {
+const MoreScreen = ({navigation}: MainBottomTabScreenProps<'MoreScreen'>) => {
+  const {t} = useTranslation();
   const insets = useSafeAreaInsets();
   const theme = useTheme();
   const options = useStore(s => s.options);
-  const onSaveOptions = useStore(s => s.onSaveOptions);
-  const top = { paddingTop: insets.top };
+  const top = {paddingTop: insets.top};
 
   /** Toggle dark theme */
   const themeToggle = () => {
@@ -57,79 +57,77 @@ const MoreScreen = ({ navigation }: MainBottomTabScreenProps<'MoreScreen'>) => {
 
   return (
     <ScrollView
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={top}>
+      contentContainerStyle={top}
+      showsVerticalScrollIndicator={false}>
       <View style={[styles.group, AppStyles.rowSpaceBetween]}>
-        <Text style={styles.headline}>Settings</Text>
+        <Text style={styles.headline}>{t('settings')}</Text>
       </View>
       <TouchableRipple onPress={themeToggle}>
         <View style={[styles.row, AppStyles.spaceBetween]}>
-          <Text>Dark theme</Text>
+          <Text>{t('dark-theme')}</Text>
           <Switch
-            value={options.isDark}
             thumbColor={Colors.red500}
-            trackColor={{ false: Colors.grey300, true: Colors.red200 }}
+            trackColor={{false: Colors.grey300, true: Colors.red200}}
+            value={options.isDark}
             onValueChange={themeToggle}
           />
         </View>
       </TouchableRipple>
       <TouchableRipple onPress={clearCache}>
         <View style={[styles.row, AppStyles.spaceBetween]}>
-          <Text>Clear cache</Text>
+          <Text>{t('clear-cache')}</Text>
         </View>
       </TouchableRipple>
       <View style={[styles.group, AppStyles.rowSpaceBetween]}>
-        <Text style={styles.headline}>Navigation</Text>
+        <Text style={styles.headline}>{t('navigation')}</Text>
       </View>
       <TouchableRipple onPress={goToCharacters}>
         <View style={styles.row}>
-          <Icon name='account' color={Colors.deepOrange500} size={32} />
+          <Icon color={Colors.deepOrange500} name='account' size={32} />
           <View style={AppStyles.spaceHorizontal} />
-          <Text>Characters</Text>
+          <Text>{t('characters')}</Text>
         </View>
       </TouchableRipple>
       <TouchableRipple onPress={goToAccessories}>
         <View style={styles.row}>
-          <Icon name='sword' color={Colors.orange500} size={32} />
+          <Icon color={Colors.orange500} name='sword' size={32} />
           <View style={AppStyles.spaceHorizontal} />
-          <Text>Accessories</Text>
+          <Text>{t('accessories')}</Text>
         </View>
       </TouchableRipple>
       <TouchableRipple onPress={goToEnemies}>
         <View style={styles.row}>
-          <Icon name='account-alert' color={Colors.deepPurple400} size={32} />
+          <Icon color={Colors.deepPurple400} name='account-alert' size={32} />
           <View style={AppStyles.spaceHorizontal} />
-          <Text>Enemies</Text>
+          <Text>{t('enemies')}</Text>
         </View>
       </TouchableRipple>
       <View style={[styles.group, AppStyles.rowSpaceBetween]}>
-        <Text style={styles.headline}>Resources</Text>
+        <Text style={styles.headline}>{t('resources')}</Text>
       </View>
       <TouchableRipple onPress={openWebsite}>
         <View style={styles.row}>
           <Image source={webicon} style={styles.icon} />
           <View style={AppStyles.spaceHorizontal} />
-          <Text>Karthuria website</Text>
+          <Text>{t('karthuria-website')}</Text>
         </View>
       </TouchableRipple>
       <TouchableRipple onPress={openGithub}>
         <View style={styles.row}>
-          <Icon name='github' color={theme.colors.text} size={32} />
+          <Icon color={theme.colors.text} name='github' size={32} />
           <View style={AppStyles.spaceHorizontal} />
-          <Text>Source code on Github</Text>
+          <Text>{t('source-code-on-github')}</Text>
         </View>
       </TouchableRipple>
       <View style={[styles.group, AppStyles.rowSpaceBetween]}>
-        <Text style={styles.headline}>Notes</Text>
+        <Text style={styles.headline}>{t('notes')}</Text>
       </View>
       <View style={styles.row}>
-        <Paragraph>
-          This app is using API from Project Karthuria website ({website}) and
-          is not affiliated with Bushiroad, ATeam and any other original owners.
-          All assets files are property of their original owners.
-        </Paragraph>
+        <Paragraph>{t('note-text', {website})}</Paragraph>
       </View>
-      <Caption style={AppStyles.centerText}>Version {getVersion()}</Caption>
+      <Caption style={AppStyles.centerText}>
+        {t('version', {version: getVersion()})}
+      </Caption>
     </ScrollView>
   );
 };

@@ -1,30 +1,31 @@
-import React, { useEffect, useState } from 'react';
-import { View, Image } from 'react-native';
-import {
-  Headline,
-  Subheading,
-  Surface,
-  Caption,
-  Paragraph,
-} from 'react-native-paper';
-import { CachedImage } from '@georstat/react-native-image-cache';
-import API, { links } from '~/api';
-import { enemyImg } from '~/api/images';
+import API, {links} from '~/api';
+import {enemyImg} from '~/api/images';
+import {attribute} from '~/assets';
 import BaseScreen from '~/components/basescreen';
 import SkillDetail from '~/components/skilldetail';
-import { attribute } from '~/assets';
 import AppStyles from '~/theme/styles';
+import {CachedImage} from '@georstat/react-native-image-cache';
+import React, {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {Image, View} from 'react-native';
+import {
+  Caption,
+  Headline,
+  Paragraph,
+  Subheading,
+  Surface,
+} from 'react-native-paper';
+import type {RootStackScreenProps} from '~/typings/navigation';
 
-import type { RootStackScreenProps, TEnemy } from '~/typings';
-
-const EnemyDetail = ({ route }: RootStackScreenProps<'EnemyDetail'>) => {
+const EnemyDetailScreen = ({route}: RootStackScreenProps<'EnemyDetail'>) => {
+  const {t} = useTranslation();
   const [loading, setLoading] = useState(true);
   const [enemy, setEnemy] = useState<TEnemy | null>(null);
 
   useEffect(() => {
     const loadData = async () => {
       try {
-        const { id } = route.params;
+        const {id} = route.params;
         const gotData = await API.get<TEnemy>(links.ENEMY + `${id}.json`);
         if (gotData.ok && gotData.data) {
           setEnemy(gotData.data);
@@ -39,7 +40,7 @@ const EnemyDetail = ({ route }: RootStackScreenProps<'EnemyDetail'>) => {
   }, []);
 
   return (
-    <BaseScreen loading={loading} hasData={!!enemy}>
+    <BaseScreen hasData={!!enemy} loading={loading}>
       {enemy && (
         <>
           <Headline style={AppStyles.centerText}>
@@ -61,7 +62,7 @@ const EnemyDetail = ({ route }: RootStackScreenProps<'EnemyDetail'>) => {
           <View style={AppStyles.paddingHorizontal}>
             <View style={AppStyles.paddingVertical}>
               <Surface style={[AppStyles.shadow, AppStyles.contentBlock]}>
-                <Caption>Profile</Caption>
+                <Caption>{t('profile')}</Caption>
                 <Paragraph>
                   {enemy.basicInfo.personality.en ||
                     enemy.basicInfo.personality.ja}
@@ -69,7 +70,7 @@ const EnemyDetail = ({ route }: RootStackScreenProps<'EnemyDetail'>) => {
               </Surface>
             </View>
             <View style={AppStyles.paddingVertical}>
-              <Subheading style={AppStyles.centerText}>Skill</Subheading>
+              <Subheading style={AppStyles.centerText}>{t('skill')}</Subheading>
               {Object.keys(enemy.skills).map(k => {
                 const skill = enemy.skills[k];
                 return <SkillDetail key={k} skill={skill.normalSkill} />;
@@ -82,6 +83,6 @@ const EnemyDetail = ({ route }: RootStackScreenProps<'EnemyDetail'>) => {
   );
 };
 
-EnemyDetail.whyDidYouRender = true;
+EnemyDetailScreen.whyDidYouRender = true;
 
-export default EnemyDetail;
+export default EnemyDetailScreen;

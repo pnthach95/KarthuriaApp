@@ -25,31 +25,41 @@
   },
   "todo-tree.highlights.customHighlight": {
     "PROJECT": {
-      "background": "cyan",
+      "background": "#0cd",
       "type": "text-and-comment",
       "hideFromTree": true
     },
     "TODO": {
       "icon": "check",
       "type": "line",
-      "background": "green"
+      "background": "#0c0"
     },
     "FIXME": {
       "icon": "tools",
-      "background": "yellow",
-      "iconColour": "yellow"
+      "background": "#ff2",
+      "iconColour": "#ff2"
     }
   },
   "todo-tree.highlights.defaultHighlight": {
     "icon": "dash",
     "type": "text",
     "opacity": 50,
-    "foreground": "white",
-    "background": "blue",
-    "iconColour": "green"
+    "foreground": "#fff",
+    "background": "#10f",
+    "iconColour": "#0c0"
   },
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
-  "god.tsconfig": "./tsconfig.json"
+  "i18n-ally.localesPaths": [
+    "src/locales"
+  ],
+  "i18n-ally.displayLanguage": "en",
+  "i18n-ally.sourceLanguage": "en",
+  "i18n-ally.sortKeys": true,
+  "i18n-ally.enabledFrameworks": [
+    "react",
+    "i18next"
+  ],
+  "i18n-ally.keystyle": "nested"
 }

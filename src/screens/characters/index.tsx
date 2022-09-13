@@ -1,20 +1,15 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import { View, FlatList, StyleSheet } from 'react-native';
-import { Text, TouchableRipple } from 'react-native-paper';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { CachedImage } from '@georstat/react-native-image-cache';
-import { responsiveScreenWidth } from 'react-native-responsive-dimensions';
-import API, { links } from '~/api';
-import { charaterImg, schoolIcon } from '~/api/images';
-import Kirin from '~/components/kirin';
+import API, {links} from '~/api';
+import {charaterImg, schoolIcon} from '~/api/images';
 import ErrorView from '~/components/errorview';
-import AppStyles, { padding } from '~/theme/styles';
-
-import type {
-  TCharaBasicInfo,
-  TCharaList,
-  RootStackScreenProps,
-} from '~/typings';
+import Kirin from '~/components/kirin';
+import AppStyles, {padding} from '~/theme/styles';
+import {CachedImage} from '@georstat/react-native-image-cache';
+import React, {useCallback, useEffect, useState} from 'react';
+import {FlatList, StyleSheet, View} from 'react-native';
+import {Text, TouchableRipple} from 'react-native-paper';
+import {responsiveScreenWidth} from 'react-native-responsive-dimensions';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import type {RootStackScreenProps} from '~/typings/navigation';
 
 const styles = StyleSheet.create({
   img: {
@@ -29,7 +24,10 @@ const styles = StyleSheet.create({
   },
 });
 
-const Characters = ({ navigation }: RootStackScreenProps<'Characters'>) => {
+const keyExtractor = ({basicInfo: {charaID}}: TCharaBasicInfo) =>
+  `chID_${charaID}`;
+
+const CharactersScreen = ({navigation}: RootStackScreenProps<'Characters'>) => {
   const insets = useSafeAreaInsets();
   const [loading, setLoading] = useState(true);
   const [charaList, setCharaList] = useState<TCharaBasicInfo[]>([]);
@@ -53,13 +51,8 @@ const Characters = ({ navigation }: RootStackScreenProps<'Characters'>) => {
     void loadData();
   }, []);
 
-  const keyExtractor = useCallback(
-    ({ basicInfo: { charaID } }: TCharaBasicInfo) => `chID_${charaID}`,
-    [],
-  );
-
-  const renderItem = useCallback(({ item }: { item: TCharaBasicInfo }) => {
-    const { charaID, name_ruby, school_id } = item.basicInfo;
+  const renderItem = useCallback(({item}: {item: TCharaBasicInfo}) => {
+    const {charaID, name_ruby, school_id} = item.basicInfo;
     if (name_ruby.ja) {
       const goToDetail = () =>
         navigation.navigate('CharacterDetail', {
@@ -91,12 +84,12 @@ const Characters = ({ navigation }: RootStackScreenProps<'Characters'>) => {
   if (charaList.length > 0) {
     return (
       <FlatList
-        data={charaList}
-        numColumns={2}
-        keyExtractor={keyExtractor}
-        renderItem={renderItem}
-        contentContainerStyle={bottom}
         columnWrapperStyle={AppStyles.columnWrapper}
+        contentContainerStyle={bottom}
+        data={charaList}
+        keyExtractor={keyExtractor}
+        numColumns={2}
+        renderItem={renderItem}
         showsVerticalScrollIndicator={false}
       />
     );
@@ -105,6 +98,6 @@ const Characters = ({ navigation }: RootStackScreenProps<'Characters'>) => {
   return <ErrorView />;
 };
 
-Characters.whyDidYouRender = true;
+CharactersScreen.whyDidYouRender = true;
 
-export default Characters;
+export default CharactersScreen;

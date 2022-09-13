@@ -1,28 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import { View, Image, StyleSheet } from 'react-native';
-import {
-  ActivityIndicator,
-  Caption,
-  Headline,
-  Text,
-  Subheading,
-  Paragraph,
-  DataTable,
-  Surface,
-  TouchableRipple,
-} from 'react-native-paper';
-import { CachedImage } from '@georstat/react-native-image-cache';
-import dayjs from 'dayjs';
-import API, { links } from '~/api';
-import { skillIcon, stageGirlBigImg } from '~/api/images';
+import API, {links} from '~/api';
+import {skillIcon, stageGirlBigImg} from '~/api/images';
+import {attackTypeText, attribute, position, rarity} from '~/assets';
+import frame from '~/assets/common/frame_thumbnail_dress.png';
 import BaseScreen from '~/components/basescreen';
 import Separator from '~/components/separator';
 import SkillDetail from '~/components/skilldetail';
-import AppStyles, { borderRadius, padding } from '~/theme/styles';
-import { attackTypeText, attribute, position, rarity } from '~/assets';
-import frame from '~/assets/common/frame_thumbnail_dress.png';
-
-import type { TDress, RootStackScreenProps, TChara } from '~/typings';
+import AppStyles, {borderRadius, padding} from '~/theme/styles';
+import {CachedImage} from '@georstat/react-native-image-cache';
+import dayjs from 'dayjs';
+import React, {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {Image, StyleSheet, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Caption,
+  DataTable,
+  Headline,
+  Paragraph,
+  Subheading,
+  Surface,
+  Text,
+  TouchableRipple,
+} from 'react-native-paper';
+import type {RootStackScreenProps} from '~/typings/navigation';
 
 const styles = StyleSheet.create({
   attackType: {
@@ -55,10 +55,11 @@ const loadingImage = () => (
   </View>
 );
 
-const StageGirlDetail = ({
+const StageGirlDetailScreen = ({
   navigation,
   route,
 }: RootStackScreenProps<'StageGirlDetail'>) => {
+  const {t} = useTranslation();
   const [loading, setLoading] = useState(true);
   const [dress, setDress] = useState<TDress | null>(null);
   const [character, setCharater] = useState<TChara | null>(null);
@@ -66,7 +67,7 @@ const StageGirlDetail = ({
   useEffect(() => {
     const loadData = async () => {
       try {
-        const { id } = route.params;
+        const {id} = route.params;
         const dressData = await API.get<TDress>(links.DRESS + `${id}.json`);
         if (dressData.ok && dressData.data) {
           setDress(dressData.data);
@@ -102,7 +103,7 @@ const StageGirlDetail = ({
     });
 
   return (
-    <BaseScreen loading={loading} hasData={!!dress}>
+    <BaseScreen hasData={!!dress} loading={loading}>
       {dress && (
         <View style={styles.padding}>
           <Headline style={AppStyles.centerText}>
@@ -110,8 +111,8 @@ const StageGirlDetail = ({
           </Headline>
           {character && (
             <TouchableRipple
-              onPress={goToCharacterDetail}
-              style={AppStyles.marginBottom}>
+              style={AppStyles.marginBottom}
+              onPress={goToCharacterDetail}>
               <Subheading style={AppStyles.centerText}>
                 {character.info.name.en || character.info.name.ja}
               </Subheading>
@@ -119,9 +120,9 @@ const StageGirlDetail = ({
           )}
           <View style={AppStyles.bigImg}>
             <CachedImage
+              loadingImageComponent={loadingImage}
               source={stageGirlBigImg(dress.basicInfo.cardID || '0')}
               style={AppStyles.bigImg}
-              loadingImageComponent={loadingImage}
             />
             <Image
               source={frame}
@@ -142,21 +143,21 @@ const StageGirlDetail = ({
           </View>
           <View style={AppStyles.paddingVertical}>
             <Surface style={[AppStyles.shadow, AppStyles.contentBlock]}>
-              <Caption>Release date</Caption>
+              <Caption>{t('release-date')}</Caption>
               {releasedJA && (
                 <View style={[AppStyles.row, AppStyles.spaceBetween]}>
-                  <Text>Japanese</Text>
+                  <Text>{t('japanese')}</Text>
                   <Text>{releasedJA.format('LLLL')}</Text>
                 </View>
               )}
               {releasedWW && (
                 <View style={[AppStyles.row, AppStyles.spaceBetween]}>
-                  <Text>Worldwide</Text>
+                  <Text>{t('worldwide')}</Text>
                   <Text>{releasedWW.format('LLLL')}</Text>
                 </View>
               )}
               <View style={[AppStyles.row, AppStyles.spaceBetween]}>
-                <Caption>Attack type</Caption>
+                <Caption>{t('attack-type')}</Caption>
                 <Image
                   source={attackTypeText(dress.base.attackType)}
                   style={styles.attackType}
@@ -165,50 +166,50 @@ const StageGirlDetail = ({
             </Surface>
           </View>
           <View style={AppStyles.paddingVertical}>
-            <Subheading style={AppStyles.centerText}>Stats</Subheading>
+            <Subheading style={AppStyles.centerText}>{t('stats')}</Subheading>
             <Surface style={[AppStyles.shadow, styles.infoBlock]}>
               <DataTable>
                 <DataTable.Row>
-                  <DataTable.Cell>Power Score (Total)</DataTable.Cell>
+                  <DataTable.Cell>{t('power-score-total')}</DataTable.Cell>
                   <DataTable.Cell numeric>{dress.stat.total}</DataTable.Cell>
                 </DataTable.Row>
                 <DataTable.Row>
-                  <DataTable.Cell>HP</DataTable.Cell>
+                  <DataTable.Cell>{t('hp')}</DataTable.Cell>
                   <DataTable.Cell numeric>{dress.stat.hp}</DataTable.Cell>
                 </DataTable.Row>
                 <DataTable.Row>
-                  <DataTable.Cell>Act Power</DataTable.Cell>
+                  <DataTable.Cell>{t('act-power')}</DataTable.Cell>
                   <DataTable.Cell numeric>{dress.stat.atk}</DataTable.Cell>
                 </DataTable.Row>
                 <DataTable.Row>
-                  <DataTable.Cell>Normal Defense</DataTable.Cell>
+                  <DataTable.Cell>{t('normal-defense')}</DataTable.Cell>
                   <DataTable.Cell numeric>{dress.stat.pdef}</DataTable.Cell>
                 </DataTable.Row>
                 <DataTable.Row>
-                  <DataTable.Cell>Special Defense</DataTable.Cell>
+                  <DataTable.Cell>{t('special-defense')}</DataTable.Cell>
                   <DataTable.Cell numeric>{dress.stat.mdef}</DataTable.Cell>
                 </DataTable.Row>
                 <DataTable.Row>
-                  <DataTable.Cell>Agility</DataTable.Cell>
+                  <DataTable.Cell>{t('agility')}</DataTable.Cell>
                   <DataTable.Cell numeric>{dress.stat.agi}</DataTable.Cell>
                 </DataTable.Row>
               </DataTable>
             </Surface>
           </View>
           <View style={AppStyles.paddingVertical}>
-            <Subheading style={AppStyles.centerText}>Info</Subheading>
+            <Subheading style={AppStyles.centerText}>{t('info')}</Subheading>
             <Surface style={[AppStyles.shadow, AppStyles.contentBlock]}>
-              <Caption>Profile</Caption>
+              <Caption>{t('profile')}</Caption>
               <Paragraph>
                 {dress.basicInfo.profile.en || dress.basicInfo.profile.ja}
               </Paragraph>
               <Separator />
-              <Caption>Message</Caption>
+              <Caption>{t('message')}</Caption>
               <Paragraph>
                 {dress.basicInfo.message.en || dress.basicInfo.message.ja}
               </Paragraph>
               <Separator />
-              <Caption>Description</Caption>
+              <Caption>{t('description')}</Caption>
               <Paragraph>
                 {dress.basicInfo.description.en ||
                   dress.basicInfo.description.ja}
@@ -216,7 +217,9 @@ const StageGirlDetail = ({
             </Surface>
           </View>
           <View style={AppStyles.paddingVertical}>
-            <Subheading style={AppStyles.centerText}>Basic ACT</Subheading>
+            <Subheading style={AppStyles.centerText}>
+              {t('basic-act')}
+            </Subheading>
             {Object.values(dress.act).map((act, index) => {
               return (
                 <SkillDetail key={`act${index}`} skill={act.normalSkill} />
@@ -224,7 +227,9 @@ const StageGirlDetail = ({
             })}
           </View>
           <View style={AppStyles.paddingVertical}>
-            <Subheading style={AppStyles.centerText}>Auto Skills</Subheading>
+            <Subheading style={AppStyles.centerText}>
+              {t('auto-skills')}
+            </Subheading>
             {Object.values(dress.skills).map((autoSkill, index) => {
               return (
                 <Surface
@@ -246,11 +251,15 @@ const StageGirlDetail = ({
             })}
           </View>
           <View style={AppStyles.paddingVertical}>
-            <Subheading style={AppStyles.centerText}>Climax ACT</Subheading>
+            <Subheading style={AppStyles.centerText}>
+              {t('climax-act')}
+            </Subheading>
             <SkillDetail skill={dress.groupSkills.climaxACT} />
           </View>
           <View style={AppStyles.paddingVertical}>
-            <Subheading style={AppStyles.centerText}>Unit Skill</Subheading>
+            <Subheading style={AppStyles.centerText}>
+              {t('unit-skill')}
+            </Subheading>
             <Surface style={[AppStyles.shadow, AppStyles.contentBlock]}>
               <View style={AppStyles.row}>
                 <CachedImage
@@ -267,7 +276,9 @@ const StageGirlDetail = ({
             </Surface>
           </View>
           <View style={AppStyles.paddingVertical}>
-            <Subheading style={AppStyles.centerText}>Finishing ACT</Subheading>
+            <Subheading style={AppStyles.centerText}>
+              {t('finishing-act')}
+            </Subheading>
             <Surface style={[AppStyles.shadow, AppStyles.contentBlock]}>
               <View style={AppStyles.row}>
                 <CachedImage
@@ -293,6 +304,6 @@ const StageGirlDetail = ({
   );
 };
 
-StageGirlDetail.whyDidYouRender = true;
+StageGirlDetailScreen.whyDidYouRender = true;
 
-export default StageGirlDetail;
+export default StageGirlDetailScreen;

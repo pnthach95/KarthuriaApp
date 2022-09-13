@@ -1,9 +1,9 @@
-import React, { useEffect, useRef } from 'react';
-import { View, Animated, Easing, Image } from 'react-native';
 import logo from '~/assets/common/kirin.png';
 import AppStyles from '~/theme/styles';
+import React, {useEffect, useRef} from 'react';
+import {Animated, Easing, Image, View} from 'react-native';
 
-const Kirin = (): JSX.Element => {
+const Kirin = () => {
   const logoAV = useRef(new Animated.Value(0)).current;
 
   const rotate = logoAV.interpolate({
@@ -24,8 +24,8 @@ const Kirin = (): JSX.Element => {
 
   return (
     <View style={[AppStyles.flex1, AppStyles.center]}>
-      <Animated.View style={{ transform: [{ rotate }] }}>
-        <Image source={logo} resizeMode='contain' style={AppStyles.square100} />
+      <Animated.View style={{transform: [{rotate}]}}>
+        <Image resizeMode='contain' source={logo} style={AppStyles.square100} />
       </Animated.View>
     </View>
   );

@@ -1,31 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import API, {links} from '~/api';
+import {charaIcon, memoirBigImg, skillIcon} from '~/api/images';
+import {rarity} from '~/assets';
+import costEquip from '~/assets/common/cost_equip.png';
+import firstExecutableTurn from '~/assets/common/first_executable_turn.png';
+import frame from '~/assets/common/frame_thumbnail_equip.png';
+import recastTurn from '~/assets/common/recast_turn.png';
+import BaseScreen from '~/components/basescreen';
+import AppStyles, {borderRadius, padding} from '~/theme/styles';
+import {CachedImage} from '@georstat/react-native-image-cache';
+import dayjs from 'dayjs';
+import React, {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {Image, StyleSheet, View} from 'react-native';
 import {
   Caption,
   Colors,
-  Headline,
-  Text,
-  Paragraph,
-  Surface,
-  TouchableRipple,
-  Subheading,
   DataTable,
+  Headline,
+  Paragraph,
+  Subheading,
+  Surface,
+  Text,
+  TouchableRipple,
   useTheme,
 } from 'react-native-paper';
-import { CachedImage } from '@georstat/react-native-image-cache';
-import dayjs from 'dayjs';
-import API, { links } from '~/api';
-import { charaIcon, memoirBigImg, skillIcon } from '~/api/images';
-import { rarity } from '~/assets';
-import BaseScreen from '~/components/basescreen';
-import AppStyles, { borderRadius, padding } from '~/theme/styles';
-import frame from '~/assets/common/frame_thumbnail_equip.png';
-import costEquip from '~/assets/common/cost_equip.png';
-import recastTurn from '~/assets/common/recast_turn.png';
-import firstExecutableTurn from '~/assets/common/first_executable_turn.png';
-
-import type { ImageProps } from 'react-native';
-import type { RootStackScreenProps, TEquip } from '~/typings';
+import type {ImageProps} from 'react-native';
+import type {RootStackScreenProps} from '~/typings/navigation';
 
 const costContainerBG = '#2B2B2B';
 const styles = StyleSheet.create({
@@ -77,14 +77,15 @@ const styles = StyleSheet.create({
   },
 });
 
-const MemoirDetail = ({
+const MemoirDetailScreen = ({
   route,
   navigation,
 }: RootStackScreenProps<'MemoirDetail'>) => {
-  const { colors } = useTheme();
+  const {t} = useTranslation();
+  const {colors} = useTheme();
   const [loading, setLoading] = useState(true);
   const [memoir, setMemoir] = useState<TEquip | null>(null);
-  const [raritySize, setRaritySize] = useState({ height: 28, width: 140 });
+  const [raritySize, setRaritySize] = useState({height: 28, width: 140});
   const borderBottomColor = {
     borderBottomColor: colors.text,
   };
@@ -120,7 +121,7 @@ const MemoirDetail = ({
     dayjs(memoir.basicInfo.released.ww * 1000);
 
   return (
-    <BaseScreen loading={loading} hasData={!!memoir}>
+    <BaseScreen hasData={!!memoir} loading={loading}>
       {memoir && (
         <View style={AppStyles.paddingHorizontal}>
           <Headline style={AppStyles.centerText}>
@@ -136,20 +137,20 @@ const MemoirDetail = ({
               style={[AppStyles.bigImg, AppStyles.absolute]}
             />
             <Image
-              source={rarity(memoir.basicInfo.rarity)}
               resizeMode='contain'
-              onLoad={onLoad}
+              source={rarity(memoir.basicInfo.rarity)}
               style={[styles.rarity, AppStyles.absolute, raritySize]}
+              onLoad={onLoad}
             />
           </View>
           <Surface style={[AppStyles.shadow, styles.block]}>
             <View style={[AppStyles.row, AppStyles.spaceBetween]}>
-              <Caption>Characters</Caption>
+              <Caption>{t('characters')}</Caption>
               <View style={AppStyles.row}>
                 {Array.isArray(memoir.basicInfo.charas) ? (
                   memoir.basicInfo.charas.map(chara => {
                     const onPress = () =>
-                      navigation.navigate('CharacterDetail', { id: chara });
+                      navigation.navigate('CharacterDetail', {id: chara});
                     return (
                       <View
                         key={`chara_${chara}`}
@@ -164,50 +165,52 @@ const MemoirDetail = ({
                     );
                   })
                 ) : (
-                  <Text>No characters appear on this memoir!</Text>
+                  <Text>{t('no-characters-appear-on-this-memoir')}</Text>
                 )}
               </View>
             </View>
-            <Caption>Released</Caption>
+            <Caption>{t('released')}</Caption>
             {releasedJA && (
               <View style={[AppStyles.row, AppStyles.spaceBetween]}>
-                <Text>Japanese</Text>
+                <Text>{t('japanese')}</Text>
                 <Text>{releasedJA.format('LLLL')}</Text>
               </View>
             )}
             {releasedWW && (
               <View style={[AppStyles.row, AppStyles.spaceBetween]}>
-                <Text>Worldwide</Text>
+                <Text>{t('worldwide')}</Text>
                 <Text>{releasedWW.format('LLLL')}</Text>
               </View>
             )}
           </Surface>
-          <Subheading style={AppStyles.centerText}>Stats</Subheading>
+          <Subheading style={AppStyles.centerText}>{t('stats')}</Subheading>
           <Surface style={[AppStyles.shadow, styles.table]}>
             <DataTable>
               <DataTable.Row>
-                <DataTable.Cell>Power Score (Total)</DataTable.Cell>
+                <DataTable.Cell>{t('power-score-total')}</DataTable.Cell>
                 <DataTable.Cell numeric>{memoir.stat.total}</DataTable.Cell>
               </DataTable.Row>
               <DataTable.Row>
-                <DataTable.Cell>HP</DataTable.Cell>
+                <DataTable.Cell>{t('hp')}</DataTable.Cell>
                 <DataTable.Cell numeric>{memoir.stat.hp}</DataTable.Cell>
               </DataTable.Row>
               <DataTable.Row>
-                <DataTable.Cell>Act Power</DataTable.Cell>
+                <DataTable.Cell>{t('act-power')}</DataTable.Cell>
                 <DataTable.Cell numeric>{memoir.stat.atk}</DataTable.Cell>
               </DataTable.Row>
               <DataTable.Row>
-                <DataTable.Cell>Normal Defense</DataTable.Cell>
+                <DataTable.Cell>{t('normal-defense')}</DataTable.Cell>
                 <DataTable.Cell numeric>{memoir.stat.pdef}</DataTable.Cell>
               </DataTable.Row>
               <DataTable.Row>
-                <DataTable.Cell>Special Defense</DataTable.Cell>
+                <DataTable.Cell>{t('special-defense')}</DataTable.Cell>
                 <DataTable.Cell numeric>{memoir.stat.mdef}</DataTable.Cell>
               </DataTable.Row>
             </DataTable>
           </Surface>
-          <Subheading style={AppStyles.centerText}>Auto Skills</Subheading>
+          <Subheading style={AppStyles.centerText}>
+            {t('auto-skills')}
+          </Subheading>
           <Surface style={[AppStyles.shadow, styles.block]}>
             <View style={AppStyles.row}>
               <CachedImage
@@ -223,7 +226,9 @@ const MemoirDetail = ({
           </Surface>
           {memoir.activeSkill !== 0 && (
             <>
-              <Subheading style={AppStyles.centerText}>Cut-in Skill</Subheading>
+              <Subheading style={AppStyles.centerText}>
+                {t('cut-in-skill')}
+              </Subheading>
               <Surface style={[AppStyles.shadow, styles.block]}>
                 <View style={AppStyles.row}>
                   <CachedImage
@@ -296,7 +301,7 @@ const MemoirDetail = ({
                       </View>
                       <View>
                         <Text>
-                          Usage Limit{' '}
+                          {t('usage-limit')}
                           {
                             memoir.activeSkill.execution.executeLimitCounts[
                               memoir.activeSkill.execution.executeLimitCounts
@@ -321,7 +326,9 @@ const MemoirDetail = ({
               </Surface>
             </>
           )}
-          <Subheading style={AppStyles.centerText}>Introduction</Subheading>
+          <Subheading style={AppStyles.centerText}>
+            {t('introduction')}
+          </Subheading>
           <Surface style={[AppStyles.shadow, styles.block]}>
             <Paragraph>
               {memoir.basicInfo.profile.en || memoir.basicInfo.profile.ja}
@@ -333,6 +340,6 @@ const MemoirDetail = ({
   );
 };
 
-MemoirDetail.whyDidYouRender = true;
+MemoirDetailScreen.whyDidYouRender = true;
 
-export default MemoirDetail;
+export default MemoirDetailScreen;

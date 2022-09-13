@@ -1,41 +1,43 @@
-import { useEffect, useState } from 'react';
-import { Appearance } from 'react-native';
-import MMKVStorage from 'react-native-mmkv-storage';
+import {useEffect, useState} from 'react';
+import {Appearance} from 'react-native';
+import {getLocales} from 'react-native-localize';
+import {MMKVLoader} from 'react-native-mmkv-storage';
 import create from 'zustand';
-import { persist } from 'zustand/middleware';
-import type { SetState, GetState, Mutate, StoreApi } from 'zustand';
-import type { StateStorage } from 'zustand/middleware';
-import type { StoreState } from './types';
+import {persist} from 'zustand/middleware';
+import type {StateStorage} from 'zustand/middleware';
 
-const MMKV = new MMKVStorage.Loader().withInstanceID('zustand').initialize();
+const MMKV = new MMKVLoader().withInstanceID('zustand').initialize();
 
-const useStore = create(
-  persist<
-    StoreState,
-    SetState<StoreState>,
-    GetState<StoreState>,
-    Mutate<StoreApi<StoreState>, [['zustand/persist', Partial<StoreState>]]>
-  >(
+const useStore = create<StoreState>()(
+  persist(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    (set, get) => ({
+    _ => ({
       mainRoute: 'SPLASH',
       options: {
         isDark: Appearance.getColorScheme() === 'dark',
       },
-      onSwitchMainRoute: (route) => set({ mainRoute: route }),
-      onSaveOptions: (options) => set({ options }),
+      language: getLocales()[0].languageCode as 'en',
     }),
     {
       name: 'karthuria',
       version: 1,
       getStorage: () => MMKV as StateStorage,
-      partialize: (state) =>
+      partialize: state =>
         Object.fromEntries(
           Object.entries(state).filter(([key]) => !['mainRoute'].includes(key)),
         ),
     },
   ),
 );
+
+export const onSwitchMainRoute = (route: StoreState['mainRoute']) =>
+  useStore.setState({mainRoute: route});
+
+export const onSaveOptions = (options: AppOptions) =>
+  useStore.setState({options});
+
+export const setLanguage = (language: StoreState['language']) =>
+  useStore.setState({language});
 
 export const useHydration = () => {
   const [hydrated, setHydrated] = useState(useStore.persist.hasHydrated);

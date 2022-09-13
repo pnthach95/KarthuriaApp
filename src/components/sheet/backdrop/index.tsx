@@ -1,20 +1,17 @@
-import React, { useMemo } from 'react';
-import { useTheme } from 'react-native-paper';
+import {useBottomSheetModal} from '@gorhom/bottom-sheet';
+import React, {useMemo} from 'react';
+import {useTheme} from 'react-native-paper';
 import Animated, {
   Extrapolate,
   interpolate,
   useAnimatedStyle,
 } from 'react-native-reanimated';
-import { useBottomSheetModal } from '@gorhom/bottom-sheet';
 
-import type { BottomSheetBackdropProps } from '@gorhom/bottom-sheet';
+import type {BottomSheetBackdropProps} from '@gorhom/bottom-sheet';
 
-const CustomBackdrop = ({
-  animatedIndex,
-  style,
-}: BottomSheetBackdropProps): JSX.Element => {
-  const { colors } = useTheme();
-  const { dismissAll } = useBottomSheetModal();
+const CustomBackdrop = ({animatedIndex, style}: BottomSheetBackdropProps) => {
+  const {colors} = useTheme();
+  const {dismissAll} = useBottomSheetModal();
 
   const containerAnimatedStyle = useAnimatedStyle(() => ({
     opacity: interpolate(
@@ -37,7 +34,7 @@ const CustomBackdrop = ({
     [style, containerAnimatedStyle],
   );
 
-  return <Animated.View onTouchEnd={dismissAll} style={containerStyle} />;
+  return <Animated.View style={containerStyle} onTouchEnd={dismissAll} />;
 };
 
 CustomBackdrop.whyDidYouRender = true;

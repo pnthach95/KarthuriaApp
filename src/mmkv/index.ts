@@ -1,8 +1,8 @@
-import MMKVStorage from 'react-native-mmkv-storage';
+import {MMKVLoader} from 'react-native-mmkv-storage';
 
 type TKey = 'options';
 
-const MMKV = new MMKVStorage.Loader().withInstanceID('appoptions').initialize();
+const MMKV = new MMKVLoader().withInstanceID('appoptions').initialize();
 
 const getString = async (key: TKey): Promise<string> => {
   try {
@@ -26,7 +26,7 @@ const setString = async (key: TKey, value: string): Promise<void> => {
 const getObject = async <T>(key: TKey): Promise<T | null> => {
   try {
     const o = await MMKV.getMapAsync(key);
-    return o as unknown as T;
+    return o as T;
   } catch (error) {
     // console.log(`mmkv getObject ${key} error`, error);
     return null;
@@ -45,4 +45,4 @@ const remove = (key: TKey): void => {
   MMKV.removeItem(key);
 };
 
-export { getString, setString, getObject, setObject, remove };
+export {getString, setString, getObject, setObject, remove};

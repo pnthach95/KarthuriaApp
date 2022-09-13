@@ -1,8 +1,7 @@
-/* eslint-disable @typescript-eslint/no-namespace */
-import { DefaultTheme, DarkTheme } from '@react-navigation/native';
+import {DarkTheme, DefaultTheme} from '@react-navigation/native';
 import {
-  DefaultTheme as PaperDefaultTheme,
   DarkTheme as PaperDarkTheme,
+  DefaultTheme as PaperDefaultTheme,
 } from 'react-native-paper';
 
 declare global {

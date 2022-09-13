@@ -1,6 +1,4 @@
-import { create } from 'apisauce';
-
-import type { GithubRepoType } from '~/typings';
+import {create} from 'apisauce';
 
 export const links = {
   GITHUB_API: 'https://api.github.com/repos/',
@@ -22,4 +20,4 @@ const fetchLatestVersion = async (): Promise<GithubRepoType> => {
   throw Error('error while fetchLatestVersion (GithubService)');
 };
 
-export default { fetchLatestVersion };
+export default {fetchLatestVersion};

@@ -1,10 +1,6 @@
-import { CompositeNavigationProp } from '@react-navigation/native';
-import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { StackScreenProps, StackNavigationProp } from '@react-navigation/stack';
-
 //#region Components
 
-type LVObject<T> = { label: string; value: T };
+type LVObject<T> = {label: string; value: T};
 
 type Combined = RarityType | AttributeType | MainUnitNames;
 type CombinedWithBOE = BooleanOrEmpty | YearType;
@@ -26,39 +22,6 @@ type FCItemProps<T> = {
 type AppOptions = {
   isDark: boolean;
 };
-
-//#region Navigation
-
-type BottomTabList = {
-  MainScreen: undefined;
-  StageGirlsScreen: undefined;
-  MemoirsScreen: undefined;
-  MoreScreen: undefined;
-};
-
-type MainBottomTabScreenProps<T extends keyof BottomTabList> = {
-  navigation: CompositeNavigationProp<
-    BottomTabNavigationProp<BottomTabList, T>,
-    StackNavigationProp<RootStackParamList>
-  >;
-};
-
-type RootStackParamList = {
-  Splash: undefined;
-  Main: undefined;
-  Characters: undefined;
-  CharacterDetail: { id: number };
-  StageGirlDetail: { id: string | number };
-  MemoirDetail: { id: string };
-  Accessories: undefined;
-  AccessoryDetail: { id: number };
-  Enemies: undefined;
-  EnemyDetail: { id: string };
-};
-type RootStackScreenProps<T extends keyof RootStackParamList> =
-  StackScreenProps<RootStackParamList, T>;
-
-//#endregion
 
 //#region API: Karthuria
 
@@ -178,7 +141,7 @@ type TDress = {
 /** dressskills, equipskills */
 type TSkillsOnFilter = Record<string, boolean>;
 
-type TSkillNames = Record<string, { [L in TLanguage]: string[] }>;
+type TSkillNames = Record<string, {[L in TLanguage]: string[]}>;
 
 type TAct = {
   normalSkill: TNormalSkill;
