@@ -1,10 +1,10 @@
-import AppStyles from '~/theme/styles';
 import {useNavigation} from '@react-navigation/native';
 import React, {useCallback, useRef, useState} from 'react';
 import {Animated, ScrollView, StyleSheet, View} from 'react-native';
 import {IconButton, useTheme} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useStyle} from 'react-native-style-utilities';
+import AppStyles from 'theme/styles';
 
 import type {
   NativeScrollEvent,
@@ -111,7 +111,7 @@ const ScrollViewWithBackButton = ({
       </ScrollView>
       <Animated.View style={[backButtonAVStyle, translateXStyle]}>
         <IconButton
-          icon='arrow-left'
+          icon="arrow-left"
           style={backButtonStyle}
           onPress={goBack}
         />

@@ -1,13 +1,12 @@
-import API, {links} from '~/api';
-import {charaIcon, memoirBigImg, skillIcon} from '~/api/images';
-import {rarity} from '~/assets';
-import costEquip from '~/assets/common/cost_equip.png';
-import firstExecutableTurn from '~/assets/common/first_executable_turn.png';
-import frame from '~/assets/common/frame_thumbnail_equip.png';
-import recastTurn from '~/assets/common/recast_turn.png';
-import BaseScreen from '~/components/basescreen';
-import AppStyles, {borderRadius, padding} from '~/theme/styles';
 import {CachedImage} from '@georstat/react-native-image-cache';
+import API, {links} from 'api';
+import {charaIcon, memoirBigImg, skillIcon} from 'api/images';
+import {rarity} from 'assets';
+import costEquip from 'assets/common/cost_equip.png';
+import firstExecutableTurn from 'assets/common/first_executable_turn.png';
+import frame from 'assets/common/frame_thumbnail_equip.png';
+import recastTurn from 'assets/common/recast_turn.png';
+import BaseScreen from 'components/basescreen';
 import dayjs from 'dayjs';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
@@ -24,8 +23,9 @@ import {
   TouchableRipple,
   useTheme,
 } from 'react-native-paper';
+import AppStyles, {borderRadius, padding} from 'theme/styles';
 import type {ImageProps} from 'react-native';
-import type {RootStackScreenProps} from '~/typings/navigation';
+import type {RootStackScreenProps} from 'typings/navigation';
 
 const costContainerBG = '#2B2B2B';
 const styles = StyleSheet.create({
@@ -105,7 +105,7 @@ const MemoirDetailScreen = ({
         setLoading(false);
       }
     };
-    void loadData();
+    loadData();
   }, []);
 
   const onLoad: ImageProps['onLoad'] = e =>
@@ -137,7 +137,7 @@ const MemoirDetailScreen = ({
               style={[AppStyles.bigImg, AppStyles.absolute]}
             />
             <Image
-              resizeMode='contain'
+              resizeMode="contain"
               source={rarity(memoir.basicInfo.rarity)}
               style={[styles.rarity, AppStyles.absolute, raritySize]}
               onLoad={onLoad}

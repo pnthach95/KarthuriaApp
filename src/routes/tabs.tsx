@@ -1,7 +1,3 @@
-import HomeScreen from '~/screens/home';
-import MemoirsScreen from '~/screens/memoirs';
-import MoreScreen from '~/screens/more';
-import StageGirlsScreen from '~/screens/stagegirls';
 import AnimatedTabBar from '@gorhom/animated-tabbar';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import React from 'react';
@@ -9,28 +5,32 @@ import {useTranslation} from 'react-i18next';
 import {Colors, useTheme} from 'react-native-paper';
 import Animated from 'react-native-reanimated';
 import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
+import HomeScreen from 'screens/home';
+import MemoirsScreen from 'screens/memoirs';
+import MoreScreen from 'screens/more';
+import StageGirlsScreen from 'screens/stagegirls';
 import type {
   BubbleTabBarIconProps,
   BubbleTabBarItemConfig,
   TabsConfig,
 } from '@gorhom/animated-tabbar';
-import type {BottomTabList} from '~/typings/navigation';
+import type {BottomTabList} from 'typings/navigation';
 
 const Tab = createBottomTabNavigator<BottomTabList>();
 
 const Icon = Animated.createAnimatedComponent(Ionicons);
 
 const homeIcon: React.FC<BubbleTabBarIconProps> = ({size, color}) => (
-  <Icon color={color} name='home' size={size} />
+  <Icon color={color} name="home" size={size} />
 );
 const stageGirlsIcon: React.FC<BubbleTabBarIconProps> = ({size, color}) => (
-  <Icon color={color} name='star-four-points' size={size} />
+  <Icon color={color} name="star-four-points" size={size} />
 );
 const memoirsIcon: React.FC<BubbleTabBarIconProps> = ({size, color}) => (
-  <Icon color={color} name='image-area' size={size} />
+  <Icon color={color} name="image-area" size={size} />
 );
 const moreIcon: React.FC<BubbleTabBarIconProps> = ({size, color}) => (
-  <Icon color={color} name='dots-horizontal' size={size} />
+  <Icon color={color} name="dots-horizontal" size={size} />
 );
 
 const tabs: TabsConfig<BubbleTabBarItemConfig, BottomTabList> = {
@@ -99,7 +99,7 @@ const Tabs = () => {
 
   return (
     <Tab.Navigator
-      backBehavior='initialRoute'
+      backBehavior="initialRoute"
       screenOptions={{headerShown: false}}
       tabBar={props => (
         //@ts-ignore
@@ -107,22 +107,22 @@ const Tabs = () => {
       )}>
       <Tab.Screen
         component={HomeScreen}
-        name='MainScreen'
+        name="MainScreen"
         options={{tabBarLabel: t('bottom-tabs.t1')}}
       />
       <Tab.Screen
         component={StageGirlsScreen}
-        name='StageGirlsScreen'
+        name="StageGirlsScreen"
         options={{tabBarLabel: t('bottom-tabs.t2')}}
       />
       <Tab.Screen
         component={MemoirsScreen}
-        name='MemoirsScreen'
+        name="MemoirsScreen"
         options={{tabBarLabel: t('bottom-tabs.t3')}}
       />
       <Tab.Screen
         component={MoreScreen}
-        name='MoreScreen'
+        name="MoreScreen"
         options={{tabBarLabel: t('bottom-tabs.t4')}}
       />
     </Tab.Navigator>

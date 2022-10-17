@@ -41,7 +41,7 @@ const setObject = async <T>(key: TKey, value: T): Promise<void> => {
   }
 };
 
-const remove = (key: TKey): void => {
+const remove = (key: TKey) => {
   MMKV.removeItem(key);
 };
 

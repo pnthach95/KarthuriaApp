@@ -1,9 +1,7 @@
-import {website} from '~/api';
-import {links} from '~/api/github';
-import webicon from '~/assets/common/icon.png';
-import useStore, {onSaveOptions} from '~/store';
-import AppStyles, {padding} from '~/theme/styles';
 import {CacheManager} from '@georstat/react-native-image-cache';
+import {website} from 'api';
+import {links} from 'api/github';
+import webicon from 'assets/common/icon.png';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
 import {Image, Linking, ScrollView, StyleSheet, View} from 'react-native';
@@ -19,7 +17,9 @@ import {
 } from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import type {MainBottomTabScreenProps} from '~/typings/navigation';
+import useStore, {onSaveOptions} from 'store';
+import AppStyles, {padding} from 'theme/styles';
+import type {MainBottomTabScreenProps} from 'typings/navigation';
 
 const openWebsite = () => Linking.openURL(website);
 
@@ -83,21 +83,21 @@ const MoreScreen = ({navigation}: MainBottomTabScreenProps<'MoreScreen'>) => {
       </View>
       <TouchableRipple onPress={goToCharacters}>
         <View style={styles.row}>
-          <Icon color={Colors.deepOrange500} name='account' size={32} />
+          <Icon color={Colors.deepOrange500} name="account" size={32} />
           <View style={AppStyles.spaceHorizontal} />
           <Text>{t('characters')}</Text>
         </View>
       </TouchableRipple>
       <TouchableRipple onPress={goToAccessories}>
         <View style={styles.row}>
-          <Icon color={Colors.orange500} name='sword' size={32} />
+          <Icon color={Colors.orange500} name="sword" size={32} />
           <View style={AppStyles.spaceHorizontal} />
           <Text>{t('accessories')}</Text>
         </View>
       </TouchableRipple>
       <TouchableRipple onPress={goToEnemies}>
         <View style={styles.row}>
-          <Icon color={Colors.deepPurple400} name='account-alert' size={32} />
+          <Icon color={Colors.deepPurple400} name="account-alert" size={32} />
           <View style={AppStyles.spaceHorizontal} />
           <Text>{t('enemies')}</Text>
         </View>
@@ -114,7 +114,7 @@ const MoreScreen = ({navigation}: MainBottomTabScreenProps<'MoreScreen'>) => {
       </TouchableRipple>
       <TouchableRipple onPress={openGithub}>
         <View style={styles.row}>
-          <Icon color={theme.colors.text} name='github' size={32} />
+          <Icon color={theme.colors.text} name="github" size={32} />
           <View style={AppStyles.spaceHorizontal} />
           <Text>{t('source-code-on-github')}</Text>
         </View>

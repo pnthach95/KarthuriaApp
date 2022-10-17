@@ -10,7 +10,6 @@ const MMKV = new MMKVLoader().withInstanceID('zustand').initialize();
 
 const useStore = create<StoreState>()(
   persist(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _ => ({
       mainRoute: 'SPLASH',
       options: {

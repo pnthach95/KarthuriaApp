@@ -1,35 +1,35 @@
-import Kirin from '~/components/kirin';
-import AccessoriesScreen from '~/screens/accessories';
-import AccessoryDetailScreen from '~/screens/accessorydetail';
-import CharacterDetailScreen from '~/screens/characterdetail';
-import CharactersScreen from '~/screens/characters';
-import EnemiesScreen from '~/screens/enemies';
-import EnemyDetailScreen from '~/screens/enemydetail';
-import MemoirDetailScreen from '~/screens/memoirdetail';
-import StageGirlDetailScreen from '~/screens/stagegirldetail';
-import useStore, {onSwitchMainRoute, useHydration} from '~/store';
-import {Dark, Light} from '~/theme';
+import 'locales';
 import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import {setRootViewBackgroundColor} from '@pnthach95/react-native-root-view-background';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {colord} from 'colord';
+import BlurStatusBar from 'components/blurstatusbar';
+import Kirin from 'components/kirin';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import duration from 'dayjs/plugin/duration';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
 import React, {useEffect} from 'react';
 import {useTranslation} from 'react-i18next';
-import {StatusBar} from 'react-native';
 import RNBootSplash from 'react-native-bootsplash';
 import ErrorBoundary from 'react-native-error-boundary';
 import NavigationBarColor from 'react-native-navigation-bar-color';
 import {NetworkProvider} from 'react-native-offline';
 import {Provider as PaperProvider} from 'react-native-paper';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
+import AccessoriesScreen from 'screens/accessories';
+import AccessoryDetailScreen from 'screens/accessorydetail';
+import CharacterDetailScreen from 'screens/characterdetail';
+import CharactersScreen from 'screens/characters';
+import EnemiesScreen from 'screens/enemies';
+import EnemyDetailScreen from 'screens/enemydetail';
+import MemoirDetailScreen from 'screens/memoirdetail';
+import StageGirlDetailScreen from 'screens/stagegirldetail';
+import useStore, {onSwitchMainRoute, useHydration} from 'store';
+import {Dark, Light} from 'theme';
 import Tabs from './tabs';
-import '~/locales';
-import type {RootStackParamList} from '~/typings/navigation';
+import type {RootStackParamList} from 'typings/navigation';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -47,14 +47,15 @@ const Routes = () => {
   const statusBarColor = colord(
     options.isDark ? Dark.colors.card : Light.colors.card,
   );
-  const statusBarStyle = options.isDark ? 'light-content' : 'dark-content';
 
   useEffect(() => {
     const getData = async () => {
       await RNBootSplash.hide({fade: true});
       onSwitchMainRoute('MAIN');
     };
-    if (hydrated) void getData();
+    if (hydrated) {
+      getData();
+    }
   }, [hydrated]);
 
   useEffect(() => {
@@ -65,7 +66,7 @@ const Routes = () => {
     setRootViewBackgroundColor(
       options.isDark ? Dark.colors.background : Light.colors.background,
     );
-    void NavigationBarColor(statusBarColor.toHex(), !options.isDark, true);
+    NavigationBarColor(statusBarColor.toHex(), !options.isDark, true);
   }, [options.isDark]);
 
   return (
@@ -74,58 +75,54 @@ const Routes = () => {
         <PaperProvider theme={theme}>
           <ErrorBoundary>
             <BottomSheetModalProvider>
-              <StatusBar
-                translucent
-                backgroundColor={statusBarColor.alpha(0.5).toHex()}
-                barStyle={statusBarStyle}
-              />
               <NavigationContainer theme={theme}>
                 <Stack.Navigator
                   screenOptions={{headerBackTitle: 'Back', headerShown: false}}>
                   {mainRoute === 'SPLASH' ? (
-                    <Stack.Screen component={Kirin} name='Splash' />
+                    <Stack.Screen component={Kirin} name="Splash" />
                   ) : (
                     <>
-                      <Stack.Screen component={Tabs} name='Main' />
+                      <Stack.Screen component={Tabs} name="Main" />
                       <Stack.Screen
                         component={CharactersScreen}
-                        name='Characters'
+                        name="Characters"
                         options={{headerShown: true}}
                       />
                       <Stack.Screen
                         component={CharacterDetailScreen}
-                        name='CharacterDetail'
+                        name="CharacterDetail"
                       />
                       <Stack.Screen
                         component={StageGirlDetailScreen}
-                        name='StageGirlDetail'
+                        name="StageGirlDetail"
                       />
                       <Stack.Screen
                         component={MemoirDetailScreen}
-                        name='MemoirDetail'
+                        name="MemoirDetail"
                       />
                       <Stack.Screen
                         component={AccessoriesScreen}
-                        name='Accessories'
+                        name="Accessories"
                         options={{headerShown: true}}
                       />
                       <Stack.Screen
                         component={AccessoryDetailScreen}
-                        name='AccessoryDetail'
+                        name="AccessoryDetail"
                       />
                       <Stack.Screen
                         component={EnemiesScreen}
-                        name='Enemies'
+                        name="Enemies"
                         options={{headerShown: true}}
                       />
                       <Stack.Screen
                         component={EnemyDetailScreen}
-                        name='EnemyDetail'
+                        name="EnemyDetail"
                       />
                     </>
                   )}
                 </Stack.Navigator>
               </NavigationContainer>
+              <BlurStatusBar />
             </BottomSheetModalProvider>
           </ErrorBoundary>
         </PaperProvider>

@@ -1,17 +1,15 @@
-import API, {links} from '~/api';
-import {memoirImg, skillIcon} from '~/api/images';
-import {charaImgs, rarity} from '~/assets';
-import cutin from '~/assets/common/cutin.png';
-import frame from '~/assets/common/frame_equip.png';
-import ErrorView from '~/components/errorview';
-import Kirin from '~/components/kirin';
-import CustomBackdrop from '~/components/sheet/backdrop';
-import CustomBackground from '~/components/sheet/background';
-import CustomHandle from '~/components/sheet/handle';
-import AppStyles from '~/theme/styles';
-import {characterToIndex} from '~/util';
 import {CachedImage} from '@georstat/react-native-image-cache';
 import {BottomSheetFlatList, BottomSheetModal} from '@gorhom/bottom-sheet';
+import API, {links} from 'api';
+import {memoirImg, skillIcon} from 'api/images';
+import {charaImgs, rarity} from 'assets';
+import cutin from 'assets/common/cutin.png';
+import frame from 'assets/common/frame_equip.png';
+import ErrorView from 'components/errorview';
+import Kirin from 'components/kirin';
+import CustomBackdrop from 'components/sheet/backdrop';
+import CustomBackground from 'components/sheet/background';
+import CustomHandle from 'components/sheet/handle';
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {
@@ -30,7 +28,9 @@ import {
   useTheme,
 } from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import type {MainBottomTabScreenProps} from '~/typings/navigation';
+import AppStyles from 'theme/styles';
+import {characterToIndex} from 'utils';
+import type {MainBottomTabScreenProps} from 'typings/navigation';
 
 type TFilter = Record<'characters' | 'rarity', boolean[]> & {
   skills: {
@@ -107,7 +107,7 @@ const MemoirsScreen = ({
         }
         if (sData.ok && sData.data) {
           const skills = Object.keys(sData.data).map(k => ({
-            id: parseInt(k),
+            id: parseInt(k, 10),
             checked: true,
           }));
           setFilter({...filter, skills});
@@ -118,7 +118,7 @@ const MemoirsScreen = ({
         setLoading(false);
       }
     };
-    void loadData();
+    loadData();
   }, []);
 
   /** Handle filter */
@@ -204,7 +204,7 @@ const MemoirsScreen = ({
           </View>
           <View style={[AppStyles.center, AppStyles.row]}>
             <Image
-              resizeMode='contain'
+              resizeMode="contain"
               source={rarity(item.basicInfo.rarity)}
               style={AppStyles.rarityImg}
             />
@@ -284,7 +284,7 @@ const MemoirsScreen = ({
         borderless
         style={[AppStyles.rarityImgContainer, AppStyles.selfStart, bgColor]}
         onPress={onPress}>
-        <Image resizeMode='contain' source={rarity(index + 1)} />
+        <Image resizeMode="contain" source={rarity(index + 1)} />
       </TouchableRipple>
     );
   };

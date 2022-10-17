@@ -1,4 +1,4 @@
-import { create } from 'apisauce';
+import {create} from 'apisauce';
 
 export const website = 'https://karth.top';
 

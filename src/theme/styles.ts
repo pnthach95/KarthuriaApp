@@ -1,6 +1,6 @@
-import { StyleSheet } from 'react-native';
-import { Colors } from 'react-native-paper';
-import { responsiveWidth } from 'react-native-responsive-dimensions';
+import {StyleSheet} from 'react-native';
+import {Colors} from 'react-native-paper';
+import {responsiveWidth} from 'react-native-responsive-dimensions';
 
 export const padding = 10;
 export const borderRadius = 5;

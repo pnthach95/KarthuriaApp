@@ -1,15 +1,15 @@
-import API, {links} from '~/api';
-import {itemImg, stageGirlImg} from '~/api/images';
-import frame from '~/assets/common/frame_accessory.png';
-import ErrorView from '~/components/errorview';
-import Kirin from '~/components/kirin';
-import AppStyles, {padding} from '~/theme/styles';
 import {CachedImage} from '@georstat/react-native-image-cache';
+import API, {links} from 'api';
+import {itemImg, stageGirlImg} from 'api/images';
+import frame from 'assets/common/frame_accessory.png';
+import ErrorView from 'components/errorview';
+import Kirin from 'components/kirin';
 import React, {useEffect, useState} from 'react';
 import {FlatList, Image, StyleSheet, View} from 'react-native';
 import {TouchableRipple, useTheme} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import type {RootStackScreenProps} from '~/typings/navigation';
+import AppStyles, {padding} from 'theme/styles';
+import type {RootStackScreenProps} from 'typings/navigation';
 
 const styles = StyleSheet.create({
   item: {
@@ -46,7 +46,7 @@ const AccessoriesScreen = ({
         setLoading(false);
       }
     };
-    void loadData();
+    loadData();
   }, []);
 
   const renderItem = ({item}: {item: TAccessoryBasicInfo}) => {

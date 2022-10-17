@@ -2,14 +2,7 @@ module.exports = {
   root: true,
   extends: '@react-native-community',
   parser: '@typescript-eslint/parser',
-  plugins: [
-    '@typescript-eslint',
-    'react',
-    'react-hooks',
-    'react-native',
-    'import',
-  ],
-  extends: ['plugin:react-native/all'],
+  plugins: ['@typescript-eslint', 'import'],
   overrides: [
     {
       files: ['*.ts', '*.tsx'],
@@ -21,29 +14,10 @@ module.exports = {
     },
   ],
   rules: {
-    'react/prop-types': [
-      'error',
-      {
-        ignore: ['navigation', 'modal'],
-      },
-    ],
-    'no-console': 1,
-    'import/no-extraneous-dependencies': [
-      'error',
-      {
-        packageDir: './',
-      },
-    ],
-    'object-shorthand': 1,
-    '@typescript-eslint/no-unsafe-assignment': 'off',
-    '@typescript-eslint/ban-ts-comment': 'off',
-    '@typescript-eslint/unbound-method': 'off',
+    'no-console': 'error',
+    'no-var': 'error',
     '@typescript-eslint/no-explicit-any': 'error',
-    '@typescript-eslint/no-misused-promises': 0,
-    'react-native/no-raw-text': 'error',
-    'import/extensions': 0,
-    'class-methods-use-this': 'off',
-    'no-use-before-define': 'off',
+    'prefer-const': 'error',
     'react/jsx-sort-props': [
       'warn',
       {
@@ -53,6 +27,16 @@ module.exports = {
         reservedFirst: true,
       },
     ],
+    'react-native/sort-styles': [
+      'error',
+      'asc',
+      {ignoreClassNames: false, ignoreStyleProperties: false},
+    ],
+    'react-native/no-raw-text': 'error',
+    'react-native/no-single-element-style-arrays': 'error',
+    'react-native/no-inline-styles': 'error',
+    'react-native/no-unused-styles': 'warn',
+    'react-hooks/exhaustive-deps': 'off',
     'object-shorthand': ['error', 'always'],
     'comma-dangle': 'off',
     '@typescript-eslint/comma-dangle': ['error', 'always-multiline'],
@@ -76,27 +60,4 @@ module.exports = {
     ],
     'sort-imports': ['error', {ignoreDeclarationSort: true}],
   },
-  settings: {
-    react: {
-      version: 'detect',
-    },
-    'import/resolver': {
-      'babel-module': {
-        alias: {
-          map: [['~', './src/']],
-          extensions: ['.ts', '.js', '.tsx'],
-        },
-      },
-      typescript: {},
-    },
-  },
-  env: {
-    es6: true,
-    node: true,
-    jest: true,
-  },
-  globals: {
-    __DEV__: true,
-  },
-  ignorePatterns: ['/*.*'],
 };

@@ -1,14 +1,13 @@
-import API, {links} from '~/api';
-import {enemyImg} from '~/api/images';
-import {attribute} from '~/assets';
-import ErrorView from '~/components/errorview';
-import Kirin from '~/components/kirin';
-import CustomBackdrop from '~/components/sheet/backdrop';
-import CustomBackground from '~/components/sheet/background';
-import CustomHandle from '~/components/sheet/handle';
-import AppStyles from '~/theme/styles';
 import {CachedImage} from '@georstat/react-native-image-cache';
 import {BottomSheetModal, BottomSheetScrollView} from '@gorhom/bottom-sheet';
+import API, {links} from 'api';
+import {enemyImg} from 'api/images';
+import {attribute} from 'assets';
+import ErrorView from 'components/errorview';
+import Kirin from 'components/kirin';
+import CustomBackdrop from 'components/sheet/backdrop';
+import CustomBackground from 'components/sheet/background';
+import CustomHandle from 'components/sheet/handle';
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {FlatList, Image, StyleSheet, View} from 'react-native';
@@ -21,7 +20,8 @@ import {
   useTheme,
 } from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import type {RootStackScreenProps} from '~/typings/navigation';
+import AppStyles from 'theme/styles';
+import type {RootStackScreenProps} from 'typings/navigation';
 
 const styles = StyleSheet.create({
   frame: {
@@ -77,7 +77,7 @@ const Enemies = ({navigation}: RootStackScreenProps<'Enemies'>) => {
         setLoading(false);
       }
     };
-    void loadData();
+    loadData();
   }, []);
 
   /** Handle filter */

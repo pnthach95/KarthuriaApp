@@ -1,16 +1,14 @@
-import API, {links} from '~/api';
-import {skillIcon, stageGirlImg} from '~/api/images';
-import {attackType, attribute, charaImgs, position, rarity} from '~/assets';
-import frame from '~/assets/common/frame_stage_girl.png';
-import ErrorView from '~/components/errorview';
-import Kirin from '~/components/kirin';
-import CustomBackdrop from '~/components/sheet/backdrop';
-import CustomBackground from '~/components/sheet/background';
-import CustomHandle from '~/components/sheet/handle';
-import AppStyles, {borderRadius} from '~/theme/styles';
-import {characterToIndex} from '~/util';
 import {CachedImage} from '@georstat/react-native-image-cache';
 import {BottomSheetFlatList, BottomSheetModal} from '@gorhom/bottom-sheet';
+import API, {links} from 'api';
+import {skillIcon, stageGirlImg} from 'api/images';
+import {attackType, attribute, charaImgs, position, rarity} from 'assets';
+import frame from 'assets/common/frame_stage_girl.png';
+import ErrorView from 'components/errorview';
+import Kirin from 'components/kirin';
+import CustomBackdrop from 'components/sheet/backdrop';
+import CustomBackground from 'components/sheet/background';
+import CustomHandle from 'components/sheet/handle';
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {
@@ -30,7 +28,9 @@ import {
 } from 'react-native-paper';
 import {responsiveWidth} from 'react-native-responsive-dimensions';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import type {MainBottomTabScreenProps} from '~/typings/navigation';
+import AppStyles, {borderRadius} from 'theme/styles';
+import {characterToIndex} from 'utils';
+import type {MainBottomTabScreenProps} from 'typings/navigation';
 
 type TFilter = Record<
   'characters' | 'elements' | 'position' | 'attackType' | 'rarity',
@@ -128,7 +128,7 @@ const StageGirlsScreen = ({
         }
         if (sData.ok && sData.data) {
           const skills = Object.keys(sData.data).map(k => ({
-            id: parseInt(k),
+            id: parseInt(k, 10),
             checked: true,
           }));
           setFilter({...filter, skills});
@@ -139,7 +139,7 @@ const StageGirlsScreen = ({
         setLoading(false);
       }
     };
-    void loadData();
+    loadData();
   }, []);
 
   /** Handle filter */
@@ -282,7 +282,7 @@ const StageGirlsScreen = ({
                 style={[styles.role, AppStyles.absolute]}
               />
               <Image
-                resizeMode='contain'
+                resizeMode="contain"
                 source={rarity(basicInfo.rarity)}
                 style={[AppStyles.rarityImg, styles.rarity, AppStyles.absolute]}
               />
@@ -425,7 +425,7 @@ const StageGirlsScreen = ({
         borderless
         style={[AppStyles.rarityImgContainer, AppStyles.selfStart, bgColor]}
         onPress={onPress}>
-        <Image resizeMode='contain' source={rarity(index + 2)} />
+        <Image resizeMode="contain" source={rarity(index + 2)} />
       </TouchableRipple>
     );
   };

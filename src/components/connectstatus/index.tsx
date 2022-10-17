@@ -1,10 +1,10 @@
-import AppStyles, {padding} from '~/theme/styles';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
 import {StyleSheet, View} from 'react-native';
 import {NetworkConsumer} from 'react-native-offline';
 import {Colors, Text} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import AppStyles, {padding} from 'theme/styles';
 
 /**
  * Connect Status

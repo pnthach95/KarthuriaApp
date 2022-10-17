@@ -1,5 +1,6 @@
-import API, {links} from '~/api';
-import GithubService from '~/api/github';
+import {CachedImage} from '@georstat/react-native-image-cache';
+import API, {links} from 'api';
+import GithubService from 'api/github';
 import {
   defaultEventImg,
   enemyImg,
@@ -7,17 +8,15 @@ import {
   itemImg,
   rogueImg,
   stageGirlImg,
-} from '~/api/images';
-import frame from '~/assets/common/frame_accessory.png';
-import icon from '~/assets/common/icon.png';
-import ConnectStatus from '~/components/connectstatus';
-import Countdown from '~/components/countdown';
-import ErrorView from '~/components/errorview';
-import Kirin from '~/components/kirin';
-import Separator from '~/components/separator';
-import AppStyles, {borderRadius, padding} from '~/theme/styles';
-import {CachedImage} from '@georstat/react-native-image-cache';
+} from 'api/images';
+import frame from 'assets/common/frame_accessory.png';
+import icon from 'assets/common/icon.png';
 import compareVersions from 'compare-versions';
+import ConnectStatus from 'components/connectstatus';
+import Countdown from 'components/countdown';
+import ErrorView from 'components/errorview';
+import Kirin from 'components/kirin';
+import Separator from 'components/separator';
 import dayjs from 'dayjs';
 import React, {useCallback, useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
@@ -44,8 +43,9 @@ import {
 } from 'react-native-paper';
 import {responsiveScreenWidth} from 'react-native-responsive-dimensions';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import AppStyles, {borderRadius, padding} from 'theme/styles';
 import type {ListRenderItem, ViewStyle} from 'react-native';
-import type {MainBottomTabScreenProps} from '~/typings/navigation';
+import type {MainBottomTabScreenProps} from 'typings/navigation';
 
 type GithubVersion = {
   tag: string;
@@ -61,7 +61,7 @@ const EventImage = ({img}: {img: string}) => {
 
   return (
     <CachedImage
-      resizeMode='contain'
+      resizeMode="contain"
       source={uri}
       style={[styles.eventImg, AppStyles.selfCenter]}
       onError={onError}
@@ -105,9 +105,9 @@ const MainScreen = ({navigation}: MainBottomTabScreenProps<'MainScreen'>) => {
       }
     };
     if (Platform.OS === 'android') {
-      void checkVersion();
+      checkVersion();
     }
-    void loadData();
+    loadData();
   }, []);
 
   const loadData = async () => {
@@ -156,7 +156,7 @@ const MainScreen = ({navigation}: MainBottomTabScreenProps<'MainScreen'>) => {
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    void loadData();
+    loadData();
   }, []);
 
   const rc = (
@@ -169,7 +169,7 @@ const MainScreen = ({navigation}: MainBottomTabScreenProps<'MainScreen'>) => {
 
   const onDownloadApp = () => {
     if (version) {
-      void Linking.openURL(version.link);
+      Linking.openURL(version.link);
     }
   };
 
@@ -361,7 +361,7 @@ const MainScreen = ({navigation}: MainBottomTabScreenProps<'MainScreen'>) => {
                               ]}
                             />
                             <ProgressBar
-                              progress={parseInt(item.hpLeftPercent) / 100}
+                              progress={parseInt(item.hpLeftPercent, 10) / 100}
                               style={styles.hpBar}
                             />
                             <Text style={AppStyles.centerText}>

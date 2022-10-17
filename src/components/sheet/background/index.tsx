@@ -1,8 +1,8 @@
-import {borderRadius} from '~/theme/styles';
 import {BottomSheetBackgroundProps} from '@gorhom/bottom-sheet';
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {useTheme} from 'react-native-paper';
+import {borderRadius} from 'theme/styles';
 
 const styles = StyleSheet.create({
   radius: {

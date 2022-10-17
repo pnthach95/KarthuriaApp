@@ -1,10 +1,10 @@
-import {skillIcon} from '~/api/images';
-import AppStyles from '~/theme/styles';
 import {CachedImage} from '@georstat/react-native-image-cache';
+import {skillIcon} from 'api/images';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
 import {StyleSheet, View} from 'react-native';
 import {Caption, Colors, Paragraph, Surface, Text} from 'react-native-paper';
+import AppStyles from 'theme/styles';
 
 type Props = {
   skill: TNormalSkill;

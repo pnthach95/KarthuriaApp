@@ -1,11 +1,10 @@
-import API, {links} from '~/api';
-import {actIcon, itemImg, stageGirlImg} from '~/api/images';
-import frame from '~/assets/common/frame_accessory.png';
-import sgFrame from '~/assets/common/frame_stage_girl.png';
-import BaseScreen from '~/components/basescreen';
-import SkillDetail from '~/components/skilldetail';
-import AppStyles from '~/theme/styles';
 import {CachedImage} from '@georstat/react-native-image-cache';
+import API, {links} from 'api';
+import {actIcon, itemImg, stageGirlImg} from 'api/images';
+import frame from 'assets/common/frame_accessory.png';
+import sgFrame from 'assets/common/frame_stage_girl.png';
+import BaseScreen from 'components/basescreen';
+import SkillDetail from 'components/skilldetail';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Image, StyleSheet, View} from 'react-native';
@@ -16,7 +15,8 @@ import {
   Surface,
   TouchableRipple,
 } from 'react-native-paper';
-import type {RootStackScreenProps} from '~/typings/navigation';
+import AppStyles from 'theme/styles';
+import type {RootStackScreenProps} from 'typings/navigation';
 
 const styles = StyleSheet.create({
   stageGirl: {
@@ -49,7 +49,7 @@ const AccessoryDetailScreen = ({
         setLoading(false);
       }
     };
-    void loadData();
+    loadData();
   }, []);
 
   return (

@@ -1,12 +1,11 @@
-import API, {links} from '~/api';
-import {skillIcon, stageGirlBigImg} from '~/api/images';
-import {attackTypeText, attribute, position, rarity} from '~/assets';
-import frame from '~/assets/common/frame_thumbnail_dress.png';
-import BaseScreen from '~/components/basescreen';
-import Separator from '~/components/separator';
-import SkillDetail from '~/components/skilldetail';
-import AppStyles, {borderRadius, padding} from '~/theme/styles';
 import {CachedImage} from '@georstat/react-native-image-cache';
+import API, {links} from 'api';
+import {skillIcon, stageGirlBigImg} from 'api/images';
+import {attackTypeText, attribute, position, rarity} from 'assets';
+import frame from 'assets/common/frame_thumbnail_dress.png';
+import BaseScreen from 'components/basescreen';
+import Separator from 'components/separator';
+import SkillDetail from 'components/skilldetail';
 import dayjs from 'dayjs';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
@@ -22,7 +21,8 @@ import {
   Text,
   TouchableRipple,
 } from 'react-native-paper';
-import type {RootStackScreenProps} from '~/typings/navigation';
+import AppStyles, {borderRadius, padding} from 'theme/styles';
+import type {RootStackScreenProps} from 'typings/navigation';
 
 const styles = StyleSheet.create({
   attackType: {
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
 
 const loadingImage = () => (
   <View style={[AppStyles.flex1, AppStyles.center, AppStyles.bigImg]}>
-    <ActivityIndicator size='large' />
+    <ActivityIndicator size="large" />
   </View>
 );
 
@@ -84,7 +84,7 @@ const StageGirlDetailScreen = ({
         setLoading(false);
       }
     };
-    void loadData();
+    loadData();
   }, []);
 
   const releasedJA =

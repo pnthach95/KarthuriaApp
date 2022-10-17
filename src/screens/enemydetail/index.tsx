@@ -1,10 +1,9 @@
-import API, {links} from '~/api';
-import {enemyImg} from '~/api/images';
-import {attribute} from '~/assets';
-import BaseScreen from '~/components/basescreen';
-import SkillDetail from '~/components/skilldetail';
-import AppStyles from '~/theme/styles';
 import {CachedImage} from '@georstat/react-native-image-cache';
+import API, {links} from 'api';
+import {enemyImg} from 'api/images';
+import {attribute} from 'assets';
+import BaseScreen from 'components/basescreen';
+import SkillDetail from 'components/skilldetail';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Image, View} from 'react-native';
@@ -15,7 +14,8 @@ import {
   Subheading,
   Surface,
 } from 'react-native-paper';
-import type {RootStackScreenProps} from '~/typings/navigation';
+import AppStyles from 'theme/styles';
+import type {RootStackScreenProps} from 'typings/navigation';
 
 const EnemyDetailScreen = ({route}: RootStackScreenProps<'EnemyDetail'>) => {
   const {t} = useTranslation();
@@ -36,7 +36,7 @@ const EnemyDetailScreen = ({route}: RootStackScreenProps<'EnemyDetail'>) => {
         setLoading(false);
       }
     };
-    void loadData();
+    loadData();
   }, []);
 
   return (

@@ -1,16 +1,16 @@
-import API, {links} from '~/api';
-import {schoolIcon} from '~/api/images';
-import {charaBase, charaPortrait} from '~/api/images';
-import BaseScreen from '~/components/basescreen';
-import Separator from '~/components/separator';
-import AppStyles from '~/theme/styles';
 import {CachedImage} from '@georstat/react-native-image-cache';
+import API, {links} from 'api';
+import {schoolIcon} from 'api/images';
+import {charaBase, charaPortrait} from 'api/images';
+import BaseScreen from 'components/basescreen';
+import Separator from 'components/separator';
 import dayjs from 'dayjs';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {StyleSheet, View} from 'react-native';
 import {Caption, Headline, Paragraph} from 'react-native-paper';
-import type {RootStackScreenProps} from '~/typings/navigation';
+import AppStyles from 'theme/styles';
+import type {RootStackScreenProps} from 'typings/navigation';
 
 const styles = StyleSheet.create({
   portrait: {
@@ -41,7 +41,7 @@ const CharacterDetailScreen = ({
         setLoading(false);
       }
     };
-    void loadData();
+    loadData();
   }, []);
 
   const birthday = character
