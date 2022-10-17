@@ -9,28 +9,27 @@ import {useTranslation} from 'react-i18next';
 import {Colors, useTheme} from 'react-native-paper';
 import Animated from 'react-native-reanimated';
 import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
-import type {BubbleTabBarItemConfig, TabsConfig} from '@gorhom/animated-tabbar';
+import type {
+  BubbleTabBarIconProps,
+  BubbleTabBarItemConfig,
+  TabsConfig,
+} from '@gorhom/animated-tabbar';
 import type {BottomTabList} from '~/typings/navigation';
-
-type IconProps = {
-  color: Animated.Node<string>;
-  size: number;
-};
 
 const Tab = createBottomTabNavigator<BottomTabList>();
 
 const Icon = Animated.createAnimatedComponent(Ionicons);
 
-const homeIcon = ({size, color}: IconProps) => (
+const homeIcon: React.FC<BubbleTabBarIconProps> = ({size, color}) => (
   <Icon color={color} name='home' size={size} />
 );
-const stageGirlsIcon = ({size, color}: IconProps) => (
+const stageGirlsIcon: React.FC<BubbleTabBarIconProps> = ({size, color}) => (
   <Icon color={color} name='star-four-points' size={size} />
 );
-const memoirsIcon = ({size, color}: IconProps) => (
+const memoirsIcon: React.FC<BubbleTabBarIconProps> = ({size, color}) => (
   <Icon color={color} name='image-area' size={size} />
 );
-const moreIcon = ({size, color}: IconProps) => (
+const moreIcon: React.FC<BubbleTabBarIconProps> = ({size, color}) => (
   <Icon color={color} name='dots-horizontal' size={size} />
 );
 

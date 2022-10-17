@@ -1,4 +1,4 @@
-const assets = 'https://cdn.starira.xyz/api/assets/';
+const assets = 'https://cdn.karth.top/api/assets/';
 
 export const charaterImg = (id: number): string =>
   assets + `jp/res/gaf/quest/skip_effect_character/character_${id}.png`;

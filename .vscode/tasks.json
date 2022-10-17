@@ -1,9 +1,5 @@
 {
   "version": "2.0.0",
-  "presentation": {
-    "reveal": "always",
-    "panel": "new"
-  },
   "tasks": [
     {
       "label": "Start",
@@ -28,6 +24,10 @@
       },
       "type": "shell",
       "command": "npx react-native run-android",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
       "problemMatcher": []
     },
     {
