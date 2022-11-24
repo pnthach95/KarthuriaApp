@@ -27,7 +27,7 @@ type AppOptions = {
 
 type TRole = 'front' | 'middle' | 'back' | 0 | 1 | 2;
 
-type TSkillType = 'passive' | 'start';
+type TSkillType = 'normal' | 'fieldEffect';
 
 type TLanguage = 'ja' | 'en' | 'ko' | 'zh_hant';
 
@@ -114,6 +114,7 @@ type TDress = {
   base: TDressBaseCommon & {
     cost: number;
     accessories: string[] | null;
+    remake: boolean;
   };
   other: {
     storyID: number[];
@@ -122,18 +123,26 @@ type TDress = {
     eva: number;
   };
   stat: TDressStat;
-  act: Record<string, TAct>;
+  statRemake: TDressStat;
+  act: Record<`act${1 | 2 | 3}`, TAct>;
   skills: Record<string, TSkillObject>;
+  entrySkill: null;
+  remake: boolean;
   groupSkills: {
     unitSkill: {
-      iconID: number;
-      info: TLanguageObject;
+      id: number;
+      icon: number;
+      description: TLanguageObject;
     };
-    climaxACT: TNormalSkill;
+    climaxACT: {
+      skillNormal: TSkillNormal;
+      skillChange: null;
+    };
     finishACT: {
-      iconID: number;
+      id: number;
+      icon: number;
       name: TLanguageObject;
-      info: TLanguageObject;
+      description: TLanguageObject;
     };
   };
 };
@@ -144,14 +153,15 @@ type TSkillsOnFilter = Record<string, boolean>;
 type TSkillNames = Record<string, {[L in TLanguage]: string[]}>;
 
 type TAct = {
-  normalSkill: TNormalSkill;
-  changeSkill: number;
+  skillNormal: TSkillNormal;
+  skillChange: number | null;
 };
 
 type TSkillObject = {
-  iconID: number;
-  info: TLanguageObject;
-  type: TSkillType;
+  id: number;
+  icon: number;
+  type: TLanguageObject;
+  params: TSkillParam[];
 };
 
 type TEquipList = Record<string, TEquipBasicInfo>;
@@ -220,7 +230,7 @@ type TAccessory = {
   };
   skillInfo: {
     skill: {
-      normalSkill: TNormalSkill | null;
+      normalSkill: TSkillNormal | null;
       changeSkill: number;
     };
     skillSlot: number;
@@ -299,14 +309,25 @@ type TBasicStat = {
   hp: number;
 };
 
-type TNormalSkill = {
-  iconID: number;
-  cost: number;
-  name: TLanguageObject;
+type TSkillParam = {
+  icon: number;
+  type: TSkillType;
+  hits: number | null;
+  duration: TLanguageObject | null;
+  accuracy?: number;
+  target: TLanguageObject;
   description: TLanguageObject;
+  descriptionExtra: TLanguageObject | null;
+};
+
+type TSkillNormal = {
+  id: number;
+  name: TLanguageObject;
   attribute: number;
-  skillInfo: string;
-  skillCycle: string;
+  cost: number;
+  multiple: boolean;
+  icon: number;
+  params: TSkillParam[];
 };
 
 //#endregion

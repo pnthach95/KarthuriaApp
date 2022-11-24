@@ -37,6 +37,9 @@ export const rogueImg = (id: number): string =>
 export const skillIcon = (id: number): string =>
   assets + `jp/res/battle/skill_icon/skill_icon_${id}.png`;
 
+export const iconFieldEffect = (id: number): string =>
+  assets + `jp/res/icon/field_effect/${id}.png`;
+
 export const memoirImg = (id: string): string =>
   assets + `jp/res/item_root/large/2_${id}.png`;
 

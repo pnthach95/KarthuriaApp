@@ -1,4 +1,3 @@
-import {CacheManager} from '@georstat/react-native-image-cache';
 import {website} from 'api';
 import {links} from 'api/github';
 import webicon from 'assets/common/icon.png';
@@ -24,14 +23,6 @@ import type {MainBottomTabScreenProps} from 'typings/navigation';
 const openWebsite = () => Linking.openURL(website);
 
 const openGithub = () => Linking.openURL(links.GITHUB_PROJECT);
-
-const clearCache = async () => {
-  try {
-    await CacheManager.clearCache();
-  } catch {
-    //
-  }
-};
 
 const MoreScreen = ({navigation}: MainBottomTabScreenProps<'MoreScreen'>) => {
   const {t} = useTranslation();
@@ -71,11 +62,6 @@ const MoreScreen = ({navigation}: MainBottomTabScreenProps<'MoreScreen'>) => {
             value={options.isDark}
             onValueChange={themeToggle}
           />
-        </View>
-      </TouchableRipple>
-      <TouchableRipple onPress={clearCache}>
-        <View style={[styles.row, AppStyles.spaceBetween]}>
-          <Text>{t('clear-cache')}</Text>
         </View>
       </TouchableRipple>
       <View style={[styles.group, AppStyles.rowSpaceBetween]}>

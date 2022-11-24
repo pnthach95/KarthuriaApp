@@ -1,54 +1,32 @@
-import {CachedImage} from '@georstat/react-native-image-cache';
-import {skillIcon} from 'api/images';
+import SkillParam from 'components/skillparam';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
-import {StyleSheet, View} from 'react-native';
-import {Caption, Colors, Paragraph, Surface, Text} from 'react-native-paper';
+import {View} from 'react-native';
+import {Surface, Text} from 'react-native-paper';
 import AppStyles from 'theme/styles';
 
 type Props = {
-  skill: TNormalSkill;
+  skill: TSkillNormal;
 };
-
-const styles = StyleSheet.create({
-  animation: {
-    color: Colors.red300,
-  },
-  tiva: {
-    color: Colors.blue300,
-  },
-});
 
 const SkillDetail = ({skill}: Props) => {
   const {t} = useTranslation();
 
   return (
     <Surface style={[AppStyles.shadow, AppStyles.contentBlock]}>
-      <View style={AppStyles.row}>
-        <CachedImage
-          source={skillIcon(skill.iconID)}
-          style={[AppStyles.square40, AppStyles.marginRight]}
-        />
-        <View style={AppStyles.flex1}>
-          <View style={AppStyles.row}>
-            <View style={AppStyles.flex1}>
-              <Text>{skill.name.en || skill.name.ja}</Text>
-            </View>
-            <Text>
-              {t('ap')}
-              {skill.cost}
-            </Text>
+      <View style={AppStyles.flex1}>
+        <View style={AppStyles.row}>
+          <View style={AppStyles.flex1}>
+            <Text>{skill.name.en || skill.name.ja}</Text>
           </View>
-          <Caption>{skill.description.en || skill.description.ja}</Caption>
-          <Paragraph>
-            {t('ti-va')}
-            <Paragraph style={styles.tiva}>{skill.skillInfo}</Paragraph>
-          </Paragraph>
-          <Paragraph>
-            {t('animation')}
-            <Paragraph style={styles.animation}>{skill.skillCycle}</Paragraph>
-          </Paragraph>
+          <Text>
+            {t('ap')}
+            {skill.cost}
+          </Text>
         </View>
+        {skill.params.map((sk, idx) => {
+          return <SkillParam key={`skill_param_${idx}`} skillParam={sk} />;
+        })}
       </View>
     </Surface>
   );

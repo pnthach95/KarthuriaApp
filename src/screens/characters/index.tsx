@@ -1,10 +1,10 @@
-import {CachedImage} from '@georstat/react-native-image-cache';
 import API, {links} from 'api';
 import {charaterImg, schoolIcon} from 'api/images';
 import ErrorView from 'components/errorview';
 import Kirin from 'components/kirin';
 import React, {useCallback, useEffect, useState} from 'react';
 import {FlatList, StyleSheet, View} from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {Text, TouchableRipple} from 'react-native-paper';
 import {responsiveScreenWidth} from 'react-native-responsive-dimensions';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -62,10 +62,13 @@ const CharactersScreen = ({navigation}: RootStackScreenProps<'Characters'>) => {
       return (
         <TouchableRipple onPress={goToDetail}>
           <View style={[AppStyles.center, styles.item]}>
-            <CachedImage source={charaterImg(charaID)} style={styles.img} />
+            <FastImage
+              source={{uri: charaterImg(charaID)}}
+              style={styles.img}
+            />
             <View style={AppStyles.row}>
-              <CachedImage
-                source={schoolIcon(school_id)}
+              <FastImage
+                source={{uri: schoolIcon(school_id)}}
                 style={[AppStyles.square20, styles.schoolIcon]}
               />
               <Text>{name_ruby.ja}</Text>

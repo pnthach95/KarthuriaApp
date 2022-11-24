@@ -1,4 +1,3 @@
-import {CachedImage} from '@georstat/react-native-image-cache';
 import API, {links} from 'api';
 import {itemImg, stageGirlImg} from 'api/images';
 import frame from 'assets/common/frame_accessory.png';
@@ -6,6 +5,7 @@ import ErrorView from 'components/errorview';
 import Kirin from 'components/kirin';
 import React, {useEffect, useState} from 'react';
 import {FlatList, Image, StyleSheet, View} from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {TouchableRipple, useTheme} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import AppStyles, {padding} from 'theme/styles';
@@ -63,16 +63,16 @@ const AccessoriesScreen = ({
             {borderColor: colors.border},
           ]}>
           <View style={[AppStyles.flex1, AppStyles.center]}>
-            <CachedImage
-              source={itemImg(item.basicInfo.iconID)}
+            <FastImage
+              source={{uri: itemImg(item.basicInfo.iconID)}}
               style={AppStyles.square78}
             />
             <Image
               source={frame}
               style={[AppStyles.square78, AppStyles.absolute]}
             />
-            <CachedImage
-              source={stageGirlImg(item.basicInfo.cards[0])}
+            <FastImage
+              source={{uri: stageGirlImg(item.basicInfo.cards[0])}}
               style={[AppStyles.stageGirlBottomLeft, AppStyles.absolute]}
             />
           </View>

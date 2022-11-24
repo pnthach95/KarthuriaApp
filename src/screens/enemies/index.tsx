@@ -1,4 +1,3 @@
-import {CachedImage} from '@georstat/react-native-image-cache';
 import {BottomSheetModal, BottomSheetScrollView} from '@gorhom/bottom-sheet';
 import API, {links} from 'api';
 import {enemyImg} from 'api/images';
@@ -11,6 +10,7 @@ import CustomHandle from 'components/sheet/handle';
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {FlatList, Image, StyleSheet, View} from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {
   Button,
   Caption,
@@ -139,8 +139,8 @@ const Enemies = ({navigation}: RootStackScreenProps<'Enemies'>) => {
           ]}>
           <View style={AppStyles.center}>
             <View style={styles.frame}>
-              <CachedImage
-                source={enemyImg(basicInfo.icon)}
+              <FastImage
+                source={{uri: enemyImg(basicInfo.icon)}}
                 style={styles.frame}
               />
               <Image

@@ -1,4 +1,3 @@
-import {CachedImage} from '@georstat/react-native-image-cache';
 import API, {links} from 'api';
 import {schoolIcon} from 'api/images';
 import {charaBase, charaPortrait} from 'api/images';
@@ -8,6 +7,7 @@ import dayjs from 'dayjs';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {StyleSheet, View} from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {Caption, Headline, Paragraph} from 'react-native-paper';
 import AppStyles from 'theme/styles';
 import type {RootStackScreenProps} from 'typings/navigation';
@@ -59,12 +59,12 @@ const CharacterDetailScreen = ({
             {character.info.name.en || character.info.name.ja}
           </Headline>
           <View style={AppStyles.center}>
-            <CachedImage
-              source={charaBase(character.basicInfo.charaID)}
+            <FastImage
+              source={{uri: charaBase(character.basicInfo.charaID)}}
               style={styles.portrait}
             />
-            <CachedImage
-              source={charaPortrait(character.basicInfo.charaID)}
+            <FastImage
+              source={{uri: charaPortrait(character.basicInfo.charaID)}}
               style={[styles.portrait, AppStyles.absolute]}
             />
           </View>
@@ -85,8 +85,8 @@ const CharacterDetailScreen = ({
                     character.info.department_1.ja}
                 </Paragraph>
               </View>
-              <CachedImage
-                source={schoolIcon(character.basicInfo.school_id)}
+              <FastImage
+                source={{uri: schoolIcon(character.basicInfo.school_id)}}
                 style={AppStyles.square40}
               />
             </View>

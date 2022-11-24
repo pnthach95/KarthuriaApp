@@ -1,4 +1,3 @@
-import {CachedImage} from '@georstat/react-native-image-cache';
 import {BottomSheetFlatList, BottomSheetModal} from '@gorhom/bottom-sheet';
 import API, {links} from 'api';
 import {memoirImg, skillIcon} from 'api/images';
@@ -19,6 +18,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {
   Button,
   Caption,
@@ -134,7 +134,7 @@ const MemoirsScreen = ({
             )
           : true;
         const checkSkill = filter.skills.find(
-          s => s.id === item.skill.iconID,
+          s => s.id === item.skill.icon,
         )?.checked;
         return checkRarity && checkCharacter && checkSkill;
       });
@@ -189,8 +189,8 @@ const MemoirsScreen = ({
       <TouchableRipple style={AppStyles.flex1} onPress={onPress}>
         <View style={[AppStyles.listItem, {borderColor: colors.border}]}>
           <View style={[AppStyles.selfCenter, AppStyles.smallImg]}>
-            <CachedImage
-              source={memoirImg(item.basicInfo.cardID)}
+            <FastImage
+              source={{uri: memoirImg(item.basicInfo.cardID)}}
               style={[AppStyles.selfCenter, AppStyles.smallImg]}
             />
             <Image
@@ -208,8 +208,8 @@ const MemoirsScreen = ({
               source={rarity(item.basicInfo.rarity)}
               style={AppStyles.rarityImg}
             />
-            <CachedImage
-              source={skillIcon(item.skill.iconID)}
+            <FastImage
+              source={{uri: skillIcon(item.skill.icon)}}
               style={styles.skillIcon}
             />
             {item.activeSkill === 1 && (

@@ -1,4 +1,3 @@
-import {CachedImage} from '@georstat/react-native-image-cache';
 import API, {links} from 'api';
 import {actIcon, itemImg, stageGirlImg} from 'api/images';
 import frame from 'assets/common/frame_accessory.png';
@@ -8,6 +7,7 @@ import SkillDetail from 'components/skilldetail';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Image, StyleSheet, View} from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {
   DataTable,
   Headline,
@@ -66,16 +66,16 @@ const AccessoryDetailScreen = ({
               AppStyles.paddingVertical,
             ]}>
             <View>
-              <CachedImage
-                source={itemImg(accessory.basicInfo.iconID)}
+              <FastImage
+                source={{uri: itemImg(accessory.basicInfo.iconID)}}
                 style={AppStyles.square112}
               />
               <Image
                 source={frame}
                 style={[AppStyles.square112, AppStyles.absolute]}
               />
-              <CachedImage
-                source={actIcon(accessory.skillInfo.skillSlot)}
+              <FastImage
+                source={{uri: actIcon(accessory.skillInfo.skillSlot)}}
                 style={[
                   AppStyles.square28,
                   AppStyles.right0,
@@ -95,8 +95,8 @@ const AccessoryDetailScreen = ({
                     borderless
                     onPress={goToStageGirlDetail}>
                     <View>
-                      <CachedImage
-                        source={stageGirlImg(card)}
+                      <FastImage
+                        source={{uri: stageGirlImg(card)}}
                         style={styles.stageGirl}
                       />
                       <Image

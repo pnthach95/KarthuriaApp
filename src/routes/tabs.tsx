@@ -108,22 +108,22 @@ const Tabs = () => {
       <Tab.Screen
         component={HomeScreen}
         name="MainScreen"
-        options={{tabBarLabel: t('bottom-tabs.t1')}}
+        options={{tabBarLabel: t('bottom-tabs.t1') || ''}}
       />
       <Tab.Screen
         component={StageGirlsScreen}
         name="StageGirlsScreen"
-        options={{tabBarLabel: t('bottom-tabs.t2')}}
+        options={{tabBarLabel: t('bottom-tabs.t2') || ''}}
       />
       <Tab.Screen
         component={MemoirsScreen}
         name="MemoirsScreen"
-        options={{tabBarLabel: t('bottom-tabs.t3')}}
+        options={{tabBarLabel: t('bottom-tabs.t3') || ''}}
       />
       <Tab.Screen
         component={MoreScreen}
         name="MoreScreen"
-        options={{tabBarLabel: t('bottom-tabs.t4')}}
+        options={{tabBarLabel: t('bottom-tabs.t4') || ''}}
       />
     </Tab.Navigator>
   );

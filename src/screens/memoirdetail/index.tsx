@@ -1,4 +1,3 @@
-import {CachedImage} from '@georstat/react-native-image-cache';
 import API, {links} from 'api';
 import {charaIcon, memoirBigImg, skillIcon} from 'api/images';
 import {rarity} from 'assets';
@@ -11,6 +10,7 @@ import dayjs from 'dayjs';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Image, StyleSheet, View} from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {
   Caption,
   Colors,
@@ -128,8 +128,8 @@ const MemoirDetailScreen = ({
             {memoir.basicInfo.name.en || memoir.basicInfo.name.ja}
           </Headline>
           <View style={AppStyles.bigImg}>
-            <CachedImage
-              source={memoirBigImg(memoir.basicInfo.cardID)}
+            <FastImage
+              source={{uri: memoirBigImg(memoir.basicInfo.cardID)}}
               style={[AppStyles.bigImg, styles.frameBorderRadius]}
             />
             <Image
@@ -156,8 +156,8 @@ const MemoirDetailScreen = ({
                         key={`chara_${chara}`}
                         style={styles.charaIconContainer}>
                         <TouchableRipple onPress={onPress}>
-                          <CachedImage
-                            source={charaIcon(chara)}
+                          <FastImage
+                            source={{uri: charaIcon(chara)}}
                             style={AppStyles.square40}
                           />
                         </TouchableRipple>
@@ -213,13 +213,14 @@ const MemoirDetailScreen = ({
           </Subheading>
           <Surface style={[AppStyles.shadow, styles.block]}>
             <View style={AppStyles.row}>
-              <CachedImage
-                source={skillIcon(memoir.skill.iconID)}
+              <FastImage
+                source={{uri: skillIcon(memoir.skill.icon)}}
                 style={[AppStyles.square40, AppStyles.marginRight]}
               />
               <View style={AppStyles.flex1}>
                 <Paragraph>
-                  {memoir.skill.info.en || memoir.skill.info.ja}
+                  {memoir.skill.params[0].description.en ||
+                    memoir.skill.params[0].description.ja}
                 </Paragraph>
               </View>
             </View>
@@ -231,8 +232,8 @@ const MemoirDetailScreen = ({
               </Subheading>
               <Surface style={[AppStyles.shadow, styles.block]}>
                 <View style={AppStyles.row}>
-                  <CachedImage
-                    source={skillIcon(memoir.activeSkill.iconID)}
+                  <FastImage
+                    source={{uri: skillIcon(memoir.activeSkill.iconID)}}
                     style={[AppStyles.square40, AppStyles.marginRight]}
                   />
                   <View style={AppStyles.flex1}>

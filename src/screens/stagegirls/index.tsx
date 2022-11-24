@@ -1,4 +1,3 @@
-import {CachedImage} from '@georstat/react-native-image-cache';
 import {BottomSheetFlatList, BottomSheetModal} from '@gorhom/bottom-sheet';
 import API, {links} from 'api';
 import {skillIcon, stageGirlImg} from 'api/images';
@@ -18,6 +17,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {
   Button,
   Caption,
@@ -29,6 +29,7 @@ import {
 import {responsiveWidth} from 'react-native-responsive-dimensions';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import AppStyles, {borderRadius} from 'theme/styles';
+import {useImmer} from 'use-immer';
 import {characterToIndex} from 'utils';
 import type {MainBottomTabScreenProps} from 'typings/navigation';
 
@@ -94,7 +95,7 @@ const StageGirlsScreen = ({
   /** List for render */
   const [rsgList, setRSGList] = useState<TDressBasicInfo[]>([]);
   /** Filter */
-  const [filter, setFilter] = useState<TFilter>({
+  const [filter, setFilter] = useImmer<TFilter>({
     characters: charaImgs.map(() => true),
     elements: [true, true, true, true, true, true, true],
     position: [true, true, true],
@@ -103,7 +104,7 @@ const StageGirlsScreen = ({
     skills: [],
   });
   /** State for select/deselect all button */
-  const [filterAll, setFilterAll] = useState({
+  const [filterAll, setFilterAll] = useImmer({
     characters: true,
     skills: true,
   });
@@ -126,13 +127,14 @@ const StageGirlsScreen = ({
           );
           setSGList(sg);
         }
-        if (sData.ok && sData.data) {
-          const skills = Object.keys(sData.data).map(k => ({
-            id: parseInt(k, 10),
-            checked: true,
-          }));
-          setFilter({...filter, skills});
-        }
+        setFilter(draft => {
+          if (sData.ok && sData.data) {
+            draft.skills = Object.keys(sData.data).map(k => ({
+              id: parseInt(k, 10),
+              checked: true,
+            }));
+          }
+        });
       } catch (error) {
         //
       } finally {
@@ -265,8 +267,8 @@ const StageGirlsScreen = ({
           </Text>
           <View style={AppStyles.center}>
             <View style={AppStyles.smallImg}>
-              <CachedImage
-                source={stageGirlImg(basicInfo.cardID)}
+              <FastImage
+                source={{uri: stageGirlImg(basicInfo.cardID)}}
                 style={AppStyles.smallImg}
               />
               <Image
@@ -313,13 +315,11 @@ const StageGirlsScreen = ({
   //#region Render character filter
 
   const toggleAllCharacters = () => {
-    setFilter({
-      ...filter,
-      characters: filter.characters.map(() => !filterAll.characters),
+    setFilter(draft => {
+      draft.characters = draft.characters.map(() => !filterAll.characters);
     });
-    setFilterAll({
-      ...filterAll,
-      characters: !filterAll.characters,
+    setFilterAll(draft => {
+      draft.characters = !draft.characters;
     });
   };
 
@@ -327,11 +327,12 @@ const StageGirlsScreen = ({
     const bgColor = {
       backgroundColor: item ? colors.primary : undefined,
     };
-    const onPress = () =>
-      setFilter({
-        ...filter,
-        characters: filter.characters.map((v, j) => (index === j ? !v : v)),
+    const onPress = () => {
+      setFilter(draft => {
+        draft.characters[index] = !draft.characters[index];
       });
+    };
+
     return (
       <TouchableRipple
         borderless
@@ -350,11 +351,12 @@ const StageGirlsScreen = ({
     const bgColor = {
       backgroundColor: item ? colors.primary : undefined,
     };
-    const onPress = () =>
-      setFilter({
-        ...filter,
-        elements: filter.elements.map((v, j) => (index === j ? !v : v)),
+    const onPress = () => {
+      setFilter(draft => {
+        draft.elements[index] = !draft.elements[index];
       });
+    };
+
     return (
       <TouchableRipple
         borderless
@@ -373,11 +375,12 @@ const StageGirlsScreen = ({
     const bgColor = {
       backgroundColor: item ? colors.primary : undefined,
     };
-    const onPress = () =>
-      setFilter({
-        ...filter,
-        position: filter.position.map((v, j) => (index === j ? !v : v)),
+    const onPress = () => {
+      setFilter(draft => {
+        draft.position[index] = !draft.position[index];
       });
+    };
+
     return (
       <View style={AppStyles.row}>
         <TouchableRipple
@@ -396,15 +399,13 @@ const StageGirlsScreen = ({
   //#region Render attack type filter
 
   const onPressAttType0 = () =>
-    setFilter({
-      ...filter,
-      attackType: [!filter.attackType[0], filter.attackType[1]],
+    setFilter(draft => {
+      draft.attackType[0] = !draft.attackType[0];
     });
 
   const onPressAttType1 = () =>
-    setFilter({
-      ...filter,
-      attackType: [filter.attackType[0], !filter.attackType[1]],
+    setFilter(draft => {
+      draft.attackType[1] = !filter.attackType[1];
     });
 
   //#endregion
@@ -415,11 +416,12 @@ const StageGirlsScreen = ({
     const bgColor = {
       backgroundColor: item ? colors.primary : undefined,
     };
-    const onPress = () =>
-      setFilter({
-        ...filter,
-        rarity: filter.rarity.map((v, j) => (index === j ? !v : v)),
+    const onPress = () => {
+      setFilter(draft => {
+        draft.rarity[index] = !draft.rarity[index];
       });
+    };
+
     return (
       <TouchableRipple
         borderless
@@ -435,16 +437,13 @@ const StageGirlsScreen = ({
   //#region Render skill filter
 
   const toggleAllSkills = () => {
-    setFilter({
-      ...filter,
-      skills: filter.skills.map(item => ({
-        ...item,
-        checked: !filterAll.skills,
-      })),
+    setFilter(draft => {
+      for (let i = 0; i < draft.skills.length; i++) {
+        draft.skills[i].checked = !filterAll.skills;
+      }
     });
-    setFilterAll({
-      ...filterAll,
-      skills: !filterAll.skills,
+    setFilterAll(draft => {
+      draft.skills = !draft.skills;
     });
   };
 
@@ -456,11 +455,8 @@ const StageGirlsScreen = ({
       backgroundColor: item.checked ? colors.primary : undefined,
     };
     const onPress = () =>
-      setFilter({
-        ...filter,
-        skills: filter.skills.map((v, j) =>
-          index === j ? {...v, checked: !v.checked} : v,
-        ),
+      setFilter(draft => {
+        draft.skills[index].checked = !draft.skills[index].checked;
       });
     const source = {uri: skillIcon(item.id)};
     return (

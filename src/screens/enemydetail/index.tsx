@@ -1,4 +1,3 @@
-import {CachedImage} from '@georstat/react-native-image-cache';
 import API, {links} from 'api';
 import {enemyImg} from 'api/images';
 import {attribute} from 'assets';
@@ -7,6 +6,7 @@ import SkillDetail from 'components/skilldetail';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Image, View} from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {
   Caption,
   Headline,
@@ -48,8 +48,8 @@ const EnemyDetailScreen = ({route}: RootStackScreenProps<'EnemyDetail'>) => {
           </Headline>
           <View style={AppStyles.paddingVertical}>
             <View style={[AppStyles.square112, AppStyles.selfCenter]}>
-              <CachedImage
-                source={enemyImg(enemy.basicInfo.icon)}
+              <FastImage
+                source={{uri: enemyImg(enemy.basicInfo.icon)}}
                 style={[AppStyles.square112, AppStyles.selfCenter]}
               />
               <Image
@@ -73,7 +73,7 @@ const EnemyDetailScreen = ({route}: RootStackScreenProps<'EnemyDetail'>) => {
               <Subheading style={AppStyles.centerText}>{t('skill')}</Subheading>
               {Object.keys(enemy.skills).map(k => {
                 const skill = enemy.skills[k];
-                return <SkillDetail key={k} skill={skill.normalSkill} />;
+                return <SkillDetail key={k} skill={skill.skillNormal} />;
               })}
             </View>
           </View>

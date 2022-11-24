@@ -1,4 +1,3 @@
-import {CachedImage} from '@georstat/react-native-image-cache';
 import API, {links} from 'api';
 import {skillIcon, stageGirlBigImg} from 'api/images';
 import {attackTypeText, attribute, position, rarity} from 'assets';
@@ -6,12 +5,13 @@ import frame from 'assets/common/frame_thumbnail_dress.png';
 import BaseScreen from 'components/basescreen';
 import Separator from 'components/separator';
 import SkillDetail from 'components/skilldetail';
+import SkillParam from 'components/skillparam';
 import dayjs from 'dayjs';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Image, StyleSheet, View} from 'react-native';
+import FastImage from 'react-native-fast-image';
 import {
-  ActivityIndicator,
   Caption,
   DataTable,
   Headline,
@@ -48,12 +48,6 @@ const styles = StyleSheet.create({
     width: 40,
   },
 });
-
-const loadingImage = () => (
-  <View style={[AppStyles.flex1, AppStyles.center, AppStyles.bigImg]}>
-    <ActivityIndicator size="large" />
-  </View>
-);
 
 const StageGirlDetailScreen = ({
   navigation,
@@ -119,9 +113,8 @@ const StageGirlDetailScreen = ({
             </TouchableRipple>
           )}
           <View style={AppStyles.bigImg}>
-            <CachedImage
-              loadingImageComponent={loadingImage}
-              source={stageGirlBigImg(dress.basicInfo.cardID || '0')}
+            <FastImage
+              source={{uri: stageGirlBigImg(dress.basicInfo.cardID || '0')}}
               style={AppStyles.bigImg}
             />
             <Image
@@ -143,6 +136,10 @@ const StageGirlDetailScreen = ({
           </View>
           <View style={AppStyles.paddingVertical}>
             <Surface style={[AppStyles.shadow, AppStyles.contentBlock]}>
+              <View style={[AppStyles.row, AppStyles.spaceBetween]}>
+                <Caption>{t('cost')}</Caption>
+                <Text>{dress.base.cost}</Text>
+              </View>
               <Caption>{t('release-date')}</Caption>
               {releasedJA && (
                 <View style={[AppStyles.row, AppStyles.spaceBetween]}>
@@ -222,9 +219,34 @@ const StageGirlDetailScreen = ({
             </Subheading>
             {Object.values(dress.act).map((act, index) => {
               return (
-                <SkillDetail key={`act${index}`} skill={act.normalSkill} />
+                <SkillDetail key={`act${index}`} skill={act.skillNormal} />
               );
             })}
+          </View>
+          <View style={AppStyles.paddingVertical}>
+            <Subheading style={AppStyles.centerText}>
+              {t('climax-act')}
+            </Subheading>
+            <SkillDetail skill={dress.groupSkills.climaxACT.skillNormal} />
+          </View>
+          <View style={AppStyles.paddingVertical}>
+            <Subheading style={AppStyles.centerText}>
+              {t('unit-skill')}
+            </Subheading>
+            <Surface style={[AppStyles.shadow, AppStyles.contentBlock]}>
+              <View style={AppStyles.row}>
+                <FastImage
+                  source={{uri: skillIcon(dress.groupSkills.unitSkill.icon)}}
+                  style={[AppStyles.square40, AppStyles.marginRight]}
+                />
+                <View style={AppStyles.flex1}>
+                  <Paragraph>
+                    {dress.groupSkills.unitSkill.description.en ||
+                      dress.groupSkills.unitSkill.description.ja}
+                  </Paragraph>
+                </View>
+              </View>
+            </Surface>
           </View>
           <View style={AppStyles.paddingVertical}>
             <Subheading style={AppStyles.centerText}>
@@ -235,45 +257,20 @@ const StageGirlDetailScreen = ({
                 <Surface
                   key={`autoSkill${index}`}
                   style={[AppStyles.shadow, AppStyles.contentBlock]}>
-                  <View style={AppStyles.row}>
-                    <CachedImage
-                      source={skillIcon(autoSkill.iconID)}
-                      style={[AppStyles.square40, AppStyles.marginRight]}
-                    />
-                    <View style={AppStyles.flex1}>
-                      <Paragraph>
-                        {autoSkill.info.en || autoSkill.info.ja}
-                      </Paragraph>
-                    </View>
-                  </View>
+                  <Paragraph>
+                    {autoSkill.type.en || autoSkill.type.ja}
+                  </Paragraph>
+                  {autoSkill.params.map((as, idx) => {
+                    return (
+                      <SkillParam
+                        key={`sgd_skill_param_${idx}`}
+                        skillParam={as}
+                      />
+                    );
+                  })}
                 </Surface>
               );
             })}
-          </View>
-          <View style={AppStyles.paddingVertical}>
-            <Subheading style={AppStyles.centerText}>
-              {t('climax-act')}
-            </Subheading>
-            <SkillDetail skill={dress.groupSkills.climaxACT} />
-          </View>
-          <View style={AppStyles.paddingVertical}>
-            <Subheading style={AppStyles.centerText}>
-              {t('unit-skill')}
-            </Subheading>
-            <Surface style={[AppStyles.shadow, AppStyles.contentBlock]}>
-              <View style={AppStyles.row}>
-                <CachedImage
-                  source={skillIcon(dress.groupSkills.unitSkill.iconID)}
-                  style={[AppStyles.square40, AppStyles.marginRight]}
-                />
-                <View style={AppStyles.flex1}>
-                  <Paragraph>
-                    {dress.groupSkills.unitSkill.info.en ||
-                      dress.groupSkills.unitSkill.info.ja}
-                  </Paragraph>
-                </View>
-              </View>
-            </Surface>
           </View>
           <View style={AppStyles.paddingVertical}>
             <Subheading style={AppStyles.centerText}>
@@ -281,8 +278,8 @@ const StageGirlDetailScreen = ({
             </Subheading>
             <Surface style={[AppStyles.shadow, AppStyles.contentBlock]}>
               <View style={AppStyles.row}>
-                <CachedImage
-                  source={skillIcon(dress.groupSkills.finishACT.iconID)}
+                <FastImage
+                  source={{uri: skillIcon(dress.groupSkills.finishACT.icon)}}
                   style={[AppStyles.square40, AppStyles.marginRight]}
                 />
                 <View style={AppStyles.flex1}>
@@ -291,8 +288,8 @@ const StageGirlDetailScreen = ({
                       dress.groupSkills.finishACT.name.ja}
                   </Text>
                   <Caption>
-                    {dress.groupSkills.finishACT.info.en ||
-                      dress.groupSkills.finishACT.info.ja}
+                    {dress.groupSkills.finishACT.description.en ||
+                      dress.groupSkills.finishACT.description.ja}
                   </Caption>
                 </View>
               </View>

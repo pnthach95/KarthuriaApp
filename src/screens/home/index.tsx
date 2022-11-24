@@ -1,4 +1,3 @@
-import {CachedImage} from '@georstat/react-native-image-cache';
 import API, {links} from 'api';
 import GithubService from 'api/github';
 import {
@@ -31,6 +30,7 @@ import {
   View,
 } from 'react-native';
 import {getVersion} from 'react-native-device-info';
+import FastImage from 'react-native-fast-image';
 import {
   Caption,
   Colors,
@@ -60,9 +60,9 @@ const EventImage = ({img}: {img: string}) => {
   const onError = () => setURI(defaultEventImg);
 
   return (
-    <CachedImage
+    <FastImage
       resizeMode="contain"
-      source={uri}
+      source={{uri}}
       style={[styles.eventImg, AppStyles.selfCenter]}
       onError={onError}
     />
@@ -196,8 +196,8 @@ const MainScreen = ({navigation}: MainBottomTabScreenProps<'MainScreen'>) => {
           borderless
           style={[styles.rogueImg, AppStyles.selfCenter]}
           onPress={goToDetail}>
-          <CachedImage
-            source={rogueImg(item.id)}
+          <FastImage
+            source={{uri: rogueImg(item.id)}}
             style={[styles.rogueImg, AppStyles.selfCenter]}
           />
         </TouchableRipple>
@@ -353,8 +353,8 @@ const MainScreen = ({navigation}: MainBottomTabScreenProps<'MainScreen'>) => {
                           style={[AppStyles.contentBlock, AppStyles.flex1]}
                           onPress={onPress}>
                           <>
-                            <CachedImage
-                              source={enemyImg(item.id)}
+                            <FastImage
+                              source={{uri: enemyImg(item.id)}}
                               style={[
                                 AppStyles.square100,
                                 AppStyles.selfCenter,
@@ -408,8 +408,10 @@ const MainScreen = ({navigation}: MainBottomTabScreenProps<'MainScreen'>) => {
                               ]}
                               onPress={onPress}>
                               <View style={AppStyles.square78}>
-                                <CachedImage
-                                  source={itemImg(findA.basicInfo.iconID)}
+                                <FastImage
+                                  source={{
+                                    uri: itemImg(findA.basicInfo.iconID),
+                                  }}
                                   style={AppStyles.square78}
                                 />
                                 <Image
@@ -419,10 +421,10 @@ const MainScreen = ({navigation}: MainBottomTabScreenProps<'MainScreen'>) => {
                                     AppStyles.absolute,
                                   ]}
                                 />
-                                <CachedImage
-                                  source={stageGirlImg(
-                                    findA.basicInfo.cards[0],
-                                  )}
+                                <FastImage
+                                  source={{
+                                    uri: stageGirlImg(findA.basicInfo.cards[0]),
+                                  }}
                                   style={[
                                     AppStyles.stageGirlBottomLeft,
                                     AppStyles.absolute,
