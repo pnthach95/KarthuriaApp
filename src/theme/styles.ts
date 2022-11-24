@@ -53,6 +53,9 @@ export default StyleSheet.create({
   grow: {
     flexGrow: 1,
   },
+  justifyCenter: {
+    justifyContent: 'center',
+  },
   listItem: {
     borderWidth: 1,
     flex: 1,

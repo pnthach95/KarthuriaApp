@@ -22,6 +22,7 @@ import AccessoriesScreen from 'screens/accessories';
 import AccessoryDetailScreen from 'screens/accessorydetail';
 import CharacterDetailScreen from 'screens/characterdetail';
 import CharactersScreen from 'screens/characters';
+import CustomFallback from 'screens/customfallback';
 import EnemiesScreen from 'screens/enemies';
 import EnemyDetailScreen from 'screens/enemydetail';
 import MemoirDetailScreen from 'screens/memoirdetail';
@@ -73,7 +74,7 @@ const Routes = () => {
     <NetworkProvider>
       <SafeAreaProvider>
         <PaperProvider theme={theme}>
-          <ErrorBoundary>
+          <ErrorBoundary FallbackComponent={CustomFallback}>
             <BottomSheetModalProvider>
               <NavigationContainer theme={theme}>
                 <Stack.Navigator

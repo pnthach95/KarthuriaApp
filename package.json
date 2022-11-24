@@ -1,6 +1,6 @@
 {
   "name": "karthuria",
-  "version": "1.9.0",
+  "version": "2.0.0",
   "private": true,
   "scripts": {
     "android": "react-native run-android",
@@ -44,6 +44,7 @@
     "react-native-paper": "^4.12.5",
     "react-native-reanimated": "^2.13.0",
     "react-native-responsive-dimensions": "^3.1.1",
+    "react-native-restart": "^0.0.24",
     "react-native-safe-area-context": "^4.4.1",
     "react-native-screens": "^3.18.2",
     "react-native-style-utilities": "^1.0.1",
