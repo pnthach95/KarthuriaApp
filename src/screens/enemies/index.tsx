@@ -1,6 +1,6 @@
 import {BottomSheetModal, BottomSheetScrollView} from '@gorhom/bottom-sheet';
 import API, {links} from 'api';
-import {enemyImg} from 'api/images';
+import {imgEnemy} from 'api/images';
 import {attribute} from 'assets';
 import ErrorView from 'components/errorview';
 import Kirin from 'components/kirin';
@@ -140,7 +140,7 @@ const Enemies = ({navigation}: RootStackScreenProps<'Enemies'>) => {
           <View style={AppStyles.center}>
             <View style={styles.frame}>
               <FastImage
-                source={{uri: enemyImg(basicInfo.icon)}}
+                source={{uri: imgEnemy(basicInfo.icon)}}
                 style={styles.frame}
               />
               <Image

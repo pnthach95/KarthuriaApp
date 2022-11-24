@@ -1,5 +1,5 @@
 import API, {links} from 'api';
-import {schoolIcon} from 'api/images';
+import {iconSchool} from 'api/images';
 import {charaBase, charaPortrait} from 'api/images';
 import BaseScreen from 'components/basescreen';
 import Separator from 'components/separator';
@@ -86,7 +86,7 @@ const CharacterDetailScreen = ({
                 </Paragraph>
               </View>
               <FastImage
-                source={{uri: schoolIcon(character.basicInfo.school_id)}}
+                source={{uri: iconSchool(character.basicInfo.school_id)}}
                 style={AppStyles.square40}
               />
             </View>

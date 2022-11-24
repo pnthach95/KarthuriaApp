@@ -1,5 +1,5 @@
 import API, {links} from 'api';
-import {enemyImg} from 'api/images';
+import {imgEnemy} from 'api/images';
 import {attribute} from 'assets';
 import BaseScreen from 'components/basescreen';
 import SkillDetail from 'components/skilldetail';
@@ -49,7 +49,7 @@ const EnemyDetailScreen = ({route}: RootStackScreenProps<'EnemyDetail'>) => {
           <View style={AppStyles.paddingVertical}>
             <View style={[AppStyles.square112, AppStyles.selfCenter]}>
               <FastImage
-                source={{uri: enemyImg(enemy.basicInfo.icon)}}
+                source={{uri: imgEnemy(enemy.basicInfo.icon)}}
                 style={[AppStyles.square112, AppStyles.selfCenter]}
               />
               <Image

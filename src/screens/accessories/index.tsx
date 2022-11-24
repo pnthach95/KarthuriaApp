@@ -1,5 +1,5 @@
 import API, {links} from 'api';
-import {itemImg, stageGirlImg} from 'api/images';
+import {imgItem, imgStageGirl} from 'api/images';
 import frame from 'assets/common/frame_accessory.png';
 import ErrorView from 'components/errorview';
 import Kirin from 'components/kirin';
@@ -64,7 +64,7 @@ const AccessoriesScreen = ({
           ]}>
           <View style={[AppStyles.flex1, AppStyles.center]}>
             <FastImage
-              source={{uri: itemImg(item.basicInfo.iconID)}}
+              source={{uri: imgItem(item.basicInfo.iconID)}}
               style={AppStyles.square78}
             />
             <Image
@@ -72,7 +72,7 @@ const AccessoriesScreen = ({
               style={[AppStyles.square78, AppStyles.absolute]}
             />
             <FastImage
-              source={{uri: stageGirlImg(item.basicInfo.cards[0])}}
+              source={{uri: imgStageGirl(item.basicInfo.cards[0])}}
               style={[AppStyles.stageGirlBottomLeft, AppStyles.absolute]}
             />
           </View>

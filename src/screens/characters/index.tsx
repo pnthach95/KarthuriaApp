@@ -1,5 +1,5 @@
 import API, {links} from 'api';
-import {charaterImg, schoolIcon} from 'api/images';
+import {iconSchool, imgCharater} from 'api/images';
 import ErrorView from 'components/errorview';
 import Kirin from 'components/kirin';
 import React, {useCallback, useEffect, useState} from 'react';
@@ -63,12 +63,12 @@ const CharactersScreen = ({navigation}: RootStackScreenProps<'Characters'>) => {
         <TouchableRipple onPress={goToDetail}>
           <View style={[AppStyles.center, styles.item]}>
             <FastImage
-              source={{uri: charaterImg(charaID)}}
+              source={{uri: imgCharater(charaID)}}
               style={styles.img}
             />
             <View style={AppStyles.row}>
               <FastImage
-                source={{uri: schoolIcon(school_id)}}
+                source={{uri: iconSchool(school_id)}}
                 style={[AppStyles.square20, styles.schoolIcon]}
               />
               <Text>{name_ruby.ja}</Text>

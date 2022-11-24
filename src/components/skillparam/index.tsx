@@ -1,4 +1,4 @@
-import {iconFieldEffect, skillIcon} from 'api/images';
+import {iconFieldEffect, iconSkill} from 'api/images';
 import Separator from 'components/separator';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
@@ -37,7 +37,7 @@ const SkillParam = ({skillParam}: Props) => {
           source={{
             uri:
               skillParam.type === 'normal'
-                ? skillIcon(skillParam.icon)
+                ? iconSkill(skillParam.icon)
                 : iconFieldEffect(skillParam.icon),
           }}
           style={[AppStyles.square40, AppStyles.marginRight]}

@@ -1,5 +1,5 @@
 import API, {links} from 'api';
-import {charaIcon, memoirBigImg, skillIcon} from 'api/images';
+import {iconChara, iconSkill, imgMemoirBig} from 'api/images';
 import {rarity} from 'assets';
 import costEquip from 'assets/common/cost_equip.png';
 import firstExecutableTurn from 'assets/common/first_executable_turn.png';
@@ -129,7 +129,7 @@ const MemoirDetailScreen = ({
           </Headline>
           <View style={AppStyles.bigImg}>
             <FastImage
-              source={{uri: memoirBigImg(memoir.basicInfo.cardID)}}
+              source={{uri: imgMemoirBig(memoir.basicInfo.cardID)}}
               style={[AppStyles.bigImg, styles.frameBorderRadius]}
             />
             <Image
@@ -157,7 +157,7 @@ const MemoirDetailScreen = ({
                         style={styles.charaIconContainer}>
                         <TouchableRipple onPress={onPress}>
                           <FastImage
-                            source={{uri: charaIcon(chara)}}
+                            source={{uri: iconChara(chara)}}
                             style={AppStyles.square40}
                           />
                         </TouchableRipple>
@@ -214,7 +214,7 @@ const MemoirDetailScreen = ({
           <Surface style={[AppStyles.shadow, styles.block]}>
             <View style={AppStyles.row}>
               <FastImage
-                source={{uri: skillIcon(memoir.skill.icon)}}
+                source={{uri: iconSkill(memoir.skill.icon)}}
                 style={[AppStyles.square40, AppStyles.marginRight]}
               />
               <View style={AppStyles.flex1}>
@@ -233,7 +233,7 @@ const MemoirDetailScreen = ({
               <Surface style={[AppStyles.shadow, styles.block]}>
                 <View style={AppStyles.row}>
                   <FastImage
-                    source={{uri: skillIcon(memoir.activeSkill.iconID)}}
+                    source={{uri: iconSkill(memoir.activeSkill.iconID)}}
                     style={[AppStyles.square40, AppStyles.marginRight]}
                   />
                   <View style={AppStyles.flex1}>

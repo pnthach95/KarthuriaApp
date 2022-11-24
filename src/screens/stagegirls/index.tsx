@@ -1,6 +1,6 @@
 import {BottomSheetFlatList, BottomSheetModal} from '@gorhom/bottom-sheet';
 import API, {links} from 'api';
-import {skillIcon, stageGirlImg} from 'api/images';
+import {iconSkill, imgStageGirl} from 'api/images';
 import {attackType, attribute, charaImgs, position, rarity} from 'assets';
 import frame from 'assets/common/frame_stage_girl.png';
 import ErrorView from 'components/errorview';
@@ -268,7 +268,7 @@ const StageGirlsScreen = ({
           <View style={AppStyles.center}>
             <View style={AppStyles.smallImg}>
               <FastImage
-                source={{uri: stageGirlImg(basicInfo.cardID)}}
+                source={{uri: imgStageGirl(basicInfo.cardID)}}
                 style={AppStyles.smallImg}
               />
               <Image
@@ -458,7 +458,7 @@ const StageGirlsScreen = ({
       setFilter(draft => {
         draft.skills[index].checked = !draft.skills[index].checked;
       });
-    const source = {uri: skillIcon(item.id)};
+    const source = {uri: iconSkill(item.id)};
     return (
       <TouchableRipple
         borderless

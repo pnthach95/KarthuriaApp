@@ -1,5 +1,5 @@
 import API, {links} from 'api';
-import {skillIcon, stageGirlBigImg} from 'api/images';
+import {iconSkill, imgStageGirlBig} from 'api/images';
 import {attackTypeText, attribute, position, rarity} from 'assets';
 import frame from 'assets/common/frame_thumbnail_dress.png';
 import BaseScreen from 'components/basescreen';
@@ -114,7 +114,7 @@ const StageGirlDetailScreen = ({
           )}
           <View style={AppStyles.bigImg}>
             <FastImage
-              source={{uri: stageGirlBigImg(dress.basicInfo.cardID || '0')}}
+              source={{uri: imgStageGirlBig(dress.basicInfo.cardID || '0')}}
               style={AppStyles.bigImg}
             />
             <Image
@@ -236,7 +236,7 @@ const StageGirlDetailScreen = ({
             <Surface style={[AppStyles.shadow, AppStyles.contentBlock]}>
               <View style={AppStyles.row}>
                 <FastImage
-                  source={{uri: skillIcon(dress.groupSkills.unitSkill.icon)}}
+                  source={{uri: iconSkill(dress.groupSkills.unitSkill.icon)}}
                   style={[AppStyles.square40, AppStyles.marginRight]}
                 />
                 <View style={AppStyles.flex1}>
@@ -279,7 +279,7 @@ const StageGirlDetailScreen = ({
             <Surface style={[AppStyles.shadow, AppStyles.contentBlock]}>
               <View style={AppStyles.row}>
                 <FastImage
-                  source={{uri: skillIcon(dress.groupSkills.finishACT.icon)}}
+                  source={{uri: iconSkill(dress.groupSkills.finishACT.icon)}}
                   style={[AppStyles.square40, AppStyles.marginRight]}
                 />
                 <View style={AppStyles.flex1}>

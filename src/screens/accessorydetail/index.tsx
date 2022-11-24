@@ -1,5 +1,5 @@
 import API, {links} from 'api';
-import {actIcon, itemImg, stageGirlImg} from 'api/images';
+import {iconAct, imgItem, imgStageGirl} from 'api/images';
 import frame from 'assets/common/frame_accessory.png';
 import sgFrame from 'assets/common/frame_stage_girl.png';
 import BaseScreen from 'components/basescreen';
@@ -67,7 +67,7 @@ const AccessoryDetailScreen = ({
             ]}>
             <View>
               <FastImage
-                source={{uri: itemImg(accessory.basicInfo.iconID)}}
+                source={{uri: imgItem(accessory.basicInfo.iconID)}}
                 style={AppStyles.square112}
               />
               <Image
@@ -75,7 +75,7 @@ const AccessoryDetailScreen = ({
                 style={[AppStyles.square112, AppStyles.absolute]}
               />
               <FastImage
-                source={{uri: actIcon(accessory.skillInfo.skillSlot)}}
+                source={{uri: iconAct(accessory.skillInfo.skillSlot)}}
                 style={[
                   AppStyles.square28,
                   AppStyles.right0,
@@ -96,7 +96,7 @@ const AccessoryDetailScreen = ({
                     onPress={goToStageGirlDetail}>
                     <View>
                       <FastImage
-                        source={{uri: stageGirlImg(card)}}
+                        source={{uri: imgStageGirl(card)}}
                         style={styles.stageGirl}
                       />
                       <Image

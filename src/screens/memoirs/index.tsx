@@ -1,6 +1,6 @@
 import {BottomSheetFlatList, BottomSheetModal} from '@gorhom/bottom-sheet';
 import API, {links} from 'api';
-import {memoirImg, skillIcon} from 'api/images';
+import {iconSkill, imgMemoir} from 'api/images';
 import {charaImgs, rarity} from 'assets';
 import cutin from 'assets/common/cutin.png';
 import frame from 'assets/common/frame_equip.png';
@@ -190,7 +190,7 @@ const MemoirsScreen = ({
         <View style={[AppStyles.listItem, {borderColor: colors.border}]}>
           <View style={[AppStyles.selfCenter, AppStyles.smallImg]}>
             <FastImage
-              source={{uri: memoirImg(item.basicInfo.cardID)}}
+              source={{uri: imgMemoir(item.basicInfo.cardID)}}
               style={[AppStyles.selfCenter, AppStyles.smallImg]}
             />
             <Image
@@ -209,7 +209,7 @@ const MemoirsScreen = ({
               style={AppStyles.rarityImg}
             />
             <FastImage
-              source={{uri: skillIcon(item.skill.icon)}}
+              source={{uri: iconSkill(item.skill.icon)}}
               style={styles.skillIcon}
             />
             {item.activeSkill === 1 && (
@@ -321,7 +321,7 @@ const MemoirsScreen = ({
           index === j ? {...v, checked: !v.checked} : v,
         ),
       });
-    const source = {uri: skillIcon(item.id)};
+    const source = {uri: iconSkill(item.id)};
     return (
       <TouchableRipple
         borderless

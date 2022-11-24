@@ -1,12 +1,12 @@
 import API, {links} from 'api';
 import GithubService from 'api/github';
 import {
-  defaultEventImg,
-  enemyImg,
-  eventImg,
-  itemImg,
-  rogueImg,
-  stageGirlImg,
+  imgDefaultEvent,
+  imgEnemy,
+  imgEvent,
+  imgItem,
+  imgRogue,
+  imgStageGirl,
 } from 'api/images';
 import frame from 'assets/common/frame_accessory.png';
 import icon from 'assets/common/icon.png';
@@ -57,7 +57,7 @@ const challengeRevueSeparator = () => <Separator width={10} />;
 
 const EventImage = ({img}: {img: string}) => {
   const [uri, setURI] = useState(img);
-  const onError = () => setURI(defaultEventImg);
+  const onError = () => setURI(imgDefaultEvent);
 
   return (
     <FastImage
@@ -197,7 +197,7 @@ const MainScreen = ({navigation}: MainBottomTabScreenProps<'MainScreen'>) => {
           style={[styles.rogueImg, AppStyles.selfCenter]}
           onPress={goToDetail}>
           <FastImage
-            source={{uri: rogueImg(item.id)}}
+            source={{uri: imgRogue(item.id)}}
             style={[styles.rogueImg, AppStyles.selfCenter]}
           />
         </TouchableRipple>
@@ -275,7 +275,7 @@ const MainScreen = ({navigation}: MainBottomTabScreenProps<'MainScreen'>) => {
                       <Surface
                         key={JSON.stringify(item)}
                         style={[AppStyles.contentBlock, AppStyles.shadow]}>
-                        <EventImage img={eventImg(item.id)} />
+                        <EventImage img={imgEvent(item.id)} />
                         <Separator />
                         <View style={[AppStyles.row, AppStyles.spaceBetween]}>
                           <Caption>{t('begin')}</Caption>
@@ -354,7 +354,7 @@ const MainScreen = ({navigation}: MainBottomTabScreenProps<'MainScreen'>) => {
                           onPress={onPress}>
                           <>
                             <FastImage
-                              source={{uri: enemyImg(item.id)}}
+                              source={{uri: imgEnemy(item.id)}}
                               style={[
                                 AppStyles.square100,
                                 AppStyles.selfCenter,
@@ -410,7 +410,7 @@ const MainScreen = ({navigation}: MainBottomTabScreenProps<'MainScreen'>) => {
                               <View style={AppStyles.square78}>
                                 <FastImage
                                   source={{
-                                    uri: itemImg(findA.basicInfo.iconID),
+                                    uri: imgItem(findA.basicInfo.iconID),
                                   }}
                                   style={AppStyles.square78}
                                 />
@@ -423,7 +423,7 @@ const MainScreen = ({navigation}: MainBottomTabScreenProps<'MainScreen'>) => {
                                 />
                                 <FastImage
                                   source={{
-                                    uri: stageGirlImg(findA.basicInfo.cards[0]),
+                                    uri: imgStageGirl(findA.basicInfo.cards[0]),
                                   }}
                                   style={[
                                     AppStyles.stageGirlBottomLeft,
