@@ -1,7 +1,6 @@
 import {BottomSheetModal, BottomSheetScrollView} from '@gorhom/bottom-sheet';
 import API, {links} from 'api';
-import {imgEnemy} from 'api/images';
-import {attribute} from 'assets';
+import {iconAttribute, imgEnemy} from 'api/images';
 import ErrorView from 'components/errorview';
 import Kirin from 'components/kirin';
 import CustomBackdrop from 'components/sheet/backdrop';
@@ -127,7 +126,7 @@ const Enemies = ({navigation}: RootStackScreenProps<'Enemies'>) => {
     const onPress = () => {
       navigation.navigate('EnemyDetail', {id: basicInfo.enemyID});
     };
-    const a = attribute(basicInfo.attribute);
+    const a = iconAttribute(basicInfo.attribute);
 
     return (
       <TouchableRipple style={AppStyles.flex1} onPress={onPress}>
@@ -144,7 +143,7 @@ const Enemies = ({navigation}: RootStackScreenProps<'Enemies'>) => {
                 style={styles.frame}
               />
               <Image
-                source={a}
+                source={{uri: a}}
                 style={[AppStyles.square20, AppStyles.absolute]}
               />
             </View>
@@ -220,7 +219,7 @@ const Enemies = ({navigation}: RootStackScreenProps<'Enemies'>) => {
                     ]}
                     onPress={onPress}>
                     <Image
-                      source={attribute(index + 1)}
+                      source={{uri: iconAttribute(index + 1)}}
                       style={AppStyles.squareW10}
                     />
                   </TouchableRipple>

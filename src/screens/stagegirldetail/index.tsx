@@ -1,6 +1,6 @@
 import API, {links} from 'api';
-import {iconSkill, imgStageGirlBig} from 'api/images';
-import {attackTypeText, attribute, position, rarity} from 'assets';
+import {iconAttribute, iconSkill, imgStageGirlBig} from 'api/images';
+import {attackTypeText, position, rarity} from 'assets';
 import frame from 'assets/common/frame_thumbnail_dress.png';
 import BaseScreen from 'components/basescreen';
 import Separator from 'components/separator';
@@ -122,7 +122,7 @@ const StageGirlDetailScreen = ({
               style={[AppStyles.bigImg, AppStyles.absolute]}
             />
             <Image
-              source={attribute(dress.base.attribute)}
+              source={{uri: iconAttribute(dress.base.attribute)}}
               style={[AppStyles.square40, AppStyles.right0, AppStyles.absolute]}
             />
             <Image

@@ -10,6 +10,9 @@ export const charaPortrait = (id: number): string =>
 export const iconAct = (id: number): string =>
   assets + `jp/res/ui/images/common/icon_act_${id}.png`;
 
+export const iconAttribute = (id: number): string =>
+  assets + `jp/res/ui/images/icon_colored/56x56_attribute${id}.png`;
+
 export const iconChara = (id: number): string =>
   assets + `jp/res/ui/images/filter_sort/icon_filter_character_${id}.png`;
 

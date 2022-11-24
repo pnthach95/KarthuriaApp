@@ -1,7 +1,7 @@
 import {BottomSheetFlatList, BottomSheetModal} from '@gorhom/bottom-sheet';
 import API, {links} from 'api';
-import {iconSkill, imgStageGirl} from 'api/images';
-import {attackType, attribute, charaImgs, position, rarity} from 'assets';
+import {iconAttribute, iconSkill, imgStageGirl} from 'api/images';
+import {attackType, charaImgs, position, rarity} from 'assets';
 import frame from 'assets/common/frame_stage_girl.png';
 import ErrorView from 'components/errorview';
 import Kirin from 'components/kirin';
@@ -10,13 +10,7 @@ import CustomBackground from 'components/sheet/background';
 import CustomHandle from 'components/sheet/handle';
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {
-  FlatList,
-  Image,
-  type ListRenderItem,
-  StyleSheet,
-  View,
-} from 'react-native';
+import {FlatList, Image, StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {
   Button,
@@ -31,6 +25,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import AppStyles, {borderRadius} from 'theme/styles';
 import {useImmer} from 'use-immer';
 import {characterToIndex} from 'utils';
+import type {ListRenderItem} from 'react-native';
 import type {MainBottomTabScreenProps} from 'typings/navigation';
 
 type TFilter = Record<
@@ -97,7 +92,7 @@ const StageGirlsScreen = ({
   /** Filter */
   const [filter, setFilter] = useImmer<TFilter>({
     characters: charaImgs.map(() => true),
-    elements: [true, true, true, true, true, true, true],
+    elements: [true, true, true, true, true, true, true, true, true],
     position: [true, true, true],
     attackType: [true, true],
     rarity: [true, true, true],
@@ -276,7 +271,7 @@ const StageGirlsScreen = ({
                 style={[AppStyles.smallImg, AppStyles.absolute]}
               />
               <Image
-                source={attribute(base.attribute)}
+                source={{uri: iconAttribute(base.attribute)}}
                 style={[AppStyles.square20, AppStyles.absolute]}
               />
               <Image
@@ -362,7 +357,10 @@ const StageGirlsScreen = ({
         borderless
         style={[AppStyles.center, AppStyles.elementImgContainer, bgColor]}
         onPress={onPress}>
-        <Image source={attribute(index + 1)} style={AppStyles.squareW10} />
+        <Image
+          source={{uri: iconAttribute(index + 1)}}
+          style={AppStyles.squareW10}
+        />
       </TouchableRipple>
     );
   };

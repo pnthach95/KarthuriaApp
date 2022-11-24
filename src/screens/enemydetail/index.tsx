@@ -1,6 +1,5 @@
 import API, {links} from 'api';
-import {imgEnemy} from 'api/images';
-import {attribute} from 'assets';
+import {iconAttribute, imgEnemy} from 'api/images';
 import BaseScreen from 'components/basescreen';
 import SkillDetail from 'components/skilldetail';
 import React, {useEffect, useState} from 'react';
@@ -53,7 +52,7 @@ const EnemyDetailScreen = ({route}: RootStackScreenProps<'EnemyDetail'>) => {
                 style={[AppStyles.square112, AppStyles.selfCenter]}
               />
               <Image
-                source={attribute(enemy.basicInfo.attribute)}
+                source={{uri: iconAttribute(enemy.basicInfo.attribute)}}
                 style={[AppStyles.square28, AppStyles.absolute]}
               />
             </View>
