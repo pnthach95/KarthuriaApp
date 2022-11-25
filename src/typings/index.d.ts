@@ -124,7 +124,7 @@ type TDress = {
   };
   stat: TDressStat;
   statRemake: TDressStat;
-  act: Record<`act${1 | 2 | 3}`, TAct>;
+  act: Record<`act${1 | 2 | 3}`, {skillNormal: TSkillNormal}>;
   skills: Record<string, TSkillObject>;
   entrySkill: null;
   remake: boolean;
@@ -153,8 +153,19 @@ type TSkillsOnFilter = Record<string, boolean>;
 type TSkillNames = Record<string, {[L in TLanguage]: string[]}>;
 
 type TAct = {
-  skillNormal: TSkillNormal;
-  skillChange: number | null;
+  normalSkill: TNormalSkill;
+  changeSkill: number | null;
+};
+
+type TNormalSkill = {
+  iconID: number;
+  cost: number;
+  name: TLanguageObject;
+  description: TLanguageObject;
+  attribute: number;
+  skillInfo: string;
+  skillCycle: string;
+  skillHitRate: Record<string, number>;
 };
 
 type TSkillObject = {
@@ -230,7 +241,7 @@ type TAccessory = {
   };
   skillInfo: {
     skill: {
-      normalSkill: TSkillNormal | null;
+      normalSkill: TNormalSkill | null;
       changeSkill: number;
     };
     skillSlot: number;

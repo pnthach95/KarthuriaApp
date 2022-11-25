@@ -12,6 +12,7 @@ import {useTranslation} from 'react-i18next';
 import {Image, StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {
+  Button,
   Caption,
   DataTable,
   Headline,
@@ -57,6 +58,7 @@ const StageGirlDetailScreen = ({
   const [loading, setLoading] = useState(true);
   const [dress, setDress] = useState<TDress | null>(null);
   const [character, setCharater] = useState<TChara | null>(null);
+  const [tabIndex, setTabIndex] = useState(0);
 
   useEffect(() => {
     const loadData = async () => {
@@ -95,6 +97,10 @@ const StageGirlDetailScreen = ({
     navigation.navigate('CharacterDetail', {
       id: character.basicInfo.charaID,
     });
+
+  const onPressTabStats = () => setTabIndex(0);
+  const onPressTabInfo = () => setTabIndex(1);
+  const onPressTabSkill = () => setTabIndex(2);
 
   return (
     <BaseScreen hasData={!!dress} loading={loading}>
@@ -162,139 +168,172 @@ const StageGirlDetailScreen = ({
               </View>
             </Surface>
           </View>
-          <View style={AppStyles.paddingVertical}>
-            <Subheading style={AppStyles.centerText}>{t('stats')}</Subheading>
-            <Surface style={[AppStyles.shadow, styles.infoBlock]}>
-              <DataTable>
-                <DataTable.Row>
-                  <DataTable.Cell>{t('power-score-total')}</DataTable.Cell>
-                  <DataTable.Cell numeric>{dress.stat.total}</DataTable.Cell>
-                </DataTable.Row>
-                <DataTable.Row>
-                  <DataTable.Cell>{t('hp')}</DataTable.Cell>
-                  <DataTable.Cell numeric>{dress.stat.hp}</DataTable.Cell>
-                </DataTable.Row>
-                <DataTable.Row>
-                  <DataTable.Cell>{t('act-power')}</DataTable.Cell>
-                  <DataTable.Cell numeric>{dress.stat.atk}</DataTable.Cell>
-                </DataTable.Row>
-                <DataTable.Row>
-                  <DataTable.Cell>{t('normal-defense')}</DataTable.Cell>
-                  <DataTable.Cell numeric>{dress.stat.pdef}</DataTable.Cell>
-                </DataTable.Row>
-                <DataTable.Row>
-                  <DataTable.Cell>{t('special-defense')}</DataTable.Cell>
-                  <DataTable.Cell numeric>{dress.stat.mdef}</DataTable.Cell>
-                </DataTable.Row>
-                <DataTable.Row>
-                  <DataTable.Cell>{t('agility')}</DataTable.Cell>
-                  <DataTable.Cell numeric>{dress.stat.agi}</DataTable.Cell>
-                </DataTable.Row>
-              </DataTable>
-            </Surface>
+          <View style={AppStyles.row}>
+            <Button
+              mode={tabIndex === 0 ? 'contained' : 'text'}
+              style={AppStyles.flex1}
+              uppercase={false}
+              onPress={onPressTabStats}>
+              <Text>{t('stats')}</Text>
+            </Button>
+            <Button
+              mode={tabIndex === 1 ? 'contained' : 'text'}
+              style={AppStyles.flex1}
+              uppercase={false}
+              onPress={onPressTabInfo}>
+              <Text>{t('info')}</Text>
+            </Button>
+            <Button
+              mode={tabIndex === 2 ? 'contained' : 'text'}
+              style={AppStyles.flex1}
+              uppercase={false}
+              onPress={onPressTabSkill}>
+              <Text>{t('act_skill')}</Text>
+            </Button>
           </View>
-          <View style={AppStyles.paddingVertical}>
-            <Subheading style={AppStyles.centerText}>{t('info')}</Subheading>
-            <Surface style={[AppStyles.shadow, AppStyles.contentBlock]}>
-              <Caption>{t('profile')}</Caption>
-              <Paragraph>
-                {dress.basicInfo.profile.en || dress.basicInfo.profile.ja}
-              </Paragraph>
-              <Separator />
-              <Caption>{t('message')}</Caption>
-              <Paragraph>
-                {dress.basicInfo.message.en || dress.basicInfo.message.ja}
-              </Paragraph>
-              <Separator />
-              <Caption>{t('description')}</Caption>
-              <Paragraph>
-                {dress.basicInfo.description.en ||
-                  dress.basicInfo.description.ja}
-              </Paragraph>
-            </Surface>
-          </View>
-          <View style={AppStyles.paddingVertical}>
-            <Subheading style={AppStyles.centerText}>
-              {t('basic-act')}
-            </Subheading>
-            {Object.values(dress.act).map((act, index) => {
-              return (
-                <SkillDetail key={`act${index}`} skill={act.skillNormal} />
-              );
-            })}
-          </View>
-          <View style={AppStyles.paddingVertical}>
-            <Subheading style={AppStyles.centerText}>
-              {t('climax-act')}
-            </Subheading>
-            <SkillDetail skill={dress.groupSkills.climaxACT.skillNormal} />
-          </View>
-          <View style={AppStyles.paddingVertical}>
-            <Subheading style={AppStyles.centerText}>
-              {t('unit-skill')}
-            </Subheading>
-            <Surface style={[AppStyles.shadow, AppStyles.contentBlock]}>
-              <View style={AppStyles.row}>
-                <FastImage
-                  source={{uri: iconSkill(dress.groupSkills.unitSkill.icon)}}
-                  style={[AppStyles.square40, AppStyles.marginRight]}
-                />
-                <View style={AppStyles.flex1}>
-                  <Paragraph>
-                    {dress.groupSkills.unitSkill.description.en ||
-                      dress.groupSkills.unitSkill.description.ja}
-                  </Paragraph>
-                </View>
+          {tabIndex === 0 && (
+            <View style={AppStyles.paddingVertical}>
+              <Surface style={[AppStyles.shadow, styles.infoBlock]}>
+                <DataTable>
+                  <DataTable.Row>
+                    <DataTable.Cell>{t('power-score-total')}</DataTable.Cell>
+                    <DataTable.Cell numeric>{dress.stat.total}</DataTable.Cell>
+                  </DataTable.Row>
+                  <DataTable.Row>
+                    <DataTable.Cell>{t('hp')}</DataTable.Cell>
+                    <DataTable.Cell numeric>{dress.stat.hp}</DataTable.Cell>
+                  </DataTable.Row>
+                  <DataTable.Row>
+                    <DataTable.Cell>{t('act-power')}</DataTable.Cell>
+                    <DataTable.Cell numeric>{dress.stat.atk}</DataTable.Cell>
+                  </DataTable.Row>
+                  <DataTable.Row>
+                    <DataTable.Cell>{t('normal-defense')}</DataTable.Cell>
+                    <DataTable.Cell numeric>{dress.stat.pdef}</DataTable.Cell>
+                  </DataTable.Row>
+                  <DataTable.Row>
+                    <DataTable.Cell>{t('special-defense')}</DataTable.Cell>
+                    <DataTable.Cell numeric>{dress.stat.mdef}</DataTable.Cell>
+                  </DataTable.Row>
+                  <DataTable.Row>
+                    <DataTable.Cell>{t('agility')}</DataTable.Cell>
+                    <DataTable.Cell numeric>{dress.stat.agi}</DataTable.Cell>
+                  </DataTable.Row>
+                </DataTable>
+              </Surface>
+            </View>
+          )}
+          {tabIndex === 1 && (
+            <View style={AppStyles.paddingVertical}>
+              <Surface style={[AppStyles.shadow, AppStyles.contentBlock]}>
+                <Caption>{t('profile')}</Caption>
+                <Paragraph>
+                  {dress.basicInfo.profile.en || dress.basicInfo.profile.ja}
+                </Paragraph>
+                <Separator />
+                <Caption>{t('message')}</Caption>
+                <Paragraph>
+                  {dress.basicInfo.message.en || dress.basicInfo.message.ja}
+                </Paragraph>
+                <Separator />
+                <Caption>{t('description')}</Caption>
+                <Paragraph>
+                  {dress.basicInfo.description.en ||
+                    dress.basicInfo.description.ja}
+                </Paragraph>
+              </Surface>
+            </View>
+          )}
+          {tabIndex === 2 && (
+            <>
+              <View style={AppStyles.paddingVertical}>
+                <Subheading style={AppStyles.centerText}>
+                  {t('basic-act')}
+                </Subheading>
+                {Object.values(dress.act).map((act, index) => {
+                  return (
+                    <SkillDetail key={`act${index}`} skill={act.skillNormal} />
+                  );
+                })}
               </View>
-            </Surface>
-          </View>
-          <View style={AppStyles.paddingVertical}>
-            <Subheading style={AppStyles.centerText}>
-              {t('auto-skills')}
-            </Subheading>
-            {Object.values(dress.skills).map((autoSkill, index) => {
-              return (
-                <Surface
-                  key={`autoSkill${index}`}
-                  style={[AppStyles.shadow, AppStyles.contentBlock]}>
-                  <Paragraph>
-                    {autoSkill.type.en || autoSkill.type.ja}
-                  </Paragraph>
-                  {autoSkill.params.map((as, idx) => {
-                    return (
-                      <SkillParam
-                        key={`sgd_skill_param_${idx}`}
-                        skillParam={as}
-                      />
-                    );
-                  })}
+              <View style={AppStyles.paddingVertical}>
+                <Subheading style={AppStyles.centerText}>
+                  {t('climax-act')}
+                </Subheading>
+                <SkillDetail skill={dress.groupSkills.climaxACT.skillNormal} />
+              </View>
+              <View style={AppStyles.paddingVertical}>
+                <Subheading style={AppStyles.centerText}>
+                  {t('unit-skill')}
+                </Subheading>
+                <Surface style={[AppStyles.shadow, AppStyles.contentBlock]}>
+                  <View style={AppStyles.row}>
+                    <FastImage
+                      source={{
+                        uri: iconSkill(dress.groupSkills.unitSkill.icon),
+                      }}
+                      style={[AppStyles.square40, AppStyles.marginRight]}
+                    />
+                    <View style={AppStyles.flex1}>
+                      <Paragraph>
+                        {dress.groupSkills.unitSkill.description.en ||
+                          dress.groupSkills.unitSkill.description.ja}
+                      </Paragraph>
+                    </View>
+                  </View>
                 </Surface>
-              );
-            })}
-          </View>
-          <View style={AppStyles.paddingVertical}>
-            <Subheading style={AppStyles.centerText}>
-              {t('finishing-act')}
-            </Subheading>
-            <Surface style={[AppStyles.shadow, AppStyles.contentBlock]}>
-              <View style={AppStyles.row}>
-                <FastImage
-                  source={{uri: iconSkill(dress.groupSkills.finishACT.icon)}}
-                  style={[AppStyles.square40, AppStyles.marginRight]}
-                />
-                <View style={AppStyles.flex1}>
-                  <Text>
-                    {dress.groupSkills.finishACT.name.en ||
-                      dress.groupSkills.finishACT.name.ja}
-                  </Text>
-                  <Caption>
-                    {dress.groupSkills.finishACT.description.en ||
-                      dress.groupSkills.finishACT.description.ja}
-                  </Caption>
-                </View>
               </View>
-            </Surface>
-          </View>
+              <View style={AppStyles.paddingVertical}>
+                <Subheading style={AppStyles.centerText}>
+                  {t('auto-skills')}
+                </Subheading>
+                {Object.values(dress.skills).map((autoSkill, index) => {
+                  return (
+                    <Surface
+                      key={`autoSkill${index}`}
+                      style={[AppStyles.shadow, AppStyles.contentBlock]}>
+                      <Paragraph>
+                        {autoSkill.type.en || autoSkill.type.ja}
+                      </Paragraph>
+                      {autoSkill.params.map((as, idx) => {
+                        return (
+                          <SkillParam
+                            key={`sgd_skill_param_${idx}`}
+                            skillParam={as}
+                          />
+                        );
+                      })}
+                    </Surface>
+                  );
+                })}
+              </View>
+              <View style={AppStyles.paddingVertical}>
+                <Subheading style={AppStyles.centerText}>
+                  {t('finishing-act')}
+                </Subheading>
+                <Surface style={[AppStyles.shadow, AppStyles.contentBlock]}>
+                  <View style={AppStyles.row}>
+                    <FastImage
+                      source={{
+                        uri: iconSkill(dress.groupSkills.finishACT.icon),
+                      }}
+                      style={[AppStyles.square40, AppStyles.marginRight]}
+                    />
+                    <View style={AppStyles.flex1}>
+                      <Text>
+                        {dress.groupSkills.finishACT.name.en ||
+                          dress.groupSkills.finishACT.name.ja}
+                      </Text>
+                      <Caption>
+                        {dress.groupSkills.finishACT.description.en ||
+                          dress.groupSkills.finishACT.description.ja}
+                      </Caption>
+                    </View>
+                  </View>
+                </Surface>
+              </View>
+            </>
+          )}
         </View>
       )}
     </BaseScreen>
