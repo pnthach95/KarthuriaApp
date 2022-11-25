@@ -5,6 +5,7 @@ import {attackType, charaImgs, position, rarity} from 'assets';
 import frame from 'assets/common/frame_stage_girl.png';
 import ErrorView from 'components/errorview';
 import Kirin from 'components/kirin';
+import Separator from 'components/separator';
 import CustomBackdrop from 'components/sheet/backdrop';
 import CustomBackground from 'components/sheet/background';
 import CustomHandle from 'components/sheet/handle';
@@ -22,7 +23,7 @@ import {
 } from 'react-native-paper';
 import {responsiveWidth} from 'react-native-responsive-dimensions';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import AppStyles, {borderRadius} from 'theme/styles';
+import AppStyles, {borderRadius, padding} from 'theme/styles';
 import {useImmer} from 'use-immer';
 import {characterToIndex} from 'utils';
 import type {ListRenderItem} from 'react-native';
@@ -60,6 +61,9 @@ const styles = StyleSheet.create({
     height: 40 / 3,
     top: 20,
     width: 20,
+  },
+  sheetItem: {
+    width: (responsiveWidth(100) - 2 * padding) / 7,
   },
 });
 
@@ -329,12 +333,14 @@ const StageGirlsScreen = ({
     };
 
     return (
-      <TouchableRipple
-        borderless
-        style={[AppStyles.charaImgContainer, bgColor]}
-        onPress={onPress}>
-        <Image source={charaImgs[index]} style={AppStyles.squareW12} />
-      </TouchableRipple>
+      <View style={styles.sheetItem}>
+        <TouchableRipple
+          borderless
+          style={[AppStyles.center, AppStyles.charaImgContainer, bgColor]}
+          onPress={onPress}>
+          <Image source={charaImgs[index]} style={AppStyles.squareW12} />
+        </TouchableRipple>
+      </View>
     );
   };
 
@@ -353,15 +359,17 @@ const StageGirlsScreen = ({
     };
 
     return (
-      <TouchableRipple
-        borderless
-        style={[AppStyles.center, AppStyles.elementImgContainer, bgColor]}
-        onPress={onPress}>
-        <Image
-          source={{uri: iconAttribute(index + 1)}}
-          style={AppStyles.squareW10}
-        />
-      </TouchableRipple>
+      <View style={styles.sheetItem}>
+        <TouchableRipple
+          borderless
+          style={[AppStyles.center, AppStyles.elementImgContainer, bgColor]}
+          onPress={onPress}>
+          <Image
+            source={{uri: iconAttribute(index + 1)}}
+            style={AppStyles.squareW10}
+          />
+        </TouchableRipple>
+      </View>
     );
   };
 
@@ -518,8 +526,8 @@ const StageGirlsScreen = ({
                   </Button>
                 </View>
                 <BottomSheetFlatList
-                  columnWrapperStyle={AppStyles.spaceBetween}
                   data={filter.characters}
+                  ItemSeparatorComponent={Separator}
                   keyExtractor={charaKeyExtractor}
                   numColumns={7}
                   renderItem={charaRenderItem}
@@ -531,8 +539,8 @@ const StageGirlsScreen = ({
               <>
                 <Caption>{t('elements')}</Caption>
                 <BottomSheetFlatList
-                  columnWrapperStyle={AppStyles.spaceBetween}
                   data={filter.elements}
+                  ItemSeparatorComponent={Separator}
                   keyExtractor={elementKeyExtractor}
                   numColumns={7}
                   renderItem={elementRenderItem}
@@ -632,7 +640,5 @@ const StageGirlsScreen = ({
 
   return <ErrorView />;
 };
-
-StageGirlsScreen.whyDidYouRender = true;
 
 export default StageGirlsScreen;

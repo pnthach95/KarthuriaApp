@@ -44,7 +44,7 @@ const SkillParam = ({skillParam}: Props) => {
         />
         <View style={AppStyles.flex1}>
           <Paragraph>
-            {skillParam.description.en || skillParam.description.ja}
+            {skillParam.description?.en || skillParam.description?.ja}
             {skillParam.descriptionExtra && (
               <Paragraph style={styles.extra}>
                 {/* eslint-disable-next-line react-native/no-raw-text */}

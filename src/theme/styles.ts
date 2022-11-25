@@ -26,7 +26,8 @@ export default StyleSheet.create({
   },
   charaImgContainer: {
     borderRadius: responsiveWidth(6),
-    marginBottom: padding / 2,
+    height: responsiveWidth(12),
+    width: responsiveWidth(12),
   },
   columnWrapper: {
     justifyContent: 'center',

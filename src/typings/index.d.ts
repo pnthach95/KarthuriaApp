@@ -316,7 +316,7 @@ type TSkillParam = {
   duration: TLanguageObject | null;
   accuracy?: number;
   target: TLanguageObject;
-  description: TLanguageObject;
+  description: TLanguageObject | null;
   descriptionExtra: TLanguageObject | null;
 };
 
