@@ -5958,10 +5958,6 @@ react-native-mmkv-storage@^0.8.0:
   resolved "https://registry.yarnpkg.com/react-native-mmkv-storage/-/react-native-mmkv-storage-0.8.0.tgz#2ece5f441a6a818224a85315c68e105e0d6446b5"
   integrity sha512-L782Le5IuDYlDLGXF/qimbnzvkbYsSmV5PiDleo1DSS8Kr8Q31UK8YWtUICrDGQ9Fm7Xx4PxP9ffe2XzGeWaHQ==
 
-react-native-navigation-bar-color@MoOx/react-native-navigation-bar-color#patch-1:
-  version "2.0.1"
-  resolved "https://codeload.github.com/MoOx/react-native-navigation-bar-color/tar.gz/6cca5e47f79112dbc410de3eb8b154d992b64dd3"
-
 react-native-offline@^6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/react-native-offline/-/react-native-offline-6.0.0.tgz#d28f747117903c232f58055bb55d21decbe612a9"

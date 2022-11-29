@@ -39,7 +39,6 @@
     "react-native-image-viewing": "^0.2.2",
     "react-native-localize": "^2.2.4",
     "react-native-mmkv-storage": "^0.8.0",
-    "react-native-navigation-bar-color": "MoOx/react-native-navigation-bar-color#patch-1",
     "react-native-offline": "^6.0.0",
     "react-native-paper": "^4.12.5",
     "react-native-reanimated": "^2.13.0",

@@ -3,7 +3,6 @@ import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import {setRootViewBackgroundColor} from '@pnthach95/react-native-root-view-background';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import {colord} from 'colord';
 import BlurStatusBar from 'components/blurstatusbar';
 import Kirin from 'components/kirin';
 import dayjs from 'dayjs';
@@ -14,7 +13,6 @@ import React, {useEffect} from 'react';
 import {useTranslation} from 'react-i18next';
 import RNBootSplash from 'react-native-bootsplash';
 import ErrorBoundary from 'react-native-error-boundary';
-import NavigationBarColor from 'react-native-navigation-bar-color';
 import {NetworkProvider} from 'react-native-offline';
 import {Provider as PaperProvider} from 'react-native-paper';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
@@ -45,9 +43,6 @@ const Routes = () => {
   const options = useStore(s => s.options);
   const language = useStore(s => s.language);
   const theme = options.isDark ? Dark : Light;
-  const statusBarColor = colord(
-    options.isDark ? Dark.colors.card : Light.colors.card,
-  );
 
   useEffect(() => {
     const getData = async () => {
@@ -67,7 +62,6 @@ const Routes = () => {
     setRootViewBackgroundColor(
       options.isDark ? Dark.colors.background : Light.colors.background,
     );
-    NavigationBarColor(statusBarColor.toHex(), !options.isDark, true);
   }, [options.isDark]);
 
   return (
