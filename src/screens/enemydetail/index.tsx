@@ -1,7 +1,7 @@
 import API, {links} from 'api';
 import {iconAttribute, imgEnemy} from 'api/images';
 import BaseScreen from 'components/basescreen';
-import SkillDetail from 'components/skilldetail';
+import NormalSkill from 'components/normalskill';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Image, View} from 'react-native';
@@ -25,9 +25,9 @@ const EnemyDetailScreen = ({route}: RootStackScreenProps<'EnemyDetail'>) => {
     const loadData = async () => {
       try {
         const {id} = route.params;
-        const gotData = await API.get<TEnemy>(links.ENEMY + `${id}.json`);
-        if (gotData.ok && gotData.data) {
-          setEnemy(gotData.data);
+        const response = await API.get<TEnemy>(links.ENEMY + `${id}.json`);
+        if (response.ok && response.data) {
+          setEnemy(response.data);
         }
       } catch (error) {
         //
@@ -72,7 +72,7 @@ const EnemyDetailScreen = ({route}: RootStackScreenProps<'EnemyDetail'>) => {
               <Subheading style={AppStyles.centerText}>{t('skill')}</Subheading>
               {Object.keys(enemy.skills).map(k => {
                 const skill = enemy.skills[k];
-                return <SkillDetail key={k} skill={skill.skillNormal} />;
+                return <NormalSkill key={k} skill={skill.normalSkill} />;
               })}
             </View>
           </View>

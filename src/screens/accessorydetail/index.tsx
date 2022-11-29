@@ -3,7 +3,7 @@ import {iconAct, imgItem, imgStageGirl} from 'api/images';
 import frame from 'assets/common/frame_accessory.png';
 import sgFrame from 'assets/common/frame_stage_girl.png';
 import BaseScreen from 'components/basescreen';
-import SkillDetail from 'components/skilldetail';
+import NormalSkill from 'components/normalskill';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Image, StyleSheet, View} from 'react-native';
@@ -37,11 +37,11 @@ const AccessoryDetailScreen = ({
     const loadData = async () => {
       try {
         const {id} = route.params;
-        const gotData = await API.get<TAccessory>(
+        const response = await API.get<TAccessory>(
           links.ACCESSORY + `${id}.json`,
         );
-        if (gotData.ok && gotData.data) {
-          setAccessory(gotData.data);
+        if (response.ok && response.data) {
+          setAccessory(response.data);
         }
       } catch (error) {
         //
@@ -113,7 +113,7 @@ const AccessoryDetailScreen = ({
             <View style={AppStyles.paddingVertical}>
               <Subheading style={AppStyles.centerText}>{t('skill')}</Subheading>
               {accessory.skillInfo.skill.normalSkill && (
-                <SkillDetail skill={accessory.skillInfo.skill.normalSkill} />
+                <NormalSkill skill={accessory.skillInfo.skill.normalSkill} />
               )}
             </View>
             <View style={AppStyles.paddingVertical}>
