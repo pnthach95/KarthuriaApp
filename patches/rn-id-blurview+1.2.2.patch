@@ -1,0 +1,15 @@
+diff --git a/node_modules/rn-id-blurview/android/src/main/java/com/blurview/BlurViewModule.java b/node_modules/rn-id-blurview/android/src/main/java/com/blurview/BlurViewModule.java
+index ec5fc08..ef3a6f5 100644
+--- a/node_modules/rn-id-blurview/android/src/main/java/com/blurview/BlurViewModule.java
++++ b/node_modules/rn-id-blurview/android/src/main/java/com/blurview/BlurViewModule.java
+@@ -36,9 +36,7 @@ class BlurViewModule extends ViewGroupManager<BlurView> {
+         ViewGroup rootView = decorView.findViewById(android.R.id.content);
+         Drawable windowBackground = decorView.getBackground();
+ 
+-        BlurAlgorithm blurAlgorithm = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S
+-                ? new RenderEffectBlur()
+-                : new RenderScriptBlur(ctx);
++        BlurAlgorithm blurAlgorithm = new RenderScriptBlur(ctx);
+ 
+         blurView.setupWith(rootView, blurAlgorithm)
+                 .setFrameClearDrawable(windowBackground)
