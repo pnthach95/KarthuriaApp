@@ -2,13 +2,14 @@ import {website} from 'api';
 import {links} from 'api/github';
 import webicon from 'assets/common/icon.png';
 import Separator from 'components/separator';
-import React from 'react';
+import React, {useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Image, Linking, ScrollView, StyleSheet, View} from 'react-native';
 import {getVersion} from 'react-native-device-info';
 import {
   Caption,
   Colors,
+  Menu,
   Paragraph,
   Switch,
   Text,
@@ -17,7 +18,7 @@ import {
 } from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import useStore, {onSaveOptions} from 'store';
+import useStore, {onSaveOptions, setLanguage} from 'store';
 import AppStyles, {padding} from 'theme/styles';
 import type {MainBottomTabScreenProps} from 'typings/navigation';
 
@@ -30,6 +31,8 @@ const MoreScreen = ({navigation}: MainBottomTabScreenProps<'MoreScreen'>) => {
   const insets = useSafeAreaInsets();
   const theme = useTheme();
   const options = useStore(s => s.options);
+  const language = useStore(s => s.language);
+  const [languageMenuVisible, setLanguageMenuVisible] = useState(false);
   const top = {paddingTop: insets.top};
 
   /** Toggle dark theme */
@@ -39,6 +42,16 @@ const MoreScreen = ({navigation}: MainBottomTabScreenProps<'MoreScreen'>) => {
       isDark: !options.isDark,
     };
     onSaveOptions(data);
+  };
+  const openLanguage = () => setLanguageMenuVisible(true);
+  const closeLanguageMenu = () => setLanguageMenuVisible(false);
+  const setLanguageEN = () => {
+    setLanguage('en');
+    closeLanguageMenu();
+  };
+  const setLanguageVI = () => {
+    setLanguage('vi');
+    closeLanguageMenu();
   };
 
   const goToCharacters = () => navigation.navigate('Characters');
@@ -61,6 +74,18 @@ const MoreScreen = ({navigation}: MainBottomTabScreenProps<'MoreScreen'>) => {
             value={options.isDark}
             onValueChange={themeToggle}
           />
+        </View>
+      </TouchableRipple>
+      <TouchableRipple onPress={openLanguage}>
+        <View style={[styles.row, AppStyles.spaceBetween]}>
+          <Text>{t('language')}</Text>
+          <Menu
+            anchor={<Text>{t(language)}</Text>}
+            visible={languageMenuVisible}
+            onDismiss={closeLanguageMenu}>
+            <Menu.Item title={t('en')} onPress={setLanguageEN} />
+            <Menu.Item title={t('vi')} onPress={setLanguageVI} />
+          </Menu>
         </View>
       </TouchableRipple>
       <View style={[styles.group, AppStyles.rowSpaceBetween]}>

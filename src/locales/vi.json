@@ -37,6 +37,7 @@
   "duration": "Độ dài: ",
   "elements": "Các yếu tố",
   "else": "Khác",
+  "en": "English",
   "end": "Kết thúc",
   "end-in": "Kết thúc trong",
   "enemies": "Kẻ thù",
@@ -49,6 +50,7 @@
   "introduction": "Giới thiệu",
   "japanese": "Nhật",
   "karthuria-website": "Trang web Karthuria",
+  "language": "Ngôn ngữ",
   "liked-food": "Đồ ăn ưa thích",
   "likes": "Thích",
   "max-stats": "Chỉ số tối đa",
@@ -86,6 +88,7 @@
   "unit-skill": "Kỹ năng đơn vị",
   "usage-limit": "Giới hạn sử dụng",
   "version": "Phiên bản {{version}}",
+  "vi": "Tiếng Việt",
   "voice-actor": "Diễn viên lồng tiếng",
   "worldwide": "Toàn cầu"
 }

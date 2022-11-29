@@ -37,6 +37,7 @@
   "duration": "Duration: ",
   "elements": "Elements",
   "else": "Else",
+  "en": "English",
   "end": "End",
   "end-in": "End in",
   "enemies": "Enemies",
@@ -49,6 +50,7 @@
   "introduction": "Introduction",
   "japanese": "Japanese",
   "karthuria-website": "Karthuria website",
+  "language": "Language",
   "liked-food": "Liked Food",
   "likes": "Likes",
   "max-stats": "Max Stats",
@@ -86,6 +88,7 @@
   "unit-skill": "Unit Skill",
   "usage-limit": "Usage Limit ",
   "version": "Version {{version}}",
+  "vi": "Tiếng Việt",
   "voice-actor": "Voice Actor",
   "worldwide": "Worldwide"
 }
