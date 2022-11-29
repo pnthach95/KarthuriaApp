@@ -317,7 +317,7 @@ PODS:
   - react-native-mmkv-storage (0.8.0):
     - MMKV (= 1.2.13)
     - React-Core
-  - react-native-netinfo (9.3.6):
+  - react-native-netinfo (9.3.7):
     - React-Core
   - react-native-restart (0.0.24):
     - React-Core
@@ -697,7 +697,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 60769e5a0a6d4b32294a2456077f59d0266f9a8b
   React-logger: 1623c216abaa88974afce404dc8f479406bbc3a0
   react-native-mmkv-storage: 8ba3c0216a6df283ece11205b442a3e435aec4e5
-  react-native-netinfo: f80db8cac2151405633324cb645c60af098ee461
+  react-native-netinfo: 2517ad504b3d303e90d7a431b0fcaef76d207983
   react-native-restart: 45c8dca02491980f2958595333cbccd6877cb57e
   react-native-root-view-background: 330e5bc390ac6abef52ecdafc4d54a6304a882f1
   react-native-safe-area-context: 99b24a0c5acd0d5dcac2b1a7f18c49ea317be99a
