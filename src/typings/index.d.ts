@@ -206,15 +206,19 @@ type TEquip = {
   skill: TSkillObject;
   activeSkill:
     | {
-        iconID: number;
+        icon: number;
         cost: number[];
         attribute: number;
-        info: TLanguageObject;
         execution: {
+          executeTiming: {
+            description: TLanguageObject;
+            id: number;
+          };
           executeLimitCounts: number[];
           firstExecutableTurns: number[];
           recastTurns: number[];
         };
+        params: TSkillParam[];
       }
     | 0;
 };
@@ -325,7 +329,7 @@ type TSkillParam = {
   type: TSkillType;
   hits: number | null;
   duration: TLanguageObject | null;
-  accuracy?: number;
+  accuracy?: number | null;
   target: TLanguageObject;
   description: TLanguageObject | null;
   descriptionExtra: TLanguageObject | null;

@@ -1,11 +1,13 @@
 import API, {links} from 'api';
-import {iconChara, iconSkill, imgMemoirBig} from 'api/images';
+import {iconChara, imgMemoirBig} from 'api/images';
 import {rarity} from 'assets';
 import costEquip from 'assets/common/cost_equip.png';
 import firstExecutableTurn from 'assets/common/first_executable_turn.png';
 import frame from 'assets/common/frame_thumbnail_equip.png';
 import recastTurn from 'assets/common/recast_turn.png';
 import BaseScreen from 'components/basescreen';
+import Separator from 'components/separator';
+import SkillParam from 'components/skillparam';
 import dayjs from 'dayjs';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
@@ -27,6 +29,7 @@ import AppStyles, {borderRadius, padding} from 'theme/styles';
 import type {ImageProps} from 'react-native';
 import type {RootStackScreenProps} from 'typings/navigation';
 
+const RARITY_HEIGHT = 216 / 17;
 const costContainerBG = '#2B2B2B';
 const styles = StyleSheet.create({
   alignCenter: {
@@ -70,10 +73,8 @@ const styles = StyleSheet.create({
     borderRadius,
     marginVertical: padding,
   },
-  underline: {
-    borderBottomWidth: 1,
-    marginBottom: 5,
-    paddingBottom: 5,
+  wrap: {
+    flexWrap: 'wrap',
   },
 });
 
@@ -85,7 +86,10 @@ const MemoirDetailScreen = ({
   const {colors} = useTheme();
   const [loading, setLoading] = useState(true);
   const [memoir, setMemoir] = useState<TEquip | null>(null);
-  const [raritySize, setRaritySize] = useState({height: 28, width: 140});
+  const [raritySize, setRaritySize] = useState({
+    height: RARITY_HEIGHT,
+    width: (140 * RARITY_HEIGHT) / 28,
+  });
   const borderBottomColor = {
     borderBottomColor: colors.text,
   };
@@ -93,11 +97,11 @@ const MemoirDetailScreen = ({
   useEffect(() => {
     const loadData = async () => {
       try {
-        const gotData = await API.get<TEquip>(
+        const response = await API.get<TEquip>(
           links.EQUIP + route.params.id + '.json',
         );
-        if (gotData.ok && gotData.data) {
-          setMemoir(gotData.data);
+        if (response.ok && response.data) {
+          setMemoir(response.data);
         }
       } catch (error) {
         //
@@ -110,8 +114,10 @@ const MemoirDetailScreen = ({
 
   const onLoad: ImageProps['onLoad'] = e =>
     setRaritySize({
-      height: e.nativeEvent.source.height * 0.2,
-      width: e.nativeEvent.source.width * 0.2,
+      height: RARITY_HEIGHT,
+      width:
+        (e.nativeEvent.source.width * RARITY_HEIGHT) /
+        e.nativeEvent.source.height,
     });
 
   const releasedJA = memoir && dayjs(memoir.basicInfo.released.ja * 1000);
@@ -212,18 +218,12 @@ const MemoirDetailScreen = ({
             {t('auto-skills')}
           </Subheading>
           <Surface style={[AppStyles.shadow, styles.block]}>
-            <View style={AppStyles.row}>
-              <FastImage
-                source={{uri: iconSkill(memoir.skill.icon)}}
-                style={[AppStyles.square40, AppStyles.marginRight]}
-              />
-              <View style={AppStyles.flex1}>
-                <Paragraph>
-                  {memoir.skill.params[0].description.en ||
-                    memoir.skill.params[0].description.ja}
-                </Paragraph>
-              </View>
-            </View>
+            <Paragraph>
+              {memoir.skill.type.en || memoir.skill.type.ja}
+            </Paragraph>
+            {memoir.skill.params.map((p, idx) => {
+              return <SkillParam key={`skill_${idx}`} skillParam={p} />;
+            })}
           </Surface>
           {memoir.activeSkill !== 0 && (
             <>
@@ -231,99 +231,45 @@ const MemoirDetailScreen = ({
                 {t('cut-in-skill')}
               </Subheading>
               <Surface style={[AppStyles.shadow, styles.block]}>
-                <View style={AppStyles.row}>
-                  <FastImage
-                    source={{uri: iconSkill(memoir.activeSkill.iconID)}}
-                    style={[AppStyles.square40, AppStyles.marginRight]}
-                  />
-                  <View style={AppStyles.flex1}>
-                    <View
-                      style={[
-                        AppStyles.rowSpaceBetween,
-                        styles.underline,
-                        borderBottomColor,
-                      ]}>
-                      <View style={[AppStyles.row, styles.alignCenter]}>
-                        <View style={styles.costContainer}>
-                          <Image source={costEquip} style={styles.cost} />
-                        </View>
-                        <Text>
-                          {
-                            memoir.activeSkill.cost[
-                              memoir.activeSkill.cost.length - 2
-                            ]
-                          }
-                          /
-                          {
-                            memoir.activeSkill.cost[
-                              memoir.activeSkill.cost.length - 1
-                            ]
-                          }
-                        </Text>
-                      </View>
-                      <View style={[AppStyles.row, styles.alignCenter]}>
-                        <Image
-                          source={firstExecutableTurn}
-                          style={styles.icon16}
-                        />
-                        <Text>
-                          {
-                            memoir.activeSkill.execution.firstExecutableTurns[
-                              memoir.activeSkill.execution.firstExecutableTurns
-                                .length - 2
-                            ]
-                          }
-                          /
-                          {
-                            memoir.activeSkill.execution.firstExecutableTurns[
-                              memoir.activeSkill.execution.firstExecutableTurns
-                                .length - 1
-                            ]
-                          }
-                        </Text>
-                      </View>
-                      <View style={[AppStyles.row, styles.alignCenter]}>
-                        <Image source={recastTurn} style={styles.icon16} />
-                        <Text>
-                          {
-                            memoir.activeSkill.execution.recastTurns[
-                              memoir.activeSkill.execution.recastTurns.length -
-                                2
-                            ]
-                          }
-                          /
-                          {
-                            memoir.activeSkill.execution.recastTurns[
-                              memoir.activeSkill.execution.recastTurns.length -
-                                1
-                            ]
-                          }
-                        </Text>
-                      </View>
-                      <View>
-                        <Text>
-                          {t('usage-limit')}
-                          {
-                            memoir.activeSkill.execution.executeLimitCounts[
-                              memoir.activeSkill.execution.executeLimitCounts
-                                .length - 2
-                            ]
-                          }
-                          /
-                          {
-                            memoir.activeSkill.execution.executeLimitCounts[
-                              memoir.activeSkill.execution.executeLimitCounts
-                                .length - 1
-                            ]
-                          }
-                        </Text>
-                      </View>
+                <View
+                  style={[
+                    AppStyles.rowSpaceBetween,
+                    styles.wrap,
+                    borderBottomColor,
+                  ]}>
+                  <View style={[AppStyles.row, styles.alignCenter]}>
+                    <View style={styles.costContainer}>
+                      <Image source={costEquip} style={styles.cost} />
                     </View>
-                    <Paragraph>
-                      {memoir.activeSkill.info.en || memoir.activeSkill.info.ja}
-                    </Paragraph>
+                    <Text>{memoir.activeSkill.cost.join('/')}</Text>
                   </View>
+                  <Separator width={15} />
+                  <View style={[AppStyles.row, styles.alignCenter]}>
+                    <Image source={firstExecutableTurn} style={styles.icon16} />
+                    <Text>
+                      {memoir.activeSkill.execution.firstExecutableTurns.join(
+                        '/',
+                      )}
+                    </Text>
+                  </View>
+                  <Separator width={15} />
+                  <View style={[AppStyles.row, styles.alignCenter]}>
+                    <Image source={recastTurn} style={styles.icon16} />
+                    <Text>
+                      {memoir.activeSkill.execution.recastTurns.join('/')}
+                    </Text>
+                  </View>
+                  <Separator width={15} />
+                  <Text>
+                    {t('usage-limit')}
+                    {memoir.activeSkill.execution.executeLimitCounts.join('/')}
+                  </Text>
                 </View>
+                {memoir.activeSkill.params.map((p, idx) => {
+                  return (
+                    <SkillParam key={`activeskill_${idx}`} skillParam={p} />
+                  );
+                })}
               </Surface>
             </>
           )}
