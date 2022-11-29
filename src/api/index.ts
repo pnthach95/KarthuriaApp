@@ -2,7 +2,7 @@ import {create} from 'apisauce';
 
 export const website = 'https://karth.top';
 
-const api = create({
+const API = create({
   baseURL: website + '/api',
 });
 
@@ -40,4 +40,4 @@ export const links = {
   },
 };
 
-export default api;
+export default API;

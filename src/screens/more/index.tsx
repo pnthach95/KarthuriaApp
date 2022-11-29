@@ -1,6 +1,7 @@
 import {website} from 'api';
 import {links} from 'api/github';
 import webicon from 'assets/common/icon.png';
+import Separator from 'components/separator';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
 import {Image, Linking, ScrollView, StyleSheet, View} from 'react-native';
@@ -41,9 +42,7 @@ const MoreScreen = ({navigation}: MainBottomTabScreenProps<'MoreScreen'>) => {
   };
 
   const goToCharacters = () => navigation.navigate('Characters');
-
   const goToAccessories = () => navigation.navigate('Accessories');
-
   const goToEnemies = () => navigation.navigate('Enemies');
 
   return (
@@ -70,21 +69,21 @@ const MoreScreen = ({navigation}: MainBottomTabScreenProps<'MoreScreen'>) => {
       <TouchableRipple onPress={goToCharacters}>
         <View style={styles.row}>
           <Icon color={Colors.deepOrange500} name="account" size={32} />
-          <View style={AppStyles.spaceHorizontal} />
+          <Separator width={10} />
           <Text>{t('characters')}</Text>
         </View>
       </TouchableRipple>
       <TouchableRipple onPress={goToAccessories}>
         <View style={styles.row}>
-          <Icon color={Colors.orange500} name="sword" size={32} />
-          <View style={AppStyles.spaceHorizontal} />
+          <Icon color={Colors.orange500} name="khanda" size={32} />
+          <Separator width={10} />
           <Text>{t('accessories')}</Text>
         </View>
       </TouchableRipple>
       <TouchableRipple onPress={goToEnemies}>
         <View style={styles.row}>
-          <Icon color={Colors.deepPurple400} name="account-alert" size={32} />
-          <View style={AppStyles.spaceHorizontal} />
+          <Icon color={Colors.deepPurple400} name="ninja" size={32} />
+          <Separator width={10} />
           <Text>{t('enemies')}</Text>
         </View>
       </TouchableRipple>
@@ -94,14 +93,14 @@ const MoreScreen = ({navigation}: MainBottomTabScreenProps<'MoreScreen'>) => {
       <TouchableRipple onPress={openWebsite}>
         <View style={styles.row}>
           <Image source={webicon} style={styles.icon} />
-          <View style={AppStyles.spaceHorizontal} />
+          <Separator width={10} />
           <Text>{t('karthuria-website')}</Text>
         </View>
       </TouchableRipple>
       <TouchableRipple onPress={openGithub}>
         <View style={styles.row}>
           <Icon color={theme.colors.text} name="github" size={32} />
-          <View style={AppStyles.spaceHorizontal} />
+          <Separator width={10} />
           <Text>{t('source-code-on-github')}</Text>
         </View>
       </TouchableRipple>
