@@ -187,7 +187,8 @@ const MemoirsScreen = ({
 
     return (
       <TouchableRipple style={AppStyles.flex1} onPress={onPress}>
-        <View style={[AppStyles.listItem, {borderColor: colors.border}]}>
+        <View
+          style={[AppStyles.listItem, {borderColor: colors.outlineVariant}]}>
           <View style={[AppStyles.selfCenter, AppStyles.smallImg]}>
             <FastImage
               source={{uri: imgMemoir(item.basicInfo.cardID)}}

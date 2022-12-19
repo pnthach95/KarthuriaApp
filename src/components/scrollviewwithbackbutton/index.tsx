@@ -4,7 +4,6 @@ import {Animated, ScrollView, StyleSheet, View} from 'react-native';
 import {IconButton, useTheme} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useStyle} from 'react-native-style-utilities';
-import AppStyles from 'theme/styles';
 
 import type {
   NativeScrollEvent,
@@ -57,12 +56,9 @@ const ScrollViewWithBackButton = ({
   const translateYStyle = {transform: [{translateY}]};
 
   const backButtonAVStyle = useStyle(
-    () => [
-      AppStyles.absolute,
-      {
-        paddingTop: safeAreaInsets.top,
-      },
-    ],
+    () => ({
+      paddingTop: safeAreaInsets.top,
+    }),
     [safeAreaInsets.top],
   );
 
@@ -99,17 +95,19 @@ const ScrollViewWithBackButton = ({
   );
 
   return (
-    <View style={AppStyles.flex1}>
+    <View className="flex-1">
       <ScrollView
         {...props}
         contentContainerStyle={contentContainerStyle}
         scrollEventThrottle={16}
         showsVerticalScrollIndicator={false}
         onScroll={onScroll}>
-        <View style={styles.top} />
+        <View className="h-10" />
         {children}
       </ScrollView>
-      <Animated.View style={[backButtonAVStyle, translateXStyle]}>
+      <Animated.View
+        className="absolute"
+        style={[backButtonAVStyle, translateXStyle]}>
         <IconButton
           icon="arrow-left"
           style={backButtonStyle}
@@ -117,12 +115,8 @@ const ScrollViewWithBackButton = ({
         />
       </Animated.View>
       <Animated.View
-        style={[
-          AppStyles.right0,
-          AppStyles.absolute,
-          contentContainerStyle,
-          translateYStyle,
-        ]}>
+        className="absolute right-0"
+        style={[contentContainerStyle, translateYStyle]}>
         {right}
       </Animated.View>
     </View>
@@ -132,9 +126,6 @@ const ScrollViewWithBackButton = ({
 const styles = StyleSheet.create({
   scroll: {
     paddingTop: 50,
-  },
-  top: {
-    height: 40,
   },
 });
 

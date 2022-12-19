@@ -1,7 +1,6 @@
 import logo from 'assets/common/kirin.png';
 import React, {useEffect, useRef} from 'react';
 import {Animated, Easing, Image, View} from 'react-native';
-import AppStyles from 'theme/styles';
 
 const Kirin = () => {
   const logoAV = useRef(new Animated.Value(0)).current;
@@ -23,9 +22,9 @@ const Kirin = () => {
   }, []);
 
   return (
-    <View style={[AppStyles.flex1, AppStyles.center]}>
+    <View className="flex-1 items-center justify-center">
       <Animated.View style={{transform: [{rotate}]}}>
-        <Image resizeMode="contain" source={logo} style={AppStyles.square100} />
+        <Image className="h-28 w-28" resizeMode="contain" source={logo} />
       </Animated.View>
     </View>
   );

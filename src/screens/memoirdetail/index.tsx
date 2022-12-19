@@ -6,77 +6,23 @@ import firstExecutableTurn from 'assets/common/first_executable_turn.png';
 import frame from 'assets/common/frame_thumbnail_equip.png';
 import recastTurn from 'assets/common/recast_turn.png';
 import BaseScreen from 'components/basescreen';
-import Separator from 'components/separator';
 import SkillParam from 'components/skillparam';
 import dayjs from 'dayjs';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {Image, StyleSheet, View} from 'react-native';
+import {Image, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {
-  Caption,
-  Colors,
   DataTable,
-  Headline,
-  Paragraph,
-  Subheading,
   Surface,
   Text,
   TouchableRipple,
   useTheme,
 } from 'react-native-paper';
-import AppStyles, {borderRadius, padding} from 'theme/styles';
 import type {ImageProps} from 'react-native';
 import type {RootStackScreenProps} from 'typings/navigation';
 
 const RARITY_HEIGHT = 216 / 17;
-const costContainerBG = '#2B2B2B';
-const styles = StyleSheet.create({
-  alignCenter: {
-    alignItems: 'center',
-  },
-  block: {
-    borderRadius,
-    marginVertical: padding,
-    padding,
-  },
-  charaIconContainer: {
-    borderColor: Colors.grey400,
-    borderRadius: 20,
-    borderWidth: 1,
-    marginLeft: padding,
-    overflow: 'hidden',
-  },
-  cost: {
-    height: 14,
-    width: 18,
-  },
-  costContainer: {
-    backgroundColor: costContainerBG,
-    borderRadius: 5,
-    marginRight: 5,
-    padding: 3,
-  },
-  frameBorderRadius: {
-    borderRadius: borderRadius * 2,
-  },
-  icon16: {
-    height: 16,
-    marginRight: 10,
-    width: 16,
-  },
-  rarity: {
-    bottom: padding / 2,
-    left: padding / 2,
-  },
-  table: {
-    borderRadius,
-    marginVertical: padding,
-  },
-  wrap: {
-    flexWrap: 'wrap',
-  },
-});
 
 const MemoirDetailScreen = ({
   route,
@@ -91,7 +37,7 @@ const MemoirDetailScreen = ({
     width: (140 * RARITY_HEIGHT) / 28,
   });
   const borderBottomColor = {
-    borderBottomColor: colors.text,
+    borderBottomColor: colors.onBackground,
   };
 
   useEffect(() => {
@@ -129,30 +75,31 @@ const MemoirDetailScreen = ({
   return (
     <BaseScreen hasData={!!memoir} loading={loading}>
       {memoir && (
-        <View style={AppStyles.paddingHorizontal}>
-          <Headline style={AppStyles.centerText}>
+        <View className="px-3">
+          <Text className="text-center" variant="headlineSmall">
             {memoir.basicInfo.name.en || memoir.basicInfo.name.ja}
-          </Headline>
-          <View style={AppStyles.bigImg}>
+          </Text>
+          <View className="aspect-memoir w-72 self-center">
             <FastImage
+              className="aspect-memoir w-72 self-center rounded-xl"
               source={{uri: imgMemoirBig(memoir.basicInfo.cardID)}}
-              style={[AppStyles.bigImg, styles.frameBorderRadius]}
             />
             <Image
+              className="absolute aspect-memoir w-72 self-center"
               source={frame}
-              style={[AppStyles.bigImg, AppStyles.absolute]}
             />
             <Image
+              className="absolute bottom-1 left-1"
               resizeMode="contain"
               source={rarity(memoir.basicInfo.rarity)}
-              style={[styles.rarity, AppStyles.absolute, raritySize]}
+              style={raritySize}
               onLoad={onLoad}
             />
           </View>
-          <Surface style={[AppStyles.shadow, styles.block]}>
-            <View style={[AppStyles.row, AppStyles.spaceBetween]}>
-              <Caption>{t('characters')}</Caption>
-              <View style={AppStyles.row}>
+          <Surface className="my-3 rounded p-3" elevation={3}>
+            <View className="flex-row justify-between">
+              <Text variant="bodySmall">{t('characters')}</Text>
+              <View className="flex-row">
                 {Array.isArray(memoir.basicInfo.charas) ? (
                   memoir.basicInfo.charas.map(chara => {
                     const onPress = () =>
@@ -160,11 +107,11 @@ const MemoirDetailScreen = ({
                     return (
                       <View
                         key={`chara_${chara}`}
-                        style={styles.charaIconContainer}>
+                        className="ml-3 overflow-hidden rounded-3xl border border-gray-500">
                         <TouchableRipple onPress={onPress}>
                           <FastImage
+                            className="aspect-square w-10"
                             source={{uri: iconChara(chara)}}
-                            style={AppStyles.square40}
                           />
                         </TouchableRipple>
                       </View>
@@ -175,22 +122,24 @@ const MemoirDetailScreen = ({
                 )}
               </View>
             </View>
-            <Caption>{t('released')}</Caption>
+            <Text variant="bodySmall">{t('released')}</Text>
             {releasedJA && (
-              <View style={[AppStyles.row, AppStyles.spaceBetween]}>
+              <View className="flex-row justify-between">
                 <Text>{t('japanese')}</Text>
                 <Text>{releasedJA.format('LLLL')}</Text>
               </View>
             )}
             {releasedWW && (
-              <View style={[AppStyles.row, AppStyles.spaceBetween]}>
+              <View className="flex-row justify-between">
                 <Text>{t('worldwide')}</Text>
                 <Text>{releasedWW.format('LLLL')}</Text>
               </View>
             )}
           </Surface>
-          <Subheading style={AppStyles.centerText}>{t('stats')}</Subheading>
-          <Surface style={[AppStyles.shadow, styles.table]}>
+          <Text className="text-center" variant="titleMedium">
+            {t('stats')}
+          </Text>
+          <Surface className="my-3 rounded" elevation={3}>
             <DataTable>
               <DataTable.Row>
                 <DataTable.Cell>{t('power-score-total')}</DataTable.Cell>
@@ -214,52 +163,46 @@ const MemoirDetailScreen = ({
               </DataTable.Row>
             </DataTable>
           </Surface>
-          <Subheading style={AppStyles.centerText}>
+          <Text className="text-center" variant="titleMedium">
             {t('auto-skills')}
-          </Subheading>
-          <Surface style={[AppStyles.shadow, styles.block]}>
-            <Paragraph>
+          </Text>
+          <Surface className="my-3 rounded" elevation={3}>
+            <Text variant="bodyMedium">
               {memoir.skill.type.en || memoir.skill.type.ja}
-            </Paragraph>
+            </Text>
             {memoir.skill.params.map((p, idx) => {
               return <SkillParam key={`skill_${idx}`} skillParam={p} />;
             })}
           </Surface>
           {memoir.activeSkill !== 0 && (
             <>
-              <Subheading style={AppStyles.centerText}>
+              <Text className="text-center" variant="titleMedium">
                 {t('cut-in-skill')}
-              </Subheading>
-              <Surface style={[AppStyles.shadow, styles.block]}>
+              </Text>
+              <Surface className="my-3 rounded" elevation={3}>
                 <View
-                  style={[
-                    AppStyles.rowSpaceBetween,
-                    styles.wrap,
-                    borderBottomColor,
-                  ]}>
-                  <View style={[AppStyles.row, styles.alignCenter]}>
-                    <View style={styles.costContainer}>
-                      <Image source={costEquip} style={styles.cost} />
+                  className="flex-row flex-wrap items-center justify-between"
+                  style={borderBottomColor}>
+                  <View className="flex-row items-center">
+                    <View className="mr-1 rounded bg-gray-700 p-1">
+                      <Image className="h-[14px] w-[18px]" source={costEquip} />
                     </View>
                     <Text>{memoir.activeSkill.cost.join('/')}</Text>
                   </View>
-                  <Separator width={15} />
-                  <View style={[AppStyles.row, styles.alignCenter]}>
-                    <Image source={firstExecutableTurn} style={styles.icon16} />
+                  <View className="flex-row items-center space-x-3">
+                    <Image className="h-4 w-4" source={firstExecutableTurn} />
                     <Text>
                       {memoir.activeSkill.execution.firstExecutableTurns.join(
                         '/',
                       )}
                     </Text>
                   </View>
-                  <Separator width={15} />
-                  <View style={[AppStyles.row, styles.alignCenter]}>
-                    <Image source={recastTurn} style={styles.icon16} />
+                  <View className="flex-row items-center space-x-3">
+                    <Image className="h-4 w-4" source={recastTurn} />
                     <Text>
                       {memoir.activeSkill.execution.recastTurns.join('/')}
                     </Text>
                   </View>
-                  <Separator width={15} />
                   <Text>
                     {t('usage-limit')}
                     {memoir.activeSkill.execution.executeLimitCounts.join('/')}
@@ -273,13 +216,13 @@ const MemoirDetailScreen = ({
               </Surface>
             </>
           )}
-          <Subheading style={AppStyles.centerText}>
+          <Text className="text-center" variant="titleMedium">
             {t('introduction')}
-          </Subheading>
-          <Surface style={[AppStyles.shadow, styles.block]}>
-            <Paragraph>
+          </Text>
+          <Surface className="my-3 rounded" elevation={3}>
+            <Text variant="bodyMedium">
               {memoir.basicInfo.profile.en || memoir.basicInfo.profile.ja}
-            </Paragraph>
+            </Text>
           </Surface>
         </View>
       )}

@@ -1,11 +1,9 @@
 import {iconSkill} from 'api/images';
-import Separator from 'components/separator';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
 import {View} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {Paragraph, Surface, Text} from 'react-native-paper';
-import AppStyles from 'theme/styles';
+import {Surface, Text} from 'react-native-paper';
 
 type Props = {
   skill: TNormalSkill;
@@ -15,9 +13,9 @@ const NormalSkill = ({skill}: Props) => {
   const {t} = useTranslation();
 
   return (
-    <Surface style={[AppStyles.shadow, AppStyles.contentBlock]}>
-      <View style={AppStyles.row}>
-        <View style={AppStyles.flex1}>
+    <Surface className="my-2 space-y-3 rounded-md p-3" elevation={3}>
+      <View className="flex-row">
+        <View className="flex-1">
           <Text>{skill.name.en || skill.name.ja}</Text>
         </View>
         <Text>
@@ -25,26 +23,25 @@ const NormalSkill = ({skill}: Props) => {
           {skill.cost}
         </Text>
       </View>
-      <Separator />
-      <View style={AppStyles.row}>
+      <View className="flex-row space-x-3">
         <FastImage
+          className="aspect-square w-10"
           source={{
             uri: iconSkill(skill.iconID),
           }}
-          style={[AppStyles.square40, AppStyles.marginRight]}
         />
-        <View style={AppStyles.flex1}>
-          <Paragraph>
+        <View className="flex-1">
+          <Text variant="bodyMedium">
             {skill.description?.en || skill.description?.ja}
-          </Paragraph>
-          <Paragraph>
+          </Text>
+          <Text variant="bodyMedium">
             {t('ti-va')}
             {skill.skillInfo}
-          </Paragraph>
-          <Paragraph>
+          </Text>
+          <Text variant="bodyMedium">
             {t('animation')}
             {skill.skillCycle}
-          </Paragraph>
+          </Text>
         </View>
       </View>
     </Surface>

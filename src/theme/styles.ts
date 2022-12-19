@@ -1,8 +1,7 @@
 import {StyleSheet} from 'react-native';
-import {Colors} from 'react-native-paper';
 import {responsiveWidth} from 'react-native-responsive-dimensions';
 
-export const padding = 10;
+export const padding = 12;
 export const borderRadius = 5;
 
 export default StyleSheet.create({
@@ -169,6 +168,6 @@ export default StyleSheet.create({
     width: 30,
   },
   whiteText: {
-    color: Colors.white,
+    color: 'white',
   },
 });

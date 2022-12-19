@@ -6,14 +6,7 @@ import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Image, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {
-  Caption,
-  Headline,
-  Paragraph,
-  Subheading,
-  Surface,
-} from 'react-native-paper';
-import AppStyles from 'theme/styles';
+import {Surface, Text} from 'react-native-paper';
 import type {RootStackScreenProps} from 'typings/navigation';
 
 const EnemyDetailScreen = ({route}: RootStackScreenProps<'EnemyDetail'>) => {
@@ -42,34 +35,35 @@ const EnemyDetailScreen = ({route}: RootStackScreenProps<'EnemyDetail'>) => {
     <BaseScreen hasData={!!enemy} loading={loading}>
       {enemy && (
         <>
-          <Headline style={AppStyles.centerText}>
+          <Text className="text-center" variant="headlineLarge">
             {enemy.basicInfo.name.en || enemy.basicInfo.name.ja}
-          </Headline>
-          <View style={AppStyles.paddingVertical}>
-            <View style={[AppStyles.square112, AppStyles.selfCenter]}>
+          </Text>
+          <View className="py-3">
+            <View className="aspect-square w-28 self-center">
               <FastImage
+                className="aspect-square w-28 self-center"
                 source={{uri: imgEnemy(enemy.basicInfo.icon)}}
-                style={[AppStyles.square112, AppStyles.selfCenter]}
               />
               <Image
+                className="absolute aspect-square w-7"
                 source={{uri: iconAttribute(enemy.basicInfo.attribute)}}
-                style={[AppStyles.square28, AppStyles.absolute]}
               />
             </View>
           </View>
-
-          <View style={AppStyles.paddingHorizontal}>
-            <View style={AppStyles.paddingVertical}>
-              <Surface style={[AppStyles.shadow, AppStyles.contentBlock]}>
-                <Caption>{t('profile')}</Caption>
-                <Paragraph>
+          <View className="px-3">
+            <View className="py-3">
+              <Surface className="my-1 rounded p-3" elevation={3}>
+                <Text variant="bodySmall">{t('profile')}</Text>
+                <Text variant="bodyMedium">
                   {enemy.basicInfo.personality.en ||
                     enemy.basicInfo.personality.ja}
-                </Paragraph>
+                </Text>
               </Surface>
             </View>
-            <View style={AppStyles.paddingVertical}>
-              <Subheading style={AppStyles.centerText}>{t('skill')}</Subheading>
+            <View className="py-3">
+              <Text className="text-center" variant="titleMedium">
+                {t('skill')}
+              </Text>
               {Object.keys(enemy.skills).map(k => {
                 const skill = enemy.skills[k];
                 return <NormalSkill key={k} skill={skill.normalSkill} />;

@@ -4,20 +4,11 @@ import frame from 'assets/common/frame_accessory.png';
 import ErrorView from 'components/errorview';
 import Kirin from 'components/kirin';
 import React, {useEffect, useState} from 'react';
-import {FlatList, Image, StyleSheet, View} from 'react-native';
+import {FlatList, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {TouchableRipple, useTheme} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import AppStyles, {padding} from 'theme/styles';
 import type {RootStackScreenProps} from 'typings/navigation';
-
-const styles = StyleSheet.create({
-  item: {
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingBottom: padding,
-  },
-});
 
 const keyExtractor = (item: TAccessoryBasicInfo) =>
   `acc_${item.basicInfo.accID}`;
@@ -55,27 +46,23 @@ const AccessoriesScreen = ({
     };
 
     return (
-      <TouchableRipple style={AppStyles.flex1} onPress={onPress}>
-        <View
-          style={[
-            AppStyles.listItem,
-            styles.item,
-            {borderColor: colors.border},
-          ]}>
-          <View style={[AppStyles.flex1, AppStyles.center]}>
-            <FastImage
-              source={{uri: imgItem(item.basicInfo.iconID)}}
-              style={AppStyles.square78}
-            />
-            <Image
-              source={frame}
-              style={[AppStyles.square78, AppStyles.absolute]}
-            />
-            <FastImage
-              source={{uri: imgStageGirl(item.basicInfo.cards[0])}}
-              style={[AppStyles.stageGirlBottomLeft, AppStyles.absolute]}
-            />
-          </View>
+      <TouchableRipple
+        className="flex-1 items-center justify-between border p-1 pb-3"
+        style={{borderColor: colors.outlineVariant}}
+        onPress={onPress}>
+        <View className="self-center">
+          <FastImage
+            className="aspect-square w-[78px]"
+            source={{uri: imgItem(item.basicInfo.iconID)}}
+          />
+          <FastImage
+            className="absolute aspect-square w-[78px]"
+            source={frame}
+          />
+          <FastImage
+            className="absolute left-[-5px] bottom-[-5px] aspect-stage-girl w-7 rounded"
+            source={{uri: imgStageGirl(item.basicInfo.cards[0])}}
+          />
         </View>
       </TouchableRipple>
     );
@@ -94,6 +81,7 @@ const AccessoriesScreen = ({
         keyExtractor={keyExtractor}
         numColumns={2}
         renderItem={renderItem}
+        showsVerticalScrollIndicator={false}
       />
     );
   }

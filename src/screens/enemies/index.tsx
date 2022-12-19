@@ -8,30 +8,12 @@ import CustomBackground from 'components/sheet/background';
 import CustomHandle from 'components/sheet/handle';
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {FlatList, Image, StyleSheet, View} from 'react-native';
+import {FlatList, Image, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {
-  Button,
-  Caption,
-  FAB,
-  Text,
-  TouchableRipple,
-  useTheme,
-} from 'react-native-paper';
+import {Button, FAB, Text, TouchableRipple, useTheme} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import AppStyles from 'theme/styles';
 import type {RootStackScreenProps} from 'typings/navigation';
-
-const styles = StyleSheet.create({
-  frame: {
-    height: 89.6,
-    width: 89.6,
-  },
-  item: {
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-});
 
 const keyExtractor = ({basicInfo}: TEnemyBasicInfo) =>
   `en_${basicInfo.enemyID}`;
@@ -129,23 +111,17 @@ const Enemies = ({navigation}: RootStackScreenProps<'Enemies'>) => {
     const a = iconAttribute(basicInfo.attribute);
 
     return (
-      <TouchableRipple style={AppStyles.flex1} onPress={onPress}>
+      <TouchableRipple className="flex-1" onPress={onPress}>
         <View
-          style={[
-            AppStyles.listItem,
-            styles.item,
-            {borderColor: colors.border},
-          ]}>
-          <View style={AppStyles.center}>
-            <View style={styles.frame}>
+          className="flex-1 items-center justify-between border p-1"
+          style={{borderColor: colors.outline}}>
+          <View className="items-center justify-center">
+            <View className="aspect-square w-[89.6px]">
               <FastImage
+                className="aspect-square w-[89.6px]"
                 source={{uri: imgEnemy(basicInfo.icon)}}
-                style={styles.frame}
               />
-              <Image
-                source={{uri: a}}
-                style={[AppStyles.square20, AppStyles.absolute]}
-              />
+              <Image className="absolute aspect-square w-5" source={{uri: a}} />
             </View>
           </View>
         </View>
@@ -155,7 +131,7 @@ const Enemies = ({navigation}: RootStackScreenProps<'Enemies'>) => {
 
   const emptyList = () => {
     return (
-      <View style={[AppStyles.flex1, AppStyles.center, AppStyles.marginTop]}>
+      <View className="mt-16 flex-1 items-center justify-center">
         <Text>{t('no-data')}</Text>
       </View>
     );
@@ -179,7 +155,7 @@ const Enemies = ({navigation}: RootStackScreenProps<'Enemies'>) => {
           renderItem={renderItem}
           style={bottom}
         />
-        <FAB icon={'filter'} style={AppStyles.fab} onPress={openSheet} />
+        <FAB icon="filter" style={AppStyles.fab} onPress={openSheet} />
         <BottomSheetModal
           ref={bottomSheetModalRef}
           backdropComponent={CustomBackdrop}
@@ -188,15 +164,15 @@ const Enemies = ({navigation}: RootStackScreenProps<'Enemies'>) => {
           snapPoints={snapPoints}>
           <BottomSheetScrollView
             contentContainerStyle={AppStyles.paddingHorizontal}>
-            <View style={[AppStyles.rowSpaceBetween, AppStyles.marginBottom]}>
-              <Caption>{t('skills')}</Caption>
+            <View className="mb-1 flex-row items-center justify-between">
+              <Text variant="bodySmall">{t('skills')}</Text>
               <Button
                 mode={filterAll.elements ? 'contained' : 'outlined'}
                 onPress={toggleAllElements}>
                 {t('all')}
               </Button>
             </View>
-            <View style={[AppStyles.row, AppStyles.spaceBetween]}>
+            <View className="flex-row justify-between">
               {filter.elements.map((item, index) => {
                 const bgColor = {
                   backgroundColor: item ? colors.primary : undefined,
@@ -212,31 +188,27 @@ const Enemies = ({navigation}: RootStackScreenProps<'Enemies'>) => {
                   <TouchableRipple
                     key={`element_${index}`}
                     borderless
-                    style={[
-                      AppStyles.center,
-                      AppStyles.elementImgContainer,
-                      bgColor,
-                    ]}
+                    className="aspect-square w-[12%] items-center justify-center rounded-full"
+                    style={bgColor}
                     onPress={onPress}>
                     <Image
+                      className="aspect-square w-[10%]"
                       source={{uri: iconAttribute(index + 1)}}
-                      style={AppStyles.squareW10}
                     />
                   </TouchableRipple>
                 );
               })}
             </View>
-            <View style={AppStyles.marginBottom}>
-              <Caption>{t('enemy-type')}</Caption>
+            <View className="mb-1">
+              <Text variant="bodySmall">{t('enemy-type')}</Text>
             </View>
-            <View style={AppStyles.row}>
+            <View className="flex-row space-x-3">
               <Button
                 mode={filter.type[1] ? 'contained' : 'outlined'}
                 uppercase={false}
                 onPress={setStageGirlType}>
                 {t('stage-girls')}
               </Button>
-              <View style={AppStyles.spaceHorizontal} />
               <Button
                 mode={filter.type[0] ? 'contained' : 'outlined'}
                 uppercase={false}

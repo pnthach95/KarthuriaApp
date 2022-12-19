@@ -254,56 +254,52 @@ const StageGirlsScreen = ({
     };
 
     return (
-      <TouchableRipple style={AppStyles.flex1} onPress={onPress}>
-        <View
-          style={[
-            AppStyles.listItem,
-            AppStyles.spaceBetween,
-            {borderColor: colors.border},
-          ]}>
-          <Text style={AppStyles.centerText}>
+      <TouchableRipple
+        className="flex-1 border p-1"
+        style={{borderColor: colors.outlineVariant}}
+        onPress={onPress}>
+        <>
+          <Text className="text-center">
             {basicInfo.name.en || basicInfo.name.ja}
           </Text>
-          <View style={AppStyles.center}>
-            <View style={AppStyles.smallImg}>
-              <FastImage
-                source={{uri: imgStageGirl(basicInfo.cardID)}}
-                style={AppStyles.smallImg}
-              />
-              <Image
-                source={frame}
-                style={[AppStyles.smallImg, AppStyles.absolute]}
-              />
-              <Image
-                source={{uri: iconAttribute(base.attribute)}}
-                style={[AppStyles.square20, AppStyles.absolute]}
-              />
-              <Image
-                source={position(base.roleIndex.role)}
-                style={[styles.role, AppStyles.absolute]}
-              />
-              <Image
-                resizeMode="contain"
-                source={rarity(basicInfo.rarity)}
-                style={[AppStyles.rarityImg, styles.rarity, AppStyles.absolute]}
-              />
-              <Image
-                source={attackType(base.attackType)}
-                style={[styles.attackType, AppStyles.absolute]}
-              />
-            </View>
-            <Text style={AppStyles.centerText}>
-              {t('total-stat', {total: stat.total})}
-            </Text>
+          <View className="aspect-stage-girl h-20 self-center">
+            <FastImage
+              className="aspect-stage-girl h-20"
+              source={{uri: imgStageGirl(basicInfo.cardID)}}
+            />
+            <FastImage
+              className="absolute aspect-stage-girl h-20"
+              source={frame}
+            />
+            <Image
+              source={{uri: iconAttribute(base.attribute)}}
+              style={[AppStyles.square20, AppStyles.absolute]}
+            />
+            <Image
+              source={position(base.roleIndex.role)}
+              style={[styles.role, AppStyles.absolute]}
+            />
+            <Image
+              resizeMode="contain"
+              source={rarity(basicInfo.rarity)}
+              style={[AppStyles.rarityImg, styles.rarity, AppStyles.absolute]}
+            />
+            <Image
+              source={attackType(base.attackType)}
+              style={[styles.attackType, AppStyles.absolute]}
+            />
           </View>
-        </View>
+          <Text className="text-center">
+            {t('total-stat', {total: stat.total})}
+          </Text>
+        </>
       </TouchableRipple>
     );
   };
 
   const emptyList = () => {
     return (
-      <View style={[AppStyles.flex1, AppStyles.center, AppStyles.marginTop]}>
+      <View className="flex-1 items-center justify-center">
         <Text>{t('no-data')}</Text>
       </View>
     );

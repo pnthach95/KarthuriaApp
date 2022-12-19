@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "bradlc.vscode-tailwindcss",
+    "diemasmichiels.emulate",
+    "dbaeumer.vscode-eslint",
+    "lokalise.i18n-ally",
+    "kisstkondoros.vscode-gutter-preview",
+    "esbenp.prettier-vscode",
+    "spmeesseman.vscode-taskexplorer"
+  ]
+}

@@ -6,24 +6,10 @@ import BaseScreen from 'components/basescreen';
 import NormalSkill from 'components/normalskill';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {Image, StyleSheet, View} from 'react-native';
+import {View} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {
-  DataTable,
-  Headline,
-  Subheading,
-  Surface,
-  TouchableRipple,
-} from 'react-native-paper';
-import AppStyles from 'theme/styles';
+import {DataTable, Surface, Text, TouchableRipple} from 'react-native-paper';
 import type {RootStackScreenProps} from 'typings/navigation';
-
-const styles = StyleSheet.create({
-  stageGirl: {
-    height: 112,
-    width: 100.8,
-  },
-});
 
 const AccessoryDetailScreen = ({
   navigation,
@@ -56,31 +42,22 @@ const AccessoryDetailScreen = ({
     <BaseScreen hasData={!!accessory} loading={loading}>
       {accessory && (
         <>
-          <Headline style={AppStyles.centerText}>
+          <Text className="text-center" variant="headlineLarge">
             {accessory.basicInfo.name.en || accessory.basicInfo.name.ja}
-          </Headline>
-          <View
-            style={[
-              AppStyles.row,
-              AppStyles.spaceEvenly,
-              AppStyles.paddingVertical,
-            ]}>
+          </Text>
+          <View className="flex-row justify-evenly py-3">
             <View>
               <FastImage
+                className="aspect-square w-28"
                 source={{uri: imgItem(accessory.basicInfo.iconID)}}
-                style={AppStyles.square112}
-              />
-              <Image
-                source={frame}
-                style={[AppStyles.square112, AppStyles.absolute]}
               />
               <FastImage
+                className="absolute aspect-square w-28"
+                source={frame}
+              />
+              <FastImage
+                className="absolute right-0 aspect-square w-7"
                 source={{uri: iconAct(accessory.skillInfo.skillSlot)}}
-                style={[
-                  AppStyles.square28,
-                  AppStyles.right0,
-                  AppStyles.absolute,
-                ]}
               />
             </View>
             <View>
@@ -96,12 +73,12 @@ const AccessoryDetailScreen = ({
                     onPress={goToStageGirlDetail}>
                     <View>
                       <FastImage
+                        className="aspect-stage-girl h-28"
                         source={{uri: imgStageGirl(card)}}
-                        style={styles.stageGirl}
                       />
-                      <Image
+                      <FastImage
+                        className="absolute aspect-stage-girl h-28"
                         source={sgFrame}
-                        style={[styles.stageGirl, AppStyles.absolute]}
                       />
                     </View>
                   </TouchableRipple>
@@ -109,18 +86,20 @@ const AccessoryDetailScreen = ({
               })}
             </View>
           </View>
-          <View style={AppStyles.paddingHorizontal}>
-            <View style={AppStyles.paddingVertical}>
-              <Subheading style={AppStyles.centerText}>{t('skill')}</Subheading>
+          <View className="px-3">
+            <View className="py-3">
+              <Text className="text-center" variant="titleMedium">
+                {t('skill')}
+              </Text>
               {accessory.skillInfo.skill.normalSkill && (
                 <NormalSkill skill={accessory.skillInfo.skill.normalSkill} />
               )}
             </View>
-            <View style={AppStyles.paddingVertical}>
-              <Subheading style={AppStyles.centerText}>
+            <View className="space-y-2 py-3">
+              <Text className="text-center" variant="titleMedium">
                 {t('max-stats')}
-              </Subheading>
-              <Surface style={[AppStyles.shadow, AppStyles.borderRadius]}>
+              </Text>
+              <Surface className="rounded" elevation={3}>
                 <DataTable>
                   <DataTable.Row>
                     <DataTable.Cell>{t('hp')}</DataTable.Cell>

@@ -2,7 +2,7 @@ import AnimatedTabBar from '@gorhom/animated-tabbar';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
-import {Colors, useTheme} from 'react-native-paper';
+import {MD2Colors as Colors, useTheme} from 'react-native-paper';
 import Animated from 'react-native-reanimated';
 import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
 import HomeScreen from 'screens/home';
@@ -95,7 +95,7 @@ const tabs: TabsConfig<BubbleTabBarItemConfig, BottomTabList> = {
 const Tabs = () => {
   const {colors} = useTheme();
   const {t} = useTranslation();
-  const tabStyle = {backgroundColor: colors.card};
+  const tabStyle = {backgroundColor: colors.background};
 
   return (
     <Tab.Navigator

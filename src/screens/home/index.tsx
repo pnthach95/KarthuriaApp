@@ -26,24 +26,13 @@ import {
   Platform,
   RefreshControl,
   ScrollView,
-  StyleSheet,
   View,
 } from 'react-native';
 import {getVersion} from 'react-native-device-info';
 import FastImage from 'react-native-fast-image';
-import {
-  Caption,
-  Colors,
-  ProgressBar,
-  Subheading,
-  Surface,
-  Text,
-  Title,
-  TouchableRipple,
-} from 'react-native-paper';
-import {responsiveScreenWidth} from 'react-native-responsive-dimensions';
+import {ProgressBar, Surface, Text, TouchableRipple} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import AppStyles, {borderRadius, padding} from 'theme/styles';
+import AppStyles from 'theme/styles';
 import type {ListRenderItem, ViewStyle} from 'react-native';
 import type {MainBottomTabScreenProps} from 'typings/navigation';
 
@@ -53,7 +42,7 @@ type GithubVersion = {
   link: string;
 };
 
-const challengeRevueSeparator = () => <Separator width={10} />;
+const challengeRevueSeparator = () => <View className="w-3" />;
 
 const EventImage = ({img}: {img: string}) => {
   const [uri, setURI] = useState(img);
@@ -61,9 +50,9 @@ const EventImage = ({img}: {img: string}) => {
 
   return (
     <FastImage
+      className="h-[79.8px] w-[313.6px] self-center"
       resizeMode="contain"
       source={{uri}}
-      style={[styles.eventImg, AppStyles.selfCenter]}
       onError={onError}
     />
   );
@@ -183,41 +172,35 @@ const MainScreen = ({navigation}: MainBottomTabScreenProps<'MainScreen'>) => {
       flexDirection: length === 1 ? 'row' : 'column',
       alignItems: length === 1 ? 'center' : 'flex-start',
     };
+
     return (
-      <Surface
-        key={item.id}
-        style={[
-          AppStyles.padding,
-          AppStyles.borderRadius,
-          AppStyles.shadow,
-          styles.challengeRevue,
-        ]}>
+      <Surface key={item.id} className="my-3 rounded p-3" elevation={3}>
         <TouchableRipple
           borderless
-          style={[styles.rogueImg, AppStyles.selfCenter]}
+          className="h-24 w-[86.4px] self-center"
           onPress={goToDetail}>
           <FastImage
+            className="h-24 w-[86.4px] self-center"
             source={{uri: imgRogue(item.id)}}
-            style={[styles.rogueImg, AppStyles.selfCenter]}
           />
         </TouchableRipple>
-        <View style={[AppStyles.spaceBetween, textView]}>
-          <Caption>{t('begin')}</Caption>
+        <View className="justify-between" style={textView}>
+          <Text variant="bodySmall">{t('begin')}</Text>
           <Text>{begin.format('llll')}</Text>
         </View>
-        <View style={[AppStyles.spaceBetween, textView]}>
-          <Caption>{t('end')}</Caption>
+        <View className="justify-between" style={textView}>
+          <Text variant="bodySmall">{t('end')}</Text>
           <Text>{end.format('llll')}</Text>
         </View>
         {begin.diff(dayjs()) > 0 && (
-          <View style={[AppStyles.spaceBetween, textView]}>
-            <Caption>{t('start-in')}</Caption>
+          <View className="justify-between" style={textView}>
+            <Text variant="bodySmall">{t('start-in')}</Text>
             <Countdown miliseconds={begin.diff(dayjs())} />
           </View>
         )}
         {begin.diff(dayjs()) < 0 && end.diff(dayjs()) > 0 && (
-          <View style={[AppStyles.spaceBetween, textView]}>
-            <Caption>{t('end-in')}</Caption>
+          <View className="justify-between" style={textView}>
+            <Text variant="bodySmall">{t('end-in')}</Text>
             <Countdown miliseconds={end.diff(dayjs())} />
           </View>
         )}
@@ -226,21 +209,19 @@ const MainScreen = ({navigation}: MainBottomTabScreenProps<'MainScreen'>) => {
   };
 
   return (
-    <View style={AppStyles.flex1}>
+    <View className="flex-1">
       {loading ? (
         <Kirin />
       ) : (
         <ScrollView
-          contentContainerStyle={[
-            AppStyles.paddingHorizontal,
-            AppStyles.grow,
-            AppStyles.columnWrapper,
-          ]}
+          contentContainerStyle={AppStyles.grow}
           refreshControl={rc}
           showsVerticalScrollIndicator={false}>
           <ConnectStatus />
           {version && (
-            <TouchableRipple style={styles.update} onPress={onDownloadApp}>
+            <TouchableRipple
+              className="items-center bg-green-600 p-1"
+              onPress={onDownloadApp}>
               <Text>
                 {t('download-new-version-on-github', {vTag: version.tag})}
               </Text>
@@ -248,81 +229,79 @@ const MainScreen = ({navigation}: MainBottomTabScreenProps<'MainScreen'>) => {
           )}
           {section ? (
             <>
-              <View style={[AppStyles.row, AppStyles.center]}>
-                <Image
-                  source={icon}
-                  style={[AppStyles.square40, AppStyles.marginRight]}
-                />
-                <Title>{t('project-karthuria')}</Title>
+              <View className="flex-row items-center justify-center space-x-3">
+                <Image className="aspect-square w-10" source={icon} />
+                <Text variant="titleLarge">{t('project-karthuria')}</Text>
               </View>
               {section.event.data.length > 0 && (
-                <View style={AppStyles.paddingVertical}>
-                  <Subheading style={AppStyles.centerText}>
+                <View className="py-3">
+                  <Text className="text-center" variant="titleMedium">
                     {t('events')}
-                  </Subheading>
-                  {section.event.data.map(item => {
-                    const begin = item.beginAt.map(i => dayjs(i * 1000));
-                    const end = item.endAt.map(i => dayjs(i * 1000));
-                    if (
-                      end.reduce(
-                        (res, current) => current.diff(dayjs(), 'y') > 1 || res,
-                        false,
-                      )
-                    ) {
-                      return null;
-                    }
-                    return (
-                      <Surface
-                        key={JSON.stringify(item)}
-                        style={[AppStyles.contentBlock, AppStyles.shadow]}>
-                        <EventImage img={imgEvent(item.id)} />
-                        <Separator />
-                        <View style={[AppStyles.row, AppStyles.spaceBetween]}>
-                          <Caption>{t('begin')}</Caption>
-                          <View style={AppStyles.flex1}>
-                            {begin.map((b, i) => (
-                              <Text
-                                key={`${i}-${b.toISOString()}`}
-                                style={styles.rightText}>
-                                {b.format('llll')}
-                              </Text>
-                            ))}
-                          </View>
-                        </View>
-                        <View style={[AppStyles.row, AppStyles.spaceBetween]}>
-                          <Caption>{t('end')}</Caption>
-                          <View style={AppStyles.flex1}>
-                            {end.map((e, i) => (
-                              <View key={`${i}-${e.toISOString()}`}>
-                                <Text style={styles.rightText}>
-                                  {e.format('llll')}
+                  </Text>
+                  <View className="mt-2 space-y-3">
+                    {section.event.data.map(item => {
+                      const begin = item.beginAt.map(i => dayjs(i * 1000));
+                      const end = item.endAt.map(i => dayjs(i * 1000));
+                      if (
+                        end.reduce(
+                          (res, current) =>
+                            current.diff(dayjs(), 'y') > 1 || res,
+                          false,
+                        )
+                      ) {
+                        return null;
+                      }
+                      return (
+                        <Surface
+                          key={JSON.stringify(item)}
+                          className="mx-3 rounded p-3"
+                          elevation={3}>
+                          <EventImage img={imgEvent(item.id)} />
+                          <Separator />
+                          <View className="flex-row justify-between">
+                            <Text variant="bodySmall">{t('begin')}</Text>
+                            <View className="flex-1">
+                              {begin.map((b, i) => (
+                                <Text
+                                  key={`${i}-${b.toISOString()}`}
+                                  className="text-right">
+                                  {b.format('llll')}
                                 </Text>
-                                {dayjs().isAfter(begin[0]) && (
-                                  <Countdown
-                                    miliseconds={e.diff(dayjs())}
-                                    style={styles.rightText}
-                                  />
-                                )}
-                              </View>
-                            ))}
+                              ))}
+                            </View>
                           </View>
-                        </View>
-                        {/* <View style={[AppStyles.row, AppStyles.spaceBetween]}>
-                      <Caption>Type</Caption>
-                      <Text>{item.referenceIndex}</Text>
-                    </View> */}
-                      </Surface>
-                    );
-                  })}
+                          <View className="flex-row justify-between">
+                            <Text variant="bodySmall">{t('end')}</Text>
+                            <View className="flex-1">
+                              {end.map((e, i) => (
+                                <View key={`${i}-${e.toISOString()}`}>
+                                  <Text className="text-right">
+                                    {e.format('llll')}
+                                  </Text>
+                                  {dayjs().isAfter(begin[0]) && (
+                                    <Countdown
+                                      right
+                                      miliseconds={e.diff(dayjs())}
+                                    />
+                                  )}
+                                </View>
+                              ))}
+                            </View>
+                          </View>
+                        </Surface>
+                      );
+                    })}
+                  </View>
                 </View>
               )}
               {section.rogue.data.length > 0 && (
-                <View style={AppStyles.paddingVertical}>
-                  <Subheading style={AppStyles.centerText}>
+                <View className="pt-3">
+                  <Text className="text-center" variant="titleMedium">
                     {t('challenge-revue')}
-                  </Subheading>
+                  </Text>
                   <FlatList
                     horizontal
+                    contentContainerStyle={AppStyles.paddingHorizontal}
                     data={section.rogue.data}
                     ItemSeparatorComponent={challengeRevueSeparator}
                     renderItem={renderChallengeRevue}
@@ -330,17 +309,12 @@ const MainScreen = ({navigation}: MainBottomTabScreenProps<'MainScreen'>) => {
                   />
                 </View>
               )}
-              <View style={AppStyles.paddingVertical}>
-                <Subheading style={AppStyles.centerText}>
+              <View className="mt-3 pb-3">
+                <Text className="text-center" variant="titleMedium">
                   {t('score-attack-revue')}
-                </Subheading>
-                <Surface
-                  style={[
-                    AppStyles.shadow,
-                    AppStyles.contentBlock,
-                    styles.titanContainer,
-                  ]}>
-                  <View style={AppStyles.row}>
+                </Text>
+                <Surface className="mx-3 mt-2 rounded p-3 pb-6" elevation={3}>
+                  <View className="flex-row">
                     {Object.values(section.titan.enemy).map(item => {
                       const onPress = () =>
                         navigation.navigate('EnemyDetail', {
@@ -350,43 +324,40 @@ const MainScreen = ({navigation}: MainBottomTabScreenProps<'MainScreen'>) => {
                       return (
                         <TouchableRipple
                           key={item.id}
-                          style={[AppStyles.contentBlock, AppStyles.flex1]}
+                          className="my-1 flex-1 rounded p-3"
                           onPress={onPress}>
-                          <>
+                          <View className="space-y-2">
                             <FastImage
+                              className="aspect-square w-24 self-center"
                               source={{uri: imgEnemy(item.id)}}
-                              style={[
-                                AppStyles.square100,
-                                AppStyles.selfCenter,
-                              ]}
                             />
                             <ProgressBar
+                              className="h-3 rounded-full"
                               progress={parseInt(item.hpLeftPercent, 10) / 100}
-                              style={styles.hpBar}
                             />
-                            <Text style={AppStyles.centerText}>
+                            <Text className="text-center">
                               {item.hpLeft} ({item.hpLeftPercent}%)
                             </Text>
-                          </>
+                          </View>
                         </TouchableRipple>
                       );
                     })}
                   </View>
                   {titanEnd && (
                     <>
-                      <View style={[AppStyles.row, AppStyles.spaceBetween]}>
-                        <Caption>{t('end')}</Caption>
+                      <View className="flex-row justify-between">
+                        <Text variant="bodySmall">{t('end')}</Text>
                         <Text>{titanEnd.format('llll')}</Text>
                       </View>
-                      <View style={AppStyles.paddingVertical}>
+                      <View className="py-3">
                         <Countdown
+                          center
                           miliseconds={titanEnd.diff(dayjs())}
-                          style={AppStyles.centerText}
                         />
                       </View>
                     </>
                   )}
-                  <View style={[AppStyles.row, AppStyles.spaceEvenly]}>
+                  <View className="flex-row justify-evenly">
                     {accessories &&
                       section.titan.reward.map(item => {
                         const findA = accessories.find(
@@ -402,35 +373,27 @@ const MainScreen = ({navigation}: MainBottomTabScreenProps<'MainScreen'>) => {
                             <TouchableRipple
                               key={item}
                               borderless
-                              style={[
-                                styles.accessoryContainer,
-                                AppStyles.center,
-                              ]}
+                              className="items-center justify-center overflow-visible"
                               onPress={onPress}>
-                              <View style={AppStyles.square78}>
+                              <>
                                 <FastImage
+                                  className="aspect-square w-[78px]"
                                   source={{
                                     uri: imgItem(findA.basicInfo.iconID),
                                   }}
-                                  style={AppStyles.square78}
                                 />
                                 <Image
+                                  className="absolute aspect-square w-[78px]"
+                                  resizeMode="contain"
                                   source={frame}
-                                  style={[
-                                    AppStyles.square78,
-                                    AppStyles.absolute,
-                                  ]}
                                 />
                                 <FastImage
+                                  className="absolute left-[-5px] bottom-[-5px] aspect-square w-[30px] rounded"
                                   source={{
                                     uri: imgStageGirl(findA.basicInfo.cards[0]),
                                   }}
-                                  style={[
-                                    AppStyles.stageGirlBottomLeft,
-                                    AppStyles.absolute,
-                                  ]}
                                 />
-                              </View>
+                              </>
                             </TouchableRipple>
                           );
                         }
@@ -448,39 +411,6 @@ const MainScreen = ({navigation}: MainBottomTabScreenProps<'MainScreen'>) => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  accessoryContainer: {
-    height: 88.4,
-    width: 88.4,
-  },
-  challengeRevue: {
-    width: responsiveScreenWidth(66),
-  },
-  eventImg: {
-    height: 79.8,
-    width: 313.6,
-  },
-  hpBar: {
-    borderRadius: borderRadius * 2,
-    height: 15,
-  },
-  rightText: {
-    textAlign: 'right',
-  },
-  rogueImg: {
-    height: 96,
-    width: 86.4,
-  },
-  titanContainer: {
-    paddingBottom: padding * 2,
-  },
-  update: {
-    alignItems: 'center',
-    backgroundColor: Colors.green400,
-    padding: padding / 2,
-  },
-});
 
 MainScreen.whyDidYouRender = true;
 
