@@ -166,27 +166,39 @@ const StageGirlDetailScreen = ({
               <Surface className="my-1 rounded" elevation={3}>
                 <DataTable>
                   <DataTable.Row>
-                    <DataTable.Cell>{t('power-score-total')}</DataTable.Cell>
+                    <DataTable.Cell className="flex-[2]">
+                      {t('power-score-total')}
+                    </DataTable.Cell>
                     <DataTable.Cell numeric>{dress.stat.total}</DataTable.Cell>
                   </DataTable.Row>
                   <DataTable.Row>
-                    <DataTable.Cell>{t('hp')}</DataTable.Cell>
+                    <DataTable.Cell className="flex-[2]">
+                      {t('hp')}
+                    </DataTable.Cell>
                     <DataTable.Cell numeric>{dress.stat.hp}</DataTable.Cell>
                   </DataTable.Row>
                   <DataTable.Row>
-                    <DataTable.Cell>{t('act-power')}</DataTable.Cell>
+                    <DataTable.Cell className="flex-[2]">
+                      {t('act-power')}
+                    </DataTable.Cell>
                     <DataTable.Cell numeric>{dress.stat.atk}</DataTable.Cell>
                   </DataTable.Row>
                   <DataTable.Row>
-                    <DataTable.Cell>{t('normal-defense')}</DataTable.Cell>
+                    <DataTable.Cell className="flex-[2]">
+                      {t('normal-defense')}
+                    </DataTable.Cell>
                     <DataTable.Cell numeric>{dress.stat.pdef}</DataTable.Cell>
                   </DataTable.Row>
                   <DataTable.Row>
-                    <DataTable.Cell>{t('special-defense')}</DataTable.Cell>
+                    <DataTable.Cell className="flex-[2]">
+                      {t('special-defense')}
+                    </DataTable.Cell>
                     <DataTable.Cell numeric>{dress.stat.mdef}</DataTable.Cell>
                   </DataTable.Row>
                   <DataTable.Row>
-                    <DataTable.Cell>{t('agility')}</DataTable.Cell>
+                    <DataTable.Cell className="flex-[2]">
+                      {t('agility')}
+                    </DataTable.Cell>
                     <DataTable.Cell numeric>{dress.stat.agi}</DataTable.Cell>
                   </DataTable.Row>
                 </DataTable>

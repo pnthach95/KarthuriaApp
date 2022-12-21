@@ -54,7 +54,7 @@ const SkillParam = ({skillParam}: Props) => {
             </Text>
           </View>
           <Divider />
-          <View className="flex-row items-center justify-between">
+          <View className="flex-1 flex-row flex-wrap items-center justify-between">
             {skillParam.accuracy && (
               <Text variant="bodyMedium">
                 {t('accuracy')}
