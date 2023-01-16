@@ -41,7 +41,7 @@
     "react-native-mmkv-storage": "^0.8.0",
     "react-native-offline": "^6.0.0",
     "react-native-paper": "^4.12.5",
-    "react-native-reanimated": "^2.13.0",
+    "react-native-reanimated": "^2.14.1",
     "react-native-responsive-dimensions": "^3.1.1",
     "react-native-restart": "^0.0.24",
     "react-native-safe-area-context": "^4.4.1",
