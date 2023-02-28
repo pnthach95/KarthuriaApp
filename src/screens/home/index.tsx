@@ -261,11 +261,11 @@ const MainScreen = ({navigation}: MainBottomTabScreenProps<'MainScreen'>) => {
                           <View className="flex-row justify-between">
                             <Text variant="bodySmall">{t('begin')}</Text>
                             <View className="flex-1">
-                              {begin.map((b, i) => (
-                                <Text
-                                  key={`${i}-${b.toISOString()}`}
-                                  className="text-right">
-                                  {b.format('llll')}
+                              {[
+                                ...new Set(begin.map(b => b.format('llll'))),
+                              ].map((s, i) => (
+                                <Text key={`${i}-${s}`} className="text-right">
+                                  {s}
                                 </Text>
                               ))}
                             </View>
