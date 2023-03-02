@@ -2,8 +2,8 @@ import {useEffect, useState} from 'react';
 import {Appearance} from 'react-native';
 import {getLocales} from 'react-native-localize';
 import {MMKVLoader} from 'react-native-mmkv-storage';
-import create from 'zustand';
-import {persist} from 'zustand/middleware';
+import {create} from 'zustand';
+import {createJSONStorage, persist} from 'zustand/middleware';
 import type {StateStorage} from 'zustand/middleware';
 
 const MMKV = new MMKVLoader().withInstanceID('zustand').initialize();
@@ -20,7 +20,7 @@ const useStore = create<StoreState>()(
     {
       name: 'karthuria',
       version: 1,
-      getStorage: () => MMKV as StateStorage,
+      storage: createJSONStorage(() => MMKV as StateStorage),
       partialize: state =>
         Object.fromEntries(
           Object.entries(state).filter(([key]) => !['mainRoute'].includes(key)),

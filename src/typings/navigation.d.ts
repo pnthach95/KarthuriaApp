@@ -1,6 +1,9 @@
-import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
+import {MaterialBottomTabNavigationProp} from '@react-navigation/material-bottom-tabs';
 import {CompositeNavigationProp} from '@react-navigation/native';
-import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
+import {
+  NativeStackNavigationProp,
+  NativeStackScreenProps,
+} from '@react-navigation/native-stack';
 
 type BottomTabList = {
   MainScreen: undefined;
@@ -11,8 +14,8 @@ type BottomTabList = {
 
 type MainBottomTabScreenProps<T extends keyof BottomTabList> = {
   navigation: CompositeNavigationProp<
-    BottomTabNavigationProp<BottomTabList, T>,
-    StackNavigationProp<RootStackParamList>
+    MaterialBottomTabNavigationProp<BottomTabList, T>,
+    NativeStackNavigationProp<RootStackParamList>
   >;
 };
 
@@ -28,5 +31,6 @@ type RootStackParamList = {
   Enemies: undefined;
   EnemyDetail: {id: string};
 };
+
 type RootStackScreenProps<T extends keyof RootStackParamList> =
-  StackScreenProps<RootStackParamList, T>;
+  NativeStackScreenProps<RootStackParamList, T>;

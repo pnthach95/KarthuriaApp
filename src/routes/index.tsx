@@ -2,7 +2,7 @@ import 'locales';
 import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import {setRootViewBackgroundColor} from '@pnthach95/react-native-root-view-background';
 import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import BlurStatusBar from 'components/blurstatusbar';
 import Kirin from 'components/kirin';
 import dayjs from 'dayjs';
@@ -31,7 +31,7 @@ import Tabs from './tabs';
 import type {LinkingOptions} from '@react-navigation/native';
 import type {RootStackParamList} from 'typings/navigation';
 
-const Stack = createStackNavigator<RootStackParamList>();
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const linking: LinkingOptions<RootStackParamList> = {
   prefixes: ['https://karth.top'],
