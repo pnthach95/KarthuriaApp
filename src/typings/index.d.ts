@@ -246,7 +246,7 @@ type TAccessory = {
     skill: {
       skillNormal: TNormalSkill | null;
       skillChange: number | null;
-    };
+    } | null;
     skillSlot: number;
     autoSkills:
       | {

@@ -47,23 +47,34 @@ const AccessoriesScreen = ({
 
     return (
       <TouchableRipple
-        className="flex-1 items-center justify-between border p-1 pb-3"
+        className="flex-1 overflow-hidden border p-3"
         style={{borderColor: colors.outlineVariant}}
         onPress={onPress}>
-        <View className="self-center">
-          <FastImage
-            className="aspect-square w-[78px]"
-            source={{uri: imgItem(item.basicInfo.iconID)}}
-          />
-          <FastImage
-            className="absolute aspect-square w-[78px]"
-            source={frame}
-          />
-          <FastImage
-            className="absolute left-[-5px] bottom-[-5px] aspect-stage-girl w-7 rounded"
-            source={{uri: imgStageGirl(item.basicInfo.cards[0])}}
-          />
-        </View>
+        <>
+          <View className="self-center">
+            <FastImage
+              className="aspect-square w-[78px]"
+              source={{uri: imgItem(item.basicInfo.iconID)}}
+            />
+            <FastImage
+              className="absolute aspect-square w-[78px]"
+              source={frame}
+            />
+          </View>
+          {item.basicInfo.cards.length > 0 && (
+            <View className="mt-3 flex-row justify-center">
+              {item.basicInfo.cards.map(c => {
+                return (
+                  <FastImage
+                    key={`asg_${c}`}
+                    className="aspect-stage-girl w-7 rounded"
+                    source={{uri: imgStageGirl(c)}}
+                  />
+                );
+              })}
+            </View>
+          )}
+        </>
       </TouchableRipple>
     );
   };

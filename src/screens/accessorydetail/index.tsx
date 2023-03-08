@@ -60,41 +60,42 @@ const AccessoryDetailScreen = ({
                 source={{uri: iconAct(accessory.skillInfo.skillSlot)}}
               />
             </View>
-            <View>
-              {accessory.basicInfo.cards.map(card => {
-                const goToStageGirlDetail = () =>
-                  accessory &&
-                  navigation.navigate('StageGirlDetail', {id: card});
+          </View>
+          <View className="flex-row flex-wrap justify-center">
+            {accessory.basicInfo.cards.map(card => {
+              const goToStageGirlDetail = () =>
+                accessory && navigation.navigate('StageGirlDetail', {id: card});
 
-                return (
-                  <TouchableRipple
-                    key={card}
-                    borderless
-                    onPress={goToStageGirlDetail}>
-                    <View>
-                      <FastImage
-                        className="aspect-stage-girl h-28"
-                        source={{uri: imgStageGirl(card)}}
-                      />
-                      <FastImage
-                        className="absolute aspect-stage-girl h-28"
-                        source={sgFrame}
-                      />
-                    </View>
-                  </TouchableRipple>
-                );
-              })}
-            </View>
+              return (
+                <TouchableRipple
+                  key={card}
+                  borderless
+                  onPress={goToStageGirlDetail}>
+                  <View>
+                    <FastImage
+                      className="aspect-stage-girl h-16"
+                      source={{uri: imgStageGirl(card)}}
+                    />
+                    <FastImage
+                      className="absolute aspect-stage-girl h-16"
+                      source={sgFrame}
+                    />
+                  </View>
+                </TouchableRipple>
+              );
+            })}
           </View>
           <View className="px-3">
-            <View className="py-3">
-              <Text className="text-center" variant="titleMedium">
-                {t('basic-act')}
-              </Text>
-              {accessory.skillInfo.skill.skillNormal && (
-                <SkillDetail skill={accessory.skillInfo.skill.skillNormal} />
-              )}
-            </View>
+            {accessory.skillInfo.skill && (
+              <View className="py-3">
+                <Text className="text-center" variant="titleMedium">
+                  {t('basic-act')}
+                </Text>
+                {accessory.skillInfo.skill.skillNormal && (
+                  <SkillDetail skill={accessory.skillInfo.skill.skillNormal} />
+                )}
+              </View>
+            )}
             <View className="space-y-2 py-3">
               <Text className="text-center" variant="titleMedium">
                 {t('max-stats')}
