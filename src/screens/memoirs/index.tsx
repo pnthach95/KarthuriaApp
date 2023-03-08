@@ -344,7 +344,7 @@ const MemoirsScreen = ({
         <FlashList
           contentContainerStyle={top}
           data={rmList}
-          estimatedItemSize={96}
+          estimatedItemSize={150}
           keyExtractor={mKeyExtractor}
           ListEmptyComponent={EmptyList}
           numColumns={2}
