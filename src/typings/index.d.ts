@@ -245,9 +245,18 @@ type TAccessory = {
   skillInfo: {
     skill: {
       skillNormal: TNormalSkill | null;
-      skillChange: number;
+      skillChange: number | null;
     };
     skillSlot: number;
+    autoSkills:
+      | {
+          id: number;
+          icon: number;
+          type: TLanguageObject;
+          params: TSkillParam[];
+          releaseLimitbreak: number;
+        }[]
+      | null;
   };
   stat: TBasicStat & {
     /** Agility */

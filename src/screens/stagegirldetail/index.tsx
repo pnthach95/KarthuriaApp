@@ -75,7 +75,7 @@ const StageGirlDetailScreen = ({
     <BaseScreen hasData={!!dress} loading={loading}>
       {dress && (
         <View className="px-3 pb-3">
-          <Text className="text-center" variant="headlineLarge">
+          <Text selectable className="text-center" variant="headlineLarge">
             {dress.basicInfo.name.en || dress.basicInfo.name.ja}
           </Text>
           {character && (
