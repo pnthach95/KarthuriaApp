@@ -3,7 +3,7 @@ import {iconAct, imgItem, imgStageGirl} from 'api/images';
 import frame from 'assets/common/frame_accessory.png';
 import sgFrame from 'assets/common/frame_stage_girl.png';
 import BaseScreen from 'components/basescreen';
-import NormalSkill from 'components/normalskill';
+import SkillDetail from 'components/skilldetail';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {View} from 'react-native';
@@ -89,10 +89,10 @@ const AccessoryDetailScreen = ({
           <View className="px-3">
             <View className="py-3">
               <Text className="text-center" variant="titleMedium">
-                {t('skill')}
+                {t('basic-act')}
               </Text>
-              {accessory.skillInfo.skill.normalSkill && (
-                <NormalSkill skill={accessory.skillInfo.skill.normalSkill} />
+              {accessory.skillInfo.skill.skillNormal && (
+                <SkillDetail skill={accessory.skillInfo.skill.skillNormal} />
               )}
             </View>
             <View className="space-y-2 py-3">

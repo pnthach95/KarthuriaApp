@@ -1,7 +1,7 @@
 import API, {links} from 'api';
 import {iconAttribute, imgEnemy} from 'api/images';
 import BaseScreen from 'components/basescreen';
-import NormalSkill from 'components/normalskill';
+import SkillDetail from 'components/skilldetail';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Image, View} from 'react-native';
@@ -64,9 +64,8 @@ const EnemyDetailScreen = ({route}: RootStackScreenProps<'EnemyDetail'>) => {
               <Text className="text-center" variant="titleMedium">
                 {t('skill')}
               </Text>
-              {Object.keys(enemy.skills).map(k => {
-                const skill = enemy.skills[k];
-                return <NormalSkill key={k} skill={skill.normalSkill} />;
+              {enemy.skills.map((skill, idx) => {
+                return <SkillDetail key={idx} skill={skill.skillNormal} />;
               })}
             </View>
           </View>

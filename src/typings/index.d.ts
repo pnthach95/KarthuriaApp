@@ -153,19 +153,18 @@ type TSkillsOnFilter = Record<string, boolean>;
 type TSkillNames = Record<string, {[L in TLanguage]: string[]}>;
 
 type TAct = {
-  normalSkill: TNormalSkill;
-  changeSkill: number | null;
+  skillNormal: TNormalSkill;
+  skillChange: number | null;
 };
 
 type TNormalSkill = {
-  iconID: number;
-  cost: number;
-  name: TLanguageObject;
-  description: TLanguageObject;
   attribute: number;
-  skillInfo: string;
-  skillCycle: string;
-  skillHitRate: Record<string, number>;
+  cost: number;
+  icon: number;
+  id: number;
+  multiple: boolean;
+  name: TLanguageObject;
+  params: TSkillParam[];
 };
 
 type TSkillObject = {
@@ -245,8 +244,8 @@ type TAccessory = {
   };
   skillInfo: {
     skill: {
-      normalSkill: TNormalSkill | null;
-      changeSkill: number;
+      skillNormal: TNormalSkill | null;
+      skillChange: number;
     };
     skillSlot: number;
   };
@@ -264,15 +263,15 @@ type TEnemyList = Record<string, TEnemyBasicInfo>;
 
 type TEnemyBasicInfo = {
   basicInfo: {
+    attribute: number;
     enemyID: string;
     icon: number;
-    rarity: number;
-    name: TLanguageObject;
-    attribute: number;
     /** Enemy type:
      * - 1: stage girl
      * - 0: else */
     isDress: 0 | 1;
+    name: TLanguageObject;
+    rarity: number;
   };
 };
 
@@ -280,7 +279,7 @@ type TEnemy = {
   basicInfo: TEnemyBasicInfo['basicInfo'] & {
     personality: TLanguageObject;
   };
-  skills: Record<string, TAct>;
+  skills: TAct[];
 };
 
 type TCurrentEvent = {
@@ -325,14 +324,14 @@ type TBasicStat = {
 };
 
 type TSkillParam = {
-  icon: number;
-  type: TSkillType;
-  hits: number | null;
-  duration: TLanguageObject | null;
   accuracy?: number | null;
-  target: TLanguageObject;
   description: TLanguageObject | null;
   descriptionExtra: TLanguageObject | null;
+  duration: TLanguageObject | null;
+  hits: number | null;
+  icon: number;
+  target: TLanguageObject;
+  type: TSkillType;
 };
 
 type TSkillNormal = {
