@@ -1,4 +1,5 @@
 import {BottomSheetFlatList, BottomSheetModal} from '@gorhom/bottom-sheet';
+import {FlashList} from '@shopify/flash-list';
 import API, {links} from 'api';
 import {iconSkill, imgMemoir} from 'api/images';
 import {charaImgs, rarity} from 'assets';
@@ -11,13 +12,7 @@ import CustomBackground from 'components/sheet/background';
 import CustomHandle from 'components/sheet/handle';
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {
-  FlatList,
-  Image,
-  type ListRenderItem,
-  StyleSheet,
-  View,
-} from 'react-native';
+import {Image, StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {
   Button,
@@ -29,7 +24,10 @@ import {
 } from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import AppStyles from 'theme/styles';
+import {useImmer} from 'use-immer';
 import {characterToIndex} from 'utils';
+import type {ListRenderItem as FlashListRenderItem} from '@shopify/flash-list';
+import type {ListRenderItem} from 'react-native';
 import type {MainBottomTabScreenProps} from 'typings/navigation';
 
 type TFilter = Record<'characters' | 'rarity', boolean[]> & {
@@ -75,7 +73,7 @@ const MemoirsScreen = ({
   /** List for render */
   const [rmList, setRMList] = useState<TEquipBasicInfo[]>([]);
   /** Filter */
-  const [filter, setFilter] = useState<TFilter>({
+  const [filter, setFilter] = useImmer<TFilter>({
     characters: charaImgs.map(() => true),
     rarity: [true, true, true, true],
     skills: [],
@@ -110,7 +108,9 @@ const MemoirsScreen = ({
             id: parseInt(k, 10),
             checked: true,
           }));
-          setFilter({...filter, skills});
+          setFilter(draft => {
+            draft.skills = skills;
+          });
         }
       } catch (error) {
         //
@@ -133,10 +133,7 @@ const MemoirsScreen = ({
               true,
             )
           : true;
-        const checkSkill = filter.skills.find(
-          s => s.id === item.skill.icon,
-        )?.checked;
-        return checkRarity && checkCharacter && checkSkill;
+        return checkRarity && checkCharacter;
       });
       setRMList(afterFilter);
     }
@@ -181,14 +178,16 @@ const MemoirsScreen = ({
 
   //#region Memoir list
 
-  const mRenderItem: ListRenderItem<TEquipBasicInfo> = ({item}) => {
+  const mRenderItem: FlashListRenderItem<TEquipBasicInfo> = ({item}) => {
     const onPress = () =>
       navigation.navigate('MemoirDetail', {id: item.basicInfo.cardID});
 
     return (
-      <TouchableRipple style={AppStyles.flex1} onPress={onPress}>
-        <View
-          style={[AppStyles.listItem, {borderColor: colors.outlineVariant}]}>
+      <TouchableRipple
+        className="flex-1 border p-1"
+        style={{borderColor: colors.outlineVariant}}
+        onPress={onPress}>
+        <>
           <View style={[AppStyles.selfCenter, AppStyles.smallImg]}>
             <FastImage
               source={{uri: imgMemoir(item.basicInfo.cardID)}}
@@ -203,24 +202,32 @@ const MemoirsScreen = ({
               ]}
             />
           </View>
-          <View style={[AppStyles.center, AppStyles.row]}>
-            <Image
-              resizeMode="contain"
-              source={rarity(item.basicInfo.rarity)}
-              style={AppStyles.rarityImg}
-            />
-            <FastImage
-              source={{uri: iconSkill(item.skill.icon)}}
-              style={styles.skillIcon}
-            />
-            {item.activeSkill === 1 && (
-              <Image source={cutin} style={styles.cutIn} />
-            )}
+          <Image
+            resizeMode="contain"
+            source={rarity(item.basicInfo.rarity)}
+            style={AppStyles.rarityImg}
+          />
+          <View className="flex-row flex-wrap items-center justify-center">
+            {[
+              ...new Set([
+                ...new Set(item.skill),
+                ...new Set(item.activeSkill || []),
+              ]),
+            ].map(s => {
+              return (
+                <FastImage
+                  key={`skill_icon_${s}`}
+                  source={{uri: iconSkill(s)}}
+                  style={styles.skillIcon}
+                />
+              );
+            })}
+            {item.activeSkill && <Image source={cutin} style={styles.cutIn} />}
           </View>
           <Text style={AppStyles.centerText}>
             {item.basicInfo.name.en || item.basicInfo.name.ja}
           </Text>
-        </View>
+        </>
       </TouchableRipple>
     );
   };
@@ -238,9 +245,8 @@ const MemoirsScreen = ({
   //#region Render character filter
 
   const toggleAllCharacters = () => {
-    setFilter({
-      ...filter,
-      characters: filter.characters.map(() => !filterAll.characters),
+    setFilter(draft => {
+      draft.characters = draft.characters.map(() => !filterAll.characters);
     });
     setFilterAll({
       ...filterAll,
@@ -253,9 +259,8 @@ const MemoirsScreen = ({
       backgroundColor: item ? colors.primary : undefined,
     };
     const onPress = () =>
-      setFilter({
-        ...filter,
-        characters: filter.characters.map((v, j) => (index === j ? !v : v)),
+      setFilter(draft => {
+        draft.characters[index] = !draft.characters[index];
       });
     return (
       <TouchableRipple
@@ -276,9 +281,8 @@ const MemoirsScreen = ({
       backgroundColor: item ? colors.primary : undefined,
     };
     const onPress = () =>
-      setFilter({
-        ...filter,
-        rarity: filter.rarity.map((v, j) => (index === j ? !v : v)),
+      setFilter(draft => {
+        draft.rarity[index] = !draft.rarity[index];
       });
     return (
       <TouchableRipple
@@ -295,12 +299,11 @@ const MemoirsScreen = ({
   //#region Render skill filter
 
   const toggleAllSkills = () => {
-    setFilter({
-      ...filter,
-      skills: filter.skills.map(item => ({
+    setFilter(draft => {
+      draft.skills = draft.skills.map(item => ({
         ...item,
         checked: !filterAll.skills,
-      })),
+      }));
     });
     setFilterAll({
       ...filterAll,
@@ -316,11 +319,8 @@ const MemoirsScreen = ({
       backgroundColor: item.checked ? colors.primary : undefined,
     };
     const onPress = () =>
-      setFilter({
-        ...filter,
-        skills: filter.skills.map((v, j) =>
-          index === j ? {...v, checked: !v.checked} : v,
-        ),
+      setFilter(draft => {
+        draft.skills[index].checked = !draft.skills[index].checked;
       });
     const source = {uri: iconSkill(item.id)};
     return (
@@ -347,14 +347,14 @@ const MemoirsScreen = ({
   if (mList.length > 0) {
     return (
       <>
-        <FlatList
+        <FlashList
+          contentContainerStyle={top}
           data={rmList}
-          initialNumToRender={12}
+          estimatedItemSize={96}
           keyExtractor={mKeyExtractor}
           ListEmptyComponent={emptyList}
           numColumns={2}
           renderItem={mRenderItem}
-          style={top}
         />
         <FAB.Group
           actions={fabActions}

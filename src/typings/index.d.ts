@@ -177,16 +177,16 @@ type TSkillObject = {
 type TEquipList = Record<string, TEquipBasicInfo>;
 
 type TEquipBasicInfo = {
+  activeSkill: number[] | null;
   basicInfo: {
     cardID: string;
-    rarity: number;
-    charas: string | number[];
+    charas: number[];
     name: TLanguageObject;
     profile: TLanguageObject;
+    rarity: number;
     released: TReleased;
   };
-  skill: TSkillObject;
-  activeSkill: 0 | 1;
+  skill: number[];
 };
 
 type TEquip = {
