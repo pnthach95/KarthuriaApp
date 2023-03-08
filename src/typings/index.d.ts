@@ -203,23 +203,21 @@ type TEquip = {
     total: number;
   };
   skill: TSkillObject;
-  activeSkill:
-    | {
-        icon: number;
-        cost: number[];
-        attribute: number;
-        execution: {
-          executeTiming: {
-            description: TLanguageObject;
-            id: number;
-          };
-          executeLimitCounts: number[];
-          firstExecutableTurns: number[];
-          recastTurns: number[];
-        };
-        params: TSkillParam[];
-      }
-    | 0;
+  activeSkill: {
+    icon: number;
+    cost: number[];
+    attribute: number;
+    execution: {
+      executeTiming: {
+        description: TLanguageObject;
+        id: number;
+      };
+      executeLimitCounts: number[];
+      firstExecutableTurns: number[];
+      recastTurns: number[];
+    };
+    params: TSkillParam[];
+  } | null;
 };
 
 type TAccessoryList = Record<string, TAccessoryBasicInfo>;

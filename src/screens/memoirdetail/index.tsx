@@ -19,7 +19,7 @@ import {
   TouchableRipple,
   useTheme,
 } from 'react-native-paper';
-import type {ImageProps} from 'react-native';
+import type {OnLoadEvent} from 'react-native-fast-image';
 import type {RootStackScreenProps} from 'typings/navigation';
 
 const RARITY_HEIGHT = 216 / 17;
@@ -58,12 +58,10 @@ const MemoirDetailScreen = ({
     loadData();
   }, []);
 
-  const onLoad: ImageProps['onLoad'] = e =>
+  const onLoad = (e: OnLoadEvent) =>
     setRaritySize({
       height: RARITY_HEIGHT,
-      width:
-        (e.nativeEvent.source.width * RARITY_HEIGHT) /
-        e.nativeEvent.source.height,
+      width: (e.nativeEvent.width * RARITY_HEIGHT) / e.nativeEvent.height,
     });
 
   const releasedJA = memoir && dayjs(memoir.basicInfo.released.ja * 1000);
@@ -79,16 +77,16 @@ const MemoirDetailScreen = ({
           <Text className="text-center" variant="headlineSmall">
             {memoir.basicInfo.name.en || memoir.basicInfo.name.ja}
           </Text>
-          <View className="aspect-memoir w-72 self-center">
+          <View className="mt-3 aspect-memoir w-72 self-center">
             <FastImage
               className="aspect-memoir w-72 self-center rounded-xl"
               source={{uri: imgMemoirBig(memoir.basicInfo.cardID)}}
             />
-            <Image
+            <FastImage
               className="absolute aspect-memoir w-72 self-center"
               source={frame}
             />
-            <Image
+            <FastImage
               className="absolute bottom-1 left-1"
               resizeMode="contain"
               source={rarity(memoir.basicInfo.rarity)}
@@ -166,7 +164,7 @@ const MemoirDetailScreen = ({
           <Text className="text-center" variant="titleMedium">
             {t('auto-skills')}
           </Text>
-          <Surface className="my-3 rounded" elevation={3}>
+          <Surface className="my-3 rounded p-3" elevation={3}>
             <Text variant="bodyMedium">
               {memoir.skill.type.en || memoir.skill.type.ja}
             </Text>
@@ -174,12 +172,12 @@ const MemoirDetailScreen = ({
               return <SkillParam key={`skill_${idx}`} skillParam={p} />;
             })}
           </Surface>
-          {memoir.activeSkill !== 0 && (
+          {!!memoir.activeSkill && (
             <>
               <Text className="text-center" variant="titleMedium">
                 {t('cut-in-skill')}
               </Text>
-              <Surface className="my-3 rounded" elevation={3}>
+              <Surface className="my-3 rounded p-3" elevation={3}>
                 <View
                   className="flex-row flex-wrap items-center justify-between"
                   style={borderBottomColor}>
@@ -219,7 +217,7 @@ const MemoirDetailScreen = ({
           <Text className="text-center" variant="titleMedium">
             {t('introduction')}
           </Text>
-          <Surface className="my-3 rounded" elevation={3}>
+          <Surface className="my-3 rounded p-3" elevation={3}>
             <Text variant="bodyMedium">
               {memoir.basicInfo.profile.en || memoir.basicInfo.profile.ja}
             </Text>
