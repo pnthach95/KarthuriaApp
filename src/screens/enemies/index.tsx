@@ -1,4 +1,5 @@
 import {BottomSheetModal, BottomSheetScrollView} from '@gorhom/bottom-sheet';
+import {FlashList} from '@shopify/flash-list';
 import API, {links} from 'api';
 import {iconAttribute, imgEnemy} from 'api/images';
 import ErrorView from 'components/errorview';
@@ -8,17 +9,19 @@ import CustomBackground from 'components/sheet/background';
 import CustomHandle from 'components/sheet/handle';
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {FlatList, Image, View} from 'react-native';
+import {Image, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {Button, FAB, Text, TouchableRipple, useTheme} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import AppStyles from 'theme/styles';
+import {useImmer} from 'use-immer';
+import type {ListRenderItem} from '@shopify/flash-list';
 import type {RootStackScreenProps} from 'typings/navigation';
 
 const keyExtractor = ({basicInfo}: TEnemyBasicInfo) =>
   `en_${basicInfo.enemyID}`;
 
-const Enemies = ({navigation}: RootStackScreenProps<'Enemies'>) => {
+const EnemiesScreen = ({navigation}: RootStackScreenProps<'Enemies'>) => {
   const {t} = useTranslation();
   const insets = useSafeAreaInsets();
   const {colors} = useTheme();
@@ -31,13 +34,10 @@ const Enemies = ({navigation}: RootStackScreenProps<'Enemies'>) => {
   /** List for render */
   const [reList, setREList] = useState<TEnemyBasicInfo[]>([]);
   /** Filter */
-  const [filter, setFilter] = useState({
+  const [filter, setFilter] = useImmer({
     elements: [true, true, true, true, true, true, true],
     type: [true, true],
-  });
-  /** State for select/deselect all button */
-  const [filterAll, setFilterAll] = useState({
-    elements: true,
+    all: true,
   });
   /** Bottom inset for iOS */
   const bottom = {
@@ -78,32 +78,27 @@ const Enemies = ({navigation}: RootStackScreenProps<'Enemies'>) => {
   const openSheet = () => bottomSheetModalRef.current?.present();
 
   const toggleAllElements = () => {
-    setFilter({
-      ...filter,
-      elements: filter.elements.map(item => !item),
-    });
-    setFilterAll({
-      elements: !filterAll.elements,
+    setFilter(draft => {
+      draft.elements = draft.elements.map(() => !draft.all);
+      draft.all = !draft.all;
     });
   };
 
   const setStageGirlType = () =>
-    setFilter({
-      ...filter,
-      type: [filter.type[0], !filter.type[1]],
+    setFilter(draft => {
+      draft.type = [draft.type[0], !draft.type[1]];
     });
 
   const setElseType = () =>
-    setFilter({
-      ...filter,
-      type: [!filter.type[0], filter.type[1]],
+    setFilter(draft => {
+      draft.type = [!draft.type[0], draft.type[1]];
     });
 
   //#endregion
 
   //#region Render enemies
 
-  const renderItem = ({item}: {item: TEnemyBasicInfo}) => {
+  const renderItem: ListRenderItem<TEnemyBasicInfo> = ({item}) => {
     const {basicInfo} = item;
     const onPress = () => {
       navigation.navigate('EnemyDetail', {id: basicInfo.enemyID});
@@ -146,14 +141,14 @@ const Enemies = ({navigation}: RootStackScreenProps<'Enemies'>) => {
   if (eList.length > 0) {
     return (
       <>
-        <FlatList
+        <FlashList
+          contentContainerStyle={bottom}
           data={reList}
-          initialNumToRender={16}
+          estimatedItemSize={96}
           keyExtractor={keyExtractor}
           ListEmptyComponent={emptyList}
           numColumns={2}
           renderItem={renderItem}
-          style={bottom}
         />
         <FAB icon="filter" style={AppStyles.fab} onPress={openSheet} />
         <BottomSheetModal
@@ -167,7 +162,7 @@ const Enemies = ({navigation}: RootStackScreenProps<'Enemies'>) => {
             <View className="mb-1 flex-row items-center justify-between">
               <Text variant="bodySmall">{t('skills')}</Text>
               <Button
-                mode={filterAll.elements ? 'contained' : 'outlined'}
+                mode={filter.all ? 'contained' : 'outlined'}
                 onPress={toggleAllElements}>
                 {t('all')}
               </Button>
@@ -178,11 +173,8 @@ const Enemies = ({navigation}: RootStackScreenProps<'Enemies'>) => {
                   backgroundColor: item ? colors.primary : undefined,
                 };
                 const onPress = () =>
-                  setFilter({
-                    ...filter,
-                    elements: filter.elements.map((v, j) =>
-                      index === j ? !v : v,
-                    ),
+                  setFilter(draft => {
+                    draft.elements[index] = !draft.elements[index];
                   });
                 return (
                   <TouchableRipple
@@ -192,7 +184,7 @@ const Enemies = ({navigation}: RootStackScreenProps<'Enemies'>) => {
                     style={bgColor}
                     onPress={onPress}>
                     <Image
-                      className="aspect-square w-[10%]"
+                      className="aspect-square w-[80%]"
                       source={{uri: iconAttribute(index + 1)}}
                     />
                   </TouchableRipple>
@@ -205,13 +197,11 @@ const Enemies = ({navigation}: RootStackScreenProps<'Enemies'>) => {
             <View className="flex-row space-x-3">
               <Button
                 mode={filter.type[1] ? 'contained' : 'outlined'}
-                uppercase={false}
                 onPress={setStageGirlType}>
                 {t('stage-girls')}
               </Button>
               <Button
                 mode={filter.type[0] ? 'contained' : 'outlined'}
-                uppercase={false}
                 onPress={setElseType}>
                 {t('else')}
               </Button>
@@ -225,6 +215,6 @@ const Enemies = ({navigation}: RootStackScreenProps<'Enemies'>) => {
   return <ErrorView />;
 };
 
-Enemies.whyDidYouRender = true;
+EnemiesScreen.whyDidYouRender = true;
 
-export default Enemies;
+export default EnemiesScreen;
