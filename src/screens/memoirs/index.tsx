@@ -204,11 +204,12 @@ const MemoirsScreen = ({
             />
           </View>
           <Image
+            className="mt-1"
             resizeMode="contain"
             source={rarity(item.basicInfo.rarity)}
             style={AppStyles.rarityImg}
           />
-          <View className="flex-row flex-wrap items-center justify-center">
+          <View className="my-1 flex-row flex-wrap items-center justify-center">
             {[
               ...new Set([
                 ...new Set(item.skill),
