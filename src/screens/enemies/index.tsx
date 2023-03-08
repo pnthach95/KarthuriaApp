@@ -2,6 +2,7 @@ import {BottomSheetModal, BottomSheetScrollView} from '@gorhom/bottom-sheet';
 import {FlashList} from '@shopify/flash-list';
 import API, {links} from 'api';
 import {iconAttribute, imgEnemy} from 'api/images';
+import EmptyList from 'components/emptylist';
 import ErrorView from 'components/errorview';
 import Kirin from 'components/kirin';
 import CustomBackdrop from 'components/sheet/backdrop';
@@ -124,14 +125,6 @@ const EnemiesScreen = ({navigation}: RootStackScreenProps<'Enemies'>) => {
     );
   };
 
-  const emptyList = () => {
-    return (
-      <View className="mt-16 flex-1 items-center justify-center">
-        <Text>{t('no-data')}</Text>
-      </View>
-    );
-  };
-
   //#endregion
 
   if (loading) {
@@ -146,7 +139,7 @@ const EnemiesScreen = ({navigation}: RootStackScreenProps<'Enemies'>) => {
           data={reList}
           estimatedItemSize={96}
           keyExtractor={keyExtractor}
-          ListEmptyComponent={emptyList}
+          ListEmptyComponent={EmptyList}
           numColumns={2}
           renderItem={renderItem}
         />

@@ -3,6 +3,7 @@ import API, {links} from 'api';
 import {iconAttribute, iconSkill, imgStageGirl} from 'api/images';
 import {attackType, charaImgs, position, rarity} from 'assets';
 import frame from 'assets/common/frame_stage_girl.png';
+import EmptyList from 'components/emptylist';
 import ErrorView from 'components/errorview';
 import Kirin from 'components/kirin';
 import Separator from 'components/separator';
@@ -297,14 +298,6 @@ const StageGirlsScreen = ({
     );
   };
 
-  const emptyList = () => {
-    return (
-      <View className="flex-1 items-center justify-center">
-        <Text>{t('no-data')}</Text>
-      </View>
-    );
-  };
-
   //#endregion
 
   //#region Render character filter
@@ -489,7 +482,7 @@ const StageGirlsScreen = ({
           data={rsgList}
           initialNumToRender={12}
           keyExtractor={sgKeyExtractor}
-          ListEmptyComponent={emptyList}
+          ListEmptyComponent={EmptyList}
           numColumns={2}
           renderItem={sgRenderItem}
           style={top}

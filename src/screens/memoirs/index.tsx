@@ -5,6 +5,7 @@ import {iconSkill, imgMemoir} from 'api/images';
 import {charaImgs, rarity} from 'assets';
 import cutin from 'assets/common/cutin.png';
 import frame from 'assets/common/frame_equip.png';
+import EmptyList from 'components/emptylist';
 import ErrorView from 'components/errorview';
 import Kirin from 'components/kirin';
 import CustomBackdrop from 'components/sheet/backdrop';
@@ -232,14 +233,6 @@ const MemoirsScreen = ({
     );
   };
 
-  const emptyList = () => {
-    return (
-      <View style={[AppStyles.flex1, AppStyles.center, AppStyles.marginTop]}>
-        <Text>{t('no-data')}</Text>
-      </View>
-    );
-  };
-
   //#endregion
 
   //#region Render character filter
@@ -352,7 +345,7 @@ const MemoirsScreen = ({
           data={rmList}
           estimatedItemSize={96}
           keyExtractor={mKeyExtractor}
-          ListEmptyComponent={emptyList}
+          ListEmptyComponent={EmptyList}
           numColumns={2}
           renderItem={mRenderItem}
         />
