@@ -3,32 +3,18 @@ import {iconSchool, imgCharater} from 'api/images';
 import ErrorView from 'components/errorview';
 import Kirin from 'components/kirin';
 import React, {useCallback, useEffect, useState} from 'react';
-import {FlatList, StyleSheet, View} from 'react-native';
+import {FlatList, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {Text, TouchableRipple} from 'react-native-paper';
-import {responsiveScreenWidth} from 'react-native-responsive-dimensions';
+import {Text, TouchableRipple, useTheme} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import AppStyles, {padding} from 'theme/styles';
 import type {RootStackScreenProps} from 'typings/navigation';
-
-const styles = StyleSheet.create({
-  img: {
-    height: 100,
-    width: responsiveScreenWidth(50),
-  },
-  item: {
-    paddingBottom: padding,
-  },
-  schoolIcon: {
-    marginRight: padding / 2,
-  },
-});
 
 const keyExtractor = ({basicInfo: {charaID}}: TCharaBasicInfo) =>
   `chID_${charaID}`;
 
 const CharactersScreen = ({navigation}: RootStackScreenProps<'Characters'>) => {
   const insets = useSafeAreaInsets();
+  const {colors} = useTheme();
   const [loading, setLoading] = useState(true);
   const [charaList, setCharaList] = useState<TCharaBasicInfo[]>([]);
   const bottom = {
@@ -60,16 +46,20 @@ const CharactersScreen = ({navigation}: RootStackScreenProps<'Characters'>) => {
         });
 
       return (
-        <TouchableRipple onPress={goToDetail}>
-          <View style={[AppStyles.center, styles.item]}>
+        <TouchableRipple
+          className="flex-1 border"
+          style={{borderColor: colors.outlineVariant}}
+          onPress={goToDetail}>
+          <View className="items-center justify-center pb-3">
             <FastImage
+              className="aspect-video h-[100px]"
+              resizeMode="contain"
               source={{uri: imgCharater(charaID)}}
-              style={styles.img}
             />
-            <View style={AppStyles.row}>
+            <View className="flex-row space-x-1">
               <FastImage
+                className="aspect-square w-5"
                 source={{uri: iconSchool(school_id)}}
-                style={[AppStyles.square20, styles.schoolIcon]}
               />
               <Text>{name_ruby.ja}</Text>
             </View>
@@ -87,7 +77,6 @@ const CharactersScreen = ({navigation}: RootStackScreenProps<'Characters'>) => {
   if (charaList.length > 0) {
     return (
       <FlatList
-        columnWrapperStyle={AppStyles.columnWrapper}
         contentContainerStyle={bottom}
         data={charaList}
         keyExtractor={keyExtractor}

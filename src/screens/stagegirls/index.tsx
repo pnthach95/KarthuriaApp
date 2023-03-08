@@ -3,6 +3,7 @@ import API, {links} from 'api';
 import {iconAttribute, iconSkill, imgStageGirl} from 'api/images';
 import {attackType, charaImgs, position, rarity} from 'assets';
 import frame from 'assets/common/frame_stage_girl.png';
+import EmptyList from 'components/emptylist';
 import ErrorView from 'components/errorview';
 import Kirin from 'components/kirin';
 import Separator from 'components/separator';
@@ -44,6 +45,9 @@ const styles = StyleSheet.create({
     height: 17,
     right: 0,
     width: 20,
+  },
+  charContainer: {
+    paddingBottom: 20,
   },
   positionImg: {
     height: (responsiveWidth(10) * 2) / 3,
@@ -254,58 +258,46 @@ const StageGirlsScreen = ({
     };
 
     return (
-      <TouchableRipple style={AppStyles.flex1} onPress={onPress}>
-        <View
-          style={[
-            AppStyles.listItem,
-            AppStyles.spaceBetween,
-            {borderColor: colors.border},
-          ]}>
-          <Text style={AppStyles.centerText}>
+      <TouchableRipple
+        className="flex-1 border p-1"
+        style={{borderColor: colors.outlineVariant}}
+        onPress={onPress}>
+        <>
+          <Text className="text-center">
             {basicInfo.name.en || basicInfo.name.ja}
           </Text>
-          <View style={AppStyles.center}>
-            <View style={AppStyles.smallImg}>
-              <FastImage
-                source={{uri: imgStageGirl(basicInfo.cardID)}}
-                style={AppStyles.smallImg}
-              />
-              <Image
-                source={frame}
-                style={[AppStyles.smallImg, AppStyles.absolute]}
-              />
-              <Image
-                source={{uri: iconAttribute(base.attribute)}}
-                style={[AppStyles.square20, AppStyles.absolute]}
-              />
-              <Image
-                source={position(base.roleIndex.role)}
-                style={[styles.role, AppStyles.absolute]}
-              />
-              <Image
-                resizeMode="contain"
-                source={rarity(basicInfo.rarity)}
-                style={[AppStyles.rarityImg, styles.rarity, AppStyles.absolute]}
-              />
-              <Image
-                source={attackType(base.attackType)}
-                style={[styles.attackType, AppStyles.absolute]}
-              />
-            </View>
-            <Text style={AppStyles.centerText}>
-              {t('total-stat', {total: stat.total})}
-            </Text>
+          <View className="aspect-stage-girl h-20 self-center">
+            <FastImage
+              className="aspect-stage-girl h-20"
+              source={{uri: imgStageGirl(basicInfo.cardID)}}
+            />
+            <FastImage
+              className="absolute aspect-stage-girl h-20"
+              source={frame}
+            />
+            <Image
+              source={{uri: iconAttribute(base.attribute)}}
+              style={[AppStyles.square20, AppStyles.absolute]}
+            />
+            <Image
+              source={position(base.roleIndex.role)}
+              style={[styles.role, AppStyles.absolute]}
+            />
+            <Image
+              resizeMode="contain"
+              source={rarity(basicInfo.rarity)}
+              style={[AppStyles.rarityImg, styles.rarity, AppStyles.absolute]}
+            />
+            <Image
+              source={attackType(base.attackType)}
+              style={[styles.attackType, AppStyles.absolute]}
+            />
           </View>
-        </View>
+          <Text className="text-center">
+            {t('total-stat', {total: stat.total})}
+          </Text>
+        </>
       </TouchableRipple>
-    );
-  };
-
-  const emptyList = () => {
-    return (
-      <View style={[AppStyles.flex1, AppStyles.center, AppStyles.marginTop]}>
-        <Text>{t('no-data')}</Text>
-      </View>
     );
   };
 
@@ -493,7 +485,7 @@ const StageGirlsScreen = ({
           data={rsgList}
           initialNumToRender={12}
           keyExtractor={sgKeyExtractor}
-          ListEmptyComponent={emptyList}
+          ListEmptyComponent={EmptyList}
           numColumns={2}
           renderItem={sgRenderItem}
           style={top}
@@ -526,11 +518,13 @@ const StageGirlsScreen = ({
                   </Button>
                 </View>
                 <BottomSheetFlatList
+                  contentContainerStyle={styles.charContainer}
                   data={filter.characters}
                   ItemSeparatorComponent={Separator}
                   keyExtractor={charaKeyExtractor}
                   numColumns={7}
                   renderItem={charaRenderItem}
+                  showsVerticalScrollIndicator={false}
                 />
               </>
             )}

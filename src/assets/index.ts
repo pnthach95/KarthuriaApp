@@ -26,6 +26,11 @@ import char402 from 'assets/characters/402.png';
 import char403 from 'assets/characters/403.png';
 import char404 from 'assets/characters/404.png';
 import char405 from 'assets/characters/405.png';
+import char406 from 'assets/characters/406.png';
+import char407 from 'assets/characters/407.png';
+import char408 from 'assets/characters/408.png';
+import char409 from 'assets/characters/409.png';
+import char410 from 'assets/characters/410.png';
 import char501 from 'assets/characters/501.png';
 import char502 from 'assets/characters/502.png';
 import char503 from 'assets/characters/503.png';
@@ -99,6 +104,11 @@ export const charaImgs = [
   char403,
   char404,
   char405,
+  char406,
+  char407,
+  char408,
+  char409,
+  char410,
   char501,
   char502,
   char503,

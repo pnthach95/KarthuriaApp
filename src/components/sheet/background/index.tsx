@@ -15,7 +15,9 @@ const CustomBackground = ({style}: BottomSheetBackgroundProps) => {
   const {colors} = useTheme();
 
   return (
-    <View style={[style, styles.radius, {backgroundColor: colors.card}]} />
+    <View
+      style={[style, styles.radius, {backgroundColor: colors.background}]}
+    />
   );
 };
 

@@ -1,16 +1,21 @@
 import {useBottomSheetModal} from '@gorhom/bottom-sheet';
 import React from 'react';
 import {View} from 'react-native';
-import {Colors, IconButton} from 'react-native-paper';
-import AppStyles from 'theme/styles';
+import {IconButton, useTheme} from 'react-native-paper';
 
 const CustomHandle = () => {
   const {dismissAll} = useBottomSheetModal();
+  const {colors} = useTheme();
 
   return (
     <View>
-      <View style={AppStyles.selfEnd}>
-        <IconButton color={Colors.red600} icon="close" onPress={dismissAll} />
+      <View className="self-end">
+        <IconButton
+          containerColor={colors.errorContainer}
+          icon="close"
+          iconColor={colors.error}
+          onPress={dismissAll}
+        />
       </View>
     </View>
   );

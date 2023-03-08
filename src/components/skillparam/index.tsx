@@ -1,85 +1,77 @@
 import {iconFieldEffect, iconSkill} from 'api/images';
-import Separator from 'components/separator';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
-import {StyleSheet, View} from 'react-native';
+import {View} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {Colors, Divider, Paragraph} from 'react-native-paper';
+import {Divider, Text, useTheme} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import AppStyles from 'theme/styles';
 
 type Props = {
   skillParam: TSkillParam;
 };
 
-const styles = StyleSheet.create({
-  extra: {
-    color: Colors.red500,
-  },
-});
-
 const SkillParam = ({skillParam}: Props) => {
   const {t} = useTranslation();
+  const {colors} = useTheme();
 
   return (
     <>
-      <Separator />
+      <View className="h-3" />
       <Divider />
-      <Separator />
+      <View className="h-3" />
       {skillParam.type === 'fieldEffect' && (
         <>
-          <Paragraph>{t('stage-effect')}</Paragraph>
-          <Separator />
+          <Text variant="bodyMedium">{t('stage-effect')}</Text>
+          <View className="h-3" />
         </>
       )}
-      <View style={AppStyles.row}>
+      <View className="flex-row space-x-3">
         <FastImage
+          className="aspect-square w-10"
           source={{
             uri:
               skillParam.type === 'normal'
                 ? iconSkill(skillParam.icon)
                 : iconFieldEffect(skillParam.icon),
           }}
-          style={[AppStyles.square40, AppStyles.marginRight]}
         />
-        <View style={AppStyles.flex1}>
-          <Paragraph>
+        <View className="flex-1">
+          <Text variant="bodyMedium">
             {skillParam.description?.en || skillParam.description?.ja}
             {skillParam.descriptionExtra && (
-              <Paragraph style={styles.extra}>
-                {/* eslint-disable-next-line react-native/no-raw-text */}
+              <Text className="text-red-500" variant="bodyMedium">
                 {` (${
                   skillParam.descriptionExtra.en ||
                   skillParam.descriptionExtra.ja
                 })`}
-              </Paragraph>
+              </Text>
             )}
-          </Paragraph>
-          <View style={AppStyles.row}>
-            <Icon name="target" size={20} />
-            <Paragraph>
+          </Text>
+          <View className="flex-row">
+            <Icon color={colors.onBackground} name="target" size={20} />
+            <Text variant="bodyMedium">
               {skillParam.target.en || skillParam.target.ja}
-            </Paragraph>
+            </Text>
           </View>
           <Divider />
-          <View style={AppStyles.rowSpaceBetween}>
+          <View className="flex-1 flex-row flex-wrap items-center justify-between">
             {skillParam.accuracy && (
-              <Paragraph>
+              <Text variant="bodyMedium">
                 {t('accuracy')}
                 {skillParam.accuracy}
-              </Paragraph>
+              </Text>
             )}
             {skillParam.hits && (
-              <Paragraph>
+              <Text variant="bodyMedium">
                 {t('hits')}
                 {skillParam.hits}
-              </Paragraph>
+              </Text>
             )}
             {skillParam.duration && (
-              <Paragraph>
+              <Text variant="bodyMedium">
                 {t('duration')}
                 {skillParam.duration.en || skillParam.duration.ja}
-              </Paragraph>
+              </Text>
             )}
           </View>
         </View>

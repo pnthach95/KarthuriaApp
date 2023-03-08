@@ -3,52 +3,21 @@ import {iconAttribute, iconSkill, imgStageGirlBig} from 'api/images';
 import {attackTypeText, position, rarity} from 'assets';
 import frame from 'assets/common/frame_thumbnail_dress.png';
 import BaseScreen from 'components/basescreen';
-import Separator from 'components/separator';
 import SkillDetail from 'components/skilldetail';
 import SkillParam from 'components/skillparam';
 import dayjs from 'dayjs';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {Image, StyleSheet, View} from 'react-native';
+import {Image, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {
   Button,
-  Caption,
   DataTable,
-  Headline,
-  Paragraph,
-  Subheading,
   Surface,
   Text,
   TouchableRipple,
 } from 'react-native-paper';
-import AppStyles, {borderRadius, padding} from 'theme/styles';
 import type {RootStackScreenProps} from 'typings/navigation';
-
-const styles = StyleSheet.create({
-  attackType: {
-    height: 22.4,
-    width: 63,
-  },
-  infoBlock: {
-    borderRadius,
-    marginVertical: padding / 2,
-  },
-  padding: {
-    paddingBottom: padding,
-    paddingHorizontal: padding,
-  },
-  rarity: {
-    bottom: padding / 2,
-    left: padding / 2,
-  },
-  role: {
-    height: 80 / 3,
-    right: 0,
-    top: 40,
-    width: 40,
-  },
-});
 
 const StageGirlDetailScreen = ({
   navigation,
@@ -105,118 +74,131 @@ const StageGirlDetailScreen = ({
   return (
     <BaseScreen hasData={!!dress} loading={loading}>
       {dress && (
-        <View style={styles.padding}>
-          <Headline style={AppStyles.centerText}>
+        <View className="px-3 pb-3">
+          <Text selectable className="text-center" variant="headlineLarge">
             {dress.basicInfo.name.en || dress.basicInfo.name.ja}
-          </Headline>
+          </Text>
           {character && (
-            <TouchableRipple
-              style={AppStyles.marginBottom}
-              onPress={goToCharacterDetail}>
-              <Subheading style={AppStyles.centerText}>
+            <TouchableRipple className="mb-1" onPress={goToCharacterDetail}>
+              <Text className="text-center" variant="titleMedium">
                 {character.info.name.en || character.info.name.ja}
-              </Subheading>
+              </Text>
             </TouchableRipple>
           )}
-          <View style={AppStyles.bigImg}>
+          <View className="self-center">
             <FastImage
+              className="aspect-memoir w-72"
               source={{uri: imgStageGirlBig(dress.basicInfo.cardID || '0')}}
-              style={AppStyles.bigImg}
             />
-            <Image
+            <FastImage
+              className="absolute aspect-memoir w-72"
+              resizeMode="contain"
               source={frame}
-              style={[AppStyles.bigImg, AppStyles.absolute]}
             />
             <Image
+              className="absolute right-0 h-9 w-9"
               source={{uri: iconAttribute(dress.base.attribute)}}
-              style={[AppStyles.square40, AppStyles.right0, AppStyles.absolute]}
             />
             <Image
+              className="absolute right-0 top-10 aspect-role w-9"
+              resizeMethod="resize"
+              resizeMode="contain"
               source={position(dress.base.roleIndex.role)}
-              style={[styles.role, AppStyles.absolute]}
             />
             <Image
+              className="absolute left-1 bottom-1"
               source={rarity(dress.basicInfo.rarity)}
-              style={[styles.rarity, AppStyles.absolute]}
             />
           </View>
-          <View style={AppStyles.paddingVertical}>
-            <Surface style={[AppStyles.shadow, AppStyles.contentBlock]}>
-              <View style={[AppStyles.row, AppStyles.spaceBetween]}>
-                <Caption>{t('cost')}</Caption>
+          <View className="py-3">
+            <Surface className="my-1 rounded p-3" elevation={3}>
+              <View className="flex-row justify-between">
+                <Text variant="bodySmall">{t('cost')}</Text>
                 <Text>{dress.base.cost}</Text>
               </View>
-              <Caption>{t('release-date')}</Caption>
+              <Text variant="bodySmall">{t('release-date')}</Text>
               {releasedJA && (
-                <View style={[AppStyles.row, AppStyles.spaceBetween]}>
+                <View className="flex-row justify-between">
                   <Text>{t('japanese')}</Text>
                   <Text>{releasedJA.format('LLLL')}</Text>
                 </View>
               )}
               {releasedWW && (
-                <View style={[AppStyles.row, AppStyles.spaceBetween]}>
+                <View className="flex-row justify-between">
                   <Text>{t('worldwide')}</Text>
                   <Text>{releasedWW.format('LLLL')}</Text>
                 </View>
               )}
-              <View style={[AppStyles.row, AppStyles.spaceBetween]}>
-                <Caption>{t('attack-type')}</Caption>
+              <View className="flex-row justify-between">
+                <Text variant="bodySmall">{t('attack-type')}</Text>
                 <Image
+                  className="h-[22.4px] w-[63px]"
                   source={attackTypeText(dress.base.attackType)}
-                  style={styles.attackType}
                 />
               </View>
             </Surface>
           </View>
-          <View style={AppStyles.row}>
+          <View className="flex-row">
             <Button
+              className="flex-1"
               mode={tabIndex === 0 ? 'contained' : 'text'}
-              style={AppStyles.flex1}
               uppercase={false}
               onPress={onPressTabStats}>
               <Text>{t('stats')}</Text>
             </Button>
             <Button
+              className="flex-1"
               mode={tabIndex === 1 ? 'contained' : 'text'}
-              style={AppStyles.flex1}
               uppercase={false}
               onPress={onPressTabInfo}>
               <Text>{t('info')}</Text>
             </Button>
             <Button
+              className="flex-1"
               mode={tabIndex === 2 ? 'contained' : 'text'}
-              style={AppStyles.flex1}
               uppercase={false}
               onPress={onPressTabSkill}>
               <Text>{t('act_skill')}</Text>
             </Button>
           </View>
           {tabIndex === 0 && (
-            <View style={AppStyles.paddingVertical}>
-              <Surface style={[AppStyles.shadow, styles.infoBlock]}>
+            <View className="py-3">
+              <Surface className="my-1 rounded" elevation={3}>
                 <DataTable>
                   <DataTable.Row>
-                    <DataTable.Cell>{t('power-score-total')}</DataTable.Cell>
+                    <DataTable.Cell className="flex-[2]">
+                      {t('power-score-total')}
+                    </DataTable.Cell>
                     <DataTable.Cell numeric>{dress.stat.total}</DataTable.Cell>
                   </DataTable.Row>
                   <DataTable.Row>
-                    <DataTable.Cell>{t('hp')}</DataTable.Cell>
+                    <DataTable.Cell className="flex-[2]">
+                      {t('hp')}
+                    </DataTable.Cell>
                     <DataTable.Cell numeric>{dress.stat.hp}</DataTable.Cell>
                   </DataTable.Row>
                   <DataTable.Row>
-                    <DataTable.Cell>{t('act-power')}</DataTable.Cell>
+                    <DataTable.Cell className="flex-[2]">
+                      {t('act-power')}
+                    </DataTable.Cell>
                     <DataTable.Cell numeric>{dress.stat.atk}</DataTable.Cell>
                   </DataTable.Row>
                   <DataTable.Row>
-                    <DataTable.Cell>{t('normal-defense')}</DataTable.Cell>
+                    <DataTable.Cell className="flex-[2]">
+                      {t('normal-defense')}
+                    </DataTable.Cell>
                     <DataTable.Cell numeric>{dress.stat.pdef}</DataTable.Cell>
                   </DataTable.Row>
                   <DataTable.Row>
-                    <DataTable.Cell>{t('special-defense')}</DataTable.Cell>
+                    <DataTable.Cell className="flex-[2]">
+                      {t('special-defense')}
+                    </DataTable.Cell>
                     <DataTable.Cell numeric>{dress.stat.mdef}</DataTable.Cell>
                   </DataTable.Row>
                   <DataTable.Row>
-                    <DataTable.Cell>{t('agility')}</DataTable.Cell>
+                    <DataTable.Cell className="flex-[2]">
+                      {t('agility')}
+                    </DataTable.Cell>
                     <DataTable.Cell numeric>{dress.stat.agi}</DataTable.Cell>
                   </DataTable.Row>
                 </DataTable>
@@ -224,77 +206,82 @@ const StageGirlDetailScreen = ({
             </View>
           )}
           {tabIndex === 1 && (
-            <View style={AppStyles.paddingVertical}>
-              <Surface style={[AppStyles.shadow, AppStyles.contentBlock]}>
-                <Caption>{t('profile')}</Caption>
-                <Paragraph>
-                  {dress.basicInfo.profile.en || dress.basicInfo.profile.ja}
-                </Paragraph>
-                <Separator />
-                <Caption>{t('message')}</Caption>
-                <Paragraph>
-                  {dress.basicInfo.message.en || dress.basicInfo.message.ja}
-                </Paragraph>
-                <Separator />
-                <Caption>{t('description')}</Caption>
-                <Paragraph>
-                  {dress.basicInfo.description.en ||
-                    dress.basicInfo.description.ja}
-                </Paragraph>
+            <View className="py-3">
+              <Surface className="my-1 space-y-3 rounded p-3" elevation={3}>
+                <View>
+                  <Text variant="bodySmall">{t('profile')}</Text>
+                  <Text variant="bodyMedium">
+                    {dress.basicInfo.profile.en || dress.basicInfo.profile.ja}
+                  </Text>
+                </View>
+                <View>
+                  <Text variant="bodySmall">{t('message')}</Text>
+                  <Text variant="bodyMedium">
+                    {dress.basicInfo.message.en || dress.basicInfo.message.ja}
+                  </Text>
+                </View>
+                <View>
+                  <Text variant="bodySmall">{t('description')}</Text>
+                  <Text variant="bodyMedium">
+                    {dress.basicInfo.description.en ||
+                      dress.basicInfo.description.ja}
+                  </Text>
+                </View>
               </Surface>
             </View>
           )}
           {tabIndex === 2 && (
             <>
-              <View style={AppStyles.paddingVertical}>
-                <Subheading style={AppStyles.centerText}>
+              <View className="py-3">
+                <Text className="text-center" variant="titleMedium">
                   {t('basic-act')}
-                </Subheading>
+                </Text>
                 {Object.values(dress.act).map((act, index) => {
                   return (
                     <SkillDetail key={`act${index}`} skill={act.skillNormal} />
                   );
                 })}
               </View>
-              <View style={AppStyles.paddingVertical}>
-                <Subheading style={AppStyles.centerText}>
+              <View className="py-3">
+                <Text className="text-center" variant="titleMedium">
                   {t('climax-act')}
-                </Subheading>
+                </Text>
                 <SkillDetail skill={dress.groupSkills.climaxACT.skillNormal} />
               </View>
-              <View style={AppStyles.paddingVertical}>
-                <Subheading style={AppStyles.centerText}>
+              <View className="py-3">
+                <Text className="text-center" variant="titleMedium">
                   {t('unit-skill')}
-                </Subheading>
-                <Surface style={[AppStyles.shadow, AppStyles.contentBlock]}>
-                  <View style={AppStyles.row}>
+                </Text>
+                <Surface className="my-1 rounded p-3" elevation={3}>
+                  <View className="flex-row space-x-3">
                     <FastImage
+                      className="h-10 w-10"
                       source={{
                         uri: iconSkill(dress.groupSkills.unitSkill.icon),
                       }}
-                      style={[AppStyles.square40, AppStyles.marginRight]}
                     />
-                    <View style={AppStyles.flex1}>
-                      <Paragraph>
+                    <View className="flex-1 flex-row">
+                      <Text variant="bodyMedium">
                         {dress.groupSkills.unitSkill.description.en ||
                           dress.groupSkills.unitSkill.description.ja}
-                      </Paragraph>
+                      </Text>
                     </View>
                   </View>
                 </Surface>
               </View>
-              <View style={AppStyles.paddingVertical}>
-                <Subheading style={AppStyles.centerText}>
+              <View className="py-3">
+                <Text className="text-center" variant="titleMedium">
                   {t('auto-skills')}
-                </Subheading>
+                </Text>
                 {Object.values(dress.skills).map((autoSkill, index) => {
                   return (
                     <Surface
                       key={`autoSkill${index}`}
-                      style={[AppStyles.shadow, AppStyles.contentBlock]}>
-                      <Paragraph>
+                      className="my-1 rounded p-3"
+                      elevation={3}>
+                      <Text variant="bodyMedium">
                         {autoSkill.type.en || autoSkill.type.ja}
-                      </Paragraph>
+                      </Text>
                       {autoSkill.params.map((as, idx) => {
                         return (
                           <SkillParam
@@ -307,27 +294,27 @@ const StageGirlDetailScreen = ({
                   );
                 })}
               </View>
-              <View style={AppStyles.paddingVertical}>
-                <Subheading style={AppStyles.centerText}>
+              <View className="py-3">
+                <Text className="text-center" variant="titleMedium">
                   {t('finishing-act')}
-                </Subheading>
-                <Surface style={[AppStyles.shadow, AppStyles.contentBlock]}>
-                  <View style={AppStyles.row}>
+                </Text>
+                <Surface className="my-1 rounded p-3" elevation={3}>
+                  <View className="flex-row space-x-3">
                     <FastImage
+                      className="h-10 w-10"
                       source={{
                         uri: iconSkill(dress.groupSkills.finishACT.icon),
                       }}
-                      style={[AppStyles.square40, AppStyles.marginRight]}
                     />
-                    <View style={AppStyles.flex1}>
+                    <View className="flex-1">
                       <Text>
                         {dress.groupSkills.finishACT.name.en ||
                           dress.groupSkills.finishACT.name.ja}
                       </Text>
-                      <Caption>
+                      <Text variant="bodySmall">
                         {dress.groupSkills.finishACT.description.en ||
                           dress.groupSkills.finishACT.description.ja}
-                      </Caption>
+                      </Text>
                     </View>
                   </View>
                 </Surface>

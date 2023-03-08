@@ -4,20 +4,11 @@ import frame from 'assets/common/frame_accessory.png';
 import ErrorView from 'components/errorview';
 import Kirin from 'components/kirin';
 import React, {useEffect, useState} from 'react';
-import {FlatList, Image, StyleSheet, View} from 'react-native';
+import {FlatList, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {TouchableRipple, useTheme} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import AppStyles, {padding} from 'theme/styles';
 import type {RootStackScreenProps} from 'typings/navigation';
-
-const styles = StyleSheet.create({
-  item: {
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingBottom: padding,
-  },
-});
 
 const keyExtractor = (item: TAccessoryBasicInfo) =>
   `acc_${item.basicInfo.accID}`;
@@ -55,28 +46,35 @@ const AccessoriesScreen = ({
     };
 
     return (
-      <TouchableRipple style={AppStyles.flex1} onPress={onPress}>
-        <View
-          style={[
-            AppStyles.listItem,
-            styles.item,
-            {borderColor: colors.border},
-          ]}>
-          <View style={[AppStyles.flex1, AppStyles.center]}>
+      <TouchableRipple
+        className="flex-1 overflow-hidden border p-3"
+        style={{borderColor: colors.outlineVariant}}
+        onPress={onPress}>
+        <>
+          <View className="self-center">
             <FastImage
+              className="aspect-square w-[78px]"
               source={{uri: imgItem(item.basicInfo.iconID)}}
-              style={AppStyles.square78}
-            />
-            <Image
-              source={frame}
-              style={[AppStyles.square78, AppStyles.absolute]}
             />
             <FastImage
-              source={{uri: imgStageGirl(item.basicInfo.cards[0])}}
-              style={[AppStyles.stageGirlBottomLeft, AppStyles.absolute]}
+              className="absolute aspect-square w-[78px]"
+              source={frame}
             />
           </View>
-        </View>
+          {item.basicInfo.cards.length > 0 && (
+            <View className="mt-3 flex-row justify-center">
+              {item.basicInfo.cards.map(c => {
+                return (
+                  <FastImage
+                    key={`asg_${c}`}
+                    className="aspect-stage-girl w-7 rounded"
+                    source={{uri: imgStageGirl(c)}}
+                  />
+                );
+              })}
+            </View>
+          )}
+        </>
       </TouchableRipple>
     );
   };
@@ -94,6 +92,7 @@ const AccessoriesScreen = ({
         keyExtractor={keyExtractor}
         numColumns={2}
         renderItem={renderItem}
+        showsVerticalScrollIndicator={false}
       />
     );
   }

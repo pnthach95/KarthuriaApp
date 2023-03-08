@@ -2,22 +2,13 @@ import API, {links} from 'api';
 import {iconSchool} from 'api/images';
 import {charaBase, charaPortrait} from 'api/images';
 import BaseScreen from 'components/basescreen';
-import Separator from 'components/separator';
 import dayjs from 'dayjs';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {StyleSheet, View} from 'react-native';
+import {View} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {Caption, Headline, Paragraph} from 'react-native-paper';
-import AppStyles from 'theme/styles';
+import {Text} from 'react-native-paper';
 import type {RootStackScreenProps} from 'typings/navigation';
-
-const styles = StyleSheet.create({
-  portrait: {
-    height: 336,
-    width: 212.8,
-  },
-});
 
 const CharacterDetailScreen = ({
   route,
@@ -55,72 +46,82 @@ const CharacterDetailScreen = ({
     <BaseScreen hasData={!!character} loading={loading}>
       {character && (
         <>
-          <Headline style={AppStyles.centerText}>
+          <Text className="mb-3 text-center" variant="headlineLarge">
             {character.info.name.en || character.info.name.ja}
-          </Headline>
-          <View style={AppStyles.center}>
+          </Text>
+          <View className="mb-3 items-center justify-center">
             <FastImage
+              className="aspect-character-portrait h-[336px]"
               source={{uri: charaBase(character.basicInfo.charaID)}}
-              style={styles.portrait}
             />
             <FastImage
+              className="absolute aspect-character-portrait h-[336px]"
               source={{uri: charaPortrait(character.basicInfo.charaID)}}
-              style={[styles.portrait, AppStyles.absolute]}
             />
           </View>
-          <View style={AppStyles.padding}>
-            <Caption>{t('birthday')}</Caption>
-            <Paragraph>{birthday}</Paragraph>
-            <Separator height={10} />
-            <Caption>{t('voice-actor')}</Caption>
-            <Paragraph>
-              {character.info.cv.en || character.info.cv.ja}
-            </Paragraph>
-            <Separator height={10} />
-            <View style={AppStyles.rowSpaceBetween}>
+          <View className="space-y-3 p-3">
+            <View>
+              <Text variant="bodySmall">{t('birthday')}</Text>
+              <Text variant="bodyMedium">{birthday}</Text>
+            </View>
+            <View>
+              <Text variant="bodySmall">{t('voice-actor')}</Text>
+              <Text variant="bodyMedium">
+                {character.info.cv.en || character.info.cv.ja}
+              </Text>
+            </View>
+            <View className="flex-row items-center justify-between">
               <View>
-                <Caption>{t('school')}</Caption>
-                <Paragraph>
+                <Text variant="bodySmall">{t('school')}</Text>
+                <Text variant="bodyMedium">
                   {character.info.department_1.en ||
                     character.info.department_1.ja}
-                </Paragraph>
+                </Text>
               </View>
               <FastImage
+                className="aspect-square w-10"
                 source={{uri: iconSchool(character.basicInfo.school_id)}}
-                style={AppStyles.square40}
               />
             </View>
-            <Separator height={10} />
-            <Caption>{t('department')}</Caption>
-            <Paragraph>
-              {character.info.department_2.en || character.info.department_2.ja}
-            </Paragraph>
-            <Separator height={10} />
-            <Caption>{t('liked-food')}</Caption>
-            <Paragraph>
-              {character.info.like_foods.en || character.info.like_foods.ja}
-            </Paragraph>
-            <Separator height={10} />
-            <Caption>{t('disliked-food')}</Caption>
-            <Paragraph>
-              {character.info.dislike_foods.en ||
-                character.info.dislike_foods.ja}
-            </Paragraph>
-            <Separator height={10} />
-            <Caption>{t('likes')}</Caption>
-            <Paragraph>
-              {character.info.likes.en || character.info.likes.ja}
-            </Paragraph>
-            <Separator height={10} />
-            <Caption>{t('dislikes')}</Caption>
-            <Paragraph>
-              {character.info.dislikes.en || character.info.dislikes.ja}
-            </Paragraph>
-            <Separator height={10} />
-            <Caption>{t('introduction')}</Caption>
-            <Paragraph>
-              {character.info.introduction.en || character.info.introduction.ja}
-            </Paragraph>
+            <View>
+              <Text variant="bodySmall">{t('department')}</Text>
+              <Text variant="bodyMedium">
+                {character.info.department_2.en ||
+                  character.info.department_2.ja}
+              </Text>
+            </View>
+            <View>
+              <Text variant="bodySmall">{t('liked-food')}</Text>
+              <Text variant="bodyMedium">
+                {character.info.like_foods.en || character.info.like_foods.ja}
+              </Text>
+            </View>
+            <View>
+              <Text variant="bodySmall">{t('disliked-food')}</Text>
+              <Text variant="bodyMedium">
+                {character.info.dislike_foods.en ||
+                  character.info.dislike_foods.ja}
+              </Text>
+            </View>
+            <View>
+              <Text variant="bodySmall">{t('likes')}</Text>
+              <Text variant="bodyMedium">
+                {character.info.likes.en || character.info.likes.ja}
+              </Text>
+            </View>
+            <View>
+              <Text variant="bodySmall">{t('dislikes')}</Text>
+              <Text variant="bodyMedium">
+                {character.info.dislikes.en || character.info.dislikes.ja}
+              </Text>
+            </View>
+            <View>
+              <Text variant="bodySmall">{t('introduction')}</Text>
+              <Text variant="bodyMedium">
+                {character.info.introduction.en ||
+                  character.info.introduction.ja}
+              </Text>
+            </View>
           </View>
         </>
       )}

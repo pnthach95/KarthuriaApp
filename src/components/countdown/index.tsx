@@ -1,15 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {TextStyle} from 'react-native';
 import {Text} from 'react-native-paper';
 
 type Props = {
   miliseconds: number;
   interval?: number;
-  style?: TextStyle;
+  center?: boolean;
+  right?: boolean;
 };
 
-const Countdown = ({miliseconds, interval = 1000, style}: Props) => {
+const Countdown = ({miliseconds, interval = 1000, center, right}: Props) => {
   const {t} = useTranslation();
   const [remaining, setRemaining] = useState(miliseconds);
 
@@ -42,7 +42,11 @@ const Countdown = ({miliseconds, interval = 1000, style}: Props) => {
     };
   });
 
-  return <Text style={style}>{getFormattedTime(remaining)}</Text>;
+  return (
+    <Text className={center ? 'text-center' : right ? 'text-right' : undefined}>
+      {getFormattedTime(remaining)}
+    </Text>
+  );
 };
 
 Countdown.whyDidYouRender = true;

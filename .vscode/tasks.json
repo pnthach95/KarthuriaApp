@@ -79,6 +79,16 @@
       "osx": {
         "command": "npx jetify && cd android && ./gradlew bundleRelease"
       }
+    },
+    {
+      "label": "Install debug APK",
+      "type": "shell",
+      "command": "cd android/app/build/outputs/apk/debug && adb install app-debug.apk"
+    },
+    {
+      "label": "Install release APK",
+      "type": "shell",
+      "command": "cd android/app/build/outputs/apk/release && adb install app-release.apk"
     }
   ]
 }

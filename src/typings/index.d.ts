@@ -153,19 +153,18 @@ type TSkillsOnFilter = Record<string, boolean>;
 type TSkillNames = Record<string, {[L in TLanguage]: string[]}>;
 
 type TAct = {
-  normalSkill: TNormalSkill;
-  changeSkill: number | null;
+  skillNormal: TNormalSkill;
+  skillChange: number | null;
 };
 
 type TNormalSkill = {
-  iconID: number;
-  cost: number;
-  name: TLanguageObject;
-  description: TLanguageObject;
   attribute: number;
-  skillInfo: string;
-  skillCycle: string;
-  skillHitRate: Record<string, number>;
+  cost: number;
+  icon: number;
+  id: number;
+  multiple: boolean;
+  name: TLanguageObject;
+  params: TSkillParam[];
 };
 
 type TSkillObject = {
@@ -178,16 +177,16 @@ type TSkillObject = {
 type TEquipList = Record<string, TEquipBasicInfo>;
 
 type TEquipBasicInfo = {
+  activeSkill: number[] | null;
   basicInfo: {
     cardID: string;
-    rarity: number;
-    charas: string | number[];
+    charas: number[] | null;
     name: TLanguageObject;
     profile: TLanguageObject;
+    rarity: number;
     released: TReleased;
   };
-  skill: TSkillObject;
-  activeSkill: 0 | 1;
+  skill: number[];
 };
 
 type TEquip = {
@@ -204,23 +203,21 @@ type TEquip = {
     total: number;
   };
   skill: TSkillObject;
-  activeSkill:
-    | {
-        icon: number;
-        cost: number[];
-        attribute: number;
-        execution: {
-          executeTiming: {
-            description: TLanguageObject;
-            id: number;
-          };
-          executeLimitCounts: number[];
-          firstExecutableTurns: number[];
-          recastTurns: number[];
-        };
-        params: TSkillParam[];
-      }
-    | 0;
+  activeSkill: {
+    icon: number;
+    cost: number[];
+    attribute: number;
+    execution: {
+      executeTiming: {
+        description: TLanguageObject;
+        id: number;
+      };
+      executeLimitCounts: number[];
+      firstExecutableTurns: number[];
+      recastTurns: number[];
+    };
+    params: TSkillParam[];
+  } | null;
 };
 
 type TAccessoryList = Record<string, TAccessoryBasicInfo>;
@@ -245,10 +242,19 @@ type TAccessory = {
   };
   skillInfo: {
     skill: {
-      normalSkill: TNormalSkill | null;
-      changeSkill: number;
-    };
+      skillNormal: TNormalSkill | null;
+      skillChange: number | null;
+    } | null;
     skillSlot: number;
+    autoSkills:
+      | {
+          id: number;
+          icon: number;
+          type: TLanguageObject;
+          params: TSkillParam[];
+          releaseLimitbreak: number;
+        }[]
+      | null;
   };
   stat: TBasicStat & {
     /** Agility */
@@ -264,15 +270,15 @@ type TEnemyList = Record<string, TEnemyBasicInfo>;
 
 type TEnemyBasicInfo = {
   basicInfo: {
+    attribute: number;
     enemyID: string;
     icon: number;
-    rarity: number;
-    name: TLanguageObject;
-    attribute: number;
     /** Enemy type:
      * - 1: stage girl
      * - 0: else */
     isDress: 0 | 1;
+    name: TLanguageObject;
+    rarity: number;
   };
 };
 
@@ -280,7 +286,7 @@ type TEnemy = {
   basicInfo: TEnemyBasicInfo['basicInfo'] & {
     personality: TLanguageObject;
   };
-  skills: Record<string, TAct>;
+  skills: TAct[];
 };
 
 type TCurrentEvent = {
@@ -325,14 +331,14 @@ type TBasicStat = {
 };
 
 type TSkillParam = {
-  icon: number;
-  type: TSkillType;
-  hits: number | null;
-  duration: TLanguageObject | null;
   accuracy?: number | null;
-  target: TLanguageObject;
   description: TLanguageObject | null;
   descriptionExtra: TLanguageObject | null;
+  duration: TLanguageObject | null;
+  hits: number | null;
+  icon: number;
+  target: TLanguageObject;
+  type: TSkillType;
 };
 
 type TSkillNormal = {

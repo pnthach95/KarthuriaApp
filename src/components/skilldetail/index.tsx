@@ -3,7 +3,6 @@ import React from 'react';
 import {useTranslation} from 'react-i18next';
 import {View} from 'react-native';
 import {Surface, Text} from 'react-native-paper';
-import AppStyles from 'theme/styles';
 
 type Props = {
   skill: TSkillNormal;
@@ -13,10 +12,10 @@ const SkillDetail = ({skill}: Props) => {
   const {t} = useTranslation();
 
   return (
-    <Surface style={[AppStyles.shadow, AppStyles.contentBlock]}>
-      <View style={AppStyles.flex1}>
-        <View style={AppStyles.row}>
-          <View style={AppStyles.flex1}>
+    <Surface className="my-2 space-y-3 rounded-md p-3" elevation={3}>
+      <View className="flex-1">
+        <View className="flex-row">
+          <View className="flex-1">
             <Text>{skill.name.en || skill.name.ja}</Text>
           </View>
           <Text>
