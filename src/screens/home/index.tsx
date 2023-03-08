@@ -6,7 +6,6 @@ import {
   imgEvent,
   imgItem,
   imgRogue,
-  imgStageGirl,
 } from 'api/images';
 import frame from 'assets/common/frame_accessory.png';
 import icon from 'assets/common/icon.png';
@@ -386,12 +385,6 @@ const MainScreen = ({navigation}: MainBottomTabScreenProps<'MainScreen'>) => {
                                   className="absolute aspect-square w-[78px]"
                                   resizeMode="contain"
                                   source={frame}
-                                />
-                                <FastImage
-                                  className="absolute left-[-5px] bottom-[-5px] aspect-square w-[30px] rounded"
-                                  source={{
-                                    uri: imgStageGirl(findA.basicInfo.cards[0]),
-                                  }}
                                 />
                               </>
                             </TouchableRipple>
