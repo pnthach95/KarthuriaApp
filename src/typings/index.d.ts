@@ -180,7 +180,7 @@ type TEquipBasicInfo = {
   activeSkill: number[] | null;
   basicInfo: {
     cardID: string;
-    charas: number[];
+    charas: number[] | null;
     name: TLanguageObject;
     profile: TLanguageObject;
     rarity: number;

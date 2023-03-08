@@ -46,6 +46,9 @@ const styles = StyleSheet.create({
     right: 0,
     width: 20,
   },
+  charContainer: {
+    paddingBottom: 20,
+  },
   positionImg: {
     height: (responsiveWidth(10) * 2) / 3,
     width: responsiveWidth(10),
@@ -515,11 +518,13 @@ const StageGirlsScreen = ({
                   </Button>
                 </View>
                 <BottomSheetFlatList
+                  contentContainerStyle={styles.charContainer}
                   data={filter.characters}
                   ItemSeparatorComponent={Separator}
                   keyExtractor={charaKeyExtractor}
                   numColumns={7}
                   renderItem={charaRenderItem}
+                  showsVerticalScrollIndicator={false}
                 />
               </>
             )}

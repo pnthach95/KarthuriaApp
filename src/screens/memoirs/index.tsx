@@ -8,6 +8,7 @@ import frame from 'assets/common/frame_equip.png';
 import EmptyList from 'components/emptylist';
 import ErrorView from 'components/errorview';
 import Kirin from 'components/kirin';
+import Separator from 'components/separator';
 import CustomBackdrop from 'components/sheet/backdrop';
 import CustomBackground from 'components/sheet/background';
 import CustomHandle from 'components/sheet/handle';
@@ -23,8 +24,9 @@ import {
   TouchableRipple,
   useTheme,
 } from 'react-native-paper';
+import {responsiveWidth} from 'react-native-responsive-dimensions';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import AppStyles from 'theme/styles';
+import AppStyles, {padding} from 'theme/styles';
 import {useImmer} from 'use-immer';
 import {characterToIndex} from 'utils';
 import type {ListRenderItem as FlashListRenderItem} from '@shopify/flash-list';
@@ -39,10 +41,16 @@ type TFilter = Record<'characters' | 'rarity', boolean[]> & {
 };
 
 const styles = StyleSheet.create({
+  charContainer: {
+    paddingBottom: 20,
+  },
   cutIn: {
     height: 22,
     marginLeft: 10,
     width: 26,
+  },
+  sheetItem: {
+    width: (responsiveWidth(100) - 2 * padding) / 7,
   },
   skillIcon: {
     height: 25,
@@ -127,7 +135,7 @@ const MemoirsScreen = ({
     if (mList.length > 0) {
       const afterFilter = mList.filter(item => {
         const checkRarity = filter.rarity[item.basicInfo.rarity - 1];
-        const checkCharacter = Array.isArray(item.basicInfo.charas)
+        const checkCharacter = item.basicInfo.charas
           ? item.basicInfo.charas.reduce(
               (prev, current) =>
                 prev && filter.characters[characterToIndex(current)],
@@ -257,12 +265,14 @@ const MemoirsScreen = ({
         draft.characters[index] = !draft.characters[index];
       });
     return (
-      <TouchableRipple
-        borderless
-        style={[AppStyles.charaImgContainer, bgColor]}
-        onPress={onPress}>
-        <Image source={charaImgs[index]} style={AppStyles.squareW12} />
-      </TouchableRipple>
+      <View style={styles.sheetItem}>
+        <TouchableRipple
+          borderless
+          style={[AppStyles.center, AppStyles.charaImgContainer, bgColor]}
+          onPress={onPress}>
+          <Image source={charaImgs[index]} style={AppStyles.squareW12} />
+        </TouchableRipple>
+      </View>
     );
   };
 
@@ -378,11 +388,13 @@ const MemoirsScreen = ({
                   </Button>
                 </View>
                 <BottomSheetFlatList
-                  columnWrapperStyle={AppStyles.spaceBetween}
+                  contentContainerStyle={styles.charContainer}
                   data={filter.characters}
+                  ItemSeparatorComponent={Separator}
                   keyExtractor={charaKeyExtractor}
                   numColumns={7}
                   renderItem={charaRenderItem}
+                  showsVerticalScrollIndicator={false}
                 />
               </>
             )}

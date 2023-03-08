@@ -48,12 +48,22 @@ export const characterToIndex = (character: number): number => {
       return 22;
     case 405:
       return 23;
-    case 501:
+    case 406:
       return 24;
-    case 502:
+    case 407:
       return 25;
-    case 503:
+    case 408:
       return 26;
+    case 409:
+      return 27;
+    case 410:
+      return 28;
+    case 501:
+      return 29;
+    case 502:
+      return 30;
+    case 503:
+      return 31;
     default:
       return -1;
   }
