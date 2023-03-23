@@ -89,6 +89,11 @@
       "label": "Install release APK",
       "type": "shell",
       "command": "cd android/app/build/outputs/apk/release && adb install app-release.apk"
+    },
+    {
+      "label": "Fix Flipper",
+      "type": "shell",
+      "command": "adb shell run-as 'vn.pnthach.karthuria' rm -rf files/sonar"
     }
   ]
 }

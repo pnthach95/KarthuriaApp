@@ -5,6 +5,7 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
+    "fix-flipper": "adb shell run-as 'vn.pnthach.karthuria' rm -rf files/sonar",
     "start": "react-native start",
     "postinstall": "patch-package",
     "prepare": "husky install",
