@@ -25,6 +25,7 @@ import EnemiesScreen from 'screens/enemies';
 import EnemyDetailScreen from 'screens/enemydetail';
 import MemoirDetailScreen from 'screens/memoirdetail';
 import StageGirlDetailScreen from 'screens/stagegirldetail';
+import WidgetPreviewScreen from 'screens/widgetpreview';
 import useStore, {onSwitchMainRoute, useHydration} from 'store';
 import {Dark, Light} from 'theme';
 import Tabs from './tabs';
@@ -134,6 +135,11 @@ const Routes = () => {
                   <Stack.Screen
                     component={EnemyDetailScreen}
                     name="EnemyDetail"
+                  />
+                  <Stack.Screen
+                    component={WidgetPreviewScreen}
+                    name="WidgetPreview"
+                    options={{headerShown: true, title: 'Widget'}}
                   />
                 </Stack.Navigator>
               </NavigationContainer>

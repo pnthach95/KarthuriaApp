@@ -3,6 +3,8 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
       android:name=".MainApplication"
@@ -32,5 +34,21 @@
             <data android:host="karth.top" />
         </intent-filter>
       </activity>
+      <service
+        android:name="com.reactnativeandroidwidget.RNWidgetBackgroundTaskService"
+        android:enabled="true"
+        android:label="RNWidgetBackgroundTaskService" />
+      <receiver
+        android:name=".widget.Event"
+        android:exported="false"
+        android:label="Revue Starlight Event">
+        <intent-filter>
+          <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+          <action android:name="vn.pnthach.karthuria.WIDGET_CLICK" />
+        </intent-filter>
+        <meta-data
+          android:name="android.appwidget.provider"
+          android:resource="@xml/widgetprovider_event" />
+      </receiver>
     </application>
 </manifest>

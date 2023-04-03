@@ -5868,6 +5868,11 @@ react-is@^17.0.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
 
+react-native-android-widget@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/react-native-android-widget/-/react-native-android-widget-0.3.0.tgz#524050c8fbd8841df0cfa539f2a5700dc8618bfd"
+  integrity sha512-op/bU9HAK1PvfUGj9rcKOK47tBxNb5x0lmb77y6cGm+Y4Weocuc3u2J3UFfsOxp/sa3T1wbidVcM3jAp4Y63/Q==
+
 react-native-bootsplash@^4.5.3:
   version "4.5.3"
   resolved "https://registry.yarnpkg.com/react-native-bootsplash/-/react-native-bootsplash-4.5.3.tgz#9b55d68b9627e54daea7428f399d0e3ca3e86cc2"
