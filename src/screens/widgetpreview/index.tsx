@@ -5,12 +5,6 @@ import EventWidget from 'widgets/event';
 
 const data: TEvent[] = [
   {
-    id: 79,
-    info: 0,
-    beginAt: [1611640800],
-    endAt: [3999999999],
-  },
-  {
     id: 215,
     info: 2023032902,
     beginAt: [1680073200, 1680073201, 1680073202, 1680073203],
@@ -30,7 +24,7 @@ const WidgetPreviewScreen = () => {
       <WidgetPreview
         height={200}
         renderWidget={() => (
-          <EventWidget currentEvent={data[0]} events={data} />
+          <EventWidget currentEvent={data[0]} events={data} idx={0} />
         )}
         width={320}
       />

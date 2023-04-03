@@ -6334,6 +6334,11 @@ rn-id-blurview@^1.2.2:
   resolved "https://registry.yarnpkg.com/rn-id-blurview/-/rn-id-blurview-1.2.2.tgz#0e15fa6eeed6f98c104fb4c73f726f38fc112864"
   integrity sha512-AstQVGSory6RfFBHjVdSAz/gV2C20Det/TIX+2k2sZ4bwDcKjJ3+YDSC0Bif7bI7MWED7r6UgIbC82hVTouwOg==
 
+rn-openapp@^2.1.2:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/rn-openapp/-/rn-openapp-2.1.2.tgz#e608215df0a102df54e40b586378fddd1e53c6ba"
+  integrity sha512-YuE7Rx3smlZud58szfcplbZHqoFLVZhZdjMbTxfMj5qPeS0/k9QGFoHn+peL3VUUyK8bIFzJ2zHGm0eNzegA3w==
+
 run-parallel@^1.1.9:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/run-parallel/-/run-parallel-1.2.0.tgz#66d1368da7bdf921eb9d95bd1a9229e7f21a43ee"

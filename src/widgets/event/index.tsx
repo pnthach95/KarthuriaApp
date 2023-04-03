@@ -6,40 +6,51 @@ import {FlexWidget, ImageWidget, TextWidget} from 'react-native-android-widget';
 import type {ImageWidgetSource} from 'react-native-android-widget';
 
 type Props = {
+  idx: number;
   events?: TEvent[];
   currentEvent?: TEvent;
 };
 
-const EventWidget = ({events, currentEvent}: Props) => {
+const RATIO = 3136 / 798;
+const borderRadius = 16;
+
+const EventWidget = ({events, idx, currentEvent}: Props) => {
   if (events && currentEvent) {
     const end = currentEvent.endAt.map(i => dayjs(i * 1000));
 
     return (
       <FlexWidget
         style={{
+          height: 'match_parent',
           width: 'match_parent',
-          backgroundColor: '#fff5',
-          alignItems: 'center',
-          borderRadius: 8,
+          backgroundColor: '#fff3',
+          borderRadius,
           flexDirection: 'row',
         }}>
         <FlexWidget>
-          {events.map((_item, index) => {
+          {events.map((item, index) => {
             return (
-              <TextWidget
+              <FlexWidget
+                key={item.id.toString()}
                 clickAction={`event-${index}`}
                 clickActionData={{index}}
-                style={{padding: 8, fontSize: 20}}
-                text={`${index + 1}`}
-              />
+                style={{
+                  borderRadius,
+                  backgroundColor: idx === index ? '#fff8' : undefined,
+                }}>
+                <TextWidget
+                  style={{padding: 8, fontSize: 16}}
+                  text={`${index + 1}`}
+                />
+              </FlexWidget>
             );
           })}
         </FlexWidget>
-        <FlexWidget style={{flex: 1, padding: 8}}>
+        <FlexWidget clickAction="OPEN_APP" style={{flex: 1, padding: 8}}>
           <ImageWidget
             image={imgEvent(currentEvent.id) as ImageWidgetSource}
-            imageHeight={79.8}
-            imageWidth={313.6}
+            imageHeight={200 / RATIO}
+            imageWidth={200}
           />
           <FlexWidget
             style={{

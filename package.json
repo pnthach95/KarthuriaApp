@@ -53,6 +53,7 @@
     "react-native-svg": "^13.9.0",
     "react-native-vector-icons": "^9.2.0",
     "rn-id-blurview": "^1.2.2",
+    "rn-openapp": "^2.1.2",
     "use-immer": "^0.8.1",
     "zustand": "^4.3.6"
   },
