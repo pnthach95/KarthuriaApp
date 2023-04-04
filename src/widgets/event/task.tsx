@@ -1,12 +1,13 @@
 import API, {links} from 'api';
 import dayjs from 'dayjs';
 import React from 'react';
+import {Appearance} from 'react-native';
 import {openApp} from 'rn-openapp';
+import {MMKV} from 'store';
 import EventWidget from './index';
 import type {WidgetTaskHandlerProps} from 'react-native-android-widget';
 
 const nameToWidget = {
-  // Hello will be the **name** with which we will reference our widget.
   Event: EventWidget,
 };
 
@@ -47,6 +48,10 @@ const getData = async () => {
 };
 
 export async function widgetTaskHandler(props: WidgetTaskHandlerProps) {
+  const store = (await MMKV.getItem('karthuria')) as string;
+  const isDark =
+    (JSON.parse(store) as {state: StoreState})?.state?.options.isDark ??
+    Appearance.getColorScheme() === 'dark';
   const widgetInfo = props.widgetInfo;
   const Widget =
     nameToWidget[widgetInfo.widgetName as keyof typeof nameToWidget];
@@ -56,15 +61,18 @@ export async function widgetTaskHandler(props: WidgetTaskHandlerProps) {
       {
         const events = await getData();
         props.renderWidget(
-          <Widget currentEvent={events?.[0]} events={events} idx={0} />,
+          <Widget
+            currentEvent={events?.[0]}
+            events={events}
+            idx={0}
+            isDark={isDark}
+          />,
         );
       }
       break;
-
     case 'WIDGET_RESIZED':
       // Not needed for now
       break;
-
     case 'WIDGET_CLICK':
       if (props.clickAction === 'OPEN_APP') {
         try {
@@ -81,11 +89,11 @@ export async function widgetTaskHandler(props: WidgetTaskHandlerProps) {
             }
             events={events}
             idx={props.clickActionData?.index as number}
+            isDark={isDark}
           />,
         );
       }
       break;
-
     default:
       break;
   }

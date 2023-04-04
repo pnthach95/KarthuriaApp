@@ -6,7 +6,7 @@ import {create} from 'zustand';
 import {createJSONStorage, persist} from 'zustand/middleware';
 import type {StateStorage} from 'zustand/middleware';
 
-const MMKV = new MMKVLoader().withInstanceID('zustand').initialize();
+export const MMKV = new MMKVLoader().withInstanceID('zustand').initialize();
 
 const useStore = create<StoreState>()(
   persist(
@@ -20,7 +20,7 @@ const useStore = create<StoreState>()(
     {
       name: 'karthuria',
       version: 1,
-      storage: createJSONStorage(() => MMKV as StateStorage),
+      storage: createJSONStorage(() => MMKV as unknown as StateStorage),
       partialize: state =>
         Object.fromEntries(
           Object.entries(state).filter(([key]) => !['mainRoute'].includes(key)),

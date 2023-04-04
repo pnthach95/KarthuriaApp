@@ -7,6 +7,7 @@ import type {ImageWidgetSource} from 'react-native-android-widget';
 
 type Props = {
   idx: number;
+  isDark: boolean;
   events?: TEvent[];
   currentEvent?: TEvent;
 };
@@ -14,18 +15,25 @@ type Props = {
 const RATIO = 3136 / 798;
 const borderRadius = 16;
 
-const EventWidget = ({events, idx, currentEvent}: Props) => {
+const EventWidget = ({events, isDark, idx, currentEvent}: Props) => {
+  const backgroundColor = isDark ? '#0006' : '#fff6';
+  const buttonColor = isDark ? '#999' : '#ddd';
+  const color = isDark ? '#fff' : '#000';
+
   if (events && currentEvent) {
     const end = currentEvent.endAt.map(i => dayjs(i * 1000));
 
     return (
       <FlexWidget
+        // openApp
+        clickAction="OPEN_APP"
         style={{
           height: 'match_parent',
           width: 'match_parent',
-          backgroundColor: '#fff3',
+          backgroundColor,
           borderRadius,
           flexDirection: 'row',
+          alignItems: 'center',
         }}>
         <FlexWidget>
           {events.map((item, index) => {
@@ -36,17 +44,17 @@ const EventWidget = ({events, idx, currentEvent}: Props) => {
                 clickActionData={{index}}
                 style={{
                   borderRadius,
-                  backgroundColor: idx === index ? '#fff8' : undefined,
+                  backgroundColor: idx === index ? buttonColor : undefined,
                 }}>
                 <TextWidget
-                  style={{padding: 8, fontSize: 16}}
+                  style={{padding: 12, fontSize: 16, color}}
                   text={`${index + 1}`}
                 />
               </FlexWidget>
             );
           })}
         </FlexWidget>
-        <FlexWidget clickAction="OPEN_APP" style={{flex: 1, padding: 8}}>
+        <FlexWidget style={{flex: 1, padding: 8}}>
           <ImageWidget
             image={imgEvent(currentEvent.id) as ImageWidgetSource}
             imageHeight={200 / RATIO}
@@ -58,7 +66,7 @@ const EventWidget = ({events, idx, currentEvent}: Props) => {
               flexDirection: 'row',
               justifyContent: 'space-between',
             }}>
-            <TextWidget text="Begin" />
+            <TextWidget style={{color}} text="Begin" />
             <FlexWidget style={{flex: 1, alignItems: 'flex-end'}}>
               {[
                 ...new Set(
@@ -67,7 +75,7 @@ const EventWidget = ({events, idx, currentEvent}: Props) => {
               ].map((s, i) => (
                 <TextWidget
                   key={`${i}-${s}`}
-                  style={{textAlign: 'right'}}
+                  style={{textAlign: 'right', color}}
                   text={s}
                 />
               ))}
@@ -79,12 +87,12 @@ const EventWidget = ({events, idx, currentEvent}: Props) => {
               flexDirection: 'row',
               justifyContent: 'space-between',
             }}>
-            <TextWidget text="End" />
+            <TextWidget style={{color}} text="End" />
             <FlexWidget style={{flex: 1, alignItems: 'flex-end'}}>
               {end.map((e, i) => (
                 <TextWidget
                   key={`${i}-${e.toISOString()}`}
-                  style={{textAlign: 'right'}}
+                  style={{textAlign: 'right', color}}
                   text={e.format('llll')}
                 />
               ))}
@@ -96,14 +104,18 @@ const EventWidget = ({events, idx, currentEvent}: Props) => {
   }
 
   return (
-    <TextWidget
+    <FlexWidget
       style={{
-        fontSize: 32,
-        fontFamily: 'Inter',
-        color: '#000000',
-      }}
-      text="No event"
-    />
+        height: 'match_parent',
+        width: 'match_parent',
+        backgroundColor,
+        borderRadius,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}>
+      <TextWidget style={{fontSize: 32, color}} text="No event" />
+    </FlexWidget>
   );
 };
 
