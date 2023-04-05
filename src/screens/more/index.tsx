@@ -106,14 +106,12 @@ const MoreScreen = ({navigation}: MainBottomTabScreenProps<'MoreScreen'>) => {
         label={t('enemies')}
         onPress={goToEnemies}
       />
-      {__DEV__ && (
-        <Button
-          color={MD2Colors.lightGreen500}
-          icon="widgets"
-          label="Widget"
-          onPress={goToWidget}
-        />
-      )}
+      <Button
+        color={MD2Colors.lightGreen500}
+        icon="widgets"
+        label="Widget"
+        onPress={goToWidget}
+      />
       <View className="flex-row items-center justify-between px-3 pb-3 pt-6">
         <Text className="font-bold text-blue-600">{t('resources')}</Text>
       </View>

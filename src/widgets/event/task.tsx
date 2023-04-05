@@ -10,7 +10,7 @@ const nameToWidget = {
   Event: EventWidget,
 };
 
-const getData = async () => {
+export const getEventData = async () => {
   const response = await API.get<TCurrentEvent>(links.EVENT.WW);
   return response.data
     ? Object.values(response.data.event)
@@ -58,7 +58,7 @@ export async function widgetTaskHandler(props: WidgetTaskHandlerProps) {
   switch (props.widgetAction) {
     case 'WIDGET_ADDED':
       {
-        const events = await getData();
+        const events = await getEventData();
         props.renderWidget(
           <Widget
             currentEvent={events?.[0]}
@@ -73,7 +73,7 @@ export async function widgetTaskHandler(props: WidgetTaskHandlerProps) {
       // Not needed for now
       break;
     case 'WIDGET_CLICK':
-      const events = await getData();
+      const events = await getEventData();
       props.renderWidget(
         <Widget
           currentEvent={events?.[(props.clickActionData?.index as number) || 0]}

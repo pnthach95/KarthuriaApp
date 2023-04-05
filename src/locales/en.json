@@ -1,8 +1,8 @@
 {
   "accessories": "Accessories",
+  "accuracy": "Accuracy: ",
   "act-power": "Act Power",
   "act_skill": "ACT/Skills",
-  "accuracy": "Accuracy: ",
   "agility": "Agility",
   "all": "All",
   "animation": "Animation: ",
@@ -90,5 +90,8 @@
   "version": "Version {{version}}",
   "vi": "Tiếng Việt",
   "voice-actor": "Voice Actor",
+  "widget": {
+    "note": "You can add widget on phone home screen. However, widget cannot auto-update itself. You have to press the number button to refresh data."
+  },
   "worldwide": "Worldwide"
 }

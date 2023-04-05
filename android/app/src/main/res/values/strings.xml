@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Karthuria</string>
+    <string name="widget_event_description" translatable="false">Revue Starlight game events</string>
 </resources>

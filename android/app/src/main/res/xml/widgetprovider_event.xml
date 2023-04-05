@@ -4,6 +4,8 @@
     android:minHeight="60dp"
     android:updatePeriodMillis="0"
     android:initialLayout="@layout/rn_widget"
+    android:previewImage="@drawable/event_preview"
+    android:description="@string/widget_event_description"
     android:resizeMode="none"
     android:widgetCategory="home_screen">
 </appwidget-provider>
