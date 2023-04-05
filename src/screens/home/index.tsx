@@ -42,6 +42,8 @@ type GithubVersion = {
 };
 
 const challengeRevueSeparator = () => <View className="w-3" />;
+const keyExtractorForChallengeRevue = (item: TRogueEvent) =>
+  item.beginAt.toString();
 
 const EventImage = ({img}: {img: string}) => {
   const [uri, setURI] = useState(img);
@@ -173,7 +175,7 @@ const MainScreen = ({navigation}: MainBottomTabScreenProps<'MainScreen'>) => {
     };
 
     return (
-      <Surface key={item.id} className="my-3 rounded p-3" elevation={3}>
+      <Surface className="my-3 rounded p-3" elevation={3}>
         <TouchableRipple
           borderless
           className="h-24 w-[86.4px] self-center"
@@ -303,6 +305,7 @@ const MainScreen = ({navigation}: MainBottomTabScreenProps<'MainScreen'>) => {
                     contentContainerStyle={AppStyles.paddingHorizontal}
                     data={section.rogue.data}
                     ItemSeparatorComponent={challengeRevueSeparator}
+                    keyExtractor={keyExtractorForChallengeRevue}
                     renderItem={renderChallengeRevue}
                     showsHorizontalScrollIndicator={false}
                   />
