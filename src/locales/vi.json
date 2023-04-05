@@ -1,8 +1,8 @@
 {
   "accessories": "Phụ kiện",
+  "accuracy": "Độ chính xác: ",
   "act-power": "Sức mạnh diễn xuất",
   "act_skill": "ACT/Kỹ năng",
-  "accuracy": "Độ chính xác: ",
   "agility": "Độ nhanh nhẹn",
   "all": "Tất cả",
   "animation": "Hoạt hình: ",
@@ -90,5 +90,8 @@
   "version": "Phiên bản {{version}}",
   "vi": "Tiếng Việt",
   "voice-actor": "Diễn viên lồng tiếng",
+  "widget": {
+    "note": "Bạn có thể thêm widget tại màn hình chính của điện thoại. Tuy nhiên, widget không thể tự động cập nhật. Bạn phải bấm vào nút số để cập nhật thông tin."
+  },
   "worldwide": "Toàn cầu"
 }

@@ -14,8 +14,8 @@ import {
   useTheme,
 } from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import useStore, {onSaveOptions, setLanguage} from 'store';
+import Button from './button';
 import type {MainBottomTabScreenProps} from 'typings/navigation';
 
 const openWebsite = () => Linking.openURL(website);
@@ -53,12 +53,13 @@ const MoreScreen = ({navigation}: MainBottomTabScreenProps<'MoreScreen'>) => {
   const goToCharacters = () => navigation.navigate('Characters');
   const goToAccessories = () => navigation.navigate('Accessories');
   const goToEnemies = () => navigation.navigate('Enemies');
+  const goToWidget = () => navigation.navigate('WidgetPreview');
 
   return (
     <ScrollView
       contentContainerStyle={top}
       showsVerticalScrollIndicator={false}>
-      <View className="flex-row items-center justify-between px-3 pt-6 pb-3">
+      <View className="flex-row items-center justify-between px-3 pb-3 pt-6">
         <Text className="font-bold text-blue-600">{t('settings')}</Text>
       </View>
       <TouchableRipple onPress={themeToggle}>
@@ -84,28 +85,34 @@ const MoreScreen = ({navigation}: MainBottomTabScreenProps<'MoreScreen'>) => {
           </Menu>
         </View>
       </TouchableRipple>
-      <View className="flex-row items-center justify-between px-3 pt-6 pb-3">
+      <View className="flex-row items-center justify-between px-3 pb-3 pt-6">
         <Text className="font-bold text-blue-600">{t('navigation')}</Text>
       </View>
-      <TouchableRipple onPress={goToCharacters}>
-        <View className="flex-row items-center space-x-3 p-3">
-          <Icon color={MD2Colors.deepOrange500} name="account" size={32} />
-          <Text>{t('characters')}</Text>
-        </View>
-      </TouchableRipple>
-      <TouchableRipple onPress={goToAccessories}>
-        <View className="flex-row items-center space-x-3 p-3">
-          <Icon color={MD2Colors.orange500} name="khanda" size={32} />
-          <Text>{t('accessories')}</Text>
-        </View>
-      </TouchableRipple>
-      <TouchableRipple onPress={goToEnemies}>
-        <View className="flex-row items-center space-x-3 p-3">
-          <Icon color={MD2Colors.deepPurple400} name="ninja" size={32} />
-          <Text>{t('enemies')}</Text>
-        </View>
-      </TouchableRipple>
-      <View className="flex-row items-center justify-between px-3 pt-6 pb-3">
+      <Button
+        color={MD2Colors.deepOrange500}
+        icon="account"
+        label={t('characters')}
+        onPress={goToCharacters}
+      />
+      <Button
+        color={MD2Colors.orange500}
+        icon="khanda"
+        label={t('accessories')}
+        onPress={goToAccessories}
+      />
+      <Button
+        color={MD2Colors.deepPurple400}
+        icon="ninja"
+        label={t('enemies')}
+        onPress={goToEnemies}
+      />
+      <Button
+        color={MD2Colors.lightGreen500}
+        icon="widgets"
+        label="Widget"
+        onPress={goToWidget}
+      />
+      <View className="flex-row items-center justify-between px-3 pb-3 pt-6">
         <Text className="font-bold text-blue-600">{t('resources')}</Text>
       </View>
       <TouchableRipple onPress={openWebsite}>
@@ -114,13 +121,13 @@ const MoreScreen = ({navigation}: MainBottomTabScreenProps<'MoreScreen'>) => {
           <Text>{t('karthuria-website')}</Text>
         </View>
       </TouchableRipple>
-      <TouchableRipple onPress={openGithub}>
-        <View className="flex-row items-center space-x-3 p-3">
-          <Icon color={theme.colors.onBackground} name="github" size={32} />
-          <Text>{t('source-code-on-github')}</Text>
-        </View>
-      </TouchableRipple>
-      <View className="flex-row items-center justify-between px-3 pt-6 pb-3">
+      <Button
+        color={theme.colors.onBackground}
+        icon="github"
+        label={t('source-code-on-github')}
+        onPress={openGithub}
+      />
+      <View className="flex-row items-center justify-between px-3 pb-3 pt-6">
         <Text className="font-bold text-blue-600">{t('notes')}</Text>
       </View>
       <View className="flex-row items-center p-3">

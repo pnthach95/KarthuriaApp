@@ -30,6 +30,7 @@ type RootStackParamList = {
   AccessoryDetail: {id: number};
   Enemies: undefined;
   EnemyDetail: {id: string};
+  WidgetPreview: undefined;
 };
 
 type RootStackScreenProps<T extends keyof RootStackParamList> =
