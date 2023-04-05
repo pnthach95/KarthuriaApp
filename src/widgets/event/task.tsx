@@ -2,7 +2,6 @@ import API, {links} from 'api';
 import dayjs from 'dayjs';
 import React from 'react';
 import {Appearance} from 'react-native';
-import {openApp} from 'rn-openapp';
 import {MMKV} from 'store';
 import EventWidget from './index';
 import type {WidgetTaskHandlerProps} from 'react-native-android-widget';
@@ -74,25 +73,15 @@ export async function widgetTaskHandler(props: WidgetTaskHandlerProps) {
       // Not needed for now
       break;
     case 'WIDGET_CLICK':
-      if (props.clickAction === 'OPEN_APP') {
-        try {
-          openApp('vn.pnthach.karthuria');
-        } catch (error) {
-          // console.log(error);
-        }
-      } else {
-        const events = await getData();
-        props.renderWidget(
-          <Widget
-            currentEvent={
-              events?.[(props.clickActionData?.index as number) || 0]
-            }
-            events={events}
-            idx={props.clickActionData?.index as number}
-            isDark={isDark}
-          />,
-        );
-      }
+      const events = await getData();
+      props.renderWidget(
+        <Widget
+          currentEvent={events?.[(props.clickActionData?.index as number) || 0]}
+          events={events}
+          idx={props.clickActionData?.index as number}
+          isDark={isDark}
+        />,
+      );
       break;
     default:
       break;
