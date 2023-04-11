@@ -2,6 +2,7 @@ module.exports = {
   root: true,
   extends: [
     '@react-native-community',
+    'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
   ],
   parser: '@typescript-eslint/parser',
@@ -20,10 +21,7 @@ module.exports = {
         '@typescript-eslint/no-misused-promises': [
           'error',
           {
-            checksVoidReturn: {
-              arguments: false,
-              attributes: false,
-            },
+            checksVoidReturn: false,
           },
         ],
         'no-shadow': 'off',
@@ -45,6 +43,11 @@ module.exports = {
         reservedFirst: true,
       },
     ],
+    'react/no-unstable-nested-components': ['error', {allowAsProps: true}],
+    'react/jsx-curly-brace-presence': [
+      'warn',
+      {props: 'never', children: 'never'},
+    ],
     'react-native/sort-styles': [
       'error',
       'asc',
@@ -57,6 +60,7 @@ module.exports = {
     'react-hooks/exhaustive-deps': 'off',
     'object-shorthand': ['error', 'always'],
     'comma-dangle': 'off',
+    '@typescript-eslint/ban-ts-comment': 'off',
     '@typescript-eslint/comma-dangle': ['error', 'always-multiline'],
     eqeqeq: ['error', 'always'],
     'import/order': [

@@ -4,15 +4,6 @@ import {
   DefaultTheme as PaperDefaultTheme,
 } from 'react-native-paper';
 
-declare global {
-  namespace ReactNativePaper {
-    interface ThemeColors {
-      card: string;
-      border: string;
-    }
-  }
-}
-
 const primary = '#FB5458';
 
 export const Light = {

@@ -106,7 +106,7 @@ const StageGirlDetailScreen = ({
               source={position(dress.base.roleIndex.role)}
             />
             <Image
-              className="absolute left-1 bottom-1"
+              className="absolute bottom-1 left-1"
               source={rarity(dress.basicInfo.rarity)}
             />
           </View>
