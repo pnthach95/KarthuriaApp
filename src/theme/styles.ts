@@ -4,7 +4,7 @@ import {responsiveWidth} from 'react-native-responsive-dimensions';
 export const padding = 12;
 export const borderRadius = 5;
 
-export default StyleSheet.create({
+const AppStyles = StyleSheet.create({
   absolute: {
     position: 'absolute',
   },
@@ -171,3 +171,5 @@ export default StyleSheet.create({
     color: 'white',
   },
 });
+
+export default AppStyles;

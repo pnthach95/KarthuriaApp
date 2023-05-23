@@ -1,3 +1,4 @@
+import {produce} from 'immer';
 import {useEffect, useState} from 'react';
 import {Appearance} from 'react-native';
 import {getLocales} from 'react-native-localize';
@@ -14,12 +15,13 @@ const useStore = create<StoreState>()(
       mainRoute: 'SPLASH',
       options: {
         isDark: Appearance.getColorScheme() === 'dark',
+        appColor: 'karen',
       },
       language: getLocales()[0].languageCode as 'en',
     }),
     {
       name: 'karthuria',
-      version: 1,
+      version: 2,
       storage: createJSONStorage(() => MMKV as unknown as StateStorage),
       partialize: state =>
         Object.fromEntries(
@@ -29,11 +31,20 @@ const useStore = create<StoreState>()(
   ),
 );
 
+export const useAppColor = () => useStore(s => s.options.appColor);
+
 export const onSwitchMainRoute = (route: StoreState['mainRoute']) =>
   useStore.setState({mainRoute: route});
 
 export const onSaveOptions = (options: AppOptions) =>
   useStore.setState({options});
+
+export const setAppColor = (color: AppOptions['appColor']) =>
+  useStore.setState(
+    produce<StoreState>(draft => {
+      draft.options.appColor = color;
+    }),
+  );
 
 export const setLanguage = (language: StoreState['language']) =>
   useStore.setState({language});

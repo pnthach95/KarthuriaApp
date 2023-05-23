@@ -1,4 +1,9 @@
-import {BottomSheetFlatList, BottomSheetModal} from '@gorhom/bottom-sheet';
+import {
+  BottomSheetFlatList,
+  BottomSheetHandle,
+  BottomSheetModal,
+  useBottomSheetDynamicSnapPoints,
+} from '@gorhom/bottom-sheet';
 import API, {links} from 'api';
 import {iconAttribute, iconSkill, imgStageGirl} from 'api/images';
 import {attackType, charaImgs, position, rarity} from 'assets';
@@ -9,19 +14,11 @@ import Kirin from 'components/kirin';
 import Separator from 'components/separator';
 import CustomBackdrop from 'components/sheet/backdrop';
 import CustomBackground from 'components/sheet/background';
-import CustomHandle from 'components/sheet/handle';
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {FlatList, Image, StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {
-  Button,
-  Caption,
-  FAB,
-  Text,
-  TouchableRipple,
-  useTheme,
-} from 'react-native-paper';
+import {Button, FAB, Text, TouchableRipple, useTheme} from 'react-native-paper';
 import {responsiveWidth} from 'react-native-responsive-dimensions';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import AppStyles, {borderRadius, padding} from 'theme/styles';
@@ -79,7 +76,7 @@ const positionKeyExtractor = (item: boolean, i: number): string => `p_${i}`;
 const rarityKeyExtractor = (item: boolean, i: number) => `rarity_${i}`;
 const skillKeyExtractor = (item: TFilter['skills'][0], i: number) =>
   `skill_${i}`;
-const raritySeparator = () => <View style={AppStyles.spaceHorizontal} />;
+const raritySeparator = () => <View className="w-3" />;
 
 const StageGirlsScreen = ({
   navigation,
@@ -88,7 +85,7 @@ const StageGirlsScreen = ({
   const insets = useSafeAreaInsets();
   const {colors} = useTheme();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ['40%'], []);
+  const initialSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], []);
   /** Loading state */
   const [loading, setLoading] = useState(true);
   /** FAB state */
@@ -113,6 +110,12 @@ const StageGirlsScreen = ({
   });
   /** Filter key to render filter bottom sheet */
   const [filterKey, setFilterKey] = useState<keyof typeof filter>('characters');
+  const {
+    animatedHandleHeight,
+    animatedSnapPoints,
+    animatedContentHeight,
+    handleContentLayout,
+  } = useBottomSheetDynamicSnapPoints(initialSnapPoints);
   /** Top inset for iOS */
   const top = {
     paddingTop: insets.top,
@@ -387,7 +390,7 @@ const StageGirlsScreen = ({
           onPress={onPress}>
           <Image source={position(index as TRole)} style={styles.positionImg} />
         </TouchableRipple>
-        <View style={AppStyles.spaceHorizontal} />
+        <View className="w-3" />
       </View>
     );
   };
@@ -502,15 +505,21 @@ const StageGirlsScreen = ({
           ref={bottomSheetModalRef}
           backdropComponent={CustomBackdrop}
           backgroundComponent={CustomBackground}
-          handleComponent={CustomHandle}
-          snapPoints={snapPoints}>
-          <View style={[AppStyles.paddingHorizontal, AppStyles.flex1]}>
+          contentHeight={animatedContentHeight}
+          handleComponent={props => (
+            <BottomSheetHandle
+              {...props}
+              indicatorStyle={{backgroundColor: colors.onBackground}}
+            />
+          )}
+          handleHeight={animatedHandleHeight}
+          snapPoints={animatedSnapPoints}>
+          <View className="flex-1 px-3" onLayout={handleContentLayout}>
             {/* Character filter */}
             {filterKey === 'characters' && (
               <>
-                <View
-                  style={[AppStyles.rowSpaceBetween, AppStyles.marginBottom]}>
-                  <Caption>{t('characters')}</Caption>
+                <View className="mb-3 flex-row items-center justify-between">
+                  <Text variant="labelMedium">{t('characters')}</Text>
                   <Button
                     mode={filterAll.characters ? 'contained' : 'outlined'}
                     onPress={toggleAllCharacters}>
@@ -531,7 +540,7 @@ const StageGirlsScreen = ({
             {/* Element filter */}
             {filterKey === 'elements' && (
               <>
-                <Caption>{t('elements')}</Caption>
+                <Text variant="labelMedium">{t('elements')}</Text>
                 <BottomSheetFlatList
                   data={filter.elements}
                   ItemSeparatorComponent={Separator}
@@ -544,7 +553,7 @@ const StageGirlsScreen = ({
             {/* Position filter */}
             {filterKey === 'position' && (
               <>
-                <Caption>{t('position')}</Caption>
+                <Text variant="labelMedium">{t('position')}</Text>
                 <BottomSheetFlatList
                   horizontal
                   data={filter.position}
@@ -556,7 +565,7 @@ const StageGirlsScreen = ({
             {/* Attack type filter */}
             {filterKey === 'attackType' && (
               <>
-                <Caption>{t('attack-type')}</Caption>
+                <Text variant="labelMedium">{t('attack-type')}</Text>
                 <View style={AppStyles.row}>
                   <TouchableRipple
                     borderless
@@ -595,7 +604,7 @@ const StageGirlsScreen = ({
             {/* Rarity filter */}
             {filterKey === 'rarity' && (
               <>
-                <Caption>{t('rarity')}</Caption>
+                <Text variant="labelMedium">{t('rarity')}</Text>
                 <BottomSheetFlatList
                   horizontal
                   data={filter.rarity}
@@ -610,7 +619,7 @@ const StageGirlsScreen = ({
               <>
                 <View
                   style={[AppStyles.rowSpaceBetween, AppStyles.marginBottom]}>
-                  <Caption>{t('skills')}</Caption>
+                  <Text variant="labelMedium">{t('skills')}</Text>
                   <Button
                     mode={filterAll.skills ? 'contained' : 'outlined'}
                     onPress={toggleAllSkills}>

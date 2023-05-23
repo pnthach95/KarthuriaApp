@@ -1,7 +1,16 @@
+import {
+  BottomSheetFlatList,
+  BottomSheetHandle,
+  BottomSheetModal,
+  useBottomSheetDynamicSnapPoints,
+} from '@gorhom/bottom-sheet';
 import {website} from 'api';
 import {links} from 'api/github';
+import {charaImgs} from 'assets';
 import webicon from 'assets/common/icon.png';
-import React, {useState} from 'react';
+import CustomBackdrop from 'components/sheet/backdrop';
+import CustomBackground from 'components/sheet/background';
+import React, {useMemo, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Image, Linking, ScrollView, View} from 'react-native';
 import {getVersion} from 'react-native-device-info';
@@ -14,22 +23,50 @@ import {
   useTheme,
 } from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import useStore, {onSaveOptions, setLanguage} from 'store';
+import useStore, {
+  onSaveOptions,
+  setAppColor,
+  setLanguage,
+  useAppColor,
+} from 'store';
 import Button from './button';
+import type {ListRenderItem} from 'react-native';
 import type {MainBottomTabScreenProps} from 'typings/navigation';
+
+const APP_COLORS = [
+  'karen',
+  'hikari',
+  'mahiru',
+  'claudine',
+  'maya',
+  'junna',
+  'nana',
+  'futaba',
+  'kaoruko',
+] as AppOptions['appColor'][];
 
 const openWebsite = () => Linking.openURL(website);
 
 const openGithub = () => Linking.openURL(links.GITHUB_PROJECT);
 
 const MoreScreen = ({navigation}: MainBottomTabScreenProps<'MoreScreen'>) => {
+  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
+  const initialSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], []);
+  const {
+    animatedHandleHeight,
+    animatedSnapPoints,
+    animatedContentHeight,
+    handleContentLayout,
+  } = useBottomSheetDynamicSnapPoints(initialSnapPoints);
   const {t} = useTranslation();
   const insets = useSafeAreaInsets();
-  const theme = useTheme();
+  const appColor = useAppColor();
+  const {colors} = useTheme();
   const options = useStore(s => s.options);
   const language = useStore(s => s.language);
   const [languageMenuVisible, setLanguageMenuVisible] = useState(false);
   const top = {paddingTop: insets.top};
+  const textPrimary = {color: colors.primary};
 
   /** Toggle dark theme */
   const themeToggle = () => {
@@ -55,21 +92,53 @@ const MoreScreen = ({navigation}: MainBottomTabScreenProps<'MoreScreen'>) => {
   const goToEnemies = () => navigation.navigate('Enemies');
   const goToWidget = () => navigation.navigate('WidgetPreview');
 
+  const charaRenderItem: ListRenderItem<AppOptions['appColor']> = ({
+    item,
+    index,
+  }) => {
+    const bgColor = {
+      backgroundColor: item === appColor ? colors.primary : undefined,
+    };
+    const onPress = () => {
+      setAppColor(item);
+      bottomSheetModalRef.current?.dismiss();
+    };
+
+    return (
+      <TouchableRipple
+        borderless
+        className="aspect-square w-1/6 items-center justify-center rounded-full"
+        style={bgColor}
+        onPress={onPress}>
+        <Image className="h-full w-full" source={charaImgs[index]} />
+      </TouchableRipple>
+    );
+  };
+
+  const openColorSheet = () => bottomSheetModalRef.current?.present();
+
   return (
     <ScrollView
       contentContainerStyle={top}
       showsVerticalScrollIndicator={false}>
       <View className="flex-row items-center justify-between px-3 pb-3 pt-6">
-        <Text className="font-bold text-blue-600">{t('settings')}</Text>
+        <Text className="font-bold" style={textPrimary}>
+          {t('settings')}
+        </Text>
       </View>
       <TouchableRipple onPress={themeToggle}>
         <View className="flex-row items-center justify-between p-3">
           <Text>{t('dark-theme')}</Text>
-          <Switch
-            thumbColor={MD2Colors.red500}
-            trackColor={{false: MD2Colors.grey300, true: MD2Colors.red200}}
-            value={options.isDark}
-            onValueChange={themeToggle}
+          <Switch value={options.isDark} onValueChange={themeToggle} />
+        </View>
+      </TouchableRipple>
+      <TouchableRipple onPress={openColorSheet}>
+        <View className="flex-row items-center justify-between px-3">
+          <Text>{t('color')}</Text>
+          <Image
+            className="aspect-square w-10 rounded-full"
+            source={charaImgs[APP_COLORS.findIndex(c => c === appColor)]}
+            style={{backgroundColor: colors.primary}}
           />
         </View>
       </TouchableRipple>
@@ -86,7 +155,9 @@ const MoreScreen = ({navigation}: MainBottomTabScreenProps<'MoreScreen'>) => {
         </View>
       </TouchableRipple>
       <View className="flex-row items-center justify-between px-3 pb-3 pt-6">
-        <Text className="font-bold text-blue-600">{t('navigation')}</Text>
+        <Text className="font-bold" style={textPrimary}>
+          {t('navigation')}
+        </Text>
       </View>
       <Button
         color={MD2Colors.deepOrange500}
@@ -113,7 +184,9 @@ const MoreScreen = ({navigation}: MainBottomTabScreenProps<'MoreScreen'>) => {
         onPress={goToWidget}
       />
       <View className="flex-row items-center justify-between px-3 pb-3 pt-6">
-        <Text className="font-bold text-blue-600">{t('resources')}</Text>
+        <Text className="font-bold" style={textPrimary}>
+          {t('resources')}
+        </Text>
       </View>
       <TouchableRipple onPress={openWebsite}>
         <View className="flex-row items-center space-x-3 p-3">
@@ -122,20 +195,44 @@ const MoreScreen = ({navigation}: MainBottomTabScreenProps<'MoreScreen'>) => {
         </View>
       </TouchableRipple>
       <Button
-        color={theme.colors.onBackground}
+        color={colors.onBackground}
         icon="github"
         label={t('source-code-on-github')}
         onPress={openGithub}
       />
       <View className="flex-row items-center justify-between px-3 pb-3 pt-6">
-        <Text className="font-bold text-blue-600">{t('notes')}</Text>
+        <Text className="font-bold" style={textPrimary}>
+          {t('notes')}
+        </Text>
       </View>
-      <View className="flex-row items-center p-3">
-        <Text variant="bodyMedium">{t('note-text', {website})}</Text>
-      </View>
-      <Text className="text-center" variant="bodySmall">
+      <Text className="p-3" variant="bodyMedium">
+        {t('note-text', {website})}
+      </Text>
+      <Text className="mb-3 text-center" variant="bodySmall">
         {t('version', {version: getVersion()})}
       </Text>
+      <BottomSheetModal
+        ref={bottomSheetModalRef}
+        backdropComponent={CustomBackdrop}
+        backgroundComponent={CustomBackground}
+        contentHeight={animatedContentHeight}
+        handleComponent={props => (
+          <BottomSheetHandle
+            {...props}
+            indicatorStyle={{backgroundColor: colors.onBackground}}
+          />
+        )}
+        handleHeight={animatedHandleHeight}
+        snapPoints={animatedSnapPoints}>
+        <View onLayout={handleContentLayout}>
+          <BottomSheetFlatList
+            data={APP_COLORS}
+            numColumns={6}
+            renderItem={charaRenderItem}
+            showsVerticalScrollIndicator={false}
+          />
+        </View>
+      </BottomSheetModal>
     </ScrollView>
   );
 };

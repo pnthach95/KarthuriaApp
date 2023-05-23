@@ -1,7 +1,11 @@
 import 'locales';
 import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import {setRootViewBackgroundColor} from '@pnthach95/react-native-root-view-background';
-import {NavigationContainer} from '@react-navigation/native';
+import {
+  NavigationContainer,
+  DarkTheme as reactNavigationDark,
+  DefaultTheme as reactNavigationLight,
+} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import BlurStatusBar from 'components/blurstatusbar';
 import Kirin from 'components/kirin';
@@ -13,8 +17,14 @@ import React, {useEffect} from 'react';
 import {useTranslation} from 'react-i18next';
 import RNBootSplash from 'react-native-bootsplash';
 import ErrorBoundary from 'react-native-error-boundary';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {NetworkProvider} from 'react-native-offline';
-import {Provider as PaperProvider} from 'react-native-paper';
+import {
+  MD3DarkTheme,
+  MD3LightTheme,
+  Provider as PaperProvider,
+  adaptNavigationTheme,
+} from 'react-native-paper';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import AccessoriesScreen from 'screens/accessories';
 import AccessoryDetailScreen from 'screens/accessorydetail';
@@ -27,7 +37,7 @@ import MemoirDetailScreen from 'screens/memoirdetail';
 import StageGirlDetailScreen from 'screens/stagegirldetail';
 import WidgetPreviewScreen from 'screens/widgetpreview';
 import useStore, {onSwitchMainRoute, useHydration} from 'store';
-import {Dark, Light} from 'theme';
+import {useDarkColor, useLightColor} from 'theme';
 import Tabs from './tabs';
 import type {LinkingOptions} from '@react-navigation/native';
 import type {RootStackParamList} from 'typings/navigation';
@@ -66,7 +76,31 @@ const Routes = () => {
   const {i18n} = useTranslation();
   const options = useStore(s => s.options);
   const language = useStore(s => s.language);
-  const theme = options.isDark ? Dark : Light;
+  const materialLight = {...MD3LightTheme, colors: useLightColor()};
+  const materialDark = {...MD3DarkTheme, colors: useDarkColor()};
+  const {LightTheme, DarkTheme} = adaptNavigationTheme({
+    reactNavigationLight,
+    reactNavigationDark,
+    materialLight,
+    materialDark,
+  });
+
+  const appMaterialLight = {
+    ...materialLight,
+    colors: {
+      ...materialLight.colors,
+      ...LightTheme.colors,
+    },
+  };
+  const appMaterialDark = {
+    ...materialDark,
+    colors: {
+      ...materialDark.colors,
+      ...DarkTheme.colors,
+    },
+  };
+  const theme = options.isDark ? appMaterialDark : appMaterialLight;
+  const navTheme = options.isDark ? DarkTheme : LightTheme;
 
   useEffect(() => {
     const getData = async () => {
@@ -83,72 +117,75 @@ const Routes = () => {
   }, [language]);
 
   useEffect(() => {
-    setRootViewBackgroundColor(
-      options.isDark ? Dark.colors.background : Light.colors.background,
-    );
-  }, [options.isDark]);
+    setRootViewBackgroundColor(theme.colors.background);
+  }, [theme.colors.background]);
 
   return (
-    <NetworkProvider>
-      <SafeAreaProvider>
-        <PaperProvider theme={theme}>
-          <ErrorBoundary FallbackComponent={CustomFallback}>
-            <BottomSheetModalProvider>
-              <NavigationContainer
-                fallback={<Kirin />}
-                linking={linking}
-                theme={theme}>
-                <Stack.Navigator
-                  screenOptions={{headerBackTitle: 'Back', headerShown: false}}>
-                  <Stack.Screen component={Tabs} name="Main" />
-                  <Stack.Screen
-                    component={CharactersScreen}
-                    name="Characters"
-                    options={{headerShown: true}}
-                  />
-                  <Stack.Screen
-                    component={CharacterDetailScreen}
-                    name="CharacterDetail"
-                  />
-                  <Stack.Screen
-                    component={StageGirlDetailScreen}
-                    name="StageGirlDetail"
-                  />
-                  <Stack.Screen
-                    component={MemoirDetailScreen}
-                    name="MemoirDetail"
-                  />
-                  <Stack.Screen
-                    component={AccessoriesScreen}
-                    name="Accessories"
-                    options={{headerShown: true}}
-                  />
-                  <Stack.Screen
-                    component={AccessoryDetailScreen}
-                    name="AccessoryDetail"
-                  />
-                  <Stack.Screen
-                    component={EnemiesScreen}
-                    name="Enemies"
-                    options={{headerShown: true}}
-                  />
-                  <Stack.Screen
-                    component={EnemyDetailScreen}
-                    name="EnemyDetail"
-                  />
-                  <Stack.Screen
-                    component={WidgetPreviewScreen}
-                    name="WidgetPreview"
-                    options={{headerShown: true, title: 'Widget'}}
-                  />
-                </Stack.Navigator>
-              </NavigationContainer>
-              <BlurStatusBar />
-            </BottomSheetModalProvider>
-          </ErrorBoundary>
-        </PaperProvider>
-      </SafeAreaProvider>
-    </NetworkProvider>
+    <GestureHandlerRootView className="flex-1">
+      <NetworkProvider>
+        <SafeAreaProvider>
+          <PaperProvider theme={theme}>
+            <ErrorBoundary FallbackComponent={CustomFallback}>
+              <BottomSheetModalProvider>
+                <NavigationContainer
+                  fallback={<Kirin />}
+                  linking={linking}
+                  theme={navTheme}>
+                  <Stack.Navigator
+                    screenOptions={{
+                      headerBackTitle: 'Back',
+                      headerShown: false,
+                    }}>
+                    <Stack.Screen component={Tabs} name="Main" />
+                    <Stack.Screen
+                      component={CharactersScreen}
+                      name="Characters"
+                      options={{headerShown: true}}
+                    />
+                    <Stack.Screen
+                      component={CharacterDetailScreen}
+                      name="CharacterDetail"
+                    />
+                    <Stack.Screen
+                      component={StageGirlDetailScreen}
+                      name="StageGirlDetail"
+                    />
+                    <Stack.Screen
+                      component={MemoirDetailScreen}
+                      name="MemoirDetail"
+                    />
+                    <Stack.Screen
+                      component={AccessoriesScreen}
+                      name="Accessories"
+                      options={{headerShown: true}}
+                    />
+                    <Stack.Screen
+                      component={AccessoryDetailScreen}
+                      name="AccessoryDetail"
+                    />
+                    <Stack.Screen
+                      component={EnemiesScreen}
+                      name="Enemies"
+                      options={{headerShown: true}}
+                    />
+                    <Stack.Screen
+                      component={EnemyDetailScreen}
+                      name="EnemyDetail"
+                    />
+                    <Stack.Screen
+                      component={WidgetPreviewScreen}
+                      name="WidgetPreview"
+                      options={{headerShown: true, title: 'Widget'}}
+                    />
+                  </Stack.Navigator>
+                </NavigationContainer>
+                <BlurStatusBar />
+              </BottomSheetModalProvider>
+            </ErrorBoundary>
+          </PaperProvider>
+        </SafeAreaProvider>
+      </NetworkProvider>
+    </GestureHandlerRootView>
   );
 };
 

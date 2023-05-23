@@ -21,6 +21,16 @@ type FCItemProps<T> = {
 
 type AppOptions = {
   isDark: boolean;
+  appColor:
+    | 'karen'
+    | 'hikari'
+    | 'mahiru'
+    | 'claudine'
+    | 'maya'
+    | 'junna'
+    | 'nana'
+    | 'futaba'
+    | 'kaoruko';
 };
 
 //#region API: Karthuria
