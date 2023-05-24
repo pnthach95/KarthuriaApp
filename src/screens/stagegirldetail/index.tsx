@@ -11,8 +11,8 @@ import {useTranslation} from 'react-i18next';
 import {Image, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {
-  Button,
   DataTable,
+  SegmentedButtons,
   Surface,
   Text,
   TouchableRipple,
@@ -27,7 +27,9 @@ const StageGirlDetailScreen = ({
   const [loading, setLoading] = useState(true);
   const [dress, setDress] = useState<TDress | null>(null);
   const [character, setCharater] = useState<TChara | null>(null);
-  const [tabIndex, setTabIndex] = useState(0);
+  const [tabIndex, setTabIndex] = useState<'stats' | 'info' | 'act_skill'>(
+    'stats',
+  );
 
   useEffect(() => {
     const loadData = async () => {
@@ -66,10 +68,6 @@ const StageGirlDetailScreen = ({
     navigation.navigate('CharacterDetail', {
       id: character.basicInfo.charaID,
     });
-
-  const onPressTabStats = () => setTabIndex(0);
-  const onPressTabInfo = () => setTabIndex(1);
-  const onPressTabSkill = () => setTabIndex(2);
 
   return (
     <BaseScreen hasData={!!dress} loading={loading}>
@@ -111,7 +109,7 @@ const StageGirlDetailScreen = ({
             />
           </View>
           <View className="py-3">
-            <Surface className="my-1 rounded p-3" elevation={3}>
+            <Surface className="my-1 rounded-xl p-3" elevation={3}>
               <View className="flex-row justify-between">
                 <Text variant="bodySmall">{t('cost')}</Text>
                 <Text>{dress.base.cost}</Text>
@@ -129,7 +127,7 @@ const StageGirlDetailScreen = ({
                   <Text>{releasedWW.format('LLLL')}</Text>
                 </View>
               )}
-              <View className="flex-row justify-between">
+              <View className="flex-row items-center justify-between">
                 <Text variant="bodySmall">{t('attack-type')}</Text>
                 <Image
                   className="h-[22.4px] w-[63px]"
@@ -138,33 +136,20 @@ const StageGirlDetailScreen = ({
               </View>
             </Surface>
           </View>
-          <View className="flex-row">
-            <Button
-              className="flex-1"
-              mode={tabIndex === 0 ? 'contained' : 'text'}
-              uppercase={false}
-              onPress={onPressTabStats}>
-              <Text>{t('stats')}</Text>
-            </Button>
-            <Button
-              className="flex-1"
-              mode={tabIndex === 1 ? 'contained' : 'text'}
-              uppercase={false}
-              onPress={onPressTabInfo}>
-              <Text>{t('info')}</Text>
-            </Button>
-            <Button
-              className="flex-1"
-              mode={tabIndex === 2 ? 'contained' : 'text'}
-              uppercase={false}
-              onPress={onPressTabSkill}>
-              <Text>{t('act_skill')}</Text>
-            </Button>
-          </View>
-          {tabIndex === 0 && (
+          <SegmentedButtons
+            buttons={[
+              {value: 'stats', label: t('stats')},
+              {value: 'info', label: t('info')},
+              {value: 'act_skill', label: t('act_skill')},
+            ]}
+            value={tabIndex}
+            // @ts-ignore type of value
+            onValueChange={setTabIndex}
+          />
+          {tabIndex === 'stats' && (
             <View className="py-3">
-              <Surface className="my-1 rounded" elevation={3}>
-                <DataTable>
+              <Surface className="my-1 rounded-xl" elevation={3}>
+                <DataTable className="overflow-hidden rounded-xl">
                   <DataTable.Row>
                     <DataTable.Cell className="flex-[2]">
                       {t('power-score-total')}
@@ -205,9 +190,9 @@ const StageGirlDetailScreen = ({
               </Surface>
             </View>
           )}
-          {tabIndex === 1 && (
+          {tabIndex === 'info' && (
             <View className="py-3">
-              <Surface className="my-1 space-y-3 rounded p-3" elevation={3}>
+              <Surface className="my-1 space-y-3 rounded-xl p-3" elevation={3}>
                 <View>
                   <Text variant="bodySmall">{t('profile')}</Text>
                   <Text variant="bodyMedium">
@@ -230,7 +215,7 @@ const StageGirlDetailScreen = ({
               </Surface>
             </View>
           )}
-          {tabIndex === 2 && (
+          {tabIndex === 'act_skill' && (
             <>
               <View className="py-3">
                 <Text className="text-center" variant="titleMedium">
@@ -252,7 +237,7 @@ const StageGirlDetailScreen = ({
                 <Text className="text-center" variant="titleMedium">
                   {t('unit-skill')}
                 </Text>
-                <Surface className="my-1 rounded p-3" elevation={3}>
+                <Surface className="my-1 rounded-xl p-3" elevation={3}>
                   <View className="flex-row space-x-3">
                     <FastImage
                       className="h-10 w-10"
@@ -277,7 +262,7 @@ const StageGirlDetailScreen = ({
                   return (
                     <Surface
                       key={`autoSkill${index}`}
-                      className="my-1 rounded p-3"
+                      className="my-1 rounded-xl p-3"
                       elevation={3}>
                       <Text variant="bodyMedium">
                         {autoSkill.type.en || autoSkill.type.ja}
@@ -298,7 +283,7 @@ const StageGirlDetailScreen = ({
                 <Text className="text-center" variant="titleMedium">
                   {t('finishing-act')}
                 </Text>
-                <Surface className="my-1 rounded p-3" elevation={3}>
+                <Surface className="my-1 rounded-xl p-3" elevation={3}>
                   <View className="flex-row space-x-3">
                     <FastImage
                       className="h-10 w-10"

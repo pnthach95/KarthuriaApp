@@ -342,11 +342,12 @@ type TBasicStat = {
 
 type TSkillParam = {
   accuracy?: number | null;
-  description: TLanguageObject | null;
+  description: TLanguageObject[] | TLanguageObject | null;
   descriptionExtra: TLanguageObject | null;
   duration: TLanguageObject | null;
   hits: number | null;
   icon: number;
+  name: TLanguageObject | null;
   target: TLanguageObject;
   type: TSkillType;
 };

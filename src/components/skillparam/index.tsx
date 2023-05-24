@@ -13,12 +13,17 @@ type Props = {
 const SkillParam = ({skillParam}: Props) => {
   const {t} = useTranslation();
   const {colors} = useTheme();
+  const description =
+    (skillParam.name ? `${skillParam.name?.en || skillParam.name?.ja}\n` : '') +
+    (Array.isArray(skillParam.description)
+      ? skillParam.description.map(d => d.en || d.ja).join('\n')
+      : skillParam.description
+      ? skillParam.description?.en || skillParam.description?.ja
+      : '');
 
   return (
     <>
-      <View className="h-3" />
-      <Divider />
-      <View className="h-3" />
+      <Divider className="my-3" />
       {skillParam.type === 'fieldEffect' && (
         <>
           <Text variant="bodyMedium">{t('stage-effect')}</Text>
@@ -37,7 +42,7 @@ const SkillParam = ({skillParam}: Props) => {
         />
         <View className="flex-1">
           <Text variant="bodyMedium">
-            {skillParam.description?.en || skillParam.description?.ja}
+            {description}
             {skillParam.descriptionExtra && (
               <Text className="text-red-500" variant="bodyMedium">
                 {` (${
