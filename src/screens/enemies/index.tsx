@@ -1,5 +1,4 @@
 import {
-  BottomSheetHandle,
   BottomSheetModal,
   BottomSheetScrollView,
   useBottomSheetDynamicSnapPoints,
@@ -12,6 +11,7 @@ import ErrorView from 'components/errorview';
 import Kirin from 'components/kirin';
 import CustomBackdrop from 'components/sheet/backdrop';
 import CustomBackground from 'components/sheet/background';
+import CustomHandle from 'components/sheet/handle';
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Image, View} from 'react-native';
@@ -156,12 +156,7 @@ const EnemiesScreen = ({navigation}: RootStackScreenProps<'Enemies'>) => {
           backdropComponent={CustomBackdrop}
           backgroundComponent={CustomBackground}
           contentHeight={animatedContentHeight}
-          handleComponent={props => (
-            <BottomSheetHandle
-              {...props}
-              indicatorStyle={{backgroundColor: colors.onBackground}}
-            />
-          )}
+          handleComponent={CustomHandle}
           handleHeight={animatedHandleHeight}
           snapPoints={animatedSnapPoints}>
           <BottomSheetScrollView

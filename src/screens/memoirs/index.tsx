@@ -1,6 +1,5 @@
 import {
   BottomSheetFlatList,
-  BottomSheetHandle,
   BottomSheetModal,
   useBottomSheetDynamicSnapPoints,
 } from '@gorhom/bottom-sheet';
@@ -16,6 +15,7 @@ import Kirin from 'components/kirin';
 import Separator from 'components/separator';
 import CustomBackdrop from 'components/sheet/backdrop';
 import CustomBackground from 'components/sheet/background';
+import CustomHandle from 'components/sheet/handle';
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Image, StyleSheet, View} from 'react-native';
@@ -384,12 +384,7 @@ const MemoirsScreen = ({
           contentHeight={
             filterKey === 'skills' ? undefined : animatedContentHeight
           }
-          handleComponent={props => (
-            <BottomSheetHandle
-              {...props}
-              indicatorStyle={{backgroundColor: colors.onBackground}}
-            />
-          )}
+          handleComponent={CustomHandle}
           handleHeight={animatedHandleHeight}
           snapPoints={
             filterKey === 'skills' ? skillSnapPoints : animatedSnapPoints
