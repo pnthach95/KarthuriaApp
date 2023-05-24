@@ -1,3 +1,12 @@
+import {
+  DarkTheme as reactNavigationDark,
+  DefaultTheme as reactNavigationLight,
+} from '@react-navigation/native';
+import {
+  MD3DarkTheme,
+  MD3LightTheme,
+  adaptNavigationTheme,
+} from 'react-native-paper';
 import {useAppColor} from 'store';
 import {CLAUDINE_DARK, CLAUDINE_LIGHT} from './claudine';
 import {FUTABA_DARK, FUTABA_LIGHT} from './futaba';
@@ -9,7 +18,7 @@ import {MAHIRU_DARK, MAHIRU_LIGHT} from './mahiru';
 import {MAYA_DARK, MAYA_LIGHT} from './maya';
 import {NANA_DARK, NANA_LIGHT} from './nana';
 
-export const useLightColor = () => {
+const useLightColor = () => {
   const appColor = useAppColor();
   switch (appColor) {
     case 'karen':
@@ -35,7 +44,7 @@ export const useLightColor = () => {
   }
 };
 
-export const useDarkColor = () => {
+const useDarkColor = () => {
   const appColor = useAppColor();
   switch (appColor) {
     case 'karen':
@@ -59,4 +68,34 @@ export const useDarkColor = () => {
     default:
       return KAREN_DARK;
   }
+};
+
+export const useAppTheme = () => {
+  const materialLight = {...MD3LightTheme, colors: useLightColor()};
+  const materialDark = {...MD3DarkTheme, colors: useDarkColor()};
+
+  const {DarkTheme, LightTheme} = adaptNavigationTheme({
+    reactNavigationLight,
+    reactNavigationDark,
+    materialLight,
+    materialDark,
+  });
+
+  const appMaterialLight = {
+    ...materialLight,
+    colors: {
+      ...materialLight.colors,
+      ...LightTheme.colors,
+    },
+  };
+
+  const appMaterialDark = {
+    ...materialDark,
+    colors: {
+      ...materialDark.colors,
+      ...DarkTheme.colors,
+    },
+  };
+
+  return {DarkTheme, appMaterialDark, LightTheme, appMaterialLight};
 };

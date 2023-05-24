@@ -2,12 +2,12 @@ import React from 'react';
 import {StatusBar, StyleSheet, View} from 'react-native';
 import {responsiveWidth} from 'react-native-responsive-dimensions';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import useStore from 'store';
+import {useOptions} from 'store';
 import BlurView from '../blurview';
 
 const BlurStatusBar = () => {
   const height = useSafeAreaInsets().top;
-  const options = useStore(s => s.options);
+  const options = useOptions();
   const statusBarStyle = options.isDark ? 'light-content' : 'dark-content';
   const style = {height, width: responsiveWidth(100)};
 

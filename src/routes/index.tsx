@@ -1,11 +1,7 @@
 import 'locales';
 import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import {setRootViewBackgroundColor} from '@pnthach95/react-native-root-view-background';
-import {
-  NavigationContainer,
-  DarkTheme as reactNavigationDark,
-  DefaultTheme as reactNavigationLight,
-} from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import BlurStatusBar from 'components/blurstatusbar';
 import Kirin from 'components/kirin';
@@ -19,12 +15,7 @@ import RNBootSplash from 'react-native-bootsplash';
 import ErrorBoundary from 'react-native-error-boundary';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {NetworkProvider} from 'react-native-offline';
-import {
-  MD3DarkTheme,
-  MD3LightTheme,
-  Provider as PaperProvider,
-  adaptNavigationTheme,
-} from 'react-native-paper';
+import {Provider} from 'react-native-paper';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import AccessoriesScreen from 'screens/accessories';
 import AccessoryDetailScreen from 'screens/accessorydetail';
@@ -36,8 +27,8 @@ import EnemyDetailScreen from 'screens/enemydetail';
 import MemoirDetailScreen from 'screens/memoirdetail';
 import StageGirlDetailScreen from 'screens/stagegirldetail';
 import WidgetPreviewScreen from 'screens/widgetpreview';
-import useStore, {onSwitchMainRoute, useHydration} from 'store';
-import {useDarkColor, useLightColor} from 'theme';
+import {onSwitchMainRoute, useHydration, useLanguage, useOptions} from 'store';
+import {useAppTheme} from 'theme';
 import Tabs from './tabs';
 import type {LinkingOptions} from '@react-navigation/native';
 import type {RootStackParamList} from 'typings/navigation';
@@ -72,33 +63,11 @@ dayjs.extend(duration);
 dayjs.extend(localizedFormat);
 
 const Routes = () => {
-  const hydrated = useHydration();
-  const {i18n} = useTranslation();
-  const options = useStore(s => s.options);
-  const language = useStore(s => s.language);
-  const materialLight = {...MD3LightTheme, colors: useLightColor()};
-  const materialDark = {...MD3DarkTheme, colors: useDarkColor()};
-  const {LightTheme, DarkTheme} = adaptNavigationTheme({
-    reactNavigationLight,
-    reactNavigationDark,
-    materialLight,
-    materialDark,
-  });
-
-  const appMaterialLight = {
-    ...materialLight,
-    colors: {
-      ...materialLight.colors,
-      ...LightTheme.colors,
-    },
-  };
-  const appMaterialDark = {
-    ...materialDark,
-    colors: {
-      ...materialDark.colors,
-      ...DarkTheme.colors,
-    },
-  };
+  const hydrated = useHydration(),
+    {i18n} = useTranslation(),
+    options = useOptions(),
+    language = useLanguage(),
+    {LightTheme, appMaterialLight, DarkTheme, appMaterialDark} = useAppTheme();
   const theme = options.isDark ? appMaterialDark : appMaterialLight;
   const navTheme = options.isDark ? DarkTheme : LightTheme;
 
@@ -124,7 +93,7 @@ const Routes = () => {
     <GestureHandlerRootView className="flex-1">
       <NetworkProvider>
         <SafeAreaProvider>
-          <PaperProvider theme={theme}>
+          <Provider theme={theme}>
             <ErrorBoundary FallbackComponent={CustomFallback}>
               <BottomSheetModalProvider>
                 <NavigationContainer
@@ -182,7 +151,7 @@ const Routes = () => {
                 <BlurStatusBar />
               </BottomSheetModalProvider>
             </ErrorBoundary>
-          </PaperProvider>
+          </Provider>
         </SafeAreaProvider>
       </NetworkProvider>
     </GestureHandlerRootView>

@@ -22,11 +22,13 @@ import {
   TouchableRipple,
   useTheme,
 } from 'react-native-paper';
-import useStore, {
+import {
   onSaveOptions,
   setAppColor,
   setLanguage,
   useAppColor,
+  useLanguage,
+  useOptions,
 } from 'store';
 import {useSafeAreaPaddingTop} from 'theme/styles';
 import Button from './button';
@@ -61,8 +63,8 @@ const MoreScreen = ({navigation}: MainBottomTabScreenProps<'MoreScreen'>) => {
   const {t} = useTranslation();
   const appColor = useAppColor();
   const {colors} = useTheme();
-  const options = useStore(s => s.options);
-  const language = useStore(s => s.language);
+  const options = useOptions();
+  const language = useLanguage();
   const [languageMenuVisible, setLanguageMenuVisible] = useState(false);
   const top = useSafeAreaPaddingTop();
   const textPrimary = {color: colors.primary};

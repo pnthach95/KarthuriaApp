@@ -32,6 +32,8 @@ const useStore = create<StoreState>()(
 );
 
 export const useAppColor = () => useStore(s => s.options.appColor);
+export const useLanguage = () => useStore(s => s.language);
+export const useOptions = () => useStore(s => s.options);
 
 export const onSwitchMainRoute = (route: StoreState['mainRoute']) =>
   useStore.setState({mainRoute: route});
@@ -68,5 +70,3 @@ export const useHydration = () => {
 
   return hydrated;
 };
-
-export default useStore;
