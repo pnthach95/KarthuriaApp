@@ -1,4 +1,9 @@
-import {BottomSheetFlatList, BottomSheetModal} from '@gorhom/bottom-sheet';
+import {
+  BottomSheetFlatList,
+  BottomSheetHandle,
+  BottomSheetModal,
+  useBottomSheetDynamicSnapPoints,
+} from '@gorhom/bottom-sheet';
 import {FlashList} from '@shopify/flash-list';
 import API, {links} from 'api';
 import {iconSkill, imgMemoir} from 'api/images';
@@ -11,7 +16,6 @@ import Kirin from 'components/kirin';
 import Separator from 'components/separator';
 import CustomBackdrop from 'components/sheet/backdrop';
 import CustomBackground from 'components/sheet/background';
-import CustomHandle from 'components/sheet/handle';
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Image, StyleSheet, View} from 'react-native';
@@ -25,7 +29,11 @@ import {
   useTheme,
 } from 'react-native-paper';
 import {responsiveWidth} from 'react-native-responsive-dimensions';
-import AppStyles, {padding, useSafeAreaPaddingTop} from 'theme/styles';
+import AppStyles, {
+  padding,
+  useSafeAreaPaddingBottom,
+  useSafeAreaPaddingTop,
+} from 'theme/styles';
 import {useImmer} from 'use-immer';
 import {characterToIndex} from 'utils';
 import type {ListRenderItem as FlashListRenderItem} from '@shopify/flash-list';
@@ -40,9 +48,6 @@ type TFilter = Record<'characters' | 'rarity', boolean[]> & {
 };
 
 const styles = StyleSheet.create({
-  charContainer: {
-    paddingBottom: 20,
-  },
   cutIn: {
     height: 22,
     marginLeft: 10,
@@ -71,7 +76,14 @@ const MemoirsScreen = ({
   const {t} = useTranslation();
   const {colors} = useTheme();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ['40%'], []);
+  const initialSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], []);
+  const skillSnapPoints = useMemo(() => ['50%$'], []);
+  const {
+    animatedHandleHeight,
+    animatedSnapPoints,
+    animatedContentHeight,
+    handleContentLayout,
+  } = useBottomSheetDynamicSnapPoints(initialSnapPoints);
   /** FAB state */
   const [fabState, setFABState] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -94,6 +106,7 @@ const MemoirsScreen = ({
   });
   /** Top inset for iOS */
   const top = useSafeAreaPaddingTop();
+  const bottom = useSafeAreaPaddingBottom(24);
 
   /** Load data here */
   useEffect(() => {
@@ -368,9 +381,23 @@ const MemoirsScreen = ({
           ref={bottomSheetModalRef}
           backdropComponent={CustomBackdrop}
           backgroundComponent={CustomBackground}
-          handleComponent={CustomHandle}
-          snapPoints={snapPoints}>
-          <View style={[AppStyles.paddingHorizontal, AppStyles.flex1]}>
+          contentHeight={
+            filterKey === 'skills' ? undefined : animatedContentHeight
+          }
+          handleComponent={props => (
+            <BottomSheetHandle
+              {...props}
+              indicatorStyle={{backgroundColor: colors.onBackground}}
+            />
+          )}
+          handleHeight={animatedHandleHeight}
+          snapPoints={
+            filterKey === 'skills' ? skillSnapPoints : animatedSnapPoints
+          }>
+          <View
+            className="flex-1 px-3"
+            style={bottom}
+            onLayout={handleContentLayout}>
             {/* Character filter */}
             {filterKey === 'characters' && (
               <>
@@ -384,7 +411,6 @@ const MemoirsScreen = ({
                   </Button>
                 </View>
                 <BottomSheetFlatList
-                  contentContainerStyle={styles.charContainer}
                   data={filter.characters}
                   ItemSeparatorComponent={Separator}
                   keyExtractor={charaKeyExtractor}

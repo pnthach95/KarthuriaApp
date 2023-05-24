@@ -23,6 +23,7 @@ import {responsiveWidth} from 'react-native-responsive-dimensions';
 import AppStyles, {
   borderRadius,
   padding,
+  useSafeAreaPaddingBottom,
   useSafeAreaPaddingTop,
 } from 'theme/styles';
 import {useImmer} from 'use-immer';
@@ -45,9 +46,6 @@ const styles = StyleSheet.create({
     height: 17,
     right: 0,
     width: 20,
-  },
-  charContainer: {
-    paddingBottom: 20,
   },
   positionImg: {
     height: (responsiveWidth(10) * 2) / 3,
@@ -88,6 +86,7 @@ const StageGirlsScreen = ({
   const {colors} = useTheme();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const initialSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], []);
+  const skillSnapPoints = useMemo(() => ['50%$'], []);
   /** Loading state */
   const [loading, setLoading] = useState(true);
   /** FAB state */
@@ -120,6 +119,7 @@ const StageGirlsScreen = ({
   } = useBottomSheetDynamicSnapPoints(initialSnapPoints);
   /** Top inset for iOS */
   const top = useSafeAreaPaddingTop();
+  const bottom = useSafeAreaPaddingBottom(24);
 
   /** Load data here */
   useEffect(() => {
@@ -505,7 +505,9 @@ const StageGirlsScreen = ({
           ref={bottomSheetModalRef}
           backdropComponent={CustomBackdrop}
           backgroundComponent={CustomBackground}
-          contentHeight={animatedContentHeight}
+          contentHeight={
+            filterKey === 'skills' ? undefined : animatedContentHeight
+          }
           handleComponent={props => (
             <BottomSheetHandle
               {...props}
@@ -513,8 +515,13 @@ const StageGirlsScreen = ({
             />
           )}
           handleHeight={animatedHandleHeight}
-          snapPoints={animatedSnapPoints}>
-          <View className="flex-1 px-3" onLayout={handleContentLayout}>
+          snapPoints={
+            filterKey === 'skills' ? skillSnapPoints : animatedSnapPoints
+          }>
+          <View
+            className="flex-1 px-3"
+            style={bottom}
+            onLayout={handleContentLayout}>
             {/* Character filter */}
             {filterKey === 'characters' && (
               <>
@@ -527,7 +534,6 @@ const StageGirlsScreen = ({
                   </Button>
                 </View>
                 <BottomSheetFlatList
-                  contentContainerStyle={styles.charContainer}
                   data={filter.characters}
                   ItemSeparatorComponent={Separator}
                   keyExtractor={charaKeyExtractor}

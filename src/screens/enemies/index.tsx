@@ -1,4 +1,9 @@
-import {BottomSheetModal, BottomSheetScrollView} from '@gorhom/bottom-sheet';
+import {
+  BottomSheetHandle,
+  BottomSheetModal,
+  BottomSheetScrollView,
+  useBottomSheetDynamicSnapPoints,
+} from '@gorhom/bottom-sheet';
 import {FlashList} from '@shopify/flash-list';
 import API, {links} from 'api';
 import {iconAttribute, imgEnemy} from 'api/images';
@@ -7,7 +12,6 @@ import ErrorView from 'components/errorview';
 import Kirin from 'components/kirin';
 import CustomBackdrop from 'components/sheet/backdrop';
 import CustomBackground from 'components/sheet/background';
-import CustomHandle from 'components/sheet/handle';
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Image, View} from 'react-native';
@@ -25,7 +29,13 @@ const EnemiesScreen = ({navigation}: RootStackScreenProps<'Enemies'>) => {
   const {t} = useTranslation();
   const {colors} = useTheme();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const snapPoints = useMemo(() => ['40%'], []);
+  const initialSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], []);
+  const {
+    animatedHandleHeight,
+    animatedSnapPoints,
+    animatedContentHeight,
+    handleContentLayout,
+  } = useBottomSheetDynamicSnapPoints(initialSnapPoints);
   /** Loading state */
   const [loading, setLoading] = useState(true);
   /** List for filter */
@@ -40,6 +50,7 @@ const EnemiesScreen = ({navigation}: RootStackScreenProps<'Enemies'>) => {
   });
   /** Bottom inset for iOS */
   const bottom = useSafeAreaPaddingBottom();
+  const sheetBottom = useSafeAreaPaddingBottom(24, {paddingHorizontal: 12});
 
   /** Load data */
   useEffect(() => {
@@ -144,11 +155,19 @@ const EnemiesScreen = ({navigation}: RootStackScreenProps<'Enemies'>) => {
           ref={bottomSheetModalRef}
           backdropComponent={CustomBackdrop}
           backgroundComponent={CustomBackground}
-          handleComponent={CustomHandle}
-          snapPoints={snapPoints}>
+          contentHeight={animatedContentHeight}
+          handleComponent={props => (
+            <BottomSheetHandle
+              {...props}
+              indicatorStyle={{backgroundColor: colors.onBackground}}
+            />
+          )}
+          handleHeight={animatedHandleHeight}
+          snapPoints={animatedSnapPoints}>
           <BottomSheetScrollView
-            contentContainerStyle={AppStyles.paddingHorizontal}>
-            <View className="mb-1 flex-row items-center justify-between">
+            contentContainerStyle={sheetBottom}
+            onLayout={handleContentLayout}>
+            <View className="mb-2 flex-row items-center justify-between">
               <Text variant="bodySmall">{t('skills')}</Text>
               <Button
                 mode={filter.all ? 'contained' : 'outlined'}
@@ -180,9 +199,9 @@ const EnemiesScreen = ({navigation}: RootStackScreenProps<'Enemies'>) => {
                 );
               })}
             </View>
-            <View className="mb-1">
-              <Text variant="bodySmall">{t('enemy-type')}</Text>
-            </View>
+            <Text className="my-2" variant="bodySmall">
+              {t('enemy-type')}
+            </Text>
             <View className="flex-row space-x-3">
               <Button
                 mode={filter.type[1] ? 'contained' : 'outlined'}
