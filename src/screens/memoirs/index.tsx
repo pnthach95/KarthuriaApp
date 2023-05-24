@@ -18,7 +18,7 @@ import CustomBackground from 'components/sheet/background';
 import CustomHandle from 'components/sheet/handle';
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {Image, StyleSheet, View} from 'react-native';
+import {Image, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {
   Button,
@@ -28,9 +28,7 @@ import {
   TouchableRipple,
   useTheme,
 } from 'react-native-paper';
-import {responsiveWidth} from 'react-native-responsive-dimensions';
 import AppStyles, {
-  padding,
   useSafeAreaPaddingBottom,
   useSafeAreaPaddingTop,
 } from 'theme/styles';
@@ -47,28 +45,13 @@ type TFilter = Record<'characters' | 'rarity', boolean[]> & {
   }[];
 };
 
-const styles = StyleSheet.create({
-  cutIn: {
-    height: 22,
-    marginLeft: 10,
-    width: 26,
-  },
-  sheetItem: {
-    width: (responsiveWidth(100) - 2 * padding) / 7,
-  },
-  skillIcon: {
-    height: 25,
-    width: 25,
-  },
-});
-
 const mKeyExtractor = (item: TEquipBasicInfo) =>
   'memoir_' + item.basicInfo.cardID;
 const charaKeyExtractor = (item: boolean, i: number) => `charaImg_${i}`;
 const skillKeyExtractor = (item: TFilter['skills'][0], i: number) =>
   `skill_${i}`;
 const rarityKeyExtractor = (item: boolean, i: number) => `rarity_${i}`;
-const raritySeparator = () => <View style={AppStyles.spaceHorizontal} />;
+const raritySeparator = () => <View className="w-3" />;
 
 const MemoirsScreen = ({
   navigation,
@@ -206,25 +189,20 @@ const MemoirsScreen = ({
         style={{borderColor: colors.outlineVariant}}
         onPress={onPress}>
         <>
-          <View style={[AppStyles.selfCenter, AppStyles.smallImg]}>
+          <View className="h-20 w-[72px] self-center">
             <FastImage
+              className="h-20 w-[72px] self-center"
               source={{uri: imgMemoir(item.basicInfo.cardID)}}
-              style={[AppStyles.selfCenter, AppStyles.smallImg]}
             />
             <Image
+              className="absolute h-20 w-[72px] self-center"
               source={frame}
-              style={[
-                AppStyles.selfCenter,
-                AppStyles.smallImg,
-                AppStyles.absolute,
-              ]}
             />
           </View>
           <Image
-            className="mt-1"
+            className="mt-1 h-[14px] w-[70px] self-center"
             resizeMode="contain"
             source={rarity(item.basicInfo.rarity)}
-            style={AppStyles.rarityImg}
           />
           <View className="my-1 flex-row flex-wrap items-center justify-center">
             {[
@@ -236,14 +214,16 @@ const MemoirsScreen = ({
               return (
                 <FastImage
                   key={`skill_icon_${s}`}
+                  className="aspect-square w-6"
                   source={{uri: iconSkill(s)}}
-                  style={styles.skillIcon}
                 />
               );
             })}
-            {item.activeSkill && <Image source={cutin} style={styles.cutIn} />}
+            {item.activeSkill && (
+              <Image className="ml-3 h-5 w-6" source={cutin} />
+            )}
           </View>
-          <Text style={AppStyles.centerText}>
+          <Text className="text-center">
             {item.basicInfo.name.en || item.basicInfo.name.ja}
           </Text>
         </>
@@ -274,10 +254,11 @@ const MemoirsScreen = ({
         draft.characters[index] = !draft.characters[index];
       });
     return (
-      <View style={styles.sheetItem}>
+      <View style={AppStyles.sheetItem}>
         <TouchableRipple
           borderless
-          style={[AppStyles.center, AppStyles.charaImgContainer, bgColor]}
+          className="items-center justify-center"
+          style={[AppStyles.charaImgContainer, bgColor]}
           onPress={onPress}>
           <Image source={charaImgs[index]} style={AppStyles.squareW12} />
         </TouchableRipple>
@@ -300,7 +281,8 @@ const MemoirsScreen = ({
     return (
       <TouchableRipple
         borderless
-        style={[AppStyles.rarityImgContainer, AppStyles.selfStart, bgColor]}
+        className="self-start rounded-xl p-1"
+        style={bgColor}
         onPress={onPress}>
         <Image resizeMode="contain" source={rarity(index + 1)} />
       </TouchableRipple>
@@ -339,12 +321,8 @@ const MemoirsScreen = ({
     return (
       <TouchableRipple
         borderless
-        style={[
-          AppStyles.center,
-          AppStyles.marginBottom,
-          AppStyles.elementImgContainer,
-          bgColor,
-        ]}
+        className="mb-2 items-center justify-center"
+        style={[AppStyles.elementImgContainer, bgColor]}
         onPress={onPress}>
         <Image source={source} style={AppStyles.squareW10} />
       </TouchableRipple>
@@ -396,8 +374,7 @@ const MemoirsScreen = ({
             {/* Character filter */}
             {filterKey === 'characters' && (
               <>
-                <View
-                  style={[AppStyles.rowSpaceBetween, AppStyles.marginBottom]}>
+                <View className="mb-2 flex-row items-center justify-between">
                   <Caption>{t('characters')}</Caption>
                   <Button
                     mode={filterAll.characters ? 'contained' : 'outlined'}
@@ -431,8 +408,7 @@ const MemoirsScreen = ({
             {/* Skill filter */}
             {filterKey === 'skills' && (
               <>
-                <View
-                  style={[AppStyles.rowSpaceBetween, AppStyles.marginBottom]}>
+                <View className="mb-2 flex-row items-center justify-between">
                   <Caption>{t('skills')}</Caption>
                   <Button
                     mode={filterAll.skills ? 'contained' : 'outlined'}
@@ -457,7 +433,5 @@ const MemoirsScreen = ({
 
   return <ErrorView />;
 };
-
-MemoirsScreen.whyDidYouRender = true;
 
 export default MemoirsScreen;

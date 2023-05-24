@@ -17,7 +17,7 @@ import {useTranslation} from 'react-i18next';
 import {Image, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {Button, FAB, Text, TouchableRipple, useTheme} from 'react-native-paper';
-import AppStyles, {useSafeAreaPaddingBottom} from 'theme/styles';
+import {useSafeAreaPaddingBottom} from 'theme/styles';
 import {useImmer} from 'use-immer';
 import type {ListRenderItem} from '@shopify/flash-list';
 import type {RootStackScreenProps} from 'typings/navigation';
@@ -150,7 +150,11 @@ const EnemiesScreen = ({navigation}: RootStackScreenProps<'Enemies'>) => {
           numColumns={2}
           renderItem={renderItem}
         />
-        <FAB icon="filter" style={AppStyles.fab} onPress={openSheet} />
+        <FAB
+          className="absolute bottom-0 right-0 m-4"
+          icon="filter"
+          onPress={openSheet}
+        />
         <BottomSheetModal
           ref={bottomSheetModalRef}
           backdropComponent={CustomBackdrop}

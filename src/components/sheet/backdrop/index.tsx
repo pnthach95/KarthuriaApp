@@ -6,7 +6,6 @@ import Animated, {
   interpolate,
   useAnimatedStyle,
 } from 'react-native-reanimated';
-
 import type {BottomSheetBackdropProps} from '@gorhom/bottom-sheet';
 
 const CustomBackdrop = ({animatedIndex, style}: BottomSheetBackdropProps) => {

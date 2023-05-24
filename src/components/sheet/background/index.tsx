@@ -1,24 +1,13 @@
-import {BottomSheetBackgroundProps} from '@gorhom/bottom-sheet';
 import React from 'react';
-import {StyleSheet, View} from 'react-native';
+import {View} from 'react-native';
 import {useTheme} from 'react-native-paper';
-import {borderRadius} from 'theme/styles';
-
-const styles = StyleSheet.create({
-  radius: {
-    borderTopLeftRadius: borderRadius * 2,
-    borderTopRightRadius: borderRadius * 2,
-  },
-});
+import type {BottomSheetBackgroundProps} from '@gorhom/bottom-sheet';
 
 const CustomBackground = ({style}: BottomSheetBackgroundProps) => {
   const {colors} = useTheme();
+  const bg = {backgroundColor: colors.background};
 
-  return (
-    <View
-      style={[style, styles.radius, {backgroundColor: colors.background}]}
-    />
-  );
+  return <View className="rounded-tl-xl rounded-tr-xl" style={[style, bg]} />;
 };
 
 CustomBackground.whyDidYouRender = true;

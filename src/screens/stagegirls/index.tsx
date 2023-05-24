@@ -21,8 +21,6 @@ import FastImage from 'react-native-fast-image';
 import {Button, FAB, Text, TouchableRipple, useTheme} from 'react-native-paper';
 import {responsiveWidth} from 'react-native-responsive-dimensions';
 import AppStyles, {
-  borderRadius,
-  padding,
   useSafeAreaPaddingBottom,
   useSafeAreaPaddingTop,
 } from 'theme/styles';
@@ -42,30 +40,13 @@ type TFilter = Record<
 };
 
 const styles = StyleSheet.create({
-  attackType: {
-    height: 17,
-    right: 0,
-    width: 20,
-  },
   positionImg: {
     height: (responsiveWidth(10) * 2) / 3,
     width: responsiveWidth(10),
   },
   positionImgContainer: {
-    borderRadius,
     height: (responsiveWidth(12) * 2) / 3,
     width: responsiveWidth(12),
-  },
-  rarity: {
-    bottom: 0,
-  },
-  role: {
-    height: 40 / 3,
-    top: 20,
-    width: 20,
-  },
-  sheetItem: {
-    width: (responsiveWidth(100) - 2 * padding) / 7,
   },
 });
 
@@ -279,21 +260,21 @@ const StageGirlsScreen = ({
               source={frame}
             />
             <Image
+              className="absolute aspect-square w-5"
               source={{uri: iconAttribute(base.attribute)}}
-              style={[AppStyles.square20, AppStyles.absolute]}
             />
             <Image
+              className="absolute top-5 h-3 w-5"
               source={position(base.roleIndex.role)}
-              style={[styles.role, AppStyles.absolute]}
             />
             <Image
+              className="absolute bottom-0 h-[14px] w-[70px] self-center"
               resizeMode="contain"
               source={rarity(basicInfo.rarity)}
-              style={[AppStyles.rarityImg, styles.rarity, AppStyles.absolute]}
             />
             <Image
+              className="absolute right-0 h-4 w-5"
               source={attackType(base.attackType)}
-              style={[styles.attackType, AppStyles.absolute]}
             />
           </View>
           <Text className="text-center">
@@ -328,10 +309,11 @@ const StageGirlsScreen = ({
     };
 
     return (
-      <View style={styles.sheetItem}>
+      <View style={AppStyles.sheetItem}>
         <TouchableRipple
           borderless
-          style={[AppStyles.center, AppStyles.charaImgContainer, bgColor]}
+          className="items-center justify-center"
+          style={[AppStyles.charaImgContainer, bgColor]}
           onPress={onPress}>
           <Image source={charaImgs[index]} style={AppStyles.squareW12} />
         </TouchableRipple>
@@ -354,10 +336,11 @@ const StageGirlsScreen = ({
     };
 
     return (
-      <View style={styles.sheetItem}>
+      <View style={AppStyles.sheetItem}>
         <TouchableRipple
           borderless
-          style={[AppStyles.center, AppStyles.elementImgContainer, bgColor]}
+          className="items-center justify-center"
+          style={[AppStyles.elementImgContainer, bgColor]}
           onPress={onPress}>
           <Image
             source={{uri: iconAttribute(index + 1)}}
@@ -386,7 +369,8 @@ const StageGirlsScreen = ({
       <View className="flex-row">
         <TouchableRipple
           borderless
-          style={[AppStyles.center, styles.positionImgContainer, bgColor]}
+          className="items-center justify-center rounded-md"
+          style={[styles.positionImgContainer, bgColor]}
           onPress={onPress}>
           <Image source={position(index as TRole)} style={styles.positionImg} />
         </TouchableRipple>
@@ -426,7 +410,8 @@ const StageGirlsScreen = ({
     return (
       <TouchableRipple
         borderless
-        style={[AppStyles.rarityImgContainer, AppStyles.selfStart, bgColor]}
+        className="self-start rounded-xl p-1"
+        style={bgColor}
         onPress={onPress}>
         <Image resizeMode="contain" source={rarity(index + 2)} />
       </TouchableRipple>
@@ -463,12 +448,8 @@ const StageGirlsScreen = ({
     return (
       <TouchableRipple
         borderless
-        style={[
-          AppStyles.center,
-          AppStyles.marginBottom,
-          AppStyles.elementImgContainer,
-          bgColor,
-        ]}
+        className="mb-2 items-center justify-center"
+        style={[AppStyles.elementImgContainer, bgColor]}
         onPress={onPress}>
         <Image source={source} style={AppStyles.squareW10} />
       </TouchableRipple>
@@ -570,10 +551,9 @@ const StageGirlsScreen = ({
                 <View className="flex-row">
                   <TouchableRipple
                     borderless
+                    className="items-center justify-center rounded-xl"
                     style={[
                       AppStyles.squareW12,
-                      AppStyles.center,
-                      AppStyles.borderRadius,
                       {
                         backgroundColor: filter.attackType[0]
                           ? colors.primary
@@ -586,10 +566,9 @@ const StageGirlsScreen = ({
                   <View className="w-3" />
                   <TouchableRipple
                     borderless
+                    className="items-center justify-center rounded-xl"
                     style={[
                       AppStyles.squareW12,
-                      AppStyles.center,
-                      AppStyles.borderRadius,
                       {
                         backgroundColor: filter.attackType[1]
                           ? colors.primary
@@ -618,8 +597,7 @@ const StageGirlsScreen = ({
             {/* Skill filter */}
             {filterKey === 'skills' && (
               <>
-                <View
-                  style={[AppStyles.rowSpaceBetween, AppStyles.marginBottom]}>
+                <View className="mb-2 flex-row items-center justify-between">
                   <Text variant="labelMedium">{t('skills')}</Text>
                   <Button
                     mode={filterAll.skills ? 'contained' : 'outlined'}

@@ -1,10 +1,9 @@
 import {useNavigation} from '@react-navigation/native';
 import React, {useCallback, useRef, useState} from 'react';
-import {Animated, ScrollView, StyleSheet, View} from 'react-native';
+import {Animated, ScrollView, View} from 'react-native';
 import {IconButton, useTheme} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useStyle} from 'react-native-style-utilities';
-
 import type {
   NativeScrollEvent,
   NativeSyntheticEvent,
@@ -20,19 +19,18 @@ const ScrollViewWithBackButton = ({
   right?: React.ReactNode;
 }) => {
   const scrollAV = useRef(new Animated.Value(0)).current;
-  const safeAreaInsets = useSafeAreaInsets();
+  const insets = useSafeAreaInsets();
   const [currentOffset, setCurrentOffset] = useState(0);
   const {colors} = useTheme();
   const navigation = useNavigation();
   const contentContainerStyle = useStyle(
     () => [
-      styles.scroll,
       {
-        paddingTop: safeAreaInsets.top,
-        paddingBottom: safeAreaInsets.bottom,
+        paddingTop: insets.top + 40,
+        paddingBottom: insets.bottom,
       },
     ],
-    [safeAreaInsets.bottom, safeAreaInsets.top],
+    [insets.bottom, insets.top],
   );
   const backButtonStyle = useStyle(
     () => ({backgroundColor: colors.background}),
@@ -48,7 +46,7 @@ const ScrollViewWithBackButton = ({
 
   const translateY = scrollAV.interpolate({
     inputRange: [0, 1],
-    outputRange: [0, -50 - safeAreaInsets.top],
+    outputRange: [0, -50 - insets.top],
     extrapolate: 'clamp',
   });
 
@@ -57,9 +55,9 @@ const ScrollViewWithBackButton = ({
 
   const backButtonAVStyle = useStyle(
     () => ({
-      paddingTop: safeAreaInsets.top,
+      paddingTop: insets.top,
     }),
-    [safeAreaInsets.top],
+    [insets.top],
   );
 
   const onScroll = useCallback(
@@ -102,7 +100,6 @@ const ScrollViewWithBackButton = ({
         scrollEventThrottle={16}
         showsVerticalScrollIndicator={false}
         onScroll={onScroll}>
-        <View className="h-10" />
         {children}
       </ScrollView>
       <Animated.View
@@ -122,12 +119,6 @@ const ScrollViewWithBackButton = ({
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  scroll: {
-    paddingTop: 50,
-  },
-});
 
 ScrollViewWithBackButton.whyDidYouRender = true;
 

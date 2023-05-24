@@ -1,8 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {IconButton, useTheme} from 'react-native-paper';
+import {IconButton} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import AppStyles from 'theme/styles';
 import ErrorView from '../errorview';
 import Kirin from '../kirin';
 import ScrollViewWithBackButton from '../scrollviewwithbackbutton';
@@ -15,7 +14,6 @@ type Props = {
 
 const BaseScreen = ({children, loading, hasData}: Props) => {
   const insets = useSafeAreaInsets();
-  const {colors} = useTheme();
   const navigation = useNavigation();
   const goBack = () => navigation.goBack();
   const top = {
@@ -30,8 +28,9 @@ const BaseScreen = ({children, loading, hasData}: Props) => {
     <>
       {loading ? <Kirin /> : <ErrorView />}
       <IconButton
+        className="absolute"
         icon="arrow-left"
-        style={[AppStyles.absolute, top, {backgroundColor: colors.background}]}
+        style={top}
         onPress={goBack}
       />
     </>
