@@ -22,13 +22,13 @@ import {
   TouchableRipple,
   useTheme,
 } from 'react-native-paper';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import useStore, {
   onSaveOptions,
   setAppColor,
   setLanguage,
   useAppColor,
 } from 'store';
+import {useSafeAreaPaddingTop} from 'theme/styles';
 import Button from './button';
 import type {ListRenderItem} from 'react-native';
 import type {MainBottomTabScreenProps} from 'typings/navigation';
@@ -59,13 +59,12 @@ const MoreScreen = ({navigation}: MainBottomTabScreenProps<'MoreScreen'>) => {
     handleContentLayout,
   } = useBottomSheetDynamicSnapPoints(initialSnapPoints);
   const {t} = useTranslation();
-  const insets = useSafeAreaInsets();
   const appColor = useAppColor();
   const {colors} = useTheme();
   const options = useStore(s => s.options);
   const language = useStore(s => s.language);
   const [languageMenuVisible, setLanguageMenuVisible] = useState(false);
-  const top = {paddingTop: insets.top};
+  const top = useSafeAreaPaddingTop();
   const textPrimary = {color: colors.primary};
 
   /** Toggle dark theme */

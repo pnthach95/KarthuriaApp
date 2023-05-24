@@ -1,8 +1,30 @@
 import {StyleSheet} from 'react-native';
 import {responsiveWidth} from 'react-native-responsive-dimensions';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import type {ViewStyle} from 'react-native';
 
 export const padding = 12;
 export const borderRadius = 5;
+
+export const useSafeAreaPaddingBottom = (offset = 0, style?: ViewStyle) => {
+  const insets = useSafeAreaInsets();
+  return StyleSheet.flatten([
+    {
+      paddingBottom: insets.bottom + offset,
+    },
+    style,
+  ]);
+};
+
+export const useSafeAreaPaddingTop = (offset = 0, style?: ViewStyle) => {
+  const insets = useSafeAreaInsets();
+  return StyleSheet.flatten([
+    {
+      paddingTop: insets.top + offset,
+    },
+    style,
+  ]);
+};
 
 const AppStyles = StyleSheet.create({
   absolute: {

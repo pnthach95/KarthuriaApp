@@ -20,8 +20,11 @@ import {FlatList, Image, StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {Button, FAB, Text, TouchableRipple, useTheme} from 'react-native-paper';
 import {responsiveWidth} from 'react-native-responsive-dimensions';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import AppStyles, {borderRadius, padding} from 'theme/styles';
+import AppStyles, {
+  borderRadius,
+  padding,
+  useSafeAreaPaddingTop,
+} from 'theme/styles';
 import {useImmer} from 'use-immer';
 import {characterToIndex} from 'utils';
 import type {ListRenderItem} from 'react-native';
@@ -82,7 +85,6 @@ const StageGirlsScreen = ({
   navigation,
 }: MainBottomTabScreenProps<'StageGirlsScreen'>) => {
   const {t} = useTranslation();
-  const insets = useSafeAreaInsets();
   const {colors} = useTheme();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const initialSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], []);
@@ -117,9 +119,7 @@ const StageGirlsScreen = ({
     handleContentLayout,
   } = useBottomSheetDynamicSnapPoints(initialSnapPoints);
   /** Top inset for iOS */
-  const top = {
-    paddingTop: insets.top,
-  };
+  const top = useSafeAreaPaddingTop();
 
   /** Load data here */
   useEffect(() => {
@@ -383,7 +383,7 @@ const StageGirlsScreen = ({
     };
 
     return (
-      <View style={AppStyles.row}>
+      <View className="flex-row">
         <TouchableRipple
           borderless
           style={[AppStyles.center, styles.positionImgContainer, bgColor]}
@@ -566,7 +566,7 @@ const StageGirlsScreen = ({
             {filterKey === 'attackType' && (
               <>
                 <Text variant="labelMedium">{t('attack-type')}</Text>
-                <View style={AppStyles.row}>
+                <View className="flex-row">
                   <TouchableRipple
                     borderless
                     style={[
@@ -582,7 +582,7 @@ const StageGirlsScreen = ({
                     onPress={onPressAttType0}>
                     <Image source={attackType(1)} style={AppStyles.squareW10} />
                   </TouchableRipple>
-                  <View style={AppStyles.spaceHorizontal} />
+                  <View className="w-3" />
                   <TouchableRipple
                     borderless
                     style={[

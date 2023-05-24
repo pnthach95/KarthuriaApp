@@ -25,8 +25,7 @@ import {
   useTheme,
 } from 'react-native-paper';
 import {responsiveWidth} from 'react-native-responsive-dimensions';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import AppStyles, {padding} from 'theme/styles';
+import AppStyles, {padding, useSafeAreaPaddingTop} from 'theme/styles';
 import {useImmer} from 'use-immer';
 import {characterToIndex} from 'utils';
 import type {ListRenderItem as FlashListRenderItem} from '@shopify/flash-list';
@@ -70,7 +69,6 @@ const MemoirsScreen = ({
   navigation,
 }: MainBottomTabScreenProps<'MemoirsScreen'>) => {
   const {t} = useTranslation();
-  const insets = useSafeAreaInsets();
   const {colors} = useTheme();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['40%'], []);
@@ -95,9 +93,7 @@ const MemoirsScreen = ({
     skills: true,
   });
   /** Top inset for iOS */
-  const top = {
-    paddingTop: insets.top,
-  };
+  const top = useSafeAreaPaddingTop();
 
   /** Load data here */
   useEffect(() => {

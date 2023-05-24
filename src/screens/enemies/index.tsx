@@ -13,8 +13,7 @@ import {useTranslation} from 'react-i18next';
 import {Image, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {Button, FAB, Text, TouchableRipple, useTheme} from 'react-native-paper';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import AppStyles from 'theme/styles';
+import AppStyles, {useSafeAreaPaddingBottom} from 'theme/styles';
 import {useImmer} from 'use-immer';
 import type {ListRenderItem} from '@shopify/flash-list';
 import type {RootStackScreenProps} from 'typings/navigation';
@@ -24,7 +23,6 @@ const keyExtractor = ({basicInfo}: TEnemyBasicInfo) =>
 
 const EnemiesScreen = ({navigation}: RootStackScreenProps<'Enemies'>) => {
   const {t} = useTranslation();
-  const insets = useSafeAreaInsets();
   const {colors} = useTheme();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
   const snapPoints = useMemo(() => ['40%'], []);
@@ -41,9 +39,7 @@ const EnemiesScreen = ({navigation}: RootStackScreenProps<'Enemies'>) => {
     all: true,
   });
   /** Bottom inset for iOS */
-  const bottom = {
-    paddingBottom: insets.bottom,
-  };
+  const bottom = useSafeAreaPaddingBottom();
 
   /** Load data */
   useEffect(() => {

@@ -3,7 +3,7 @@ import {useTranslation} from 'react-i18next';
 import {View} from 'react-native';
 import {NetworkConsumer} from 'react-native-offline';
 import {Text, useTheme} from 'react-native-paper';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useSafeAreaPaddingTop} from 'theme/styles';
 
 /**
  * Connect Status
@@ -11,10 +11,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 const ConnectStatus = () => {
   const {t} = useTranslation();
   const {colors} = useTheme();
-  const insets = useSafeAreaInsets();
-  const safeInsets = {
-    paddingTop: insets.top,
-  };
+  const safeInsets = useSafeAreaPaddingTop();
   const box = {
     backgroundColor: colors.error,
   };

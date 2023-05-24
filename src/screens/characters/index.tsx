@@ -6,20 +6,17 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {FlatList, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {Text, TouchableRipple, useTheme} from 'react-native-paper';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useSafeAreaPaddingBottom} from 'theme/styles';
 import type {RootStackScreenProps} from 'typings/navigation';
 
 const keyExtractor = ({basicInfo: {charaID}}: TCharaBasicInfo) =>
   `chID_${charaID}`;
 
 const CharactersScreen = ({navigation}: RootStackScreenProps<'Characters'>) => {
-  const insets = useSafeAreaInsets();
   const {colors} = useTheme();
   const [loading, setLoading] = useState(true);
   const [charaList, setCharaList] = useState<TCharaBasicInfo[]>([]);
-  const bottom = {
-    paddingBottom: insets.bottom,
-  };
+  const bottom = useSafeAreaPaddingBottom();
 
   useEffect(() => {
     const loadData = async () => {
