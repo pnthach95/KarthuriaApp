@@ -98,8 +98,8 @@ android {
         applicationId "vn.pnthach.karthuria"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 13
-        versionName "3.1.0"
+        versionCode 14
+        versionName "3.2.0"
         multiDexEnabled true
     }
 
