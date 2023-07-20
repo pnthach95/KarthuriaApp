@@ -33,7 +33,7 @@
     {
       "label": "Run Android release",
       "type": "shell",
-      "command": "npx react-native run-android --variant=release",
+      "command": "npx react-native run-android --mode=release",
       "problemMatcher": []
     },
     {
