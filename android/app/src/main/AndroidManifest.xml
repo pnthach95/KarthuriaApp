@@ -35,9 +35,8 @@
         </intent-filter>
       </activity>
       <service
-        android:name="com.reactnativeandroidwidget.RNWidgetBackgroundTaskService"
-        android:enabled="true"
-        android:label="RNWidgetBackgroundTaskService" />
+        android:name="com.reactnativeandroidwidget.RNWidgetCollectionService"
+        android:permission="android.permission.BIND_REMOTEVIEWS" />
       <receiver
         android:name=".widget.Event"
         android:exported="false"

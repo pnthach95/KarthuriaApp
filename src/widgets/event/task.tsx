@@ -55,22 +55,24 @@ export async function widgetTaskHandler(props: WidgetTaskHandlerProps) {
   const Widget =
     nameToWidget[widgetInfo.widgetName as keyof typeof nameToWidget];
 
+  async function widgetAdded() {
+    const events = await getEventData();
+    props.renderWidget(
+      <Widget
+        currentEvent={events?.[0]}
+        events={events}
+        idx={0}
+        isDark={isDark}
+      />,
+    );
+  }
+
   switch (props.widgetAction) {
     case 'WIDGET_ADDED':
-      {
-        const events = await getEventData();
-        props.renderWidget(
-          <Widget
-            currentEvent={events?.[0]}
-            events={events}
-            idx={0}
-            isDark={isDark}
-          />,
-        );
-      }
+      await widgetAdded();
       break;
-    case 'WIDGET_RESIZED':
-      // Not needed for now
+    case 'WIDGET_UPDATE':
+      await widgetAdded();
       break;
     case 'WIDGET_CLICK':
       const events = await getEventData();
