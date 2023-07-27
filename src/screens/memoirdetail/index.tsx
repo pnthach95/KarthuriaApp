@@ -7,6 +7,7 @@ import frame from 'assets/common/frame_thumbnail_equip.png';
 import recastTurn from 'assets/common/recast_turn.png';
 import BaseScreen from 'components/basescreen';
 import SkillParam from 'components/skillparam';
+import TextRow from 'components/textrow';
 import dayjs from 'dayjs';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
@@ -77,13 +78,13 @@ const MemoirDetailScreen = ({
           <Text className="text-center" variant="headlineSmall">
             {memoir.basicInfo.name.en || memoir.basicInfo.name.ja}
           </Text>
-          <View className="mt-3 aspect-memoir w-72 self-center">
+          <View className="mt-3 aspect-memoir w-5/6 self-center">
             <FastImage
-              className="aspect-memoir w-72 self-center rounded-xl"
+              className="aspect-memoir w-full self-center rounded-xl"
               source={{uri: imgMemoirBig(memoir.basicInfo.cardID)}}
             />
             <FastImage
-              className="absolute aspect-memoir w-72 self-center"
+              className="absolute aspect-memoir w-full self-center"
               source={frame}
             />
             <FastImage
@@ -96,7 +97,7 @@ const MemoirDetailScreen = ({
           </View>
           <Surface className="my-3 rounded p-3" elevation={3}>
             <View className="flex-row justify-between">
-              <Text variant="bodySmall">{t('characters')}</Text>
+              <Text variant="labelSmall">{t('characters')}</Text>
               <View className="flex-row">
                 {Array.isArray(memoir.basicInfo.charas) ? (
                   memoir.basicInfo.charas.map(chara => {
@@ -120,18 +121,16 @@ const MemoirDetailScreen = ({
                 )}
               </View>
             </View>
-            <Text variant="bodySmall">{t('released')}</Text>
+            <Text variant="labelSmall">{t('released')}</Text>
             {releasedJA && (
-              <View className="flex-row justify-between">
-                <Text>{t('japanese')}</Text>
-                <Text>{releasedJA.format('LLLL')}</Text>
-              </View>
+              <TextRow hideDivider label={t('japanese')}>
+                {releasedJA.format('LLLL')}
+              </TextRow>
             )}
             {releasedWW && (
-              <View className="flex-row justify-between">
-                <Text>{t('worldwide')}</Text>
-                <Text>{releasedWW.format('LLLL')}</Text>
-              </View>
+              <TextRow hideDivider label={t('worldwide')}>
+                {releasedWW.format('LLLL')}
+              </TextRow>
             )}
           </Surface>
           <Text className="text-center" variant="titleMedium">

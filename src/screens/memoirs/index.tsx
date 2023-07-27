@@ -50,8 +50,6 @@ const mKeyExtractor = (item: TEquipBasicInfo) =>
 const charaKeyExtractor = (item: boolean, i: number) => `charaImg_${i}`;
 const skillKeyExtractor = (item: TFilter['skills'][0], i: number) =>
   `skill_${i}`;
-const rarityKeyExtractor = (item: boolean, i: number) => `rarity_${i}`;
-const raritySeparator = () => <View className="w-3" />;
 
 const MemoirsScreen = ({
   navigation,
@@ -254,13 +252,16 @@ const MemoirsScreen = ({
         draft.characters[index] = !draft.characters[index];
       });
     return (
-      <View style={AppStyles.sheetItem}>
+      <View className="w-1/7 p-1">
         <TouchableRipple
           borderless
-          className="items-center justify-center"
-          style={[AppStyles.charaImgContainer, bgColor]}
+          className="aspect-square w-full items-center justify-center rounded-full p-0.5"
+          style={bgColor}
           onPress={onPress}>
-          <Image source={charaImgs[index]} style={AppStyles.squareW12} />
+          <FastImage
+            className="aspect-square w-full"
+            source={charaImgs[index]}
+          />
         </TouchableRipple>
       </View>
     );
@@ -319,13 +320,15 @@ const MemoirsScreen = ({
       });
     const source = {uri: iconSkill(item.id)};
     return (
-      <TouchableRipple
-        borderless
-        className="mb-2 items-center justify-center"
-        style={[AppStyles.elementImgContainer, bgColor]}
-        onPress={onPress}>
-        <Image source={source} style={AppStyles.squareW10} />
-      </TouchableRipple>
+      <View className="w-1/7 p-1">
+        <TouchableRipple
+          borderless
+          className="mb-2 aspect-square w-full items-center justify-center rounded-full"
+          style={bgColor}
+          onPress={onPress}>
+          <FastImage className="aspect-square w-5/6" source={source} />
+        </TouchableRipple>
+      </View>
     );
   };
 
@@ -396,13 +399,16 @@ const MemoirsScreen = ({
             {filterKey === 'rarity' && (
               <>
                 <Caption>{t('rarity')}</Caption>
-                <BottomSheetFlatList
-                  horizontal
-                  data={filter.rarity}
-                  ItemSeparatorComponent={raritySeparator}
-                  keyExtractor={rarityKeyExtractor}
-                  renderItem={rarityRenderItem}
-                />
+                <View className="flex-row flex-wrap gap-2">
+                  {filter.rarity.map((item, index) =>
+                    rarityRenderItem({
+                      index,
+                      item,
+                      // @ts-ignore
+                      separators: null,
+                    }),
+                  )}
+                </View>
               </>
             )}
             {/* Skill filter */}

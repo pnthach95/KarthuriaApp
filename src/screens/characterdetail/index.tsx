@@ -49,30 +49,30 @@ const CharacterDetailScreen = ({
           <Text className="mb-3 text-center" variant="headlineLarge">
             {character.info.name.en || character.info.name.ja}
           </Text>
-          <View className="mb-3 items-center justify-center">
+          <View className="mb-3 w-1/2 self-center">
             <FastImage
-              className="aspect-character-portrait h-[336px]"
+              className="aspect-character-portrait w-full"
               source={{uri: charaBase(character.basicInfo.charaID)}}
             />
             <FastImage
-              className="absolute aspect-character-portrait h-[336px]"
+              className="absolute aspect-character-portrait w-full"
               source={{uri: charaPortrait(character.basicInfo.charaID)}}
             />
           </View>
           <View className="space-y-3 p-3">
             <View>
-              <Text variant="bodySmall">{t('birthday')}</Text>
+              <Text variant="labelSmall">{t('birthday')}</Text>
               <Text variant="bodyMedium">{birthday}</Text>
             </View>
             <View>
-              <Text variant="bodySmall">{t('voice-actor')}</Text>
+              <Text variant="labelSmall">{t('voice-actor')}</Text>
               <Text variant="bodyMedium">
                 {character.info.cv.en || character.info.cv.ja}
               </Text>
             </View>
             <View className="flex-row items-center justify-between">
-              <View>
-                <Text variant="bodySmall">{t('school')}</Text>
+              <View className="flex-1">
+                <Text variant="labelSmall">{t('school')}</Text>
                 <Text variant="bodyMedium">
                   {character.info.department_1.en ||
                     character.info.department_1.ja}
@@ -84,39 +84,39 @@ const CharacterDetailScreen = ({
               />
             </View>
             <View>
-              <Text variant="bodySmall">{t('department')}</Text>
+              <Text variant="labelSmall">{t('department')}</Text>
               <Text variant="bodyMedium">
                 {character.info.department_2.en ||
                   character.info.department_2.ja}
               </Text>
             </View>
             <View>
-              <Text variant="bodySmall">{t('liked-food')}</Text>
+              <Text variant="labelSmall">{t('liked-food')}</Text>
               <Text variant="bodyMedium">
                 {character.info.like_foods.en || character.info.like_foods.ja}
               </Text>
             </View>
             <View>
-              <Text variant="bodySmall">{t('disliked-food')}</Text>
+              <Text variant="labelSmall">{t('disliked-food')}</Text>
               <Text variant="bodyMedium">
                 {character.info.dislike_foods.en ||
                   character.info.dislike_foods.ja}
               </Text>
             </View>
             <View>
-              <Text variant="bodySmall">{t('likes')}</Text>
+              <Text variant="labelSmall">{t('likes')}</Text>
               <Text variant="bodyMedium">
                 {character.info.likes.en || character.info.likes.ja}
               </Text>
             </View>
             <View>
-              <Text variant="bodySmall">{t('dislikes')}</Text>
+              <Text variant="labelSmall">{t('dislikes')}</Text>
               <Text variant="bodyMedium">
                 {character.info.dislikes.en || character.info.dislikes.ja}
               </Text>
             </View>
             <View>
-              <Text variant="bodySmall">{t('introduction')}</Text>
+              <Text variant="labelSmall">{t('introduction')}</Text>
               <Text variant="bodyMedium">
                 {character.info.introduction.en ||
                   character.info.introduction.ja}

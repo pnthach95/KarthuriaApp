@@ -55,10 +55,8 @@ const sgKeyExtractor = ({basicInfo}: TDressBasicInfo) =>
 const charaKeyExtractor = (item: boolean, i: number) => `charaImg_${i}`;
 const elementKeyExtractor = (item: boolean, i: number) => `element_${i}`;
 const positionKeyExtractor = (item: boolean, i: number): string => `p_${i}`;
-const rarityKeyExtractor = (item: boolean, i: number) => `rarity_${i}`;
 const skillKeyExtractor = (item: TFilter['skills'][0], i: number) =>
   `skill_${i}`;
-const raritySeparator = () => <View className="w-3" />;
 
 const StageGirlsScreen = ({
   navigation,
@@ -247,9 +245,11 @@ const StageGirlsScreen = ({
         style={{borderColor: colors.outlineVariant}}
         onPress={onPress}>
         <>
-          <Text className="text-center">
-            {basicInfo.name.en || basicInfo.name.ja}
-          </Text>
+          <View className="mb-1 flex-1 justify-center">
+            <Text className="text-center">
+              {basicInfo.name.en || basicInfo.name.ja}
+            </Text>
+          </View>
           <View className="aspect-stage-girl h-20 self-center">
             <FastImage
               className="aspect-stage-girl h-20"
@@ -309,13 +309,16 @@ const StageGirlsScreen = ({
     };
 
     return (
-      <View style={AppStyles.sheetItem}>
+      <View className="w-1/7 p-1">
         <TouchableRipple
           borderless
-          className="items-center justify-center"
-          style={[AppStyles.charaImgContainer, bgColor]}
+          className="aspect-square w-full items-center justify-center rounded-full p-0.5"
+          style={bgColor}
           onPress={onPress}>
-          <Image source={charaImgs[index]} style={AppStyles.squareW12} />
+          <FastImage
+            className="aspect-square w-full"
+            source={charaImgs[index]}
+          />
         </TouchableRipple>
       </View>
     );
@@ -336,15 +339,15 @@ const StageGirlsScreen = ({
     };
 
     return (
-      <View style={AppStyles.sheetItem}>
+      <View className="w-1/7 p-1">
         <TouchableRipple
           borderless
-          className="items-center justify-center"
-          style={[AppStyles.elementImgContainer, bgColor]}
+          className="items-center justify-center rounded-full p-0.5"
+          style={bgColor}
           onPress={onPress}>
-          <Image
+          <FastImage
+            className="aspect-square w-full"
             source={{uri: iconAttribute(index + 1)}}
-            style={AppStyles.squareW10}
           />
         </TouchableRipple>
       </View>
@@ -446,13 +449,15 @@ const StageGirlsScreen = ({
       });
     const source = {uri: iconSkill(item.id)};
     return (
-      <TouchableRipple
-        borderless
-        className="mb-2 items-center justify-center"
-        style={[AppStyles.elementImgContainer, bgColor]}
-        onPress={onPress}>
-        <Image source={source} style={AppStyles.squareW10} />
-      </TouchableRipple>
+      <View className="w-1/7 p-1">
+        <TouchableRipple
+          borderless
+          className="mb-2 aspect-square w-full items-center justify-center rounded-full"
+          style={bgColor}
+          onPress={onPress}>
+          <FastImage className="aspect-square w-5/6" source={source} />
+        </TouchableRipple>
+      </View>
     );
   };
 
@@ -466,13 +471,13 @@ const StageGirlsScreen = ({
     return (
       <>
         <FlatList
+          contentContainerStyle={top}
           data={rsgList}
           initialNumToRender={12}
           keyExtractor={sgKeyExtractor}
           ListEmptyComponent={EmptyList}
           numColumns={2}
           renderItem={sgRenderItem}
-          style={top}
         />
         <FAB.Group
           actions={fabActions}
@@ -585,13 +590,16 @@ const StageGirlsScreen = ({
             {filterKey === 'rarity' && (
               <>
                 <Text variant="labelMedium">{t('rarity')}</Text>
-                <BottomSheetFlatList
-                  horizontal
-                  data={filter.rarity}
-                  ItemSeparatorComponent={raritySeparator}
-                  keyExtractor={rarityKeyExtractor}
-                  renderItem={rarityRenderItem}
-                />
+                <View className="flex-row flex-wrap gap-2">
+                  {filter.rarity.map((item, index) =>
+                    rarityRenderItem({
+                      index,
+                      item,
+                      // @ts-ignore
+                      separators: null,
+                    }),
+                  )}
+                </View>
               </>
             )}
             {/* Skill filter */}

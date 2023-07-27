@@ -1,0 +1,16 @@
+diff --git a/node_modules/react-native-responsive-dimensions/src/index.ts b/node_modules/react-native-responsive-dimensions/src/index.ts
+index a0930aa..a120454 100644
+--- a/node_modules/react-native-responsive-dimensions/src/index.ts
++++ b/node_modules/react-native-responsive-dimensions/src/index.ts
+@@ -21,9 +21,9 @@ const useDimensionsListener = () => {
+       setScreenDimension(screen);
+     }
+ 
+-    Dimensions.addEventListener("change", handleDimensionChange);
++    const listener = Dimensions.addEventListener("change", handleDimensionChange);
+     return () => {
+-      Dimensions.removeEventListener("change", handleDimensionChange);
++      listener?.remove()
+     };
+   }, []);
+ 

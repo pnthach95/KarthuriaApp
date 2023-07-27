@@ -49,16 +49,16 @@ const CharactersScreen = ({navigation}: RootStackScreenProps<'Characters'>) => {
           onPress={goToDetail}>
           <View className="items-center justify-center pb-3">
             <FastImage
-              className="aspect-video h-[100px]"
+              className="aspect-video w-full"
               resizeMode="contain"
               source={{uri: imgCharater(charaID)}}
             />
-            <View className="flex-row space-x-1">
+            <View className="flex-row items-center space-x-1">
               <FastImage
                 className="aspect-square w-5"
                 source={{uri: iconSchool(school_id)}}
               />
-              <Text>{name_ruby.ja}</Text>
+              <Text className="flex-shrink">{name_ruby.ja}</Text>
             </View>
           </View>
         </TouchableRipple>

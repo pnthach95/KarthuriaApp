@@ -5,6 +5,7 @@ import frame from 'assets/common/frame_thumbnail_dress.png';
 import BaseScreen from 'components/basescreen';
 import SkillDetail from 'components/skilldetail';
 import SkillParam from 'components/skillparam';
+import TextRow from 'components/textrow';
 import dayjs from 'dayjs';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
@@ -85,11 +86,11 @@ const StageGirlDetailScreen = ({
           )}
           <View className="self-center">
             <FastImage
-              className="aspect-memoir w-72"
+              className="aspect-memoir w-9/12"
               source={{uri: imgStageGirlBig(dress.basicInfo.cardID || '0')}}
             />
             <FastImage
-              className="absolute aspect-memoir w-72"
+              className="absolute aspect-memoir w-9/12"
               resizeMode="contain"
               source={frame}
             />
@@ -110,25 +111,22 @@ const StageGirlDetailScreen = ({
           </View>
           <View className="py-3">
             <Surface className="my-1 rounded-xl p-3" elevation={3}>
-              <View className="flex-row justify-between">
-                <Text variant="bodySmall">{t('cost')}</Text>
-                <Text>{dress.base.cost}</Text>
-              </View>
-              <Text variant="bodySmall">{t('release-date')}</Text>
+              <TextRow hideDivider label={t('cost')}>
+                {dress.base.cost}
+              </TextRow>
+              <Text variant="labelMedium">{t('release-date')}</Text>
               {releasedJA && (
-                <View className="flex-row justify-between">
-                  <Text>{t('japanese')}</Text>
-                  <Text>{releasedJA.format('LLLL')}</Text>
-                </View>
+                <TextRow hideDivider label={t('japanese')}>
+                  {releasedJA.format('LLLL')}
+                </TextRow>
               )}
               {releasedWW && (
-                <View className="flex-row justify-between">
-                  <Text>{t('worldwide')}</Text>
-                  <Text>{releasedWW.format('LLLL')}</Text>
-                </View>
+                <TextRow hideDivider label={t('worldwide')}>
+                  {releasedWW.format('LLLL')}
+                </TextRow>
               )}
               <View className="flex-row items-center justify-between">
-                <Text variant="bodySmall">{t('attack-type')}</Text>
+                <Text variant="labelMedium">{t('attack-type')}</Text>
                 <Image
                   className="h-[22.4px] w-[63px]"
                   source={attackTypeText(dress.base.attackType)}

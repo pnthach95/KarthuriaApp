@@ -15,6 +15,7 @@ import Countdown from 'components/countdown';
 import ErrorView from 'components/errorview';
 import Kirin from 'components/kirin';
 import Separator from 'components/separator';
+import TextRow from 'components/textrow';
 import dayjs from 'dayjs';
 import React, {useCallback, useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
@@ -51,7 +52,7 @@ const EventImage = ({img}: {img: string}) => {
 
   return (
     <FastImage
-      className="h-[79.8px] w-[313.6px] self-center"
+      className="aspect-[1568/399] w-full self-center"
       resizeMode="contain"
       source={{uri}}
       onError={onError}
@@ -330,7 +331,7 @@ const MainScreen = ({navigation}: MainBottomTabScreenProps<'MainScreen'>) => {
                           onPress={onPress}>
                           <View className="space-y-2">
                             <FastImage
-                              className="aspect-square w-24 self-center"
+                              className="aspect-square w-3/4 self-center"
                               source={{uri: imgEnemy(item.id)}}
                             />
                             <ProgressBar
@@ -347,10 +348,9 @@ const MainScreen = ({navigation}: MainBottomTabScreenProps<'MainScreen'>) => {
                   </View>
                   {titanEnd && (
                     <>
-                      <View className="flex-row justify-between">
-                        <Text variant="bodySmall">{t('end')}</Text>
-                        <Text>{titanEnd.format('llll')}</Text>
-                      </View>
+                      <TextRow hideDivider label={t('end')}>
+                        {titanEnd.format('llll')}
+                      </TextRow>
                       <View className="py-3">
                         <Countdown
                           center
@@ -375,17 +375,17 @@ const MainScreen = ({navigation}: MainBottomTabScreenProps<'MainScreen'>) => {
                             <TouchableRipple
                               key={item}
                               borderless
-                              className="items-center justify-center overflow-visible"
+                              className="aspect-square w-1/4 items-center justify-center overflow-visible"
                               onPress={onPress}>
                               <>
                                 <FastImage
-                                  className="aspect-square w-[78px]"
+                                  className="aspect-square w-full"
                                   source={{
                                     uri: imgItem(findA.basicInfo.iconID),
                                   }}
                                 />
                                 <Image
-                                  className="absolute aspect-square w-[78px]"
+                                  className="absolute aspect-square w-full"
                                   resizeMode="contain"
                                   source={frame}
                                 />

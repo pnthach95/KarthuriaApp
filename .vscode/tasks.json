@@ -11,6 +11,11 @@
       "command": "npx react-native start"
     },
     {
+      "label": "Start reset cache",
+      "type": "shell",
+      "command": "npx react-native start --reset-cache"
+    },
+    {
       "label": "Reconnect",
       "type": "shell",
       "command": "adb reverse tcp:8081 tcp:8081",

@@ -12,6 +12,9 @@ module.exports = {
         memoir: '4 / 3',
         role: '3 / 2',
       },
+      width: {
+        '1/7': '14.28571429%',
+      },
     },
   },
   plugins: [],
