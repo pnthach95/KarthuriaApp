@@ -27,27 +27,11 @@ export const useSafeAreaPaddingTop = (offset = 0, style?: ViewStyle) => {
 };
 
 const AppStyles = StyleSheet.create({
-  charaImgContainer: {
-    borderRadius: responsiveWidth(6),
-    height: responsiveWidth(12),
-    width: responsiveWidth(12),
-  },
-  columnWrapper: {
-    justifyContent: 'center',
-  },
-  elementImgContainer: {
-    borderRadius: responsiveWidth(6),
-    height: responsiveWidth(12),
-    width: responsiveWidth(12),
-  },
   grow: {
     flexGrow: 1,
   },
   paddingHorizontal: {
     paddingHorizontal: padding,
-  },
-  sheetItem: {
-    width: (responsiveWidth(100) - 2 * padding) / 7,
   },
   spaceBetween: {
     justifyContent: 'space-between',
