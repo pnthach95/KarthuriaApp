@@ -3,13 +3,22 @@
   "version": "3.0.0",
   "private": true,
   "scripts": {
-    "android": "react-native run-android",
+    "android": "react-native run-android --active-arch-only --appIdSuffix dev",
+    "android-reconnect": "adb reverse tcp:8081 tcp:8081",
+    "android-release": "react-native run-android --active-arch-only --mode=release",
+    "apk-install-debug": "cd android/app/build/outputs/apk/debug && adb install app-debug.apk",
+    "apk-install-release": "cd android/app/build/outputs/apk/release && adb install app-release.apk",
+    "build-release-aab": "react-native build-android --mode=release",
+    "build-release-apk": "react-native build-android --tasks=assembleRelease",
+    "clean": "react-native clean --include android,metro",
+    "clean-android": "yarn clean && yarn android",
+    "fix-flipper": "adb shell run-as 'vn.pnthach.karthuria.dev' rm -rf files/sonar",
     "ios": "react-native run-ios",
-    "fix-flipper": "adb shell run-as 'vn.pnthach.karthuria' rm -rf files/sonar",
-    "start": "react-native start",
-    "postinstall": "patch-package",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "prepare": "husky install",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx --fix"
+    "postinstall": "patch-package",
+    "start": "react-native start",
+    "start-reset-cache": "react-native start --reset-cache"
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^4.4.7",
