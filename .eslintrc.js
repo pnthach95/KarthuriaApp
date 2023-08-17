@@ -1,13 +1,12 @@
 module.exports = {
   root: true,
   extends: [
-    '@react-native-community',
+    '@react-native',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     tsconfigRootDir: __dirname,
     project: ['./tsconfig.json'],
   },
@@ -16,7 +15,7 @@ module.exports = {
     {
       files: ['*.ts', '*.tsx'],
       rules: {
-        '@typescript-eslint/no-shadow': ['error'],
+        '@typescript-eslint/no-shadow': 'error',
         '@typescript-eslint/no-floating-promises': 'off',
         '@typescript-eslint/no-misused-promises': [
           'error',
@@ -24,14 +23,13 @@ module.exports = {
             checksVoidReturn: false,
           },
         ],
-        'no-shadow': 'off',
-        'no-undef': 'off',
       },
     },
   ],
   rules: {
     'no-console': 'error',
     'no-var': 'error',
+    '@typescript-eslint/no-empty-interface': 'off',
     '@typescript-eslint/no-explicit-any': 'error',
     'prefer-const': 'error',
     'react/jsx-sort-props': [

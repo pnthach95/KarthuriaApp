@@ -14,7 +14,7 @@ import Separator from 'components/separator';
 import CustomBackdrop from 'components/sheet/backdrop';
 import CustomBackground from 'components/sheet/background';
 import CustomHandle from 'components/sheet/handle';
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {FlatList, Image, StyleSheet, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
@@ -233,57 +233,60 @@ const StageGirlsScreen = ({
 
   //#region Render stage girls
 
-  const sgRenderItem: ListRenderItem<TDressBasicInfo> = ({item}) => {
-    const {basicInfo, base, stat} = item;
-    const onPress = () => {
-      navigation.navigate('StageGirlDetail', {id: basicInfo.cardID});
-    };
+  const sgRenderItem: ListRenderItem<TDressBasicInfo> = useCallback(
+    ({item}) => {
+      const {basicInfo, base, stat} = item;
+      const onPress = () => {
+        navigation.navigate('StageGirlDetail', {id: basicInfo.cardID});
+      };
 
-    return (
-      <TouchableRipple
-        className="flex-1 border p-1"
-        style={{borderColor: colors.outlineVariant}}
-        onPress={onPress}>
-        <>
-          <View className="mb-1 flex-1 justify-center">
+      return (
+        <TouchableRipple
+          className="flex-1 border p-1"
+          style={{borderColor: colors.outlineVariant}}
+          onPress={onPress}>
+          <>
+            <View className="mb-1 flex-1 justify-center">
+              <Text className="text-center">
+                {basicInfo.name.en || basicInfo.name.ja}
+              </Text>
+            </View>
+            <View className="aspect-stage-girl h-20 self-center">
+              <FastImage
+                className="aspect-stage-girl h-20"
+                source={{uri: imgStageGirl(basicInfo.cardID)}}
+              />
+              <FastImage
+                className="absolute aspect-stage-girl h-20"
+                source={frame}
+              />
+              <Image
+                className="absolute aspect-square w-5"
+                source={{uri: iconAttribute(base.attribute)}}
+              />
+              <Image
+                className="absolute top-5 h-3 w-5"
+                source={position(base.roleIndex.role)}
+              />
+              <Image
+                className="absolute bottom-0 h-[14px] w-[70px] self-center"
+                resizeMode="contain"
+                source={rarity(basicInfo.rarity)}
+              />
+              <Image
+                className="absolute right-0 h-4 w-5"
+                source={attackType(base.attackType)}
+              />
+            </View>
             <Text className="text-center">
-              {basicInfo.name.en || basicInfo.name.ja}
+              {t('total-stat', {total: stat.total})}
             </Text>
-          </View>
-          <View className="aspect-stage-girl h-20 self-center">
-            <FastImage
-              className="aspect-stage-girl h-20"
-              source={{uri: imgStageGirl(basicInfo.cardID)}}
-            />
-            <FastImage
-              className="absolute aspect-stage-girl h-20"
-              source={frame}
-            />
-            <Image
-              className="absolute aspect-square w-5"
-              source={{uri: iconAttribute(base.attribute)}}
-            />
-            <Image
-              className="absolute top-5 h-3 w-5"
-              source={position(base.roleIndex.role)}
-            />
-            <Image
-              className="absolute bottom-0 h-[14px] w-[70px] self-center"
-              resizeMode="contain"
-              source={rarity(basicInfo.rarity)}
-            />
-            <Image
-              className="absolute right-0 h-4 w-5"
-              source={attackType(base.attackType)}
-            />
-          </View>
-          <Text className="text-center">
-            {t('total-stat', {total: stat.total})}
-          </Text>
-        </>
-      </TouchableRipple>
-    );
-  };
+          </>
+        </TouchableRipple>
+      );
+    },
+    [],
+  );
 
   //#endregion
 
@@ -496,6 +499,7 @@ const StageGirlsScreen = ({
           }
           handleComponent={CustomHandle}
           handleHeight={animatedHandleHeight}
+          // @ts-ignore animatedSnapPoints
           snapPoints={
             filterKey === 'skills' ? skillSnapPoints : animatedSnapPoints
           }>
