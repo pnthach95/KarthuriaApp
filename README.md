@@ -2,14 +2,17 @@
 
 This project is using API from [Project Karthuria](https://karth.top/endpoints)
 
+**Note:** This is my playground to test some packages, so project may be unstable sometimes
+
 [![Download APK file here](https://img.shields.io/github/downloads/pnthach95/KarthuriaApp/total.svg?style=flat-square)](https://github.com/pnthach95/KarthuriaApp/releases)
 [![GitHub issues](https://img.shields.io/github/issues/pnthach95/KarthuriaApp.svg?style=flat-square)](https://github.com/pnthach95/KarthuriaApp/issues)
 
 ## Running the project
 
 - `yarn install` or `npm i` to install the dependencies
-- `react-native run-android` to run the Android application (remember to start a simulator or connect an Android phone)
-- `react-native run-ios` to run the iOS application (remember to start a simulator or connect an iPhone phone)
+- `yarn android` to run the Android application (remember to start a simulator or connect an Android phone)
+- `yarn ios` to run the iOS application (remember to start a simulator or connect an iPhone phone)
+- More commands in `scripts` inside [package.json](./package.json#L5)
 
 ## Screenshots
 
