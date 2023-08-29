@@ -61,5 +61,6 @@
     "react",
     "i18next"
   ],
-  "i18n-ally.keystyle": "nested"
+  "i18n-ally.keystyle": "nested",
+  "typescript.tsdk": "node_modules/typescript/lib"
 }
