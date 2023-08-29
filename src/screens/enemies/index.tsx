@@ -19,7 +19,7 @@ import FastImage from 'react-native-fast-image';
 import {Button, FAB, Text, TouchableRipple, useTheme} from 'react-native-paper';
 import {useSafeAreaPaddingBottom} from 'theme/styles';
 import {useImmer} from 'use-immer';
-import type {ListRenderItem} from '@shopify/flash-list';
+import type {ContentStyle, ListRenderItem} from '@shopify/flash-list';
 import type {RootStackScreenProps} from 'typings/navigation';
 
 const keyExtractor = ({basicInfo}: TEnemyBasicInfo) =>
@@ -142,7 +142,7 @@ const EnemiesScreen = ({navigation}: RootStackScreenProps<'Enemies'>) => {
     return (
       <>
         <FlashList
-          contentContainerStyle={bottom}
+          contentContainerStyle={bottom as ContentStyle}
           data={reList}
           estimatedItemSize={96}
           keyExtractor={keyExtractor}
@@ -162,8 +162,10 @@ const EnemiesScreen = ({navigation}: RootStackScreenProps<'Enemies'>) => {
           contentHeight={animatedContentHeight}
           handleComponent={CustomHandle}
           handleHeight={animatedHandleHeight}
+          // @ts-ignore
           snapPoints={animatedSnapPoints}>
           <BottomSheetScrollView
+            // @ts-ignore
             contentContainerStyle={sheetBottom}
             onLayout={handleContentLayout}>
             <View className="mb-2 flex-row items-center justify-between">

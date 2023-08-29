@@ -219,6 +219,7 @@ const MoreScreen = ({navigation}: MainBottomTabScreenProps<'MoreScreen'>) => {
         contentHeight={animatedContentHeight}
         handleComponent={CustomHandle}
         handleHeight={animatedHandleHeight}
+        // @ts-ignore
         snapPoints={animatedSnapPoints}>
         <View onLayout={handleContentLayout}>
           <BottomSheetFlatList

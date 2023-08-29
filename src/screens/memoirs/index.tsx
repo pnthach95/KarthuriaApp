@@ -34,7 +34,10 @@ import AppStyles, {
 } from 'theme/styles';
 import {useImmer} from 'use-immer';
 import {characterToIndex} from 'utils';
-import type {ListRenderItem as FlashListRenderItem} from '@shopify/flash-list';
+import type {
+  ContentStyle,
+  ListRenderItem as FlashListRenderItem,
+} from '@shopify/flash-list';
 import type {ListRenderItem} from 'react-native';
 import type {MainBottomTabScreenProps} from 'typings/navigation';
 
@@ -342,7 +345,7 @@ const MemoirsScreen = ({
     return (
       <>
         <FlashList
-          contentContainerStyle={top}
+          contentContainerStyle={top as ContentStyle}
           data={rmList}
           estimatedItemSize={150}
           keyExtractor={mKeyExtractor}
@@ -367,6 +370,7 @@ const MemoirsScreen = ({
           }
           handleComponent={CustomHandle}
           handleHeight={animatedHandleHeight}
+          // @ts-ignore
           snapPoints={
             filterKey === 'skills' ? skillSnapPoints : animatedSnapPoints
           }>
