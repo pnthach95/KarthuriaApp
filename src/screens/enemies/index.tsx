@@ -104,9 +104,7 @@ const EnemiesScreen = ({navigation}: RootStackScreenProps<'Enemies'>) => {
 
     return (
       <TouchableRipple className="flex-1" onPress={onPress}>
-        <View
-          className="flex-1 items-center justify-between border p-1"
-          style={{borderColor: colors.outline}}>
+        <View className="flex-1 items-center justify-between p-1">
           <View className="items-center justify-center">
             <View className="aspect-square w-[89.6px]">
               <FastImage

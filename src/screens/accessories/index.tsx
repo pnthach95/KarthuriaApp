@@ -6,7 +6,7 @@ import Kirin from 'components/kirin';
 import React, {useEffect, useState} from 'react';
 import {FlatList, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {TouchableRipple, useTheme} from 'react-native-paper';
+import {TouchableRipple} from 'react-native-paper';
 import {useSafeAreaPaddingBottom} from 'theme/styles';
 import type {RootStackScreenProps} from 'typings/navigation';
 
@@ -16,7 +16,6 @@ const keyExtractor = (item: TAccessoryBasicInfo) =>
 const AccessoriesScreen = ({
   navigation,
 }: RootStackScreenProps<'Accessories'>) => {
-  const {colors} = useTheme();
   const [loading, setLoading] = useState(true);
   const [aList, setAList] = useState<TAccessoryBasicInfo[] | null>(null);
   const bottom = useSafeAreaPaddingBottom();
@@ -43,10 +42,7 @@ const AccessoriesScreen = ({
     };
 
     return (
-      <TouchableRipple
-        className="flex-1 overflow-hidden border p-3"
-        style={{borderColor: colors.outlineVariant}}
-        onPress={onPress}>
+      <TouchableRipple className="flex-1 overflow-hidden p-3" onPress={onPress}>
         <>
           <View className="self-center">
             <FastImage

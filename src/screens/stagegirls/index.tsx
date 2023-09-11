@@ -279,31 +279,31 @@ const StageGirlsScreen = ({
     });
   };
 
-  const onPressCharacter = (i: number): void => {
+  const onPressCharacter = (i: number) => {
     setFilter(draft => {
       draft.characters[i] = !draft.characters[i];
     });
   };
 
-  const onPressElement = (i: number): void => {
+  const onPressElement = (i: number) => {
     setFilter(draft => {
       draft.elements[i] = !draft.elements[i];
     });
   };
 
-  const onPressPosition = (i: number): void => {
+  const onPressPosition = (i: number) => {
     setFilter(draft => {
       draft.position[i] = !draft.position[i];
     });
   };
 
-  const onPressRarity = (i: number): void => {
+  const onPressRarity = (i: number) => {
     setFilter(draft => {
       draft.rarity[i] = !draft.rarity[i];
     });
   };
 
-  const onPressSkill = (i: number): void => {
+  const onPressSkill = (i: number) => {
     setFilter(draft => {
       draft.skills[i].checked = !draft.skills[i].checked;
     });

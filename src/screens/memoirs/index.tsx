@@ -13,7 +13,7 @@ import SkillsBottomSheet from 'components/sheet/skills';
 import React, {useEffect, useRef, useState} from 'react';
 import {Image, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {FAB, Text, TouchableRipple, useTheme} from 'react-native-paper';
+import {FAB, Text, TouchableRipple} from 'react-native-paper';
 import {useSafeAreaPaddingTop} from 'theme/styles';
 import {useImmer} from 'use-immer';
 import {characterToIndex} from 'utils';
@@ -36,7 +36,6 @@ const mKeyExtractor = (item: TEquipBasicInfo) =>
 const MemoirsScreen = ({
   navigation,
 }: MainBottomTabScreenProps<'MemoirsScreen'>) => {
-  const {colors} = useTheme();
   const charactersRef = useRef<CharactersBottomSheet>(null);
   const raritiesRef = useRef<RaritiesBottomSheet>(null);
   const skillsRef = useRef<SkillsBottomSheet>(null);
@@ -142,17 +141,12 @@ const MemoirsScreen = ({
 
   //#endregion
 
-  //#region Memoir list
-
   const mRenderItem: FlashListRenderItem<TEquipBasicInfo> = ({item}) => {
     const onPress = () =>
       navigation.navigate('MemoirDetail', {id: item.basicInfo.cardID});
 
     return (
-      <TouchableRipple
-        className="flex-1 border p-1"
-        style={{borderColor: colors.outlineVariant}}
-        onPress={onPress}>
+      <TouchableRipple className="flex-1 p-1" onPress={onPress}>
         <>
           <View className="h-20 w-[72px] self-center">
             <FastImage
@@ -196,10 +190,6 @@ const MemoirsScreen = ({
     );
   };
 
-  //#endregion
-
-  //#region Render character filter
-
   const toggleAllCharacters = () => {
     setFilter(draft => {
       draft.characters = draft.characters.map(() => !filterAll.characters);
@@ -209,10 +199,6 @@ const MemoirsScreen = ({
       characters: !filterAll.characters,
     });
   };
-
-  //#endregion
-
-  //#region Render skill filter
 
   const toggleAllSkills = () => {
     setFilter(draft => {
@@ -227,68 +213,68 @@ const MemoirsScreen = ({
     });
   };
 
-  //#endregion
+  const onPressCharacter = (i: number) => {
+    setFilter(draft => {
+      draft.characters[i] = !draft.characters[i];
+    });
+  };
+
+  const onPressRarity = (i: number) => {
+    setFilter(draft => {
+      draft.rarity[i] = !draft.rarity[i];
+    });
+  };
+
+  const onPressSkill = (i: number) => {
+    setFilter(draft => {
+      draft.skills[i].checked = !draft.skills[i].checked;
+    });
+  };
 
   if (loading) {
     return <Kirin />;
   }
 
-  if (mList.length > 0) {
-    return (
-      <>
-        <FlashList
-          contentContainerStyle={top as ContentStyle}
-          data={rmList}
-          estimatedItemSize={150}
-          keyExtractor={mKeyExtractor}
-          ListEmptyComponent={EmptyList}
-          numColumns={2}
-          renderItem={mRenderItem}
-        />
-        <FAB.Group
-          actions={fabActions}
-          icon={fabState ? 'filter-outline' : 'filter'}
-          open={fabState}
-          visible={true}
-          onPress={openFABGroup}
-          onStateChange={openFABGroup}
-        />
-        <CharactersBottomSheet
-          ref={charactersRef}
-          characters={filter.characters}
-          filterAll={filterAll.characters}
-          toggleAll={toggleAllCharacters}
-          onPress={i => {
-            setFilter(draft => {
-              draft.characters[i] = !draft.characters[i];
-            });
-          }}
-        />
-        <RaritiesBottomSheet
-          ref={raritiesRef}
-          rarities={filter.rarity}
-          onPress={i => {
-            setFilter(draft => {
-              draft.rarity[i] = !draft.rarity[i];
-            });
-          }}
-        />
-        <SkillsBottomSheet
-          ref={skillsRef}
-          filterAll={filterAll.skills}
-          skills={filter.skills}
-          toggleAll={toggleAllSkills}
-          onPress={i => {
-            setFilter(draft => {
-              draft.skills[i].checked = !draft.skills[i].checked;
-            });
-          }}
-        />
-      </>
-    );
-  }
-
-  return <ErrorView />;
+  return (
+    <>
+      <FlashList
+        contentContainerStyle={top as ContentStyle}
+        data={rmList}
+        estimatedItemSize={150}
+        keyExtractor={mKeyExtractor}
+        ListEmptyComponent={mList.length > 0 ? EmptyList : ErrorView}
+        numColumns={2}
+        renderItem={mRenderItem}
+      />
+      <FAB.Group
+        actions={fabActions}
+        icon={fabState ? 'filter-outline' : 'filter'}
+        open={fabState}
+        visible={true}
+        onPress={openFABGroup}
+        onStateChange={openFABGroup}
+      />
+      <CharactersBottomSheet
+        ref={charactersRef}
+        characters={filter.characters}
+        filterAll={filterAll.characters}
+        toggleAll={toggleAllCharacters}
+        onPress={onPressCharacter}
+      />
+      <RaritiesBottomSheet
+        ref={raritiesRef}
+        rarities={filter.rarity}
+        onPress={onPressRarity}
+      />
+      <SkillsBottomSheet
+        ref={skillsRef}
+        filterAll={filterAll.skills}
+        skills={filter.skills}
+        toggleAll={toggleAllSkills}
+        onPress={onPressSkill}
+      />
+    </>
+  );
 };
 
 export default MemoirsScreen;

@@ -11,12 +11,13 @@ export const resources = {
 };
 
 i18n.use(initReactI18next).init({
-  fallbackLng: 'vi',
-  lng: 'vi',
+  fallbackLng: 'en',
+  lng: 'en',
   debug: __DEV__,
   defaultNS,
   ns: ['ns1'],
   resources,
+  interpolation: {escapeValue: false},
 });
 
 export default i18n;

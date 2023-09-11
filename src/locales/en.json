@@ -92,7 +92,7 @@
   "vi": "Tiếng Việt",
   "voice-actor": "Voice Actor",
   "widget": {
-    "note": "You can add widget on phone home screen. However, widget cannot auto-update itself. You have to press the number button to refresh data."
+    "note": "You can add widget on phone home screen. If widget cannot auto-update itself, you have to press the number button to refresh data."
   },
   "worldwide": "Worldwide"
 }

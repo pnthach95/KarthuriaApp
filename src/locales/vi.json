@@ -92,7 +92,7 @@
   "vi": "Tiếng Việt",
   "voice-actor": "Diễn viên lồng tiếng",
   "widget": {
-    "note": "Bạn có thể thêm widget tại màn hình chính của điện thoại. Tuy nhiên, widget không thể tự động cập nhật. Bạn phải bấm vào nút số để cập nhật thông tin."
+    "note": "Bạn có thể thêm widget tại màn hình chính của điện thoại. Nếu widget không thể tự động cập nhật, bạn phải bấm vào nút số để cập nhật thông tin."
   },
   "worldwide": "Toàn cầu"
 }
