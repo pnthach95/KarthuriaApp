@@ -1,11 +1,11 @@
 import {
   BottomSheetFlatList,
   BottomSheetModal,
-  useBottomSheetDynamicSnapPoints,
+  BottomSheetView,
 } from '@gorhom/bottom-sheet';
 import {charaImgs} from 'assets';
 import Separator from 'components/separator';
-import React, {forwardRef, useImperativeHandle, useMemo, useRef} from 'react';
+import React, {forwardRef, useImperativeHandle, useRef} from 'react';
 import {useTranslation} from 'react-i18next';
 import {View} from 'react-native';
 import FastImage from 'react-native-fast-image';
@@ -33,15 +33,8 @@ const CharactersBottomSheet = forwardRef<CharactersBottomSheet, Props>(
   ({characters, filterAll, onPress, toggleAll}, ref) => {
     const {t} = useTranslation();
     const {colors} = useTheme();
-    const bottom = useSafeAreaPaddingBottom(24);
+    const bottom = useSafeAreaPaddingBottom(24, {paddingHorizontal: 8});
     const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-    const initialSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], []);
-    const {
-      animatedHandleHeight,
-      animatedSnapPoints,
-      animatedContentHeight,
-      handleContentLayout,
-    } = useBottomSheetDynamicSnapPoints(initialSnapPoints);
 
     useImperativeHandle(
       ref,
@@ -80,17 +73,11 @@ const CharactersBottomSheet = forwardRef<CharactersBottomSheet, Props>(
     return (
       <BottomSheetModal
         ref={bottomSheetModalRef}
+        enableDynamicSizing
         backdropComponent={CustomBackdrop}
         backgroundComponent={CustomBackground}
-        contentHeight={animatedContentHeight}
-        handleComponent={CustomHandle}
-        handleHeight={animatedHandleHeight}
-        // @ts-ignore animatedSnapPoints
-        snapPoints={animatedSnapPoints}>
-        <View
-          className="flex-1 px-3"
-          style={bottom}
-          onLayout={handleContentLayout}>
+        handleComponent={CustomHandle}>
+        <BottomSheetView style={bottom}>
           <View className="mb-3 flex-row items-center justify-between">
             <Text variant="labelMedium">{t('characters')}</Text>
             <Button
@@ -107,7 +94,7 @@ const CharactersBottomSheet = forwardRef<CharactersBottomSheet, Props>(
             renderItem={renderItem}
             showsVerticalScrollIndicator={false}
           />
-        </View>
+        </BottomSheetView>
       </BottomSheetModal>
     );
   },

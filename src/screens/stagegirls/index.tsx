@@ -1,3 +1,4 @@
+import {FlashList} from '@shopify/flash-list';
 import API, {links} from 'api';
 import {iconAttribute, imgStageGirl} from 'api/images';
 import {attackType, charaImgs, position, rarity} from 'assets';
@@ -13,13 +14,13 @@ import RaritiesBottomSheet from 'components/sheet/rarities';
 import SkillsBottomSheet from 'components/sheet/skills';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {FlatList, Image, View} from 'react-native';
+import {Image, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {FAB, Text, TouchableRipple, useTheme} from 'react-native-paper';
+import {FAB, Text, TouchableRipple} from 'react-native-paper';
 import {useSafeAreaPaddingTop} from 'theme/styles';
 import {useImmer} from 'use-immer';
 import {characterToIndex} from 'utils';
-import type {ListRenderItem} from 'react-native';
+import type {ContentStyle, ListRenderItem} from '@shopify/flash-list';
 import type {MainBottomTabScreenProps} from 'typings/navigation';
 
 type TFilter = Record<
@@ -39,7 +40,6 @@ const StageGirlsScreen = ({
   navigation,
 }: MainBottomTabScreenProps<'StageGirlsScreen'>) => {
   const {t} = useTranslation();
-  const {colors} = useTheme();
   const charactersRef = useRef<CharactersBottomSheet>(null);
   const elementsRef = useRef<ElementsBottomSheet>(null);
   const positionsRef = useRef<PositionsBottomSheet>(null);
@@ -203,10 +203,7 @@ const StageGirlsScreen = ({
       };
 
       return (
-        <TouchableRipple
-          className="flex-1 border p-1"
-          style={{borderColor: colors.outlineVariant}}
-          onPress={onPress}>
+        <TouchableRipple className="flex-1 p-1" onPress={onPress}>
           <>
             <View className="mb-1 flex-1 justify-center">
               <Text className="text-center">
@@ -318,10 +315,10 @@ const StageGirlsScreen = ({
 
   return (
     <>
-      <FlatList
-        contentContainerStyle={top}
+      <FlashList
+        contentContainerStyle={top as ContentStyle}
         data={rsgList}
-        initialNumToRender={12}
+        estimatedItemSize={200}
         keyExtractor={sgKeyExtractor}
         ListEmptyComponent={sgList.length > 0 ? EmptyList : ErrorView}
         numColumns={2}

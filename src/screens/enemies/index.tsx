@@ -1,8 +1,4 @@
-import {
-  BottomSheetModal,
-  BottomSheetScrollView,
-  useBottomSheetDynamicSnapPoints,
-} from '@gorhom/bottom-sheet';
+import {BottomSheetModal, BottomSheetScrollView} from '@gorhom/bottom-sheet';
 import {FlashList} from '@shopify/flash-list';
 import API, {links} from 'api';
 import {iconAttribute, imgEnemy} from 'api/images';
@@ -12,7 +8,7 @@ import Kirin from 'components/kirin';
 import CustomBackdrop from 'components/sheet/backdrop';
 import CustomBackground from 'components/sheet/background';
 import CustomHandle from 'components/sheet/handle';
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Image, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
@@ -29,13 +25,6 @@ const EnemiesScreen = ({navigation}: RootStackScreenProps<'Enemies'>) => {
   const {t} = useTranslation();
   const {colors} = useTheme();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const initialSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], []);
-  const {
-    animatedHandleHeight,
-    animatedSnapPoints,
-    animatedContentHeight,
-    handleContentLayout,
-  } = useBottomSheetDynamicSnapPoints(initialSnapPoints);
   /** Loading state */
   const [loading, setLoading] = useState(true);
   /** List for filter */
@@ -157,17 +146,13 @@ const EnemiesScreen = ({navigation}: RootStackScreenProps<'Enemies'>) => {
         />
         <BottomSheetModal
           ref={bottomSheetModalRef}
+          enableDynamicSizing
           backdropComponent={CustomBackdrop}
           backgroundComponent={CustomBackground}
-          contentHeight={animatedContentHeight}
-          handleComponent={CustomHandle}
-          handleHeight={animatedHandleHeight}
-          // @ts-ignore
-          snapPoints={animatedSnapPoints}>
+          handleComponent={CustomHandle}>
           <BottomSheetScrollView
             // @ts-ignore
-            contentContainerStyle={sheetBottom}
-            onLayout={handleContentLayout}>
+            contentContainerStyle={sheetBottom}>
             <View className="mb-2 flex-row items-center justify-between">
               <Text variant="bodySmall">{t('skills')}</Text>
               <Button

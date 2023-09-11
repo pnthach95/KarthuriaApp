@@ -1,8 +1,4 @@
-import {
-  BottomSheetFlatList,
-  BottomSheetModal,
-  useBottomSheetDynamicSnapPoints,
-} from '@gorhom/bottom-sheet';
+import {BottomSheetFlatList, BottomSheetModal} from '@gorhom/bottom-sheet';
 import {website} from 'api';
 import {links} from 'api/github';
 import {charaImgs} from 'assets';
@@ -10,7 +6,7 @@ import webicon from 'assets/common/icon.png';
 import CustomBackdrop from 'components/sheet/backdrop';
 import CustomBackground from 'components/sheet/background';
 import CustomHandle from 'components/sheet/handle';
-import React, {useMemo, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Image, Linking, ScrollView, View} from 'react-native';
 import {getVersion} from 'react-native-device-info';
@@ -53,13 +49,6 @@ const openGithub = () => Linking.openURL(links.GITHUB_PROJECT);
 
 const MoreScreen = ({navigation}: MainBottomTabScreenProps<'MoreScreen'>) => {
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const initialSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], []);
-  const {
-    animatedHandleHeight,
-    animatedSnapPoints,
-    animatedContentHeight,
-    handleContentLayout,
-  } = useBottomSheetDynamicSnapPoints(initialSnapPoints);
   const {t} = useTranslation();
   const appColor = useAppColor();
   const {colors} = useTheme();
@@ -214,21 +203,16 @@ const MoreScreen = ({navigation}: MainBottomTabScreenProps<'MoreScreen'>) => {
       </Text>
       <BottomSheetModal
         ref={bottomSheetModalRef}
+        enableDynamicSizing
         backdropComponent={CustomBackdrop}
         backgroundComponent={CustomBackground}
-        contentHeight={animatedContentHeight}
-        handleComponent={CustomHandle}
-        handleHeight={animatedHandleHeight}
-        // @ts-ignore
-        snapPoints={animatedSnapPoints}>
-        <View onLayout={handleContentLayout}>
-          <BottomSheetFlatList
-            data={APP_COLORS}
-            numColumns={6}
-            renderItem={charaRenderItem}
-            showsVerticalScrollIndicator={false}
-          />
-        </View>
+        handleComponent={CustomHandle}>
+        <BottomSheetFlatList
+          data={APP_COLORS}
+          numColumns={6}
+          renderItem={charaRenderItem}
+          showsVerticalScrollIndicator={false}
+        />
       </BottomSheetModal>
     </ScrollView>
   );

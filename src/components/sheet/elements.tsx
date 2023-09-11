@@ -1,11 +1,11 @@
 import {
   BottomSheetFlatList,
   BottomSheetModal,
-  useBottomSheetDynamicSnapPoints,
+  BottomSheetView,
 } from '@gorhom/bottom-sheet';
 import {iconAttribute} from 'api/images';
 import Separator from 'components/separator';
-import React, {forwardRef, useImperativeHandle, useMemo, useRef} from 'react';
+import React, {forwardRef, useImperativeHandle, useRef} from 'react';
 import {useTranslation} from 'react-i18next';
 import {View} from 'react-native';
 import FastImage from 'react-native-fast-image';
@@ -31,15 +31,8 @@ const ElementsBottomSheet = forwardRef<ElementsBottomSheet, Props>(
   ({elements, onPress}, ref) => {
     const {t} = useTranslation();
     const {colors} = useTheme();
-    const bottom = useSafeAreaPaddingBottom(24);
+    const bottom = useSafeAreaPaddingBottom(24, {paddingHorizontal: 8});
     const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-    const initialSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], []);
-    const {
-      animatedHandleHeight,
-      animatedSnapPoints,
-      animatedContentHeight,
-      handleContentLayout,
-    } = useBottomSheetDynamicSnapPoints(initialSnapPoints);
 
     useImperativeHandle(
       ref,
@@ -78,17 +71,11 @@ const ElementsBottomSheet = forwardRef<ElementsBottomSheet, Props>(
     return (
       <BottomSheetModal
         ref={bottomSheetModalRef}
+        enableDynamicSizing
         backdropComponent={CustomBackdrop}
         backgroundComponent={CustomBackground}
-        contentHeight={animatedContentHeight}
-        handleComponent={CustomHandle}
-        handleHeight={animatedHandleHeight}
-        // @ts-ignore animatedSnapPoints
-        snapPoints={animatedSnapPoints}>
-        <View
-          className="flex-1 px-3"
-          style={bottom}
-          onLayout={handleContentLayout}>
+        handleComponent={CustomHandle}>
+        <BottomSheetView style={bottom}>
           <Text variant="labelMedium">{t('elements')}</Text>
           <BottomSheetFlatList
             data={elements}
@@ -97,7 +84,7 @@ const ElementsBottomSheet = forwardRef<ElementsBottomSheet, Props>(
             numColumns={7}
             renderItem={renderItem}
           />
-        </View>
+        </BottomSheetView>
       </BottomSheetModal>
     );
   },

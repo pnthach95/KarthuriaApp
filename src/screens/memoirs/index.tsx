@@ -1,8 +1,3 @@
-import {
-  BottomSheetFlatList,
-  BottomSheetModal,
-  useBottomSheetDynamicSnapPoints,
-} from '@gorhom/bottom-sheet';
 import {FlashList} from '@shopify/flash-list';
 import API, {links} from 'api';
 import {iconSkill, imgMemoir} from 'api/images';
@@ -12,33 +7,20 @@ import frame from 'assets/common/frame_equip.png';
 import EmptyList from 'components/emptylist';
 import ErrorView from 'components/errorview';
 import Kirin from 'components/kirin';
-import Separator from 'components/separator';
-import CustomBackdrop from 'components/sheet/backdrop';
-import CustomBackground from 'components/sheet/background';
-import CustomHandle from 'components/sheet/handle';
-import React, {useEffect, useMemo, useRef, useState} from 'react';
-import {useTranslation} from 'react-i18next';
+import CharactersBottomSheet from 'components/sheet/characters';
+import RaritiesBottomSheet from 'components/sheet/rarities';
+import SkillsBottomSheet from 'components/sheet/skills';
+import React, {useEffect, useRef, useState} from 'react';
 import {Image, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {
-  Button,
-  Caption,
-  FAB,
-  Text,
-  TouchableRipple,
-  useTheme,
-} from 'react-native-paper';
-import AppStyles, {
-  useSafeAreaPaddingBottom,
-  useSafeAreaPaddingTop,
-} from 'theme/styles';
+import {FAB, Text, TouchableRipple, useTheme} from 'react-native-paper';
+import {useSafeAreaPaddingTop} from 'theme/styles';
 import {useImmer} from 'use-immer';
 import {characterToIndex} from 'utils';
 import type {
   ContentStyle,
   ListRenderItem as FlashListRenderItem,
 } from '@shopify/flash-list';
-import type {ListRenderItem} from 'react-native';
 import type {MainBottomTabScreenProps} from 'typings/navigation';
 
 type TFilter = Record<'characters' | 'rarity', boolean[]> & {
@@ -50,24 +32,14 @@ type TFilter = Record<'characters' | 'rarity', boolean[]> & {
 
 const mKeyExtractor = (item: TEquipBasicInfo) =>
   'memoir_' + item.basicInfo.cardID;
-const charaKeyExtractor = (item: boolean, i: number) => `charaImg_${i}`;
-const skillKeyExtractor = (item: TFilter['skills'][0], i: number) =>
-  `skill_${i}`;
 
 const MemoirsScreen = ({
   navigation,
 }: MainBottomTabScreenProps<'MemoirsScreen'>) => {
-  const {t} = useTranslation();
   const {colors} = useTheme();
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const initialSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], []);
-  const skillSnapPoints = useMemo(() => ['50%$'], []);
-  const {
-    animatedHandleHeight,
-    animatedSnapPoints,
-    animatedContentHeight,
-    handleContentLayout,
-  } = useBottomSheetDynamicSnapPoints(initialSnapPoints);
+  const charactersRef = useRef<CharactersBottomSheet>(null);
+  const raritiesRef = useRef<RaritiesBottomSheet>(null);
+  const skillsRef = useRef<SkillsBottomSheet>(null);
   /** FAB state */
   const [fabState, setFABState] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -81,8 +53,6 @@ const MemoirsScreen = ({
     rarity: [true, true, true, true],
     skills: [],
   });
-  /** Filter key to render filter bottom sheet */
-  const [filterKey, setFilterKey] = useState<keyof typeof filter>('characters');
   /** State for select/deselect all button */
   const [filterAll, setFilterAll] = useState({
     characters: true,
@@ -90,7 +60,6 @@ const MemoirsScreen = ({
   });
   /** Top inset for iOS */
   const top = useSafeAreaPaddingTop();
-  const bottom = useSafeAreaPaddingBottom(24);
 
   /** Load data here */
   useEffect(() => {
@@ -143,8 +112,6 @@ const MemoirsScreen = ({
 
   //#region Sheet
 
-  const openSheet = () => bottomSheetModalRef.current?.present();
-
   /** On press FAB */
   const openFABGroup = () => setFABState(!fabState);
 
@@ -154,24 +121,21 @@ const MemoirsScreen = ({
       icon: 'account',
       label: 'Characters',
       onPress: () => {
-        setFilterKey('characters');
-        openSheet();
+        charactersRef.current?.openSheet();
       },
     },
     {
       icon: 'star',
       label: 'Rarity',
       onPress: () => {
-        setFilterKey('rarity');
-        openSheet();
+        raritiesRef.current?.openSheet();
       },
     },
     {
       icon: 'chemical-weapon',
       label: 'Skills',
       onPress: () => {
-        setFilterKey('skills');
-        openSheet();
+        skillsRef.current?.openSheet();
       },
     },
   ];
@@ -246,53 +210,6 @@ const MemoirsScreen = ({
     });
   };
 
-  const charaRenderItem: ListRenderItem<boolean> = ({item, index}) => {
-    const bgColor = {
-      backgroundColor: item ? colors.primary : undefined,
-    };
-    const onPress = () =>
-      setFilter(draft => {
-        draft.characters[index] = !draft.characters[index];
-      });
-    return (
-      <View className="w-1/7 p-1">
-        <TouchableRipple
-          borderless
-          className="aspect-square w-full items-center justify-center rounded-full p-0.5"
-          style={bgColor}
-          onPress={onPress}>
-          <FastImage
-            className="aspect-square w-full"
-            source={charaImgs[index]}
-          />
-        </TouchableRipple>
-      </View>
-    );
-  };
-
-  //#endregion
-
-  //#region Render rarity filter
-
-  const rarityRenderItem: ListRenderItem<boolean> = ({item, index}) => {
-    const bgColor = {
-      backgroundColor: item ? colors.primary : undefined,
-    };
-    const onPress = () =>
-      setFilter(draft => {
-        draft.rarity[index] = !draft.rarity[index];
-      });
-    return (
-      <TouchableRipple
-        borderless
-        className="self-start rounded-xl p-1"
-        style={bgColor}
-        onPress={onPress}>
-        <Image resizeMode="contain" source={rarity(index + 1)} />
-      </TouchableRipple>
-    );
-  };
-
   //#endregion
 
   //#region Render skill filter
@@ -308,31 +225,6 @@ const MemoirsScreen = ({
       ...filterAll,
       skills: !filterAll.skills,
     });
-  };
-
-  const skillRenderItem: ListRenderItem<TFilter['skills'][0]> = ({
-    item,
-    index,
-  }) => {
-    const bgColor = {
-      backgroundColor: item.checked ? colors.primary : undefined,
-    };
-    const onPress = () =>
-      setFilter(draft => {
-        draft.skills[index].checked = !draft.skills[index].checked;
-      });
-    const source = {uri: iconSkill(item.id)};
-    return (
-      <View className="w-1/7 p-1">
-        <TouchableRipple
-          borderless
-          className="mb-2 aspect-square w-full items-center justify-center rounded-full"
-          style={bgColor}
-          onPress={onPress}>
-          <FastImage className="aspect-square w-5/6" source={source} />
-        </TouchableRipple>
-      </View>
-    );
   };
 
   //#endregion
@@ -361,82 +253,37 @@ const MemoirsScreen = ({
           onPress={openFABGroup}
           onStateChange={openFABGroup}
         />
-        <BottomSheetModal
-          ref={bottomSheetModalRef}
-          backdropComponent={CustomBackdrop}
-          backgroundComponent={CustomBackground}
-          contentHeight={
-            filterKey === 'skills' ? undefined : animatedContentHeight
-          }
-          handleComponent={CustomHandle}
-          handleHeight={animatedHandleHeight}
-          // @ts-ignore
-          snapPoints={
-            filterKey === 'skills' ? skillSnapPoints : animatedSnapPoints
-          }>
-          <View
-            className="flex-1 px-3"
-            style={bottom}
-            onLayout={handleContentLayout}>
-            {/* Character filter */}
-            {filterKey === 'characters' && (
-              <>
-                <View className="mb-2 flex-row items-center justify-between">
-                  <Caption>{t('characters')}</Caption>
-                  <Button
-                    mode={filterAll.characters ? 'contained' : 'outlined'}
-                    onPress={toggleAllCharacters}>
-                    {t('all')}
-                  </Button>
-                </View>
-                <BottomSheetFlatList
-                  data={filter.characters}
-                  ItemSeparatorComponent={Separator}
-                  keyExtractor={charaKeyExtractor}
-                  numColumns={7}
-                  renderItem={charaRenderItem}
-                  showsVerticalScrollIndicator={false}
-                />
-              </>
-            )}
-            {/* Rarity filter */}
-            {filterKey === 'rarity' && (
-              <>
-                <Caption>{t('rarity')}</Caption>
-                <View className="flex-row flex-wrap gap-2">
-                  {filter.rarity.map((item, index) =>
-                    rarityRenderItem({
-                      index,
-                      item,
-                      // @ts-ignore
-                      separators: null,
-                    }),
-                  )}
-                </View>
-              </>
-            )}
-            {/* Skill filter */}
-            {filterKey === 'skills' && (
-              <>
-                <View className="mb-2 flex-row items-center justify-between">
-                  <Caption>{t('skills')}</Caption>
-                  <Button
-                    mode={filterAll.skills ? 'contained' : 'outlined'}
-                    onPress={toggleAllSkills}>
-                    {t('all')}
-                  </Button>
-                </View>
-                <BottomSheetFlatList
-                  columnWrapperStyle={AppStyles.spaceBetween}
-                  data={filter.skills}
-                  keyExtractor={skillKeyExtractor}
-                  numColumns={7}
-                  renderItem={skillRenderItem}
-                />
-              </>
-            )}
-          </View>
-        </BottomSheetModal>
+        <CharactersBottomSheet
+          ref={charactersRef}
+          characters={filter.characters}
+          filterAll={filterAll.characters}
+          toggleAll={toggleAllCharacters}
+          onPress={i => {
+            setFilter(draft => {
+              draft.characters[i] = !draft.characters[i];
+            });
+          }}
+        />
+        <RaritiesBottomSheet
+          ref={raritiesRef}
+          rarities={filter.rarity}
+          onPress={i => {
+            setFilter(draft => {
+              draft.rarity[i] = !draft.rarity[i];
+            });
+          }}
+        />
+        <SkillsBottomSheet
+          ref={skillsRef}
+          filterAll={filterAll.skills}
+          skills={filter.skills}
+          toggleAll={toggleAllSkills}
+          onPress={i => {
+            setFilter(draft => {
+              draft.skills[i].checked = !draft.skills[i].checked;
+            });
+          }}
+        />
       </>
     );
   }

@@ -27,13 +27,13 @@ type TSkill = {
   checked: boolean;
 };
 
-const skillKeyExtractor = (item: TSkill, i: number) => `skill_${i}`;
+const keyExtractor = (item: TSkill, i: number) => `skill_${i}`;
 
 const SkillsBottomSheet = forwardRef<SkillsBottomSheet, Props>(
   ({onPress, skills, filterAll, toggleAll}, ref) => {
     const {t} = useTranslation();
     const {colors} = useTheme();
-    const bottom = useSafeAreaPaddingBottom(24);
+    const bottom = useSafeAreaPaddingBottom(0);
     const bottomSheetModalRef = useRef<BottomSheetModal>(null);
     const initialSnapPoints = useMemo(() => ['50%'], []);
 
@@ -74,8 +74,8 @@ const SkillsBottomSheet = forwardRef<SkillsBottomSheet, Props>(
         backgroundComponent={CustomBackground}
         handleComponent={CustomHandle}
         snapPoints={initialSnapPoints}>
-        <View className="flex-1 px-3" style={bottom}>
-          <View className="mb-2 flex-row items-center justify-between">
+        <View className="flex-1" style={bottom}>
+          <View className="mb-2 flex-row items-center justify-between px-3">
             <Text variant="labelMedium">{t('skills')}</Text>
             <Button
               mode={filterAll ? 'contained' : 'outlined'}
@@ -85,8 +85,9 @@ const SkillsBottomSheet = forwardRef<SkillsBottomSheet, Props>(
           </View>
           <BottomSheetFlatList
             columnWrapperStyle={AppStyles.spaceBetween}
+            contentContainerStyle={AppStyles.paddingHorizontal}
             data={skills}
-            keyExtractor={skillKeyExtractor}
+            keyExtractor={keyExtractor}
             numColumns={7}
             renderItem={renderItem}
           />
