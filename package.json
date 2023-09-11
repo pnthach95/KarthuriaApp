@@ -1,6 +1,6 @@
 {
   "name": "karthuria",
-  "version": "3.0.0",
+  "version": "3.3.0",
   "private": true,
   "scripts": {
     "android": "react-native run-android --active-arch-only --appIdSuffix dev",
