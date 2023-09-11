@@ -1,32 +1,26 @@
-import {
-  BottomSheetFlatList,
-  BottomSheetModal,
-  useBottomSheetDynamicSnapPoints,
-} from '@gorhom/bottom-sheet';
+import {FlashList} from '@shopify/flash-list';
 import API, {links} from 'api';
-import {iconAttribute, iconSkill, imgStageGirl} from 'api/images';
+import {iconAttribute, imgStageGirl} from 'api/images';
 import {attackType, charaImgs, position, rarity} from 'assets';
 import frame from 'assets/common/frame_stage_girl.png';
 import EmptyList from 'components/emptylist';
 import ErrorView from 'components/errorview';
 import Kirin from 'components/kirin';
-import Separator from 'components/separator';
-import CustomBackdrop from 'components/sheet/backdrop';
-import CustomBackground from 'components/sheet/background';
-import CustomHandle from 'components/sheet/handle';
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import AttackTypesBottomSheet from 'components/sheet/attacktypes';
+import CharactersBottomSheet from 'components/sheet/characters';
+import ElementsBottomSheet from 'components/sheet/elements';
+import PositionsBottomSheet from 'components/sheet/positions';
+import RaritiesBottomSheet from 'components/sheet/rarities';
+import SkillsBottomSheet from 'components/sheet/skills';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {FlatList, Image, StyleSheet, View} from 'react-native';
+import {Image, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {Button, FAB, Text, TouchableRipple, useTheme} from 'react-native-paper';
-import {responsiveWidth} from 'react-native-responsive-dimensions';
-import AppStyles, {
-  useSafeAreaPaddingBottom,
-  useSafeAreaPaddingTop,
-} from 'theme/styles';
+import {FAB, Text, TouchableRipple} from 'react-native-paper';
+import {useSafeAreaPaddingTop} from 'theme/styles';
 import {useImmer} from 'use-immer';
 import {characterToIndex} from 'utils';
-import type {ListRenderItem} from 'react-native';
+import type {ContentStyle, ListRenderItem} from '@shopify/flash-list';
 import type {MainBottomTabScreenProps} from 'typings/navigation';
 
 type TFilter = Record<
@@ -39,33 +33,19 @@ type TFilter = Record<
   }[];
 };
 
-const styles = StyleSheet.create({
-  positionImg: {
-    height: (responsiveWidth(10) * 2) / 3,
-    width: responsiveWidth(10),
-  },
-  positionImgContainer: {
-    height: (responsiveWidth(12) * 2) / 3,
-    width: responsiveWidth(12),
-  },
-});
-
 const sgKeyExtractor = ({basicInfo}: TDressBasicInfo) =>
   `sg_${basicInfo.cardID}`;
-const charaKeyExtractor = (item: boolean, i: number) => `charaImg_${i}`;
-const elementKeyExtractor = (item: boolean, i: number) => `element_${i}`;
-const positionKeyExtractor = (item: boolean, i: number): string => `p_${i}`;
-const skillKeyExtractor = (item: TFilter['skills'][0], i: number) =>
-  `skill_${i}`;
 
 const StageGirlsScreen = ({
   navigation,
 }: MainBottomTabScreenProps<'StageGirlsScreen'>) => {
   const {t} = useTranslation();
-  const {colors} = useTheme();
-  const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const initialSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], []);
-  const skillSnapPoints = useMemo(() => ['50%$'], []);
+  const charactersRef = useRef<CharactersBottomSheet>(null);
+  const elementsRef = useRef<ElementsBottomSheet>(null);
+  const positionsRef = useRef<PositionsBottomSheet>(null);
+  const attackTypesRef = useRef<AttackTypesBottomSheet>(null);
+  const raritiesRef = useRef<RaritiesBottomSheet>(null);
+  const skillsRef = useRef<SkillsBottomSheet>(null);
   /** Loading state */
   const [loading, setLoading] = useState(true);
   /** FAB state */
@@ -88,17 +68,8 @@ const StageGirlsScreen = ({
     characters: true,
     skills: true,
   });
-  /** Filter key to render filter bottom sheet */
-  const [filterKey, setFilterKey] = useState<keyof typeof filter>('characters');
-  const {
-    animatedHandleHeight,
-    animatedSnapPoints,
-    animatedContentHeight,
-    handleContentLayout,
-  } = useBottomSheetDynamicSnapPoints(initialSnapPoints);
   /** Top inset for iOS */
   const top = useSafeAreaPaddingTop();
-  const bottom = useSafeAreaPaddingBottom(24);
 
   /** Load data here */
   useEffect(() => {
@@ -171,9 +142,6 @@ const StageGirlsScreen = ({
 
   //#region Sheet
 
-  /** Open sheet */
-  const openSheet = () => bottomSheetModalRef.current?.present();
-
   /** On press FAB */
   const openFABGroup = () => setFABState(!fabState);
 
@@ -183,48 +151,42 @@ const StageGirlsScreen = ({
       icon: 'account',
       label: 'Characters',
       onPress: () => {
-        setFilterKey('characters');
-        openSheet();
+        charactersRef.current?.openSheet();
       },
     },
     {
       icon: 'cloud',
       label: 'Elements',
       onPress: () => {
-        setFilterKey('elements');
-        openSheet();
+        elementsRef.current?.openSheet();
       },
     },
     {
       icon: 'chevron-triple-right',
       label: 'Position',
       onPress: () => {
-        setFilterKey('position');
-        openSheet();
+        positionsRef.current?.openSheet();
       },
     },
     {
       icon: 'fencing',
       label: 'Attack type',
       onPress: () => {
-        setFilterKey('attackType');
-        openSheet();
+        attackTypesRef.current?.openSheet();
       },
     },
     {
       icon: 'star',
       label: 'Rarity',
       onPress: () => {
-        setFilterKey('rarity');
-        openSheet();
+        raritiesRef.current?.openSheet();
       },
     },
     {
       icon: 'chemical-weapon',
       label: 'Skills',
       onPress: () => {
-        setFilterKey('skills');
-        openSheet();
+        skillsRef.current?.openSheet();
       },
     },
   ];
@@ -233,61 +195,59 @@ const StageGirlsScreen = ({
 
   //#region Render stage girls
 
-  const sgRenderItem: ListRenderItem<TDressBasicInfo> = ({item}) => {
-    const {basicInfo, base, stat} = item;
-    const onPress = () => {
-      navigation.navigate('StageGirlDetail', {id: basicInfo.cardID});
-    };
+  const sgRenderItem: ListRenderItem<TDressBasicInfo> = useCallback(
+    ({item}) => {
+      const {basicInfo, base, stat} = item;
+      const onPress = () => {
+        navigation.navigate('StageGirlDetail', {id: basicInfo.cardID});
+      };
 
-    return (
-      <TouchableRipple
-        className="flex-1 border p-1"
-        style={{borderColor: colors.outlineVariant}}
-        onPress={onPress}>
-        <>
-          <View className="mb-1 flex-1 justify-center">
+      return (
+        <TouchableRipple className="flex-1 p-1" onPress={onPress}>
+          <>
+            <View className="mb-1 flex-1 justify-center">
+              <Text className="text-center">
+                {basicInfo.name.en || basicInfo.name.ja}
+              </Text>
+            </View>
+            <View className="aspect-stage-girl h-20 self-center">
+              <FastImage
+                className="aspect-stage-girl h-20"
+                source={{uri: imgStageGirl(basicInfo.cardID)}}
+              />
+              <FastImage
+                className="absolute aspect-stage-girl h-20"
+                source={frame}
+              />
+              <Image
+                className="absolute aspect-square w-5"
+                source={{uri: iconAttribute(base.attribute)}}
+              />
+              <Image
+                className="absolute top-5 h-3 w-5"
+                source={position(base.roleIndex.role)}
+              />
+              <Image
+                className="absolute bottom-0 h-[14px] w-[70px] self-center"
+                resizeMode="contain"
+                source={rarity(basicInfo.rarity)}
+              />
+              <Image
+                className="absolute right-0 h-4 w-5"
+                source={attackType(base.attackType)}
+              />
+            </View>
             <Text className="text-center">
-              {basicInfo.name.en || basicInfo.name.ja}
+              {t('total-stat', {total: stat.total})}
             </Text>
-          </View>
-          <View className="aspect-stage-girl h-20 self-center">
-            <FastImage
-              className="aspect-stage-girl h-20"
-              source={{uri: imgStageGirl(basicInfo.cardID)}}
-            />
-            <FastImage
-              className="absolute aspect-stage-girl h-20"
-              source={frame}
-            />
-            <Image
-              className="absolute aspect-square w-5"
-              source={{uri: iconAttribute(base.attribute)}}
-            />
-            <Image
-              className="absolute top-5 h-3 w-5"
-              source={position(base.roleIndex.role)}
-            />
-            <Image
-              className="absolute bottom-0 h-[14px] w-[70px] self-center"
-              resizeMode="contain"
-              source={rarity(basicInfo.rarity)}
-            />
-            <Image
-              className="absolute right-0 h-4 w-5"
-              source={attackType(base.attackType)}
-            />
-          </View>
-          <Text className="text-center">
-            {t('total-stat', {total: stat.total})}
-          </Text>
-        </>
-      </TouchableRipple>
-    );
-  };
+          </>
+        </TouchableRipple>
+      );
+    },
+    [],
+  );
 
   //#endregion
-
-  //#region Render character filter
 
   const toggleAllCharacters = () => {
     setFilter(draft => {
@@ -298,94 +258,6 @@ const StageGirlsScreen = ({
     });
   };
 
-  const charaRenderItem: ListRenderItem<boolean> = ({item, index}) => {
-    const bgColor = {
-      backgroundColor: item ? colors.primary : undefined,
-    };
-    const onPress = () => {
-      setFilter(draft => {
-        draft.characters[index] = !draft.characters[index];
-      });
-    };
-
-    return (
-      <View className="w-1/7 p-1">
-        <TouchableRipple
-          borderless
-          className="aspect-square w-full items-center justify-center rounded-full p-0.5"
-          style={bgColor}
-          onPress={onPress}>
-          <FastImage
-            className="aspect-square w-full"
-            source={charaImgs[index]}
-          />
-        </TouchableRipple>
-      </View>
-    );
-  };
-
-  //#endregion
-
-  //#region Render element filter
-
-  const elementRenderItem: ListRenderItem<boolean> = ({item, index}) => {
-    const bgColor = {
-      backgroundColor: item ? colors.primary : undefined,
-    };
-    const onPress = () => {
-      setFilter(draft => {
-        draft.elements[index] = !draft.elements[index];
-      });
-    };
-
-    return (
-      <View className="w-1/7 p-1">
-        <TouchableRipple
-          borderless
-          className="items-center justify-center rounded-full p-0.5"
-          style={bgColor}
-          onPress={onPress}>
-          <FastImage
-            className="aspect-square w-full"
-            source={{uri: iconAttribute(index + 1)}}
-          />
-        </TouchableRipple>
-      </View>
-    );
-  };
-
-  //#endregion
-
-  //#region Render position filter
-
-  const positionRenderItem: ListRenderItem<boolean> = ({item, index}) => {
-    const bgColor = {
-      backgroundColor: item ? colors.primary : undefined,
-    };
-    const onPress = () => {
-      setFilter(draft => {
-        draft.position[index] = !draft.position[index];
-      });
-    };
-
-    return (
-      <View className="flex-row">
-        <TouchableRipple
-          borderless
-          className="items-center justify-center rounded-md"
-          style={[styles.positionImgContainer, bgColor]}
-          onPress={onPress}>
-          <Image source={position(index as TRole)} style={styles.positionImg} />
-        </TouchableRipple>
-        <View className="w-3" />
-      </View>
-    );
-  };
-
-  //#endregion
-
-  //#region Render attack type filter
-
   const onPressAttType0 = () =>
     setFilter(draft => {
       draft.attackType[0] = !draft.attackType[0];
@@ -395,35 +267,6 @@ const StageGirlsScreen = ({
     setFilter(draft => {
       draft.attackType[1] = !filter.attackType[1];
     });
-
-  //#endregion
-
-  //#region Render rarity filter
-
-  const rarityRenderItem: ListRenderItem<boolean> = ({item, index}) => {
-    const bgColor = {
-      backgroundColor: item ? colors.primary : undefined,
-    };
-    const onPress = () => {
-      setFilter(draft => {
-        draft.rarity[index] = !draft.rarity[index];
-      });
-    };
-
-    return (
-      <TouchableRipple
-        borderless
-        className="self-start rounded-xl p-1"
-        style={bgColor}
-        onPress={onPress}>
-        <Image resizeMode="contain" source={rarity(index + 2)} />
-      </TouchableRipple>
-    );
-  };
-
-  //#endregion
-
-  //#region Render skill filter
 
   const toggleAllSkills = () => {
     setFilter(draft => {
@@ -436,199 +279,96 @@ const StageGirlsScreen = ({
     });
   };
 
-  const skillRenderItem: ListRenderItem<TFilter['skills'][0]> = ({
-    item,
-    index,
-  }) => {
-    const bgColor = {
-      backgroundColor: item.checked ? colors.primary : undefined,
-    };
-    const onPress = () =>
-      setFilter(draft => {
-        draft.skills[index].checked = !draft.skills[index].checked;
-      });
-    const source = {uri: iconSkill(item.id)};
-    return (
-      <View className="w-1/7 p-1">
-        <TouchableRipple
-          borderless
-          className="mb-2 aspect-square w-full items-center justify-center rounded-full"
-          style={bgColor}
-          onPress={onPress}>
-          <FastImage className="aspect-square w-5/6" source={source} />
-        </TouchableRipple>
-      </View>
-    );
+  const onPressCharacter = (i: number) => {
+    setFilter(draft => {
+      draft.characters[i] = !draft.characters[i];
+    });
   };
 
-  //#endregion
+  const onPressElement = (i: number) => {
+    setFilter(draft => {
+      draft.elements[i] = !draft.elements[i];
+    });
+  };
+
+  const onPressPosition = (i: number) => {
+    setFilter(draft => {
+      draft.position[i] = !draft.position[i];
+    });
+  };
+
+  const onPressRarity = (i: number) => {
+    setFilter(draft => {
+      draft.rarity[i] = !draft.rarity[i];
+    });
+  };
+
+  const onPressSkill = (i: number) => {
+    setFilter(draft => {
+      draft.skills[i].checked = !draft.skills[i].checked;
+    });
+  };
 
   if (loading) {
     return <Kirin />;
   }
 
-  if (sgList.length > 0) {
-    return (
-      <>
-        <FlatList
-          contentContainerStyle={top}
-          data={rsgList}
-          initialNumToRender={12}
-          keyExtractor={sgKeyExtractor}
-          ListEmptyComponent={EmptyList}
-          numColumns={2}
-          renderItem={sgRenderItem}
-        />
-        <FAB.Group
-          actions={fabActions}
-          icon={fabState ? 'filter-outline' : 'filter'}
-          open={fabState}
-          visible={true}
-          onPress={openFABGroup}
-          onStateChange={openFABGroup}
-        />
-        <BottomSheetModal
-          ref={bottomSheetModalRef}
-          backdropComponent={CustomBackdrop}
-          backgroundComponent={CustomBackground}
-          contentHeight={
-            filterKey === 'skills' ? undefined : animatedContentHeight
-          }
-          handleComponent={CustomHandle}
-          handleHeight={animatedHandleHeight}
-          snapPoints={
-            filterKey === 'skills' ? skillSnapPoints : animatedSnapPoints
-          }>
-          <View
-            className="flex-1 px-3"
-            style={bottom}
-            onLayout={handleContentLayout}>
-            {/* Character filter */}
-            {filterKey === 'characters' && (
-              <>
-                <View className="mb-3 flex-row items-center justify-between">
-                  <Text variant="labelMedium">{t('characters')}</Text>
-                  <Button
-                    mode={filterAll.characters ? 'contained' : 'outlined'}
-                    onPress={toggleAllCharacters}>
-                    {t('all')}
-                  </Button>
-                </View>
-                <BottomSheetFlatList
-                  data={filter.characters}
-                  ItemSeparatorComponent={Separator}
-                  keyExtractor={charaKeyExtractor}
-                  numColumns={7}
-                  renderItem={charaRenderItem}
-                  showsVerticalScrollIndicator={false}
-                />
-              </>
-            )}
-            {/* Element filter */}
-            {filterKey === 'elements' && (
-              <>
-                <Text variant="labelMedium">{t('elements')}</Text>
-                <BottomSheetFlatList
-                  data={filter.elements}
-                  ItemSeparatorComponent={Separator}
-                  keyExtractor={elementKeyExtractor}
-                  numColumns={7}
-                  renderItem={elementRenderItem}
-                />
-              </>
-            )}
-            {/* Position filter */}
-            {filterKey === 'position' && (
-              <>
-                <Text variant="labelMedium">{t('position')}</Text>
-                <BottomSheetFlatList
-                  horizontal
-                  data={filter.position}
-                  keyExtractor={positionKeyExtractor}
-                  renderItem={positionRenderItem}
-                />
-              </>
-            )}
-            {/* Attack type filter */}
-            {filterKey === 'attackType' && (
-              <>
-                <Text variant="labelMedium">{t('attack-type')}</Text>
-                <View className="flex-row">
-                  <TouchableRipple
-                    borderless
-                    className="items-center justify-center rounded-xl"
-                    style={[
-                      AppStyles.squareW12,
-                      {
-                        backgroundColor: filter.attackType[0]
-                          ? colors.primary
-                          : undefined,
-                      },
-                    ]}
-                    onPress={onPressAttType0}>
-                    <Image source={attackType(1)} style={AppStyles.squareW10} />
-                  </TouchableRipple>
-                  <View className="w-3" />
-                  <TouchableRipple
-                    borderless
-                    className="items-center justify-center rounded-xl"
-                    style={[
-                      AppStyles.squareW12,
-                      {
-                        backgroundColor: filter.attackType[1]
-                          ? colors.primary
-                          : undefined,
-                      },
-                    ]}
-                    onPress={onPressAttType1}>
-                    <Image source={attackType(2)} style={AppStyles.squareW10} />
-                  </TouchableRipple>
-                </View>
-              </>
-            )}
-            {/* Rarity filter */}
-            {filterKey === 'rarity' && (
-              <>
-                <Text variant="labelMedium">{t('rarity')}</Text>
-                <View className="flex-row flex-wrap gap-2">
-                  {filter.rarity.map((item, index) =>
-                    rarityRenderItem({
-                      index,
-                      item,
-                      // @ts-ignore
-                      separators: null,
-                    }),
-                  )}
-                </View>
-              </>
-            )}
-            {/* Skill filter */}
-            {filterKey === 'skills' && (
-              <>
-                <View className="mb-2 flex-row items-center justify-between">
-                  <Text variant="labelMedium">{t('skills')}</Text>
-                  <Button
-                    mode={filterAll.skills ? 'contained' : 'outlined'}
-                    onPress={toggleAllSkills}>
-                    {t('all')}
-                  </Button>
-                </View>
-                <BottomSheetFlatList
-                  columnWrapperStyle={AppStyles.spaceBetween}
-                  data={filter.skills}
-                  keyExtractor={skillKeyExtractor}
-                  numColumns={7}
-                  renderItem={skillRenderItem}
-                />
-              </>
-            )}
-          </View>
-        </BottomSheetModal>
-      </>
-    );
-  }
-
-  return <ErrorView />;
+  return (
+    <>
+      <FlashList
+        contentContainerStyle={top as ContentStyle}
+        data={rsgList}
+        estimatedItemSize={200}
+        keyExtractor={sgKeyExtractor}
+        ListEmptyComponent={sgList.length > 0 ? EmptyList : ErrorView}
+        numColumns={2}
+        renderItem={sgRenderItem}
+      />
+      <FAB.Group
+        actions={fabActions}
+        icon={fabState ? 'filter-outline' : 'filter'}
+        open={fabState}
+        visible={true}
+        onPress={openFABGroup}
+        onStateChange={openFABGroup}
+      />
+      <CharactersBottomSheet
+        ref={charactersRef}
+        characters={filter.characters}
+        filterAll={filterAll.characters}
+        toggleAll={toggleAllCharacters}
+        onPress={onPressCharacter}
+      />
+      <ElementsBottomSheet
+        ref={elementsRef}
+        elements={filter.elements}
+        onPress={onPressElement}
+      />
+      <PositionsBottomSheet
+        ref={positionsRef}
+        positions={filter.position}
+        onPress={onPressPosition}
+      />
+      <AttackTypesBottomSheet
+        ref={attackTypesRef}
+        attackTypes={filter.attackType}
+        onPress0={onPressAttType0}
+        onPress1={onPressAttType1}
+      />
+      <RaritiesBottomSheet
+        ref={raritiesRef}
+        rarities={filter.rarity}
+        onPress={onPressRarity}
+      />
+      <SkillsBottomSheet
+        ref={skillsRef}
+        filterAll={filterAll.skills}
+        skills={filter.skills}
+        toggleAll={toggleAllSkills}
+        onPress={onPressSkill}
+      />
+    </>
+  );
 };
 
 export default StageGirlsScreen;

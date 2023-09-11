@@ -1,0 +1,4 @@
+babel.config.js
+metro.config.js
+.prettierrc.js
+jest.config.js

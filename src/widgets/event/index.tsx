@@ -104,6 +104,7 @@ const EventWidget = ({events, isDark, idx, currentEvent}: Props) => {
 
   return (
     <FlexWidget
+      clickAction="OPEN_APP"
       style={{
         height: 'match_parent',
         width: 'match_parent',

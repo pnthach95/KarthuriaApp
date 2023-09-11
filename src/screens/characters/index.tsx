@@ -2,10 +2,10 @@ import API, {links} from 'api';
 import {iconSchool, imgCharater} from 'api/images';
 import ErrorView from 'components/errorview';
 import Kirin from 'components/kirin';
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {FlatList, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
-import {Text, TouchableRipple, useTheme} from 'react-native-paper';
+import {Text, TouchableRipple} from 'react-native-paper';
 import {useSafeAreaPaddingBottom} from 'theme/styles';
 import type {RootStackScreenProps} from 'typings/navigation';
 
@@ -13,7 +13,6 @@ const keyExtractor = ({basicInfo: {charaID}}: TCharaBasicInfo) =>
   `chID_${charaID}`;
 
 const CharactersScreen = ({navigation}: RootStackScreenProps<'Characters'>) => {
-  const {colors} = useTheme();
   const [loading, setLoading] = useState(true);
   const [charaList, setCharaList] = useState<TCharaBasicInfo[]>([]);
   const bottom = useSafeAreaPaddingBottom();
@@ -34,7 +33,7 @@ const CharactersScreen = ({navigation}: RootStackScreenProps<'Characters'>) => {
     loadData();
   }, []);
 
-  const renderItem = useCallback(({item}: {item: TCharaBasicInfo}) => {
+  const renderItem = ({item}: {item: TCharaBasicInfo}) => {
     const {charaID, name_ruby, school_id} = item.basicInfo;
     if (name_ruby.ja) {
       const goToDetail = () =>
@@ -43,10 +42,7 @@ const CharactersScreen = ({navigation}: RootStackScreenProps<'Characters'>) => {
         });
 
       return (
-        <TouchableRipple
-          className="flex-1 border"
-          style={{borderColor: colors.outlineVariant}}
-          onPress={goToDetail}>
+        <TouchableRipple className="flex-1" onPress={goToDetail}>
           <View className="items-center justify-center pb-3">
             <FastImage
               className="aspect-video w-full"
@@ -65,28 +61,23 @@ const CharactersScreen = ({navigation}: RootStackScreenProps<'Characters'>) => {
       );
     }
     return null;
-  }, []);
+  };
 
   if (loading) {
     return <Kirin />;
   }
 
-  if (charaList.length > 0) {
-    return (
-      <FlatList
-        contentContainerStyle={bottom}
-        data={charaList}
-        keyExtractor={keyExtractor}
-        numColumns={2}
-        renderItem={renderItem}
-        showsVerticalScrollIndicator={false}
-      />
-    );
-  }
-
-  return <ErrorView />;
+  return (
+    <FlatList
+      contentContainerStyle={bottom}
+      data={charaList}
+      keyExtractor={keyExtractor}
+      ListEmptyComponent={ErrorView}
+      numColumns={2}
+      renderItem={renderItem}
+      showsVerticalScrollIndicator={false}
+    />
+  );
 };
-
-CharactersScreen.whyDidYouRender = true;
 
 export default CharactersScreen;

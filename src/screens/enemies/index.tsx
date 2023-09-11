@@ -1,8 +1,4 @@
-import {
-  BottomSheetModal,
-  BottomSheetScrollView,
-  useBottomSheetDynamicSnapPoints,
-} from '@gorhom/bottom-sheet';
+import {BottomSheetModal, BottomSheetScrollView} from '@gorhom/bottom-sheet';
 import {FlashList} from '@shopify/flash-list';
 import API, {links} from 'api';
 import {iconAttribute, imgEnemy} from 'api/images';
@@ -12,14 +8,14 @@ import Kirin from 'components/kirin';
 import CustomBackdrop from 'components/sheet/backdrop';
 import CustomBackground from 'components/sheet/background';
 import CustomHandle from 'components/sheet/handle';
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {Image, View} from 'react-native';
 import FastImage from 'react-native-fast-image';
 import {Button, FAB, Text, TouchableRipple, useTheme} from 'react-native-paper';
 import {useSafeAreaPaddingBottom} from 'theme/styles';
 import {useImmer} from 'use-immer';
-import type {ListRenderItem} from '@shopify/flash-list';
+import type {ContentStyle, ListRenderItem} from '@shopify/flash-list';
 import type {RootStackScreenProps} from 'typings/navigation';
 
 const keyExtractor = ({basicInfo}: TEnemyBasicInfo) =>
@@ -29,13 +25,6 @@ const EnemiesScreen = ({navigation}: RootStackScreenProps<'Enemies'>) => {
   const {t} = useTranslation();
   const {colors} = useTheme();
   const bottomSheetModalRef = useRef<BottomSheetModal>(null);
-  const initialSnapPoints = useMemo(() => ['CONTENT_HEIGHT'], []);
-  const {
-    animatedHandleHeight,
-    animatedSnapPoints,
-    animatedContentHeight,
-    handleContentLayout,
-  } = useBottomSheetDynamicSnapPoints(initialSnapPoints);
   /** Loading state */
   const [loading, setLoading] = useState(true);
   /** List for filter */
@@ -115,9 +104,7 @@ const EnemiesScreen = ({navigation}: RootStackScreenProps<'Enemies'>) => {
 
     return (
       <TouchableRipple className="flex-1" onPress={onPress}>
-        <View
-          className="flex-1 items-center justify-between border p-1"
-          style={{borderColor: colors.outline}}>
+        <View className="flex-1 items-center justify-between p-1">
           <View className="items-center justify-center">
             <View className="aspect-square w-[89.6px]">
               <FastImage
@@ -142,7 +129,7 @@ const EnemiesScreen = ({navigation}: RootStackScreenProps<'Enemies'>) => {
     return (
       <>
         <FlashList
-          contentContainerStyle={bottom}
+          contentContainerStyle={bottom as ContentStyle}
           data={reList}
           estimatedItemSize={96}
           keyExtractor={keyExtractor}
@@ -157,15 +144,13 @@ const EnemiesScreen = ({navigation}: RootStackScreenProps<'Enemies'>) => {
         />
         <BottomSheetModal
           ref={bottomSheetModalRef}
+          enableDynamicSizing
           backdropComponent={CustomBackdrop}
           backgroundComponent={CustomBackground}
-          contentHeight={animatedContentHeight}
-          handleComponent={CustomHandle}
-          handleHeight={animatedHandleHeight}
-          snapPoints={animatedSnapPoints}>
+          handleComponent={CustomHandle}>
           <BottomSheetScrollView
-            contentContainerStyle={sheetBottom}
-            onLayout={handleContentLayout}>
+            // @ts-ignore
+            contentContainerStyle={sheetBottom}>
             <View className="mb-2 flex-row items-center justify-between">
               <Text variant="bodySmall">{t('skills')}</Text>
               <Button
