@@ -5,8 +5,6 @@
 #import <React/RCTRootView.h>
 #import "RNBootSplash.h"
 
-#import <React/RCTAppSetupUtils.h>
-
 #if RCT_NEW_ARCH_ENABLED
 #import <React/CoreModulesPlugins.h>
 #import <React/RCTCxxBridgeDelegate.h>
@@ -36,8 +34,6 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
   // You can add your custom initial props in the dictionary below.
   // They will be passed down to the ViewController used by React Native.
   self.initialProps = @{};
-  UIView *rootView = RCTAppSetupDefaultRootView(bridge, @"Karthuria", initProps);
-  [RNBootSplash initWithStoryboard:@"BootSplash" rootView:rootView];
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 
@@ -49,3 +45,17 @@ static NSString *const kRNConcurrentRoot = @"concurrentRoot";
   return [[NSBundle mainBundle] URLForResource:@"main" withExtension:@"jsbundle"];
 #endif
 }
+
+- (UIView *)createRootViewWithBridge:(RCTBridge *)bridge
+                          moduleName:(NSString *)moduleName
+                           initProps:(NSDictionary *)initProps {
+  UIView *rootView = [super createRootViewWithBridge:bridge
+                                          moduleName:moduleName
+                                           initProps:initProps];
+
+  [RNBootSplash initWithStoryboard:@"BootSplash" rootView:rootView];
+
+  return rootView;
+}
+
+@end
