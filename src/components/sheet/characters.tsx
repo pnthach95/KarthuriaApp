@@ -1,8 +1,4 @@
-import {
-  BottomSheetFlatList,
-  BottomSheetModal,
-  BottomSheetView,
-} from '@gorhom/bottom-sheet';
+import {BottomSheetFlatList, BottomSheetModal} from '@gorhom/bottom-sheet';
 import {charaImgs} from 'assets';
 import Separator from 'components/separator';
 import React, {forwardRef, useImperativeHandle, useRef} from 'react';
@@ -77,24 +73,23 @@ const CharactersBottomSheet = forwardRef<CharactersBottomSheet, Props>(
         backdropComponent={CustomBackdrop}
         backgroundComponent={CustomBackground}
         handleComponent={CustomHandle}>
-        <BottomSheetView style={bottom}>
-          <View className="mb-3 flex-row items-center justify-between">
-            <Text variant="labelMedium">{t('characters')}</Text>
-            <Button
-              mode={filterAll ? 'contained' : 'outlined'}
-              onPress={toggleAll}>
-              {t('all')}
-            </Button>
-          </View>
-          <BottomSheetFlatList
-            data={characters}
-            ItemSeparatorComponent={Separator}
-            keyExtractor={keyExtractor}
-            numColumns={7}
-            renderItem={renderItem}
-            showsVerticalScrollIndicator={false}
-          />
-        </BottomSheetView>
+        <View className="m-3 flex-row items-center justify-between">
+          <Text variant="labelMedium">{t('characters')}</Text>
+          <Button
+            mode={filterAll ? 'contained' : 'outlined'}
+            onPress={toggleAll}>
+            {t('all')}
+          </Button>
+        </View>
+        <BottomSheetFlatList
+          contentContainerStyle={bottom}
+          data={characters}
+          ItemSeparatorComponent={Separator}
+          keyExtractor={keyExtractor}
+          numColumns={7}
+          renderItem={renderItem}
+          showsVerticalScrollIndicator={false}
+        />
       </BottomSheetModal>
     );
   },

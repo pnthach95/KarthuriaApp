@@ -592,6 +592,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = 655557J83K;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Karthuria/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -632,6 +633,7 @@
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
+				DEVELOPMENT_TEAM = 655557J83K;
 				INFOPLIST_FILE = Karthuria/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

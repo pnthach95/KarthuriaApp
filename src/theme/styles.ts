@@ -30,6 +30,12 @@ const AppStyles = StyleSheet.create({
   grow: {
     flexGrow: 1,
   },
+  margin: {
+    margin: padding,
+  },
+  padding: {
+    padding,
+  },
   paddingHorizontal: {
     paddingHorizontal: padding,
   },

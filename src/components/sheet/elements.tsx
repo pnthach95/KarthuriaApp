@@ -1,8 +1,4 @@
-import {
-  BottomSheetFlatList,
-  BottomSheetModal,
-  BottomSheetView,
-} from '@gorhom/bottom-sheet';
+import {BottomSheetFlatList, BottomSheetModal} from '@gorhom/bottom-sheet';
 import {iconAttribute} from 'api/images';
 import Separator from 'components/separator';
 import React, {forwardRef, useImperativeHandle, useRef} from 'react';
@@ -75,16 +71,17 @@ const ElementsBottomSheet = forwardRef<ElementsBottomSheet, Props>(
         backdropComponent={CustomBackdrop}
         backgroundComponent={CustomBackground}
         handleComponent={CustomHandle}>
-        <BottomSheetView style={bottom}>
-          <Text variant="labelMedium">{t('elements')}</Text>
-          <BottomSheetFlatList
-            data={elements}
-            ItemSeparatorComponent={Separator}
-            keyExtractor={keyExtractor}
-            numColumns={7}
-            renderItem={renderItem}
-          />
-        </BottomSheetView>
+        <Text className="p-3" variant="labelMedium">
+          {t('elements')}
+        </Text>
+        <BottomSheetFlatList
+          contentContainerStyle={bottom}
+          data={elements}
+          ItemSeparatorComponent={Separator}
+          keyExtractor={keyExtractor}
+          numColumns={7}
+          renderItem={renderItem}
+        />
       </BottomSheetModal>
     );
   },
