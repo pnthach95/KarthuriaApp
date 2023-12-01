@@ -60,7 +60,7 @@ const StageGirlsScreen = ({
     elements: [true, true, true, true, true, true, true, true, true],
     position: [true, true, true],
     attackType: [true, true],
-    rarity: [true, true, true],
+    rarity: [true, true, true, true],
     skills: [],
   });
   /** State for select/deselect all button */

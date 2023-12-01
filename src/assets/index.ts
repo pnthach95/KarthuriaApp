@@ -41,6 +41,7 @@ import r1 from 'assets/rarities/1_1.png';
 import r2 from 'assets/rarities/2_2.png';
 import r3 from 'assets/rarities/3_3.png';
 import r4 from 'assets/rarities/4_4.png';
+import r5 from 'assets/rarities/5_5.png';
 
 export const positionImgs = [pFront, pMid, pBack];
 
@@ -66,6 +67,8 @@ export const rarity = (id: number): number => {
       return r2;
     case 3:
       return r3;
+    case 5:
+      return r5;
     default:
       return r4;
   }
