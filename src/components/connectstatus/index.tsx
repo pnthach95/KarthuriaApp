@@ -3,7 +3,7 @@ import {useTranslation} from 'react-i18next';
 import {View} from 'react-native';
 import {NetworkConsumer} from 'react-native-offline';
 import {Text, useTheme} from 'react-native-paper';
-import {useSafeAreaPaddingTop} from 'theme/styles';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
 /**
  * Connect Status
@@ -11,23 +11,25 @@ import {useSafeAreaPaddingTop} from 'theme/styles';
 const ConnectStatus = () => {
   const {t} = useTranslation();
   const {colors} = useTheme();
-  const safeInsets = useSafeAreaPaddingTop();
-  const box = {
-    backgroundColor: colors.error,
+  const errorBox = {
+    backgroundColor: colors.errorContainer,
+  };
+  const errorBoxText = {
+    color: colors.onErrorContainer,
   };
 
   return (
-    <NetworkConsumer>
-      {({isConnected}) =>
-        isConnected ? (
-          <View style={safeInsets} />
-        ) : (
-          <View className="p-3" style={[box, safeInsets]}>
-            <Text className="text-white">{t('no-internet-connection')}</Text>
-          </View>
-        )
-      }
-    </NetworkConsumer>
+    <SafeAreaView edges={['top']}>
+      <NetworkConsumer>
+        {({isConnected}) =>
+          !isConnected && (
+            <View className="p-3" style={errorBox}>
+              <Text style={errorBoxText}>{t('no-internet-connection')}</Text>
+            </View>
+          )
+        }
+      </NetworkConsumer>
+    </SafeAreaView>
   );
 };
 
