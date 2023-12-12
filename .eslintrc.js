@@ -7,7 +7,6 @@ module.exports = {
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    tsconfigRootDir: __dirname,
     project: ['./tsconfig.json'],
   },
   plugins: ['@typescript-eslint', 'import'],
@@ -57,7 +56,6 @@ module.exports = {
     'react-native/no-unused-styles': 'warn',
     'react-hooks/exhaustive-deps': 'off',
     'object-shorthand': ['error', 'always'],
-    'comma-dangle': 'off',
     '@typescript-eslint/ban-ts-comment': 'off',
     '@typescript-eslint/comma-dangle': ['error', 'always-multiline'],
     eqeqeq: ['error', 'always'],

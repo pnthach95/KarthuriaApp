@@ -1,5 +1,5 @@
 {
-  "extends": "@tsconfig/react-native/tsconfig.json",
+  "extends": "@react-native/typescript-config/tsconfig.json",
   "include": [
     ".eslintrc.js",
     "index.js",
@@ -16,11 +16,5 @@
         "src/*"
       ]
     },
-  },
-  "exclude": [
-    "node_modules",
-    "babel.config.js",
-    "metro.config.js",
-    "jest.config.js"
-  ]
+  }
 }

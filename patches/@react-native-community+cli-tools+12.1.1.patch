@@ -1,0 +1,13 @@
+diff --git a/node_modules/@react-native-community/cli-tools/build/findDevServerPort.js b/node_modules/@react-native-community/cli-tools/build/findDevServerPort.js
+index b4fe246..1a786d5 100644
+--- a/node_modules/@react-native-community/cli-tools/build/findDevServerPort.js
++++ b/node_modules/@react-native-community/cli-tools/build/findDevServerPort.js
+@@ -10,7 +10,7 @@ var _port = require("./port");
+ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+ const findDevServerPort = async (initialPort, root) => {
+   let port = initialPort;
+-  let startPackager = false;
++  let startPackager = true;
+   const packagerStatus = await (0, _isPackagerRunning.default)(port);
+   if (typeof packagerStatus === 'object' && packagerStatus.status === 'running') {
+     if (packagerStatus.root === root) {

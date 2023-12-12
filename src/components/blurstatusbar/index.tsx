@@ -1,8 +1,8 @@
 import React from 'react';
 import {StatusBar, StyleSheet, View} from 'react-native';
-import {responsiveWidth} from 'react-native-responsive-dimensions';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useOptions} from 'store';
+import {responsiveWidth} from 'utils/responsive';
 import BlurView from '../blurview';
 
 const BlurStatusBar = () => {

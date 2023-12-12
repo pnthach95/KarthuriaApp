@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
-import {responsiveWidth} from 'react-native-responsive-dimensions';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {responsiveWidth} from 'utils/responsive';
 import type {ViewStyle} from 'react-native';
 
 export const padding = 12;
