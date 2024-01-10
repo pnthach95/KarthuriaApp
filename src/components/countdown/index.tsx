@@ -49,6 +49,4 @@ const Countdown = ({miliseconds, interval = 1000, center, right}: Props) => {
   );
 };
 
-Countdown.whyDidYouRender = true;
-
 export default Countdown;

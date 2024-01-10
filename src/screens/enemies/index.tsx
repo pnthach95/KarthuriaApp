@@ -207,6 +207,4 @@ const EnemiesScreen = ({navigation}: RootStackScreenProps<'Enemies'>) => {
   return <ErrorView />;
 };
 
-EnemiesScreen.whyDidYouRender = true;
-
 export default EnemiesScreen;

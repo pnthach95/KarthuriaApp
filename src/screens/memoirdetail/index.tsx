@@ -227,6 +227,4 @@ const MemoirDetailScreen = ({
   );
 };
 
-MemoirDetailScreen.whyDidYouRender = true;
-
 export default MemoirDetailScreen;

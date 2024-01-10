@@ -129,6 +129,4 @@ const CharacterDetailScreen = ({
   );
 };
 
-CharacterDetailScreen.whyDidYouRender = true;
-
 export default CharacterDetailScreen;

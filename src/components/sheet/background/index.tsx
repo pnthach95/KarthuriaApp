@@ -10,6 +10,4 @@ const CustomBackground = ({style}: BottomSheetBackgroundProps) => {
   return <View className="rounded-tl-xl rounded-tr-xl" style={[style, bg]} />;
 };
 
-CustomBackground.whyDidYouRender = true;
-
 export default CustomBackground;

@@ -152,6 +152,4 @@ const AccessoryDetailScreen = ({
   );
 };
 
-AccessoryDetailScreen.whyDidYouRender = true;
-
 export default AccessoryDetailScreen;

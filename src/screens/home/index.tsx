@@ -408,6 +408,4 @@ const MainScreen = ({navigation}: MainBottomTabScreenProps<'MainScreen'>) => {
   );
 };
 
-MainScreen.whyDidYouRender = true;
-
 export default MainScreen;

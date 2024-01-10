@@ -75,6 +75,4 @@ const EnemyDetailScreen = ({route}: RootStackScreenProps<'EnemyDetail'>) => {
   );
 };
 
-EnemyDetailScreen.whyDidYouRender = true;
-
 export default EnemyDetailScreen;

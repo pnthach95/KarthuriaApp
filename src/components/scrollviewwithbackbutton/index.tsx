@@ -120,6 +120,4 @@ const ScrollViewWithBackButton = ({
   );
 };
 
-ScrollViewWithBackButton.whyDidYouRender = true;
-
 export default React.memo(ScrollViewWithBackButton);

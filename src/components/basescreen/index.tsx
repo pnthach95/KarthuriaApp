@@ -37,6 +37,4 @@ const BaseScreen = ({children, loading, hasData}: Props) => {
   );
 };
 
-BaseScreen.whyDidYouRender = true;
-
 export default BaseScreen;
