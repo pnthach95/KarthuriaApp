@@ -8,12 +8,10 @@ import localizedFormat from 'dayjs/plugin/localizedFormat';
 import React, {useEffect} from 'react';
 import {useTranslation} from 'react-i18next';
 import RNBootSplash from 'react-native-bootsplash';
-import ErrorBoundary from 'react-native-error-boundary';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {NetworkProvider} from 'react-native-offline';
 import {Provider} from 'react-native-paper';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import CustomFallback from 'screens/customfallback';
 import {onSwitchMainRoute, useHydration, useLanguage, useOptions} from 'store';
 import {useAppTheme} from 'theme';
 import Navigation from './navigation';
@@ -53,11 +51,9 @@ const Routes = () => {
       <NetworkProvider>
         <SafeAreaProvider>
           <Provider theme={theme}>
-            <ErrorBoundary FallbackComponent={CustomFallback}>
-              <BottomSheetModalProvider>
-                <Navigation />
-              </BottomSheetModalProvider>
-            </ErrorBoundary>
+            <BottomSheetModalProvider>
+              <Navigation />
+            </BottomSheetModalProvider>
           </Provider>
         </SafeAreaProvider>
       </NetworkProvider>

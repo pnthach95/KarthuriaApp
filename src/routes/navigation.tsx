@@ -4,10 +4,12 @@ import Kirin from 'components/kirin';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
 import {StatusBar} from 'react-native';
+import ErrorBoundary from 'react-native-error-boundary';
 import AccessoriesScreen from 'screens/accessories';
 import AccessoryDetailScreen from 'screens/accessorydetail';
 import CharacterDetailScreen from 'screens/characterdetail';
 import CharactersScreen from 'screens/characters';
+import CustomFallback from 'screens/customfallback';
 import EnemiesScreen from 'screens/enemies';
 import EnemyDetailScreen from 'screens/enemydetail';
 import MemoirDetailScreen from 'screens/memoirdetail';
@@ -51,7 +53,7 @@ const Navigation = () => {
   const navTheme = options.isDark ? DarkTheme : LightTheme;
 
   return (
-    <>
+    <ErrorBoundary FallbackComponent={CustomFallback}>
       <StatusBar
         backgroundColor={navTheme.colors.card}
         barStyle={options.isDark ? 'light-content' : 'dark-content'}
@@ -73,20 +75,30 @@ const Navigation = () => {
           <Stack.Screen
             component={CharacterDetailScreen}
             name="CharacterDetail"
+            options={{title: t('loading')}}
           />
           <Stack.Screen
             component={StageGirlDetailScreen}
             name="StageGirlDetail"
-            options={{headerTitle: t('loading')}}
+            options={{title: t('loading')}}
           />
-          <Stack.Screen component={MemoirDetailScreen} name="MemoirDetail" />
+          <Stack.Screen
+            component={MemoirDetailScreen}
+            name="MemoirDetail"
+            options={{title: t('loading')}}
+          />
           <Stack.Screen component={AccessoriesScreen} name="Accessories" />
           <Stack.Screen
             component={AccessoryDetailScreen}
             name="AccessoryDetail"
+            options={{title: t('loading')}}
           />
           <Stack.Screen component={EnemiesScreen} name="Enemies" />
-          <Stack.Screen component={EnemyDetailScreen} name="EnemyDetail" />
+          <Stack.Screen
+            component={EnemyDetailScreen}
+            name="EnemyDetail"
+            options={{title: t('loading')}}
+          />
           <Stack.Screen
             component={WidgetPreviewScreen}
             name="WidgetPreview"
@@ -94,7 +106,7 @@ const Navigation = () => {
           />
         </Stack.Navigator>
       </NavigationContainer>
-    </>
+    </ErrorBoundary>
   );
 };
 
