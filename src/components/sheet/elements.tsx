@@ -64,6 +64,12 @@ const ElementsBottomSheet = forwardRef<ElementsBottomSheet, Props>(
       );
     };
 
+    const listHeader = () => (
+      <Text className="p-3" variant="labelMedium">
+        {t('elements')}
+      </Text>
+    );
+
     return (
       <BottomSheetModal
         ref={bottomSheetModalRef}
@@ -71,14 +77,12 @@ const ElementsBottomSheet = forwardRef<ElementsBottomSheet, Props>(
         backdropComponent={CustomBackdrop}
         backgroundComponent={CustomBackground}
         handleComponent={CustomHandle}>
-        <Text className="p-3" variant="labelMedium">
-          {t('elements')}
-        </Text>
         <BottomSheetFlatList
           contentContainerStyle={bottom}
           data={elements}
           ItemSeparatorComponent={Separator}
           keyExtractor={keyExtractor}
+          ListHeaderComponent={listHeader}
           numColumns={7}
           renderItem={renderItem}
         />
