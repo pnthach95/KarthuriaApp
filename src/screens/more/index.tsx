@@ -218,6 +218,4 @@ const MoreScreen = ({navigation}: MainBottomTabScreenProps<'MoreScreen'>) => {
   );
 };
 
-MoreScreen.whyDidYouRender = true;
-
 export default MoreScreen;

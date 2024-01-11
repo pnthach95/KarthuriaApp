@@ -1,9 +1,6 @@
 import {MaterialBottomTabNavigationProp} from '@react-navigation/material-bottom-tabs';
 import {CompositeNavigationProp} from '@react-navigation/native';
-import {
-  NativeStackNavigationProp,
-  NativeStackScreenProps,
-} from '@react-navigation/native-stack';
+import {StackNavigationProp, StackScreenProps} from '@react-navigation/stack';
 
 type BottomTabList = {
   MainScreen: undefined;
@@ -15,7 +12,7 @@ type BottomTabList = {
 type MainBottomTabScreenProps<T extends keyof BottomTabList> = {
   navigation: CompositeNavigationProp<
     MaterialBottomTabNavigationProp<BottomTabList, T>,
-    NativeStackNavigationProp<RootStackParamList>
+    StackNavigationProp<RootStackParamList>
   >;
 };
 
@@ -34,4 +31,4 @@ type RootStackParamList = {
 };
 
 type RootStackScreenProps<T extends keyof RootStackParamList> =
-  NativeStackScreenProps<RootStackParamList, T>;
+  StackScreenProps<RootStackParamList, T>;

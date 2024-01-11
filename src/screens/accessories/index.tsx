@@ -93,6 +93,4 @@ const AccessoriesScreen = ({
   return <ErrorView />;
 };
 
-AccessoriesScreen.whyDidYouRender = true;
-
 export default AccessoriesScreen;

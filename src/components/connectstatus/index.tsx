@@ -33,6 +33,4 @@ const ConnectStatus = () => {
   );
 };
 
-ConnectStatus.whyDidYouRender = true;
-
 export default React.memo(ConnectStatus);

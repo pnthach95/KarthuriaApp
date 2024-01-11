@@ -66,6 +66,15 @@ const CharactersBottomSheet = forwardRef<CharactersBottomSheet, Props>(
       );
     };
 
+    const listHeader = () => (
+      <View className="m-3 flex-row items-center justify-between">
+        <Text variant="labelMedium">{t('characters')}</Text>
+        <Button mode={filterAll ? 'contained' : 'outlined'} onPress={toggleAll}>
+          {t('all')}
+        </Button>
+      </View>
+    );
+
     return (
       <BottomSheetModal
         ref={bottomSheetModalRef}
@@ -73,19 +82,12 @@ const CharactersBottomSheet = forwardRef<CharactersBottomSheet, Props>(
         backdropComponent={CustomBackdrop}
         backgroundComponent={CustomBackground}
         handleComponent={CustomHandle}>
-        <View className="m-3 flex-row items-center justify-between">
-          <Text variant="labelMedium">{t('characters')}</Text>
-          <Button
-            mode={filterAll ? 'contained' : 'outlined'}
-            onPress={toggleAll}>
-            {t('all')}
-          </Button>
-        </View>
         <BottomSheetFlatList
           contentContainerStyle={bottom}
           data={characters}
           ItemSeparatorComponent={Separator}
           keyExtractor={keyExtractor}
+          ListHeaderComponent={listHeader}
           numColumns={7}
           renderItem={renderItem}
           showsVerticalScrollIndicator={false}

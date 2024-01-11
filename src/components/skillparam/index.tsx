@@ -58,27 +58,31 @@ const SkillParam = ({skillParam}: Props) => {
               {skillParam.target.en || skillParam.target.ja}
             </Text>
           </View>
-          <Divider />
-          <View className="flex-1 flex-row flex-wrap items-center justify-between">
-            {skillParam.accuracy && (
-              <Text variant="bodyMedium">
-                {t('accuracy')}
-                {skillParam.accuracy}
-              </Text>
-            )}
-            {skillParam.hits && (
-              <Text variant="bodyMedium">
-                {t('hits')}
-                {skillParam.hits}
-              </Text>
-            )}
-            {skillParam.duration && (
-              <Text variant="bodyMedium">
-                {t('duration')}
-                {skillParam.duration.en || skillParam.duration.ja}
-              </Text>
-            )}
-          </View>
+          {(skillParam.accuracy || skillParam.hits || skillParam.duration) && (
+            <>
+              <Divider className="my-2" />
+              <View className="flex-1 flex-row flex-wrap items-center justify-between">
+                {skillParam.accuracy && (
+                  <Text variant="labelMedium">
+                    {t('accuracy')}
+                    {skillParam.accuracy}
+                  </Text>
+                )}
+                {skillParam.hits && (
+                  <Text variant="labelMedium">
+                    {t('hits')}
+                    {skillParam.hits}
+                  </Text>
+                )}
+                {skillParam.duration && (
+                  <Text variant="labelMedium">
+                    {t('duration')}
+                    {skillParam.duration.en || skillParam.duration.ja}
+                  </Text>
+                )}
+              </View>
+            </>
+          )}
         </View>
       </View>
     </>

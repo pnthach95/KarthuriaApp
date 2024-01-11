@@ -36,6 +36,4 @@ const CustomBackdrop = ({animatedIndex, style}: BottomSheetBackdropProps) => {
   return <Animated.View style={containerStyle} onTouchEnd={dismissAll} />;
 };
 
-CustomBackdrop.whyDidYouRender = true;
-
 export default CustomBackdrop;

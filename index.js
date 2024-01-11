@@ -1,4 +1,3 @@
-import 'utils/wdyr';
 import 'intl-pluralrules';
 import {AppRegistry, LogBox} from 'react-native';
 import {registerWidgetTaskHandler} from 'react-native-android-widget';

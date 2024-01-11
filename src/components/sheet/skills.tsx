@@ -67,6 +67,15 @@ const SkillsBottomSheet = forwardRef<SkillsBottomSheet, Props>(
       );
     };
 
+    const listHeader = () => (
+      <View className="mb-2 flex-row items-center justify-between">
+        <Text variant="labelMedium">{t('skills')}</Text>
+        <Button mode={filterAll ? 'contained' : 'outlined'} onPress={toggleAll}>
+          {t('all')}
+        </Button>
+      </View>
+    );
+
     return (
       <BottomSheetModal
         ref={bottomSheetModalRef}
@@ -75,19 +84,12 @@ const SkillsBottomSheet = forwardRef<SkillsBottomSheet, Props>(
         handleComponent={CustomHandle}
         snapPoints={initialSnapPoints}>
         <View className="flex-1" style={bottom}>
-          <View className="mb-2 flex-row items-center justify-between px-3">
-            <Text variant="labelMedium">{t('skills')}</Text>
-            <Button
-              mode={filterAll ? 'contained' : 'outlined'}
-              onPress={toggleAll}>
-              {t('all')}
-            </Button>
-          </View>
           <BottomSheetFlatList
             columnWrapperStyle={AppStyles.spaceBetween}
             contentContainerStyle={AppStyles.paddingHorizontal}
             data={skills}
             keyExtractor={keyExtractor}
+            ListHeaderComponent={listHeader}
             numColumns={7}
             renderItem={renderItem}
           />

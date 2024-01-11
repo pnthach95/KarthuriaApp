@@ -16,6 +16,4 @@ const ErrorView = () => {
   );
 };
 
-ErrorView.whyDidYouRender = true;
-
 export default ErrorView;
