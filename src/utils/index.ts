@@ -1,3 +1,11 @@
+import {alert} from '@baronha/ting';
+import {CameraRoll} from '@react-native-camera-roll/camera-roll';
+import i18n from 'locales';
+import {Alert, Linking, Platform} from 'react-native';
+import BlobUtil from 'react-native-blob-util';
+import {PERMISSIONS, RESULTS, check, request} from 'react-native-permissions';
+import type {PermissionStatus} from 'react-native-permissions';
+
 export const characterToIndex = (character: number): number => {
   switch (character) {
     case 101:
@@ -66,5 +74,73 @@ export const characterToIndex = (character: number): number => {
       return 31;
     default:
       return -1;
+  }
+};
+
+const session = 'downloadImage';
+
+const askOpenSettings = () => {
+  Alert.alert(i18n.t('save-image.error'), i18n.t('save-image.error-detail'), [
+    {
+      onPress: () => {
+        Linking.openSettings();
+      },
+      isPreferred: true,
+      style: 'default',
+      text: i18n.t('save-image.open-settings'),
+    },
+    {
+      style: 'cancel',
+      text: i18n.t('cancel'),
+    },
+  ]);
+};
+
+export const onDownloadImage = async (url: string, filename: string) => {
+  let status: PermissionStatus =
+    Platform.OS === 'ios' ? RESULTS.UNAVAILABLE : RESULTS.GRANTED;
+  try {
+    if (Platform.OS === 'ios') {
+      // On iOS, full permission is needed to save pictures into specific album
+      status = await check(PERMISSIONS.IOS.PHOTO_LIBRARY);
+      if (status !== RESULTS.GRANTED) {
+        status = await request(PERMISSIONS.IOS.PHOTO_LIBRARY);
+        if (status !== RESULTS.GRANTED) {
+          askOpenSettings();
+        }
+      }
+    }
+    if (status === RESULTS.GRANTED) {
+      const response = await BlobUtil.config({
+        fileCache: true,
+        path: BlobUtil.fs.dirs.CacheDir + '/' + filename,
+        appendExt: 'png',
+        session,
+      }).fetch('get', url);
+      await CameraRoll.saveAsset(
+        (Platform.OS === 'android' ? 'file://' : '') + response.path(),
+        {album: 'Karth', type: 'photo'},
+      );
+      alert({
+        title: i18n.t('save-image.title'),
+        message: i18n.t('save-image.success'),
+        preset: 'done',
+        haptic: 'success',
+      });
+      BlobUtil.session(session).dispose();
+    }
+  } catch (error) {
+    if (error instanceof Error) {
+      if (error.message.includes('PHPhotosErrorDomain')) {
+        askOpenSettings();
+      } else {
+        alert({
+          title: i18n.t('save-image.title'),
+          message: i18n.t('save-image.failed'),
+          preset: 'error',
+          haptic: 'error',
+        });
+      }
+    }
   }
 };

@@ -19,6 +19,7 @@
     "t3": "Memoirs",
     "t4": "More"
   },
+  "cancel": "Cancel",
   "cannot-load-data": "Can't load data",
   "challenge-revue": "Challenge Revue",
   "characters": "Characters",
@@ -74,6 +75,14 @@
   "reopen_app": "Reopen app",
   "reproduction": "Reproduction",
   "resources": "Resources",
+  "save-image": {
+    "error": "Error",
+    "error-detail": "App needs permission to save pictures",
+    "failed": "Failed",
+    "open-settings": "Open settings",
+    "success": "Success",
+    "title": "Save image"
+  },
   "school": "School",
   "score-attack-revue": "Score Attack Revue",
   "settings": "Settings",

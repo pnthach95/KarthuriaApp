@@ -19,6 +19,7 @@
     "t3": "Memoir",
     "t4": "Khác"
   },
+  "cancel": "Hủy bỏ",
   "cannot-load-data": "Không thể tải dữ liệu",
   "challenge-revue": "Challenge Revue",
   "characters": "Nhân vật",
@@ -74,6 +75,14 @@
   "reopen_app": "Mở lại app",
   "reproduction": "Tái sinh",
   "resources": "Tài nguyên",
+  "save-image": {
+    "error": "Lỗi",
+    "error-detail": "Ứng dụng cần quyền truy cập để lưu hình ảnh",
+    "failed": "Thất bại",
+    "open-settings": "Mở cài đặt",
+    "success": "Thành công",
+    "title": "Lưu ảnh"
+  },
   "school": "Trường học",
   "score-attack-revue": "Score Attack Revue",
   "settings": "Cài đặt",

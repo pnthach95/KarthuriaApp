@@ -6,6 +6,7 @@ import firstExecutableTurn from 'assets/common/first_executable_turn.png';
 import frame from 'assets/common/frame_thumbnail_equip.png';
 import recastTurn from 'assets/common/recast_turn.png';
 import Kirin from 'components/kirin';
+import SaveButton from 'components/savebutton';
 import SkillParam from 'components/skillparam';
 import TextRow from 'components/textrow';
 import dayjs from 'dayjs';
@@ -44,6 +45,29 @@ const MemoirDetailScreen = ({
   const contentContainer = useSafeAreaPaddingBottom(0, {padding: 12});
 
   useEffect(() => {
+    if (memoir) {
+      navigation.setOptions({
+        title: memoir.basicInfo.name.en || memoir.basicInfo.name.ja,
+        headerRight: memoir.basicInfo.cardID
+          ? ({tintColor, pressColor}) => (
+              <SaveButton
+                filename={
+                  (memoir.basicInfo.name.en || memoir.basicInfo.name.ja) +
+                  '_' +
+                  memoir.basicInfo.cardID +
+                  '.png'
+                }
+                path={imgMemoirBig(memoir.basicInfo.cardID)}
+                pressColor={pressColor}
+                tintColor={tintColor}
+              />
+            )
+          : undefined,
+      });
+    }
+  }, [memoir]);
+
+  useEffect(() => {
     const loadData = async () => {
       try {
         const response = await API.get<TEquip>(
@@ -51,11 +75,6 @@ const MemoirDetailScreen = ({
         );
         if (response.ok && response.data) {
           setMemoir(response.data);
-          navigation.setOptions({
-            title:
-              response.data.basicInfo.name.en ||
-              response.data.basicInfo.name.ja,
-          });
         }
       } catch (error) {
         //

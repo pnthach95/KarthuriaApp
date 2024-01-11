@@ -1182,6 +1182,11 @@
     "@babel/helper-validator-identifier" "^7.22.20"
     to-fast-properties "^2.0.0"
 
+"@baronha/ting@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@baronha/ting/-/ting-1.1.0.tgz#b6575187eb5851abe60474b619c612aaa319476c"
+  integrity sha512-pWDZnON6zXPtrNf34TxuM0CawqZZR9YlGuP73ADJ+Hr20BVEn/i5+G2PCSdiUvv1vCc0QJYBSP26I8RZm70cMQ==
+
 "@bcoe/v8-coverage@^0.2.3":
   version "0.2.3"
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
@@ -1603,10 +1608,10 @@
   dependencies:
     colord "^2.9.3"
 
-"@react-native-community/blur@^4.3.2":
-  version "4.3.2"
-  resolved "https://registry.yarnpkg.com/@react-native-community/blur/-/blur-4.3.2.tgz#185a2c7dd03ba168cc95069bc4742e9505fd6c6c"
-  integrity sha512-0ID+pyZKdC4RdgC7HePxUQ6JmsbNrgz03u+6SgqYpmBoK/rE+7JffqIw7IEsfoKitLEcRNLGekIBsfwCqiEkew==
+"@react-native-camera-roll/camera-roll@^7.3.0":
+  version "7.3.0"
+  resolved "https://registry.yarnpkg.com/@react-native-camera-roll/camera-roll/-/camera-roll-7.3.0.tgz#354765d61e9175e8708404c1bb3fb4d2e7c99071"
+  integrity sha512-OjLk+/fnYIKaBvPo85aMNkE9o1EsDsTodT29izy9U5gia66ETfQJV3MTWCrjCH7uhsMvfVDK1sAEeibHWJz/IQ==
 
 "@react-native-community/cli-clean@12.3.0":
   version "12.3.0"
@@ -1992,7 +1997,7 @@
   dependencies:
     nanoid "^3.1.23"
 
-"@react-navigation/stack@^6.9.17":
+"@react-navigation/stack@^6.3.20":
   version "6.3.20"
   resolved "https://registry.yarnpkg.com/@react-navigation/stack/-/stack-6.3.20.tgz#8eec944888f317bb1ba1ff30e7f513806bea16c2"
   integrity sha512-vE6mgZzOgoa5Uy7ayT97Cj+ZIK7DK+JBYVuKUViILlWZy6IWK7HFDuqoChSbZ1ajTIfAxj/acVGg1jkbAKsToA==
@@ -2723,6 +2728,11 @@ balanced-match@^1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/balanced-match/-/balanced-match-1.0.2.tgz#e83e3a7e3f300b34cb9d87f615fa0cbf357690ee"
   integrity sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==
+
+base-64@0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/base-64/-/base-64-0.1.0.tgz#780a99c84e7d600260361511c4877613bf24f6bb"
+  integrity sha512-Y5gU45svrR5tI2Vt/X9GPd3L0HNIKzGu202EjxrXMpuc2V2CiKgemAbUUsqYmZJvPtCXoUKjNZwBJzsNScUbXA==
 
 base64-js@^1.3.1, base64-js@^1.5.1:
   version "1.5.1"
@@ -6753,6 +6763,14 @@ react-native-android-widget@^0.11.1:
   resolved "https://registry.yarnpkg.com/react-native-android-widget/-/react-native-android-widget-0.11.1.tgz#3307b3ca27926b41d9201850ff9863fc8505a953"
   integrity sha512-HjoRhNILvXhQ/yXFJbDV89JtZ75YwVpFvG73cnOKlrw5dJxvN6o87qEfrg/XKKe5SofCnRnuJW3uOrvh1NVayA==
 
+react-native-blob-util@^0.19.6:
+  version "0.19.6"
+  resolved "https://registry.yarnpkg.com/react-native-blob-util/-/react-native-blob-util-0.19.6.tgz#c2bd80887113f91a940d27cd294e76309ede7741"
+  integrity sha512-62yMJdgOMEu2Ir9V177FbvOYZskFu92XkT/hUWMMdu3G7UhqnetwtyVwqo4jfNrr+Y3Lp0gXYx60vxjMaov1pQ==
+  dependencies:
+    base-64 "0.1.0"
+    glob "^10.3.10"
+
 react-native-bootsplash@^5.2.2:
   version "5.2.2"
   resolved "https://registry.yarnpkg.com/react-native-bootsplash/-/react-native-bootsplash-5.2.2.tgz#521aa16858ca0e98e1e9d2f71aa5b7dccb21dae6"
@@ -6818,14 +6836,19 @@ react-native-offline@^6.0.2:
     redux ">=3"
     redux-saga "^1.0.2"
 
-react-native-paper@^5.11.7:
-  version "5.11.7"
-  resolved "https://registry.yarnpkg.com/react-native-paper/-/react-native-paper-5.11.7.tgz#9835ed550ce51bd270e6f7423adcf5180a6d1dbc"
-  integrity sha512-Zh18uEkqOYhX5tG6g8w257vAUAof3AsgZ+gB0q2JZDVWcXefs+P4XucRoY6WGc6x3mN8eW1mpancolj2so1eXw==
+react-native-paper@^5.12.0:
+  version "5.12.0"
+  resolved "https://registry.yarnpkg.com/react-native-paper/-/react-native-paper-5.12.0.tgz#a042752b26064c885b01e57473962c2bc829c8f7"
+  integrity sha512-yL69kB/NqLoVjieEQ/a6caPXOzegHz0CEex6VMRYOiGFzOiPlIrD8gNCwowj6kcCesxJ0vsKb0zmqSFeS2bErg==
   dependencies:
     "@callstack/react-theme-provider" "^3.0.9"
     color "^3.1.2"
     use-latest-callback "^0.1.5"
+
+react-native-permissions@^4.0.4:
+  version "4.0.4"
+  resolved "https://registry.yarnpkg.com/react-native-permissions/-/react-native-permissions-4.0.4.tgz#5156d61230193c5eedd96a6e54f2a1e65d582baf"
+  integrity sha512-7xU71u1Xe239F7DCvO3rfuqthzOa52v5Nvd0OQ5OpEkL9S9UGhWMLRw0b7OC9zti846puTGJDnjy8FvXiAzgxQ==
 
 react-native-reanimated@^3.6.1:
   version "3.6.1"

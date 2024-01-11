@@ -1,4 +1,6 @@
 import 'locales';
+import 'dayjs/locale/en';
+import 'dayjs/locale/vi';
 import {BottomSheetModalProvider} from '@gorhom/bottom-sheet';
 import {setRootViewBackgroundColor} from '@pnthach95/react-native-root-view-background';
 import dayjs from 'dayjs';
@@ -40,6 +42,7 @@ const Routes = () => {
 
   useEffect(() => {
     i18n.changeLanguage(language);
+    dayjs.locale(language);
   }, [language]);
 
   useEffect(() => {

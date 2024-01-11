@@ -3,6 +3,7 @@ import {iconAttribute, iconSkill, imgStageGirlBig} from 'api/images';
 import {attackTypeText, charaImgs, position, rarity} from 'assets';
 import frame from 'assets/common/frame_thumbnail_dress.png';
 import Kirin from 'components/kirin';
+import SaveButton from 'components/savebutton';
 import SkillDetail from 'components/skilldetail';
 import SkillParam from 'components/skillparam';
 import TextRow from 'components/textrow';
@@ -39,32 +40,45 @@ const StageGirlDetailScreen = ({
 
   useEffect(() => {
     navigation.setOptions({
-      headerTitle: () => {
-        return (
-          <View className="flex-1 flex-row items-center space-x-3">
-            {dress?.basicInfo.character && (
-              <Image
-                className="aspect-square w-10"
-                source={charaImgs[characterToIndex(dress.basicInfo.character)]}
-              />
+      headerTitle: () => (
+        <View className="flex-1 flex-row items-center space-x-3">
+          {dress?.basicInfo.character && (
+            <Image
+              className="aspect-square w-10"
+              source={charaImgs[characterToIndex(dress.basicInfo.character)]}
+            />
+          )}
+          <View>
+            <Text variant="titleMedium">
+              {dress?.basicInfo.name.en ||
+                dress?.basicInfo.name.ja ||
+                t('loading')}
+            </Text>
+            {character && (
+              <TouchableRipple onPress={goToCharacterDetail}>
+                <Text variant="labelSmall">
+                  {character.info.name.en || character.info.name.ja}
+                </Text>
+              </TouchableRipple>
             )}
-            <View>
-              <Text variant="titleMedium">
-                {dress?.basicInfo.name.en ||
-                  dress?.basicInfo.name.ja ||
-                  t('loading')}
-              </Text>
-              {character && (
-                <TouchableRipple onPress={goToCharacterDetail}>
-                  <Text variant="labelSmall">
-                    {character.info.name.en || character.info.name.ja}
-                  </Text>
-                </TouchableRipple>
-              )}
-            </View>
           </View>
-        );
-      },
+        </View>
+      ),
+      headerRight: dress?.basicInfo.cardID
+        ? ({tintColor, pressColor}) => (
+            <SaveButton
+              filename={
+                (dress.basicInfo.name.en || dress.basicInfo.name.ja) +
+                '_' +
+                dress.basicInfo.cardID +
+                '.png'
+              }
+              path={imgStageGirlBig(dress.basicInfo.cardID)}
+              pressColor={pressColor}
+              tintColor={tintColor}
+            />
+          )
+        : undefined,
     });
   }, [dress, character]);
 
@@ -106,6 +120,7 @@ const StageGirlDetailScreen = ({
         id: character.basicInfo.charaID,
       });
   };
+
   const onPressStatRemake = () => setStatRemake(!statRemake);
 
   if (loading) {
