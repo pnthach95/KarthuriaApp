@@ -3,6 +3,7 @@
   "include": [
     ".eslintrc.js",
     "index.js",
+    "ReactotronConfig.js",
     "react-native.config.js",
     "tailwind.config.js",
     "src/**/*"

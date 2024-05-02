@@ -1,7 +1,7 @@
-diff --git a/node_modules/react-native-fast-image/ios/FastImage/FFFastImageView.m b/node_modules/react-native-fast-image/ios/FastImage/FFFastImageView.m
-index f710081..54f0a05 100644
---- a/node_modules/react-native-fast-image/ios/FastImage/FFFastImageView.m
-+++ b/node_modules/react-native-fast-image/ios/FastImage/FFFastImageView.m
+diff --git a/ios/FastImage/FFFastImageView.m b/ios/FastImage/FFFastImageView.m
+index f7100815e652539b29b1fa70ff1477c5f5db08dc..54f0a05b58770f678e31861a1a57382bb2fd2011 100644
+--- a/ios/FastImage/FFFastImageView.m
++++ b/ios/FastImage/FFFastImageView.m
 @@ -71,13 +71,13 @@ - (void) setImageColor: (UIColor*)imageColor {
      }
  }
