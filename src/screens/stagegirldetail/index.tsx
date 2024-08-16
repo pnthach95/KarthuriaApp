@@ -1,3 +1,4 @@
+import {FasterImageView} from '@candlefinance/faster-image';
 import API, {links} from 'api';
 import {iconAttribute, iconSkill, imgStageGirlBig} from 'api/images';
 import {attackTypeText, charaImgs, position, rarity} from 'assets';
@@ -10,8 +11,7 @@ import TextRow from 'components/textrow';
 import dayjs from 'dayjs';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {Image, ScrollView, View} from 'react-native';
-import FastImage from 'react-native-fast-image';
+import {Image, ScrollView, StyleSheet, View} from 'react-native';
 import {
   DataTable,
   SegmentedButtons,
@@ -23,6 +23,11 @@ import {
 import {useSafeAreaPaddingBottom} from 'theme/styles';
 import {characterToIndex} from 'utils';
 import type {RootStackScreenProps} from 'typings/navigation';
+
+const styles = StyleSheet.create({
+  card: {aspectRatio: 4 / 3, width: '75%'},
+  icon: {aspectRatio: 1, width: 40},
+});
 
 const StageGirlDetailScreen = ({
   navigation,
@@ -133,11 +138,11 @@ const StageGirlDetailScreen = ({
         contentContainerStyle={contentContainer}
         showsVerticalScrollIndicator={false}>
         <View className="self-center">
-          <FastImage
-            className="aspect-memoir w-9/12"
-            source={{uri: imgStageGirlBig(dress.basicInfo.cardID || '0')}}
+          <FasterImageView
+            source={{url: imgStageGirlBig(dress.basicInfo.cardID || '0')}}
+            style={styles.card}
           />
-          <FastImage
+          <Image
             className="absolute aspect-memoir w-9/12"
             resizeMode="contain"
             source={frame}
@@ -303,11 +308,11 @@ const StageGirlDetailScreen = ({
               </Text>
               <Surface className="my-1 rounded-xl p-3" elevation={3}>
                 <View className="flex-row space-x-3">
-                  <FastImage
-                    className="h-10 w-10"
+                  <FasterImageView
                     source={{
-                      uri: iconSkill(dress.groupSkills.unitSkill.icon),
+                      url: iconSkill(dress.groupSkills.unitSkill.icon),
                     }}
+                    style={styles.icon}
                   />
                   <View className="flex-1 flex-row">
                     <Text variant="bodyMedium">
@@ -349,11 +354,11 @@ const StageGirlDetailScreen = ({
               </Text>
               <Surface className="my-1 rounded-xl p-3" elevation={3}>
                 <View className="flex-row space-x-3">
-                  <FastImage
-                    className="h-10 w-10"
+                  <FasterImageView
                     source={{
-                      uri: iconSkill(dress.groupSkills.finishACT.icon),
+                      url: iconSkill(dress.groupSkills.finishACT.icon),
                     }}
+                    style={styles.icon}
                   />
                   <View className="flex-1">
                     <Text>

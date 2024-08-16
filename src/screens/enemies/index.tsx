@@ -1,3 +1,4 @@
+import {FasterImageView} from '@candlefinance/faster-image';
 import {BottomSheetModal, BottomSheetScrollView} from '@gorhom/bottom-sheet';
 import {FlashList} from '@shopify/flash-list';
 import API, {links} from 'api';
@@ -10,8 +11,7 @@ import CustomBackground from 'components/sheet/background';
 import CustomHandle from 'components/sheet/handle';
 import React, {useEffect, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {Image, View} from 'react-native';
-import FastImage from 'react-native-fast-image';
+import {Image, StyleSheet, View} from 'react-native';
 import {Button, FAB, Text, TouchableRipple, useTheme} from 'react-native-paper';
 import {useSafeAreaPaddingBottom} from 'theme/styles';
 import {useImmer} from 'use-immer';
@@ -20,6 +20,10 @@ import type {RootStackScreenProps} from 'typings/navigation';
 
 const keyExtractor = ({basicInfo}: TEnemyBasicInfo) =>
   `en_${basicInfo.enemyID}`;
+
+const styles = StyleSheet.create({
+  img: {aspectRatio: 1, width: 89.6},
+});
 
 const EnemiesScreen = ({navigation}: RootStackScreenProps<'Enemies'>) => {
   const {t} = useTranslation();
@@ -107,9 +111,9 @@ const EnemiesScreen = ({navigation}: RootStackScreenProps<'Enemies'>) => {
         <View className="flex-1 items-center justify-between p-1">
           <View className="items-center justify-center">
             <View className="aspect-square w-[89.6px]">
-              <FastImage
-                className="aspect-square w-[89.6px]"
-                source={{uri: imgEnemy(basicInfo.icon)}}
+              <FasterImageView
+                source={{url: imgEnemy(basicInfo.icon)}}
+                style={styles.img}
               />
               <Image className="absolute aspect-square w-5" source={{uri: a}} />
             </View>

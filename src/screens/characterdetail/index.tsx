@@ -1,3 +1,4 @@
+import {FasterImageView} from '@candlefinance/faster-image';
 import API, {links} from 'api';
 import {charaBase, charaPortrait} from 'api/images';
 import {iconSchool} from 'api/images';
@@ -5,11 +6,16 @@ import Kirin from 'components/kirin';
 import dayjs from 'dayjs';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {ScrollView, View} from 'react-native';
-import FastImage from 'react-native-fast-image';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import {Text} from 'react-native-paper';
 import {useSafeAreaPaddingBottom} from 'theme/styles';
 import type {RootStackScreenProps} from 'typings/navigation';
+
+const styles = StyleSheet.create({
+  bg: {aspectRatio: 19 / 30, width: '100%'},
+  char: {aspectRatio: 19 / 30, position: 'absolute', width: '100%'},
+  icon: {aspectRatio: 1, width: 40},
+});
 
 const CharacterDetailScreen = ({
   navigation,
@@ -63,13 +69,13 @@ const CharacterDetailScreen = ({
         contentContainerStyle={contentContainer}
         showsVerticalScrollIndicator={false}>
         <View className="mb-3 w-1/2 self-center">
-          <FastImage
-            className="aspect-character-portrait w-full"
-            source={{uri: charaBase(character.basicInfo.charaID)}}
+          <FasterImageView
+            source={{url: charaBase(character.basicInfo.charaID)}}
+            style={styles.bg}
           />
-          <FastImage
-            className="absolute aspect-character-portrait w-full"
-            source={{uri: charaPortrait(character.basicInfo.charaID)}}
+          <FasterImageView
+            source={{url: charaPortrait(character.basicInfo.charaID)}}
+            style={styles.char}
           />
         </View>
         <View className="space-y-3 p-3">
@@ -91,9 +97,9 @@ const CharacterDetailScreen = ({
                   character.info.department_1.ja}
               </Text>
             </View>
-            <FastImage
-              className="aspect-square w-10"
-              source={{uri: iconSchool(character.basicInfo.school_id)}}
+            <FasterImageView
+              source={{url: iconSchool(character.basicInfo.school_id)}}
+              style={styles.icon}
             />
           </View>
           <View>

@@ -1,10 +1,10 @@
+import {FasterImageView} from '@candlefinance/faster-image';
 import {BottomSheetFlatList, BottomSheetModal} from '@gorhom/bottom-sheet';
 import {iconAttribute} from 'api/images';
 import Separator from 'components/separator';
 import React, {forwardRef, useImperativeHandle, useRef} from 'react';
 import {useTranslation} from 'react-i18next';
-import {View} from 'react-native';
-import FastImage from 'react-native-fast-image';
+import {StyleSheet, View} from 'react-native';
 import {Text, TouchableRipple, useTheme} from 'react-native-paper';
 import {useSafeAreaPaddingBottom} from 'theme/styles';
 import CustomBackdrop from './backdrop';
@@ -20,6 +20,10 @@ type Props = {
 type ElementsBottomSheet = {
   openSheet: () => void;
 };
+
+const styles = StyleSheet.create({
+  img: {aspectRatio: 1, width: '100%'},
+});
 
 const keyExtractor = (item: boolean, i: number) => `element_${i}`;
 
@@ -55,9 +59,9 @@ const ElementsBottomSheet = forwardRef<ElementsBottomSheet, Props>(
             className="items-center justify-center rounded-full p-0.5"
             style={bgColor}
             onPress={_onPress}>
-            <FastImage
-              className="aspect-square w-full"
-              source={{uri: iconAttribute(index + 1)}}
+            <FasterImageView
+              source={{url: iconAttribute(index + 1)}}
+              style={styles.img}
             />
           </TouchableRipple>
         </View>

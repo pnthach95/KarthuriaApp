@@ -1,14 +1,18 @@
+import {FasterImageView} from '@candlefinance/faster-image';
 import {iconFieldEffect, iconSkill} from 'api/images';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
-import {View} from 'react-native';
-import FastImage from 'react-native-fast-image';
+import {StyleSheet, View} from 'react-native';
 import {Divider, Text, useTheme} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 type Props = {
   skillParam: TSkillParam;
 };
+
+const styles = StyleSheet.create({
+  img: {aspectRatio: 1, width: 40},
+});
 
 const SkillParam = ({skillParam}: Props) => {
   const {t} = useTranslation();
@@ -31,14 +35,14 @@ const SkillParam = ({skillParam}: Props) => {
         </>
       )}
       <View className="flex-row space-x-3">
-        <FastImage
-          className="aspect-square w-10"
+        <FasterImageView
           source={{
-            uri:
+            url:
               skillParam.type === 'normal'
                 ? iconSkill(skillParam.icon)
                 : iconFieldEffect(skillParam.icon),
           }}
+          style={styles.img}
         />
         <View className="flex-1">
           <Text variant="bodyMedium">

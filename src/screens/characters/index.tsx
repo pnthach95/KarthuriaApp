@@ -1,16 +1,21 @@
+import {FasterImageView} from '@candlefinance/faster-image';
 import API, {links} from 'api';
 import {iconSchool, imgCharater} from 'api/images';
 import ErrorView from 'components/errorview';
 import Kirin from 'components/kirin';
 import React, {useEffect, useState} from 'react';
-import {FlatList, View} from 'react-native';
-import FastImage from 'react-native-fast-image';
+import {FlatList, StyleSheet, View} from 'react-native';
 import {Text, TouchableRipple} from 'react-native-paper';
 import {useSafeAreaPaddingBottom} from 'theme/styles';
 import type {RootStackScreenProps} from 'typings/navigation';
 
 const keyExtractor = ({basicInfo: {charaID}}: TCharaBasicInfo) =>
   `chID_${charaID}`;
+
+const styles = StyleSheet.create({
+  card: {aspectRatio: 16 / 9, width: '100%'},
+  icon: {aspectRatio: 1, width: 20},
+});
 
 const CharactersScreen = ({navigation}: RootStackScreenProps<'Characters'>) => {
   const [loading, setLoading] = useState(true);
@@ -44,15 +49,14 @@ const CharactersScreen = ({navigation}: RootStackScreenProps<'Characters'>) => {
       return (
         <TouchableRipple className="flex-1" onPress={goToDetail}>
           <View className="items-center justify-center pb-3">
-            <FastImage
-              className="aspect-video w-full"
-              resizeMode="contain"
-              source={{uri: imgCharater(charaID)}}
+            <FasterImageView
+              source={{url: imgCharater(charaID), resizeMode: 'contain'}}
+              style={styles.card}
             />
             <View className="flex-row items-center space-x-1">
-              <FastImage
-                className="aspect-square w-5"
-                source={{uri: iconSchool(school_id)}}
+              <FasterImageView
+                source={{url: iconSchool(school_id)}}
+                style={styles.icon}
               />
               <Text className="flex-shrink">{name_ruby.ja}</Text>
             </View>

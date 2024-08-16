@@ -1,17 +1,22 @@
+import {FasterImageView} from '@candlefinance/faster-image';
 import API, {links} from 'api';
 import {imgItem, imgStageGirl} from 'api/images';
 import frame from 'assets/common/frame_accessory.png';
 import ErrorView from 'components/errorview';
 import Kirin from 'components/kirin';
 import React, {useEffect, useState} from 'react';
-import {FlatList, View} from 'react-native';
-import FastImage from 'react-native-fast-image';
+import {FlatList, Image, StyleSheet, View} from 'react-native';
 import {TouchableRipple} from 'react-native-paper';
 import {useSafeAreaPaddingBottom} from 'theme/styles';
 import type {RootStackScreenProps} from 'typings/navigation';
 
 const keyExtractor = (item: TAccessoryBasicInfo) =>
   `acc_${item.basicInfo.accID}`;
+
+const styles = StyleSheet.create({
+  card: {aspectRatio: 144 / 160, borderRadius: 4, width: 28},
+  icon: {aspectRatio: 1, width: 78},
+});
 
 const AccessoriesScreen = ({
   navigation,
@@ -45,23 +50,20 @@ const AccessoriesScreen = ({
       <TouchableRipple className="flex-1 overflow-hidden p-3" onPress={onPress}>
         <>
           <View className="self-center">
-            <FastImage
-              className="aspect-square w-[78px]"
-              source={{uri: imgItem(item.basicInfo.iconID)}}
+            <FasterImageView
+              source={{url: imgItem(item.basicInfo.iconID)}}
+              style={styles.icon}
             />
-            <FastImage
-              className="absolute aspect-square w-[78px]"
-              source={frame}
-            />
+            <Image className="absolute aspect-square w-[78px]" source={frame} />
           </View>
           {item.basicInfo.cards.length > 0 && (
             <View className="mt-3 flex-row justify-center">
               {item.basicInfo.cards.map(c => {
                 return (
-                  <FastImage
+                  <FasterImageView
                     key={`asg_${c}`}
-                    className="aspect-stage-girl w-7 rounded"
-                    source={{uri: imgStageGirl(c)}}
+                    source={{url: imgStageGirl(c)}}
+                    style={styles.card}
                   />
                 );
               })}

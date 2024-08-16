@@ -1,3 +1,4 @@
+import {FasterImageView} from '@candlefinance/faster-image';
 import API, {links} from 'api';
 import {iconChara, imgMemoirBig} from 'api/images';
 import {rarity} from 'assets';
@@ -12,8 +13,7 @@ import TextRow from 'components/textrow';
 import dayjs from 'dayjs';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {Image, ScrollView, View} from 'react-native';
-import FastImage from 'react-native-fast-image';
+import {Image, ScrollView, StyleSheet, View} from 'react-native';
 import {
   DataTable,
   Surface,
@@ -22,10 +22,20 @@ import {
   useTheme,
 } from 'react-native-paper';
 import {useSafeAreaPaddingBottom} from 'theme/styles';
-import type {OnLoadEvent} from 'react-native-fast-image';
+import type {ImageLoadEventData, NativeSyntheticEvent} from 'react-native';
 import type {RootStackScreenProps} from 'typings/navigation';
 
 const RARITY_HEIGHT = 216 / 17;
+
+const styles = StyleSheet.create({
+  card: {
+    alignSelf: 'center',
+    aspectRatio: 4 / 3,
+    borderRadius: 12,
+    width: '100%',
+  },
+  icon: {aspectRatio: 1, width: 40},
+});
 
 const MemoirDetailScreen = ({
   route,
@@ -85,10 +95,12 @@ const MemoirDetailScreen = ({
     loadData();
   }, []);
 
-  const onLoad = (e: OnLoadEvent) =>
+  const onLoad = (e: NativeSyntheticEvent<ImageLoadEventData>) =>
     setRaritySize({
       height: RARITY_HEIGHT,
-      width: (e.nativeEvent.width * RARITY_HEIGHT) / e.nativeEvent.height,
+      width:
+        (e.nativeEvent.source.width * RARITY_HEIGHT) /
+        e.nativeEvent.source.height,
     });
 
   const releasedJA = memoir && dayjs(memoir.basicInfo.released.ja * 1000);
@@ -107,15 +119,15 @@ const MemoirDetailScreen = ({
         contentContainerStyle={contentContainer}
         showsVerticalScrollIndicator={false}>
         <View className="mt-3 aspect-memoir w-5/6 self-center">
-          <FastImage
-            className="aspect-memoir w-full self-center rounded-xl"
-            source={{uri: imgMemoirBig(memoir.basicInfo.cardID)}}
+          <FasterImageView
+            source={{url: imgMemoirBig(memoir.basicInfo.cardID)}}
+            style={styles.card}
           />
-          <FastImage
+          <Image
             className="absolute aspect-memoir w-full self-center"
             source={frame}
           />
-          <FastImage
+          <Image
             className="absolute bottom-1 left-1"
             resizeMode="contain"
             source={rarity(memoir.basicInfo.rarity)}
@@ -136,9 +148,9 @@ const MemoirDetailScreen = ({
                       key={`chara_${chara}`}
                       className="ml-3 overflow-hidden rounded-3xl border border-gray-500">
                       <TouchableRipple onPress={onPress}>
-                        <FastImage
-                          className="aspect-square w-10"
-                          source={{uri: iconChara(chara)}}
+                        <FasterImageView
+                          source={{url: iconChara(chara)}}
+                          style={styles.icon}
                         />
                       </TouchableRipple>
                     </View>

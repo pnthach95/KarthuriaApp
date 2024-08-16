@@ -1,3 +1,4 @@
+import {FasterImageView} from '@candlefinance/faster-image';
 import API, {links} from 'api';
 import {iconAct, imgItem, imgStageGirl} from 'api/images';
 import frame from 'assets/common/frame_accessory.png';
@@ -6,11 +7,16 @@ import Kirin from 'components/kirin';
 import SkillDetail from 'components/skilldetail';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {ScrollView, View} from 'react-native';
-import FastImage from 'react-native-fast-image';
+import {Image, ScrollView, StyleSheet, View} from 'react-native';
 import {DataTable, Surface, Text, TouchableRipple} from 'react-native-paper';
 import {useSafeAreaPaddingBottom} from 'theme/styles';
 import type {RootStackScreenProps} from 'typings/navigation';
+
+const styles = StyleSheet.create({
+  card: {aspectRatio: 144 / 160, width: 64},
+  icon: {aspectRatio: 1, position: 'absolute', right: 0, width: 28},
+  img: {aspectRatio: 1, width: 112},
+});
 
 const AccessoryDetailScreen = ({
   navigation,
@@ -59,14 +65,14 @@ const AccessoryDetailScreen = ({
         showsVerticalScrollIndicator={false}>
         <View className="flex-row justify-evenly py-3">
           <View>
-            <FastImage
-              className="aspect-square w-28"
-              source={{uri: imgItem(accessory.basicInfo.iconID)}}
+            <FasterImageView
+              source={{url: imgItem(accessory.basicInfo.iconID)}}
+              style={styles.img}
             />
-            <FastImage className="absolute aspect-square w-28" source={frame} />
-            <FastImage
-              className="absolute right-0 aspect-square w-7"
-              source={{uri: iconAct(accessory.skillInfo.skillSlot)}}
+            <Image className="absolute aspect-square w-28" source={frame} />
+            <FasterImageView
+              source={{url: iconAct(accessory.skillInfo.skillSlot)}}
+              style={styles.icon}
             />
           </View>
         </View>
@@ -81,11 +87,11 @@ const AccessoryDetailScreen = ({
                 borderless
                 onPress={goToStageGirlDetail}>
                 <View>
-                  <FastImage
-                    className="aspect-stage-girl h-16"
-                    source={{uri: imgStageGirl(card)}}
+                  <FasterImageView
+                    source={{url: imgStageGirl(card)}}
+                    style={styles.card}
                   />
-                  <FastImage
+                  <Image
                     className="absolute aspect-stage-girl h-16"
                     source={sgFrame}
                   />

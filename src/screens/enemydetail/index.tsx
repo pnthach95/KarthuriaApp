@@ -1,14 +1,18 @@
+import {FasterImageView} from '@candlefinance/faster-image';
 import API, {links} from 'api';
 import {iconAttribute, imgEnemy} from 'api/images';
 import Kirin from 'components/kirin';
 import SkillDetail from 'components/skilldetail';
 import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {Image, ScrollView, View} from 'react-native';
-import FastImage from 'react-native-fast-image';
+import {Image, ScrollView, StyleSheet, View} from 'react-native';
 import {Surface, Text} from 'react-native-paper';
 import {useSafeAreaPaddingBottom} from 'theme/styles';
 import type {RootStackScreenProps} from 'typings/navigation';
+
+const styles = StyleSheet.create({
+  icon: {alignSelf: 'center', aspectRatio: 1, width: 112},
+});
 
 const EnemyDetailScreen = ({
   navigation,
@@ -55,9 +59,9 @@ const EnemyDetailScreen = ({
         showsVerticalScrollIndicator={false}>
         <View className="py-3">
           <View className="aspect-square w-28 self-center">
-            <FastImage
-              className="aspect-square w-28 self-center"
-              source={{uri: imgEnemy(enemy.basicInfo.icon)}}
+            <FasterImageView
+              source={{url: imgEnemy(enemy.basicInfo.icon)}}
+              style={styles.icon}
             />
             <Image
               className="absolute aspect-square w-7"

@@ -1,3 +1,4 @@
+import {FasterImageView} from '@candlefinance/faster-image';
 import API, {links} from 'api';
 import GithubService from 'api/github';
 import {
@@ -26,10 +27,10 @@ import {
   Platform,
   RefreshControl,
   ScrollView,
+  StyleSheet,
   View,
 } from 'react-native';
 import {getVersion} from 'react-native-device-info';
-import FastImage from 'react-native-fast-image';
 import {ProgressBar, Surface, Text, TouchableRipple} from 'react-native-paper';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import AppStyles from 'theme/styles';
@@ -42,19 +43,25 @@ type GithubVersion = {
   link: string;
 };
 
+const styles = StyleSheet.create({
+  accessory: {aspectRatio: 1, width: '100%'},
+  challenge: {alignSelf: 'center', height: 96, width: 86.4},
+  enemy: {alignSelf: 'center', aspectRatio: 1, width: '75%'},
+  event: {alignSelf: 'center', aspectRatio: 1568 / 399, width: '100%'},
+});
+
 const challengeRevueSeparator = () => <View className="w-3" />;
 const keyExtractorForChallengeRevue = (item: TRogueEvent) =>
   item.beginAt.toString();
 
 const EventImage = ({img}: {img: string}) => {
-  const [uri, setURI] = useState(img);
+  const [url, setURI] = useState(img);
   const onError = () => setURI(imgDefaultEvent);
 
   return (
-    <FastImage
-      className="aspect-[1568/399] w-full self-center"
-      resizeMode="contain"
-      source={{uri}}
+    <FasterImageView
+      source={{url, resizeMode: 'contain'}}
+      style={styles.event}
       onError={onError}
     />
   );
@@ -181,9 +188,9 @@ const MainScreen = ({navigation}: MainBottomTabScreenProps<'MainScreen'>) => {
           borderless
           className="h-24 w-[86.4px] self-center"
           onPress={goToDetail}>
-          <FastImage
-            className="h-24 w-[86.4px] self-center"
-            source={{uri: imgRogue(item.id)}}
+          <FasterImageView
+            source={{url: imgRogue(item.id)}}
+            style={styles.challenge}
           />
         </TouchableRipple>
         <View className="justify-between" style={textView}>
@@ -330,9 +337,9 @@ const MainScreen = ({navigation}: MainBottomTabScreenProps<'MainScreen'>) => {
                           className="my-1 flex-1 rounded p-3"
                           onPress={onPress}>
                           <View className="space-y-2">
-                            <FastImage
-                              className="aspect-square w-3/4 self-center"
-                              source={{uri: imgEnemy(item.id)}}
+                            <FasterImageView
+                              source={{url: imgEnemy(item.id)}}
+                              style={styles.enemy}
                             />
                             <ProgressBar
                               className="h-3 rounded-full"
@@ -378,11 +385,11 @@ const MainScreen = ({navigation}: MainBottomTabScreenProps<'MainScreen'>) => {
                               className="aspect-square w-1/4 items-center justify-center overflow-visible"
                               onPress={onPress}>
                               <>
-                                <FastImage
-                                  className="aspect-square w-full"
+                                <FasterImageView
                                   source={{
-                                    uri: imgItem(findA.basicInfo.iconID),
+                                    url: imgItem(findA.basicInfo.iconID),
                                   }}
+                                  style={styles.accessory}
                                 />
                                 <Image
                                   className="absolute aspect-square w-full"

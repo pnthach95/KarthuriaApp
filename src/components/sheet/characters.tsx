@@ -3,8 +3,7 @@ import {charaImgs} from 'assets';
 import Separator from 'components/separator';
 import React, {forwardRef, useImperativeHandle, useRef} from 'react';
 import {useTranslation} from 'react-i18next';
-import {View} from 'react-native';
-import FastImage from 'react-native-fast-image';
+import {Image, View} from 'react-native';
 import {Button, Text, TouchableRipple, useTheme} from 'react-native-paper';
 import {useSafeAreaPaddingBottom} from 'theme/styles';
 import CustomBackdrop from './backdrop';
@@ -57,10 +56,7 @@ const CharactersBottomSheet = forwardRef<CharactersBottomSheet, Props>(
             className="aspect-square w-full items-center justify-center rounded-full p-0.5"
             style={bgColor}
             onPress={_onPress}>
-            <FastImage
-              className="aspect-square w-full"
-              source={charaImgs[index]}
-            />
+            <Image className="aspect-square w-full" source={charaImgs[index]} />
           </TouchableRipple>
         </View>
       );

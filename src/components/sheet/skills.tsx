@@ -1,9 +1,9 @@
+import {FasterImageView} from '@candlefinance/faster-image';
 import {BottomSheetFlatList, BottomSheetModal} from '@gorhom/bottom-sheet';
 import {iconSkill} from 'api/images';
 import React, {forwardRef, useImperativeHandle, useMemo, useRef} from 'react';
 import {useTranslation} from 'react-i18next';
-import {View} from 'react-native';
-import FastImage from 'react-native-fast-image';
+import {StyleSheet, View} from 'react-native';
 import {Button, Text, TouchableRipple, useTheme} from 'react-native-paper';
 import AppStyles, {useSafeAreaPaddingBottom} from 'theme/styles';
 import CustomBackdrop from './backdrop';
@@ -26,6 +26,10 @@ type TSkill = {
   id: number;
   checked: boolean;
 };
+
+const styles = StyleSheet.create({
+  img: {aspectRatio: 1, width: '83%'},
+});
 
 const keyExtractor = (item: TSkill, i: number) => `skill_${i}`;
 
@@ -52,7 +56,7 @@ const SkillsBottomSheet = forwardRef<SkillsBottomSheet, Props>(
         backgroundColor: item.checked ? colors.primary : undefined,
       };
       const _onPress = () => onPress(index);
-      const source = {uri: iconSkill(item.id)};
+      const source = {url: iconSkill(item.id)};
 
       return (
         <View className="w-1/7 p-1">
@@ -61,7 +65,7 @@ const SkillsBottomSheet = forwardRef<SkillsBottomSheet, Props>(
             className="mb-2 aspect-square w-full items-center justify-center rounded-full"
             style={bgColor}
             onPress={_onPress}>
-            <FastImage className="aspect-square w-5/6" source={source} />
+            <FasterImageView source={source} style={styles.img} />
           </TouchableRipple>
         </View>
       );

@@ -1,3 +1,4 @@
+import {FasterImageView} from '@candlefinance/faster-image';
 import {FlashList} from '@shopify/flash-list';
 import API, {links} from 'api';
 import {iconSkill, imgMemoir} from 'api/images';
@@ -11,8 +12,7 @@ import CharactersBottomSheet from 'components/sheet/characters';
 import RaritiesBottomSheet from 'components/sheet/rarities';
 import SkillsBottomSheet from 'components/sheet/skills';
 import React, {useEffect, useRef, useState} from 'react';
-import {Image, View} from 'react-native';
-import FastImage from 'react-native-fast-image';
+import {Image, StyleSheet, View} from 'react-native';
 import {FAB, Text, TouchableRipple} from 'react-native-paper';
 import {useSafeAreaPaddingTop} from 'theme/styles';
 import {useImmer} from 'use-immer';
@@ -32,6 +32,11 @@ type TFilter = Record<'characters' | 'rarity', boolean[]> & {
 
 const mKeyExtractor = (item: TEquipBasicInfo) =>
   'memoir_' + item.basicInfo.cardID;
+
+const styles = StyleSheet.create({
+  card: {alignSelf: 'center', height: 80, width: 72},
+  icon: {aspectRatio: 1, width: 24},
+});
 
 const MemoirsScreen = ({
   navigation,
@@ -149,9 +154,9 @@ const MemoirsScreen = ({
       <TouchableRipple className="flex-1 p-1" onPress={onPress}>
         <>
           <View className="h-20 w-[72px] self-center">
-            <FastImage
-              className="h-20 w-[72px] self-center"
-              source={{uri: imgMemoir(item.basicInfo.cardID)}}
+            <FasterImageView
+              source={{url: imgMemoir(item.basicInfo.cardID)}}
+              style={styles.card}
             />
             <Image
               className="absolute h-20 w-[72px] self-center"
@@ -171,10 +176,10 @@ const MemoirsScreen = ({
               ]),
             ].map(s => {
               return (
-                <FastImage
+                <FasterImageView
                   key={`skill_icon_${s}`}
-                  className="aspect-square w-6"
-                  source={{uri: iconSkill(s)}}
+                  source={{url: iconSkill(s)}}
+                  style={styles.icon}
                 />
               );
             })}

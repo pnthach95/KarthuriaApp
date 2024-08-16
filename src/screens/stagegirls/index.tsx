@@ -1,3 +1,4 @@
+import {FasterImageView} from '@candlefinance/faster-image';
 import {FlashList} from '@shopify/flash-list';
 import API, {links} from 'api';
 import {iconAttribute, imgStageGirl} from 'api/images';
@@ -14,8 +15,7 @@ import RaritiesBottomSheet from 'components/sheet/rarities';
 import SkillsBottomSheet from 'components/sheet/skills';
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {Image, View} from 'react-native';
-import FastImage from 'react-native-fast-image';
+import {Image, StyleSheet, View} from 'react-native';
 import {FAB, Text, TouchableRipple} from 'react-native-paper';
 import {useSafeAreaPaddingTop} from 'theme/styles';
 import {useImmer} from 'use-immer';
@@ -35,6 +35,10 @@ type TFilter = Record<
 
 const sgKeyExtractor = ({basicInfo}: TDressBasicInfo) =>
   `sg_${basicInfo.cardID}`;
+
+const styles = StyleSheet.create({
+  card: {aspectRatio: 144 / 160, height: 80},
+});
 
 const StageGirlsScreen = ({
   navigation,
@@ -211,11 +215,11 @@ const StageGirlsScreen = ({
               </Text>
             </View>
             <View className="aspect-stage-girl h-20 self-center">
-              <FastImage
-                className="aspect-stage-girl h-20"
-                source={{uri: imgStageGirl(basicInfo.cardID)}}
+              <FasterImageView
+                source={{url: imgStageGirl(basicInfo.cardID)}}
+                style={styles.card}
               />
-              <FastImage
+              <Image
                 className="absolute aspect-stage-girl h-20"
                 source={frame}
               />
