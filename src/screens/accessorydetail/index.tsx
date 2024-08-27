@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
   card: {aspectRatio: 144 / 160, width: 64},
   icon: {aspectRatio: 1, position: 'absolute', right: 0, width: 28},
   img: {aspectRatio: 1, width: 112},
+  sgFrame: {aspectRatio: 144 / 160, position: 'absolute', width: 64},
 });
 
 const AccessoryDetailScreen = ({
@@ -86,14 +87,15 @@ const AccessoryDetailScreen = ({
                 key={card}
                 borderless
                 onPress={goToStageGirlDetail}>
-                <View>
+                <View className="items-center justify-center">
                   <FasterImageView
                     source={{url: imgStageGirl(card)}}
                     style={styles.card}
                   />
                   <Image
-                    className="absolute aspect-stage-girl h-16"
+                    resizeMode="contain"
                     source={sgFrame}
+                    style={styles.sgFrame}
                   />
                 </View>
               </TouchableRipple>

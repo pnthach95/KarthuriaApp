@@ -56,7 +56,11 @@ const CharactersBottomSheet = forwardRef<CharactersBottomSheet, Props>(
             className="aspect-square w-full items-center justify-center rounded-full p-0.5"
             style={bgColor}
             onPress={_onPress}>
-            <Image className="aspect-square w-full" source={charaImgs[index]} />
+            <Image
+              className="h-full w-full"
+              resizeMode="contain"
+              source={charaImgs[index]}
+            />
           </TouchableRipple>
         </View>
       );

@@ -25,7 +25,7 @@ import {characterToIndex} from 'utils';
 import type {RootStackScreenProps} from 'typings/navigation';
 
 const styles = StyleSheet.create({
-  card: {aspectRatio: 4 / 3, width: '75%'},
+  card: {aspectRatio: 4 / 3, width: '100%'},
   icon: {aspectRatio: 1, width: 40},
 });
 
@@ -138,15 +138,17 @@ const StageGirlDetailScreen = ({
         contentContainerStyle={contentContainer}
         showsVerticalScrollIndicator={false}>
         <View className="self-center">
-          <FasterImageView
-            source={{url: imgStageGirlBig(dress.basicInfo.cardID || '0')}}
-            style={styles.card}
-          />
-          <Image
-            className="absolute aspect-memoir w-9/12"
-            resizeMode="contain"
-            source={frame}
-          />
+          <View className="w-3/4 justify-center">
+            <FasterImageView
+              source={{url: imgStageGirlBig(dress.basicInfo.cardID || '0')}}
+              style={styles.card}
+            />
+            <Image
+              className="absolute aspect-memoir w-full"
+              resizeMode="contain"
+              source={frame}
+            />
+          </View>
           <Image
             className="absolute right-0 h-9 w-9"
             source={{uri: iconAttribute(dress.base.attribute)}}

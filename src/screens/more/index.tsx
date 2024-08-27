@@ -26,7 +26,7 @@ import {
   useLanguage,
   useOptions,
 } from 'store';
-import {useSafeAreaPaddingTop} from 'theme/styles';
+import {useSafeAreaPaddingBottom, useSafeAreaPaddingTop} from 'theme/styles';
 import Button from './button';
 import type {ListRenderItem} from 'react-native';
 import type {MainBottomTabScreenProps} from 'typings/navigation';
@@ -56,6 +56,7 @@ const MoreScreen = ({navigation}: MainBottomTabScreenProps<'MoreScreen'>) => {
   const language = useLanguage();
   const [languageMenuVisible, setLanguageMenuVisible] = useState(false);
   const top = useSafeAreaPaddingTop();
+  const bottom = useSafeAreaPaddingBottom();
   const textPrimary = {color: colors.primary};
 
   /** Toggle dark theme */
@@ -100,7 +101,11 @@ const MoreScreen = ({navigation}: MainBottomTabScreenProps<'MoreScreen'>) => {
         className="aspect-square w-1/6 items-center justify-center rounded-full"
         style={bgColor}
         onPress={onPress}>
-        <Image className="h-full w-full" source={charaImgs[index]} />
+        <Image
+          className="h-full w-full"
+          resizeMode="contain"
+          source={charaImgs[index]}
+        />
       </TouchableRipple>
     );
   };
@@ -208,6 +213,7 @@ const MoreScreen = ({navigation}: MainBottomTabScreenProps<'MoreScreen'>) => {
         backgroundComponent={CustomBackground}
         handleComponent={CustomHandle}>
         <BottomSheetFlatList
+          contentContainerStyle={bottom}
           data={APP_COLORS}
           numColumns={6}
           renderItem={charaRenderItem}

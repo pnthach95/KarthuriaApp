@@ -60,7 +60,7 @@ const ElementsBottomSheet = forwardRef<ElementsBottomSheet, Props>(
             style={bgColor}
             onPress={_onPress}>
             <FasterImageView
-              source={{url: iconAttribute(index + 1)}}
+              source={{url: iconAttribute(index + 1), resizeMode: 'contain'}}
               style={styles.img}
             />
           </TouchableRipple>

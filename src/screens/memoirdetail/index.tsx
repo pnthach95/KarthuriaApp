@@ -118,13 +118,14 @@ const MemoirDetailScreen = ({
       <ScrollView
         contentContainerStyle={contentContainer}
         showsVerticalScrollIndicator={false}>
-        <View className="mt-3 aspect-memoir w-5/6 self-center">
+        <View className="mt-3 aspect-memoir w-5/6 justify-center self-center">
           <FasterImageView
             source={{url: imgMemoirBig(memoir.basicInfo.cardID)}}
             style={styles.card}
           />
           <Image
             className="absolute aspect-memoir w-full self-center"
+            resizeMode="contain"
             source={frame}
           />
           <Image

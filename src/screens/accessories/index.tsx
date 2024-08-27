@@ -49,12 +49,16 @@ const AccessoriesScreen = ({
     return (
       <TouchableRipple className="flex-1 overflow-hidden p-3" onPress={onPress}>
         <>
-          <View className="self-center">
+          <View className="items-center justify-center self-center">
             <FasterImageView
               source={{url: imgItem(item.basicInfo.iconID)}}
               style={styles.icon}
             />
-            <Image className="absolute aspect-square w-[78px]" source={frame} />
+            <Image
+              className="absolute aspect-square w-[78px]"
+              resizeMode="contain"
+              source={frame}
+            />
           </View>
           {item.basicInfo.cards.length > 0 && (
             <View className="mt-3 flex-row justify-center">

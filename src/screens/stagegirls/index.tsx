@@ -220,7 +220,8 @@ const StageGirlsScreen = ({
                 style={styles.card}
               />
               <Image
-                className="absolute aspect-stage-girl h-20"
+                className="absolute aspect-stage-girl h-20 self-center"
+                resizeMode="contain"
                 source={frame}
               />
               <Image
