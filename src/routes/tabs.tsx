@@ -1,72 +1,48 @@
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {CommonActions} from '@react-navigation/routers';
-import React from 'react';
 import {useTranslation} from 'react-i18next';
-import {BottomNavigation} from 'react-native-paper';
+import {createNativeBottomTabNavigator} from 'react-native-bottom-tabs/react-navigation';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import HomeScreen from 'screens/home';
 import MemoirsScreen from 'screens/memoirs';
 import MoreScreen from 'screens/more';
 import StageGirlsScreen from 'screens/stagegirls';
+import type {ImageSourcePropType} from 'react-native';
 import type {BottomTabList} from 'typings/navigation';
 
-const Tab = createBottomTabNavigator<BottomTabList>();
+const Tab = createNativeBottomTabNavigator<BottomTabList>();
 
 const ICON_SIZE = 24;
+const homeIcon = Icon.getImageSourceSync(
+  'home',
+  ICON_SIZE,
+  'white',
+) as ImageSourcePropType;
+const stageGirlsIcon = Icon.getImageSourceSync(
+  'star-four-points',
+  ICON_SIZE,
+  'white',
+) as ImageSourcePropType;
+const memoirsIcon = Icon.getImageSourceSync(
+  'image-area',
+  ICON_SIZE,
+  'white',
+) as ImageSourcePropType;
+const moreIcon = Icon.getImageSourceSync(
+  'dots-horizontal',
+  ICON_SIZE,
+  'white',
+) as ImageSourcePropType;
 
 const Tabs = () => {
   const {t} = useTranslation();
 
   return (
-    <Tab.Navigator
-      backBehavior="initialRoute"
-      screenOptions={{headerShown: false}}
-      tabBar={({navigation, state, descriptors, insets}) => (
-        <BottomNavigation.Bar
-          getLabelText={({route}) => {
-            const {options} = descriptors[route.key];
-            const label =
-              options.tabBarLabel !== undefined
-                ? (options.tabBarLabel as string)
-                : options.title !== undefined
-                ? options.title
-                : route.name;
-            return label;
-          }}
-          navigationState={state}
-          renderIcon={({route, focused, color}) => {
-            const {options} = descriptors[route.key];
-            if (options.tabBarIcon) {
-              return options.tabBarIcon({focused, color, size: 24});
-            }
-            return null;
-          }}
-          safeAreaInsets={insets}
-          onTabPress={({route, preventDefault}) => {
-            const event = navigation.emit({
-              type: 'tabPress',
-              target: route.key,
-              canPreventDefault: true,
-            });
-            if (event.defaultPrevented) {
-              preventDefault();
-            } else {
-              navigation.dispatch({
-                ...CommonActions.navigate(route.name, route.params),
-                target: state.key,
-              });
-            }
-          }}
-        />
-      )}>
+    <Tab.Navigator backBehavior="initialRoute">
       <Tab.Screen
         component={HomeScreen}
         name="MainScreen"
         options={{
           tabBarLabel: t('bottom-tabs.t1'),
-          tabBarIcon: ({color}) => (
-            <Icon color={color} name="home" size={ICON_SIZE} />
-          ),
+          tabBarIcon: () => homeIcon,
         }}
       />
       <Tab.Screen
@@ -74,9 +50,7 @@ const Tabs = () => {
         name="StageGirlsScreen"
         options={{
           tabBarLabel: t('bottom-tabs.t2'),
-          tabBarIcon: ({color}) => (
-            <Icon color={color} name="star-four-points" size={ICON_SIZE} />
-          ),
+          tabBarIcon: () => stageGirlsIcon,
         }}
       />
       <Tab.Screen
@@ -84,9 +58,7 @@ const Tabs = () => {
         name="MemoirsScreen"
         options={{
           tabBarLabel: t('bottom-tabs.t3'),
-          tabBarIcon: ({color}) => (
-            <Icon color={color} name="image-area" size={ICON_SIZE} />
-          ),
+          tabBarIcon: () => memoirsIcon,
         }}
       />
       <Tab.Screen
@@ -94,9 +66,7 @@ const Tabs = () => {
         name="MoreScreen"
         options={{
           tabBarLabel: t('bottom-tabs.t4'),
-          tabBarIcon: ({color}) => (
-            <Icon color={color} name="dots-horizontal" size={ICON_SIZE} />
-          ),
+          tabBarIcon: () => moreIcon,
         }}
       />
     </Tab.Navigator>
