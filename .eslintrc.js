@@ -4,12 +4,13 @@ module.exports = {
     '@react-native',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    'plugin:react/jsx-runtime',
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
     project: ['./tsconfig.json'],
   },
-  plugins: ['@typescript-eslint', 'import'],
+  plugins: ['@typescript-eslint', 'import', '@stylistic'],
   overrides: [
     {
       files: ['*.ts', '*.tsx'],
@@ -57,7 +58,7 @@ module.exports = {
     'react-hooks/exhaustive-deps': 'off',
     'object-shorthand': ['error', 'always'],
     '@typescript-eslint/ban-ts-comment': 'off',
-    '@typescript-eslint/comma-dangle': ['error', 'always-multiline'],
+    '@stylistic/comma-dangle': ['error', 'always-multiline'],
     eqeqeq: ['error', 'always'],
     'import/order': [
       'error',
